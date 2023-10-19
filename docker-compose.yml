@@ -1,0 +1,52 @@
+version: '3'
+
+
+networks:
+ net_transcendence:
+  name: net_transcendence
+
+
+services:
+ frontend:
+  container_name: frontend
+  build: ./dockerfiles/frontend
+  volumes:
+   - ./src:/src
+  restart: always
+  networks:
+   - net_transcendence
+  ports:
+   - "4200:4200"
+
+ postgresql:
+  container_name: postgresql
+  image: postgres
+  volumes:
+   - ./db_data:/db_data
+  restart: always
+  networks:
+   - net_transcendence
+  env_file:
+   - .env
+
+ backend:
+  container_name: backend
+  build: ./dockerfiles/backend
+  depends_on:
+   - postgresql
+  volumes:
+   - ./src:/src
+  restart: always
+  networks:
+   - net_transcendence
+  ports:
+   - "8000:8000"
+
+ adminer:
+  container_name: adminer
+  image: adminer
+  restart: always
+  networks:
+   - net_transcendence
+  ports:
+   - "8080:8080"
