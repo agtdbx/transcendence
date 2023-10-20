@@ -10,4 +10,6 @@ echo "POSTGRES_DB=$dbname" >> .env
 echo "POSTGRES_USER=$dbuser" >> .env
 echo "POSTGRES_PASSWORD=$dbpass" >> .env
 
+npm install --global nx@latest
+
 echo 'Generating done !'
