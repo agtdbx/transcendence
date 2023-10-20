@@ -6,7 +6,7 @@
 #    By: aderouba <aderouba@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/19 17:13:10 by aderouba          #+#    #+#              #
-#    Updated: 2023/10/19 21:18:18 by aderouba         ###   ########.fr        #
+#    Updated: 2023/10/20 13:04:26 by aderouba         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,21 +24,27 @@ WHITE		= \e[1;37m
 
 
 all:
-	@echo "$(GREEN)" 'Start server !' "$(NOC)"
+	@echo "$(GREEN)Start server !$(NOC)"
+	@docker volume ls | grep db_data || docker volume create db_data
 	@docker compose up -d
 
 clean:
-	@echo "$(BLUE)" 'Server stop' "$(NOC)"
+	@echo "$(BLUE)Server stop$(NOC)"
 	@docker compose down
 
 fclean: clean
-	@echo "$(BLUE)" 'Remove own image' "$(NOC)"
-	@docker image rm transcendence-backend 2>/dev/null || echo "$(RED)" 'Backend image not exist' "$(NOC)"
-	@docker image rm transcendence-frontend 2>/dev/null || echo "$(RED)" 'Front image not exist' "$(NOC)"
+	@echo "$(BLUE)Remove own image$(NOC)"
+	@docker image rm transcendence-backend 2>/dev/null || echo "$(RED)Backend image not exist$(NOC)"
+	@docker image rm transcendence-frontend 2>/dev/null || echo "$(RED)Front image not exist$(NOC)"
 
-fullclean: fclean
-	@echo "$(BLUE)" 'Remove premake image' "$(NOC)"
-	@docker image rm $$(docker image ls -aq) 2>/dev/null || echo "$(RED)" "Premake image aren't install" "$(NOC)"
+vclean: fclean
+	@docker volume rm db_data 2>/dev/null || echo "$(RED)db_data volumes doesn't exist$(NOC)"
+	@docker volume rm src_data 2>/dev/null || echo "$(RED)src_data volumes doesn't exist$(NOC)"
+
+fullclean: vclean
+	@echo "$(BLUE)Remove premake image$(NOC)"
+	@docker image rm $$(docker image ls -aq) 2>/dev/null || echo "$(RED)Premake image aren't install$(NOC)"
+	@docker volume rm $$(docker volume ls -q) 2>/dev/null || echo "$(RED)No volume to delete$(NOC)"
 
 re : fclean all
 
