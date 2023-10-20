@@ -13,6 +13,6 @@ echo "POSTGRES_PASSWORD=$dbpass" >> .env
 echo 'Generating .nev done !'
 echo 'Now, installing nx. Select default choice'
 
-cd src && npx nx@latest init || echo 'nx already installed'
+cd src && npm install
 
 echo 'Done'
