@@ -55,6 +55,8 @@ services:
    - net_transcendence
   ports:
    - "8000:8000"
+  env_file:
+   - .env
 
  adminer:
   container_name: adminer

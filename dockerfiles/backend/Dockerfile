@@ -8,4 +8,4 @@ RUN pip install django psycopg2
 
 WORKDIR /src/backend
 
-CMD sleep 5 && python3 manage.py migrate && python3 manage.py runserver 0.0.0.0:8000
+CMD sleep 5 && ./setup_setting.sh && python3 manage.py migrate && python3 manage.py runserver 0.0.0.0:8000
