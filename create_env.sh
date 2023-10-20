@@ -11,8 +11,3 @@ echo "POSTGRES_USER=$dbuser" >> .env
 echo "POSTGRES_PASSWORD=$dbpass" >> .env
 
 echo 'Generating .nev done !'
-echo 'Now, installing nx. Select default choice'
-
-cd src && npm install
-
-echo 'Done'

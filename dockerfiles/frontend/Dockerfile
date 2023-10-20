@@ -1,4 +1,4 @@
-from alpine:3.18
+FROM alpine:3.18
 
 RUN apk update && apk upgrade && apk add npm
 RUN rm -f /var/cache/apk/*
