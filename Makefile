@@ -6,7 +6,7 @@
 #    By: aderouba <aderouba@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/19 17:13:10 by aderouba          #+#    #+#              #
-#    Updated: 2023/10/20 15:09:52 by aderouba         ###   ########.fr        #
+#    Updated: 2023/10/20 15:57:45 by aderouba         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,27 +23,27 @@ CYAN		= \e[1;36m
 WHITE		= \e[1;37m
 
 
-all:
+all: run
+
+run:
 	@echo "$(GREEN)Start server !$(NOC)"
 	@docker volume ls | grep db_data || docker volume create db_data
 	@docker compose up -d
 
-clean:
+stop:
 	@echo "$(BLUE)Server stop$(NOC)"
 	@docker compose down
 
-fclean: clean
+fclean: stop
 	@echo "$(BLUE)Remove own image$(NOC)"
 	@docker image rm transcendence-backend 2>/dev/null || echo "$(RED)Backend image not exist$(NOC)"
 	@docker image rm transcendence-frontend 2>/dev/null || echo "$(RED)Front image not exist$(NOC)"
-
-vclean: fclean
 	@docker volume rm $$(docker volume ls -q) 2>/dev/null || echo "$(RED)No volume to delete$(NOC)"
 
-fullclean: vclean
+fullclean: fclean
 	@echo "$(BLUE)Remove premake image$(NOC)"
 	@docker image rm $$(docker image ls -aq) 2>/dev/null || echo "$(RED)Premake image aren't install$(NOC)"
 
 re : fclean all
 
-.PHONY: all clean fclean re
+.PHONY: all run stop fclean fullclean re
