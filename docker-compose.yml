@@ -17,7 +17,6 @@ volumes:
 
  db_data:
   name: db_data
-  external: true
 
 
 services:
@@ -57,6 +56,15 @@ services:
    - "8000:8000"
   env_file:
    - .env
+
+ nginx:
+  container_name: nginx
+  image: nginx
+  restart: always
+  networks:
+   - net_transcendence
+  ports:
+   - "80:80"
 
  adminer:
   container_name: adminer

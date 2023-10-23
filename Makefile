@@ -6,7 +6,7 @@
 #    By: aderouba <aderouba@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/19 17:13:10 by aderouba          #+#    #+#              #
-#    Updated: 2023/10/20 15:57:45 by aderouba         ###   ########.fr        #
+#    Updated: 2023/10/23 18:40:14 by aderouba         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,7 +27,6 @@ all: run
 
 run:
 	@echo "$(GREEN)Start server !$(NOC)"
-	@docker volume ls | grep db_data || docker volume create db_data
 	@docker compose up -d
 
 stop:
