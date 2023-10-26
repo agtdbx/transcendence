@@ -7,13 +7,21 @@ networks:
 
 
 volumes:
- src_data:
-  name: src_data
+ frontend_data:
+  name: frontend_data
   driver: local
   driver_opts:
    type: none
    o: bind
-   device: ./src
+   device: ./frontend
+
+ backend_data:
+  name: backend_data
+  driver: local
+  driver_opts:
+   type: none
+   o: bind
+   device: ./backend
 
  db_data:
   name: db_data
@@ -24,12 +32,10 @@ services:
   container_name: frontend
   build: ./dockerfiles/frontend
   volumes:
-   - src_data:/src
+   - frontend_data:/frontend
   restart: always
   networks:
    - net_transcendence
-  ports:
-   - "4200:4200"
 
  postgresql:
   container_name: postgresql
@@ -48,12 +54,10 @@ services:
   depends_on:
    - postgresql
   volumes:
-   - src_data:/src
+   - backend_data:/backend
   restart: always
   networks:
    - net_transcendence
-  ports:
-   - "8000:8000"
   env_file:
    - .env
 
@@ -61,7 +65,19 @@ services:
   container_name: adminer
   image: adminer
   restart: always
+  depends_on:
+   - postgresql
+  networks:
+   - net_transcendence
+
+ nginx:
+  container_name: nginx
+  build: ./dockerfiles/nginx
+  restart: always
+  depends_on:
+   - frontend
+   - backend
   networks:
    - net_transcendence
   ports:
-   - "8080:8080"
+   - "4200:80"
