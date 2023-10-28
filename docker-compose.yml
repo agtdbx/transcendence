@@ -13,7 +13,7 @@ volumes:
   driver_opts:
    type: none
    o: bind
-   device: ./frontend
+   device: $PWD/frontend
 
  backend_data:
   name: backend_data
@@ -21,7 +21,7 @@ volumes:
   driver_opts:
    type: none
    o: bind
-   device: ./backend
+   device: $PWD/backend
 
  db_data:
   name: db_data
