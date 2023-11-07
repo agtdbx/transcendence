@@ -4,6 +4,7 @@ import os
 import sys
 
 
+
 def main():
     """Run administrative tasks."""
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'backend.settings')
@@ -20,3 +21,9 @@ def main():
 
 if __name__ == '__main__':
     main()
+
+from django.db import models
+
+#INSTALLED_APPS.push("backend.models.connection42")
+
+							#integer [unique]
