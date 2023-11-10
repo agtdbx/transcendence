@@ -6,7 +6,7 @@
 #    By: aderouba <aderouba@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/19 17:13:10 by aderouba          #+#    #+#              #
-#    Updated: 2023/10/23 18:40:14 by aderouba         ###   ########.fr        #
+#    Updated: 2023/11/10 12:46:42 by aderouba         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -39,7 +39,10 @@ fclean: stop
 	@docker image rm transcendence-frontend 2>/dev/null || echo "$(RED)Front image not exist$(NOC)"
 	@docker volume rm $$(docker volume ls -q) 2>/dev/null || echo "$(RED)No volume to delete$(NOC)"
 
-fullclean: fclean
+prune:
+	docker system prune -af --volumes
+
+fullclean: fclean prune
 	@echo "$(BLUE)Remove premake image$(NOC)"
 	@docker image rm $$(docker image ls -aq) 2>/dev/null || echo "$(RED)Premake image aren't install$(NOC)"
 
