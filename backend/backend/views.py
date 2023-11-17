@@ -6,16 +6,16 @@
 #    By: lflandri <lflandri@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/08 14:00:09 by lflandri          #+#    #+#              #
-#    Updated: 2023/11/17 17:25:15 by lflandri         ###   ########.fr        #
+#    Updated: 2023/11/17 17:43:02 by lflandri         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 from django.http import HttpResponse
 from django.shortcuts import render
  
-def index(request):
-    return HttpResponse("Hello, world. You're at the root of the server.")
 
+def index(request):
+  return render(request,"index.html")
 
 def testJS(request):
     page = "<!DOCTYPE html>"
