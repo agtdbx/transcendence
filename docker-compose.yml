@@ -7,14 +7,6 @@ networks:
 
 
 volumes:
- frontend_data:
-  name: frontend_data
-  driver: local
-  driver_opts:
-   type: none
-   o: bind
-   device: $PWD/frontend
-
  backend_data:
   name: backend_data
   driver: local
@@ -28,15 +20,6 @@ volumes:
 
 
 services:
- frontend:
-  container_name: frontend
-  build: ./dockerfiles/frontend
-  volumes:
-   - frontend_data:/frontend
-  restart: always
-  networks:
-   - net_transcendence
-
  postgresql:
   container_name: postgresql
   image: postgres
@@ -60,6 +43,8 @@ services:
    - net_transcendence
   env_file:
    - .env
+  ports:
+   - "4200:8000"
 
  adminer:
   container_name: adminer
@@ -69,15 +54,5 @@ services:
    - postgresql
   networks:
    - net_transcendence
-
- nginx:
-  container_name: nginx
-  build: ./dockerfiles/nginx
-  restart: always
-  depends_on:
-   - frontend
-   - backend
-  networks:
-   - net_transcendence
   ports:
-   - "4200:80"
+   - "8080:8080"
