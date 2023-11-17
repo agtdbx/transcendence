@@ -3,14 +3,16 @@
 #                                                         :::      ::::::::    #
 #    views.py                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: lflandri <lflandri@student.42.fr>          +#+  +:+       +#+         #
+#    By: hde-min <hde-min@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/08 14:00:09 by lflandri          #+#    #+#              #
-#    Updated: 2023/11/17 14:52:55 by lflandri         ###   ########.fr        #
+#    Updated: 2023/11/17 16:38:53 by hde-min          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 from django.http import HttpResponse
- 
+from django.shortcuts import render
+
+
 def index(request):
-    return HttpResponse("Hello, world. You're at the root of the server.");
+  return render(request,"index.html")
