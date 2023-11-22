@@ -8,5 +8,11 @@
 	<p id="textPopSignIn">NEW ?</p>
 	<p id="textPopSignIn">NEW ?</p>
 
+	<form method="POST">
+		{% csrf_token %}
+		<input type="hidden" name="page" value="profil">
+		<input type="submit" value="go to profil page"/>
+	</form>
+
 </body>
 </html>
