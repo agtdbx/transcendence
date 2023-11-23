@@ -6,8 +6,9 @@
 
 
 <link rel="stylesheet" href="{% static 'myglobal.css' %}">
-<body style="background-image: url('https://images.squarespace-cdn.com/content/v1/5925832e03596efb6d4b502a/1552467562015-MWVX7EH618KN61QMDLEP/DRG_Wallpaper_CrystalCaves.jpg?format=2500w;')">
-	<div class="container" style="margin-top:5px;">
+<script src="{% static 'javascript/profil/achievement_and_stat.js' %}" ></script>
+<body id="body" style="background-image: url('https://images.squarespace-cdn.com/content/v1/5925832e03596efb6d4b502a/1552467562015-MWVX7EH618KN61QMDLEP/DRG_Wallpaper_CrystalCaves.jpg?format=2500w;')">
+	<div class="container" style="margin-top:5px;" id="main_block_profil">
 		<div class="row">
 		  <div class="col-md-4 col-lg-4 col-xl-4 grey_div" id="profil_pannel_utils">
 				<div class="black_grey_div" id="user_info_container" style="color:white; padding:2%;">
@@ -20,8 +21,14 @@
 					<script src="{% static 'javascript/profil/profil.js' %}" ></script>
 				</div>
 				<div class="black_grey_div" id="42_container">
+					<p id="42_link_profil_page" style="margin:auto; color:white; text-align:center;">42 Link : <span id="42_link_status_profil"></span></p>
+					<button style=" display:block; margin:auto; margin-top:5px;">Unlink</button>
+					<script src="{% static 'javascript/profil/42_link.js' %}" ></script>
 				</div>
 				<div class="black_grey_div" id="achivement_container">
+					<p id="achivement_profil_page" style="margin:auto; color:white; text-align:center;">Achievement : <span id="achivement_counter_profil_page"></span></p>
+					<button style=" display:block; margin:auto; margin-top:5px;" id="successbutton" onclick=createpup('sucess')>Achievement</button>
+					
 				</div>
 				<div class="black_grey_div" id="contact_container">
 				</div>
@@ -35,7 +42,6 @@
 					</div>
 				</div>
 			  </div>
-
 			<br>
 			<div id="match_history_content" style="background-color: rgba(40, 35, 23, 0.75); padding-top: 2%; padding-bottom: 2%;">
 				<div style="height: 400px; overflow-y:scroll;">
