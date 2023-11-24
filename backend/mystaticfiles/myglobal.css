@@ -8,6 +8,26 @@
 
 
 
+.profil_win_rate_font {
+	font-size: 2.5vw;
+  }
+ @media screen and (min-width: 580px) {
+	.profil_win_rate_font {
+     font-size: 2vw;
+  }
+}
+@media screen and (min-width: 700px) {
+	.profil_win_rate_font {
+     font-size: 00.75rem;
+  }
+}
+@media screen and (min-width: 1000px) {
+	.profil_win_rate_font {
+     font-size: 1rem;
+  }
+}
+
+
 .grey_div
 {
 	background-color: rgba(40, 35, 23, 0.75);
@@ -15,7 +35,6 @@
 
 .black_grey_div
 {
-	margin-bottom: 10px;
 	background-color: rgba(18,16,11, 0.75);
 }
 

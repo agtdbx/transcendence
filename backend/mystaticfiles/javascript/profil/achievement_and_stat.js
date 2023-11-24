@@ -6,29 +6,29 @@
 /*   By: lflandri <lflandri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/23 15:24:40 by lflandri          #+#    #+#             */
-/*   Updated: 2023/11/23 16:54:03 by lflandri         ###   ########.fr       */
+/*   Updated: 2023/11/24 17:28:56 by lflandri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-//TODO all
+//TODO connection to db + stat pannel
 
 function remove_pop()
 {
-	const popup = document.getElementById("contentSuccessBlock");
+	const popup = document.getElementById("containerContentSuccesBlock");
 	console.log("popup : ");
 	console.log(popup);
 	console.log("\n");
-	while (document.getElementById("contentSuccessBlock") != null)
-		document.getElementById("contentSuccessBlock").remove();
+	while (document.getElementById("containerContentSuccesBlock") != null)
+		document.getElementById("containerContentSuccesBlock").remove();
 	const body = document.getElementById("body");
 	body.onclick = null;
 }
 
 function casePup(content, before, title, img, description, grade)
 {
-	
-	const image = document.createElement("img");
 	const container = document.createElement("div");
+	const image = document.createElement("img");
+	const box = document.createElement("div");
 	const divText = document.createElement("div");
 	const titleText = document.createElement("h5");
 	const text = document.createElement("p");
@@ -37,20 +37,24 @@ function casePup(content, before, title, img, description, grade)
 	image.style.display = "inline-block";
 	image.src = img;
 
-	container.style.marginLeft = "1.5%";
-	container.style.marginRight = "1.5%";
-	container.style.width = "30%";
-	container.style.display = "inline-block";
-	container.style.backgroundColor = "#000000";
-	container.style.border = "1px solid #FF9C00";
-	container.style.marginBottom = "15px";
+	container.classList.add("col-sm-12");
+	container.classList.add("col-md-6");
+	container.classList.add("col-lg-6");
+	container.classList.add("col-xl-4");
+
+	box.style.display = "inline-block";
+	box.style.backgroundColor = "#000000";
+	box.style.border = "1px solid #FF9C00";
+	box.style.marginBottom = "15px";
+	box.style.textAlign = "left";
+	box.classList.add("mx-1");
 
 	divText.style.width = "70%";
 	divText.style.position = "relative";
 	divText.style.left = "30%";
 	divText.style.height = "30px";
 	divText.style.marginBottom = "-30px";
-	divText.style.fontSize = "1vw";
+	divText.style.fontSize = "10px";
 
 
 	titleText.style.color = "white";
@@ -58,18 +62,19 @@ function casePup(content, before, title, img, description, grade)
 	titleText.style.textAlign = "center";
 	titleText.style.marginTop = "1px";
 	titleText.style.marginBottom = "0px";
-	titleText.style.fontSize = "2vw";
+	titleText.style.fontSize = "15px";
 
 	text.style.color = "white";
 	text.textContent = description;
-	text.style.marginTop = "1px";
+	text.style.marginTop = "5px";
 	
 
 
 
 	content.insertBefore(container, before);
-	container.insertBefore(divText, null);
-	container.insertBefore(image, null);
+	container.insertBefore(box, before);
+	box.insertBefore(divText, null);
+	box.insertBefore(image, null);
 	divText.insertBefore(titleText, null);
 	divText.insertBefore(text, null);
 
@@ -84,7 +89,7 @@ function casePup(content, before, title, img, description, grade)
 		gradeImage.style.position = "relative";
 		gradeImage.style.left = "40%";
 		gradeImage.style.top = "-15px";
-		gradeImage.style.width = "20%"
+		gradeImage.style.width = "25%"
 		
 		switch (grade) {
 			case 1:
@@ -98,7 +103,7 @@ function casePup(content, before, title, img, description, grade)
 				gradeImage.src = "https://static.wikia.nocookie.net/deeprockgalactic_gamepedia_en/images/1/1f/Icons_complexity_3.png/revision/latest/scale-to-width-down/60?cb=20190210235136";
 				break;
 		}
-		container.insertBefore(gradeContainer, null);
+		box.insertBefore(gradeContainer, null);
 		gradeContainer.insertBefore(gradeImage, null);
 
 	}
@@ -108,42 +113,43 @@ function casePup(content, before, title, img, description, grade)
 
 function titlePup(content, before, title)
 {
-	
+	const container = document.createElement("div");
 	const boscoLeft = document.createElement("img");
 	const titleImg = document.createElement("img");
 	const boscoRight = document.createElement("img");
 	const titlePop = document.createElement("div");
-	const titleText = document.createElement("h4");
+	//const titleText = document.createElement("h4");
 	const separator = document.createElement("div");
 
 	titleImg.style.width = "100%";
-	titleImg.style.marginTop = "-40%";
-	titleImg.src = "https://static.wikia.nocookie.net/deeprockgalactic_gamepedia_en/images/c/c6/Icon_Forge_Mastery.png/revision/latest/scale-to-width-down/200?cb=20190926110523";
+	//titleImg.style.marginTop = "-40%";
+	if (title === "Success")
+		titleImg.src = "/static/image/other/Icon_Forge_Mastery_achievement.webp";
 	
 	titlePop.style.display = "inline-block";
-	titlePop.style.width = "10%";
+	titlePop.style.width = "50%";
 	titlePop.style.marginLeft = "1%";
 	titlePop.style.marginRight = "1%";
 
-	titleText.textContent = title;
-	titleText.style.fontSize = "1vw"
-	titleText.style.position = "relative";
-	titleText.style.left = "25%";
-	titleText.style.top = "0%";
-	titleText.style.width = "50%";
-	titleText.style.paddingTop = "40%";
-	titleText.style.textAlign = "center";
-	titleText.style.color = "white";
-	titleText.style.height = "30px";
-	titleText.style.marginBottom = "-30px";
-	titleText.style.marginTop = "0px";
+	// titleText.textContent = title;
+	// titleText.style.fontSize = "20px"
+	// titleText.style.position = "relative";
+	// titleText.style.left = "15%";
+	// titleText.style.top = "1vw";
+	// titleText.style.width = "50%";
+	// titleText.style.paddingTop = "40%";
+	// titleText.style.textAlign = "center";
+	// titleText.style.color = "white";
+	// titleText.style.height = "30px";
+	// titleText.style.marginBottom = "-30px";
+	// titleText.style.marginTop = "0px";
 
-	boscoLeft.style.marginLeft = "39%";
+	//boscoLeft.style.marginLeft = "39%";
 	boscoLeft.style.display = "inline-block";
 	boscoLeft.src = "https://cdn.discordapp.com/attachments/1166317817595969697/1166332408874946620/bosco_taunt.gif?ex=65535533&is=6540e033&hm=e7e769432fbbe26b8a7630b0e1a49b48d90b56b4df3b5721f4208cf9f3e8b0b4&";
-	boscoLeft.style.width = "5%";
+	boscoLeft.style.width = "24%";
 	boscoRight.style.display = "inline-block";
-	boscoRight.style.width = "5%";
+	boscoRight.style.width = "24%";
 	boscoRight.src = "https://cdn.discordapp.com/attachments/1166317817595969697/1166332408874946620/bosco_taunt.gif?ex=65535533&is=6540e033&hm=e7e769432fbbe26b8a7630b0e1a49b48d90b56b4df3b5721f4208cf9f3e8b0b4&";
 
 	separator.style.marginBottom = "20px";
@@ -152,13 +158,18 @@ function titlePup(content, before, title)
 		-o-transform:rotate(180deg);  //Opera 10.5+
 		-moz-transform: rotate(180deg); //Firefox 3.5+
 		*/
-	
-	content.insertBefore(boscoLeft, before);
-	titlePop.insertBefore(titleText, null);
+	container.classList.add("col-md-8");
+	container.classList.add("col-lg-6");
+	container.classList.add("col-xl-4");
+	container.style.margin = "auto";
+	content.insertBefore(container, before);
+	container.insertBefore(boscoLeft, before);
+	//titlePop.insertBefore(titleText, null);
 	titlePop.insertBefore(titleImg, null);
-	content.insertBefore(titlePop, before);
-	content.insertBefore(boscoRight, before);
+	container.insertBefore(titlePop, before);
+	container.insertBefore(boscoRight, before);
 	content.insertBefore(separator, before);
+	
 }
 
 
@@ -167,20 +178,33 @@ function createSuccess()
 	//remove_pop();
 	console.log("create success panel");
 	const body = document.getElementById("body");
+	const containerContentSuccesBlock = document.createElement("div");
 	const contentSuccesBlock = document.createElement("div");
 	const succesBlock = document.createElement("div");
 	const gameDiv = document.getElementById("main_block_profil");
 
-	body.insertBefore(contentSuccesBlock, gameDiv);
+	body.insertBefore(containerContentSuccesBlock, gameDiv);
+	containerContentSuccesBlock.insertBefore(contentSuccesBlock, null);
 	contentSuccesBlock.insertBefore(succesBlock, null);
 
+	containerContentSuccesBlock.id = "containerContentSuccesBlock";
+	containerContentSuccesBlock.style.position = "absolute";
+	containerContentSuccesBlock.style.width = window.innerWidth;
+	containerContentSuccesBlock.style.width = "100%";
+
+	contentSuccesBlock.classList.add("container");
 	contentSuccesBlock.id = "contentSuccessBlock";
-	contentSuccesBlock.style.position = "absolute";
-	contentSuccesBlock.style.width = window.innerWidth;
+	contentSuccesBlock.style.margin = "auto";
 	succesBlock.id = "successBlock";
-	succesBlock.style.position = "sticky";
-	succesBlock.style.left = "15%";
+	//succesBlock.style.position = "sticky";
+	//succesBlock.style.left = "";
+	succesBlock.style.margin = "auto";
 	succesBlock.style.backgroundColor = "rgba(40, 35, 23, 0.75)" ; /*"#282317"*/
+	succesBlock.classList.add("row");
+	//succesBlock.classList.add("text-center");
+	succesBlock.style.borderCollapse = "separate";
+	succesBlock.style.textAlign = "center";
+	succesBlock.style.padding = "4%"
 	//succesBlock.style.height = "500px";
 	succesBlock.style.width = "70%";
 	succesBlock.style.zIndex = "1000";

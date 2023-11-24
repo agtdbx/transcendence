@@ -6,7 +6,7 @@
 /*   By: lflandri <lflandri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/23 15:10:25 by lflandri          #+#    #+#             */
-/*   Updated: 2023/11/23 15:28:34 by lflandri         ###   ########.fr       */
+/*   Updated: 2023/11/24 17:05:47 by lflandri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -261,9 +261,11 @@ let graphe = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
 let ingraphe = document.createElementNS('http://www.w3.org/2000/svg', 'g');
 matchDiv.style.clear = "both";
 infoDiv.style.width = "18%";
-infoDiv.style.backgroundColor = "rgba(40, 35, 23, 0.75)";
+infoDiv.classList.add("black_grey_div");
+// infoDiv.style.backgroundColor = "rgba(40, 35, 23, 0.75)";
 //infoDiv.style.width = "100%";
-playerDiv.style.backgroundColor = "rgba(40, 35, 23, 0.75)";
+playerDiv.classList.add("black_grey_div");
+// playerDiv.style.backgroundColor = "rgba(40, 35, 23, 0.75)";
 playerDiv.style.textAlign = "center";
 playerDiv.style.width = "80%";
 P1content.style.display = "inline-block";

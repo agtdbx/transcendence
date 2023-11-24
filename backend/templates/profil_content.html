@@ -10,8 +10,13 @@
 <body id="body" style="background-image: url('https://images.squarespace-cdn.com/content/v1/5925832e03596efb6d4b502a/1552467562015-MWVX7EH618KN61QMDLEP/DRG_Wallpaper_CrystalCaves.jpg?format=2500w;')">
 	<div class="container" style="margin-top:5px;" id="main_block_profil">
 		<div class="row">
-		  <div class="col-md-4 col-lg-4 col-xl-4 grey_div" id="profil_pannel_utils">
-				<div class="black_grey_div" id="user_info_container" style="color:white; padding:2%;">
+
+
+
+			<!-- Block Profil Right-->
+
+			<div class="col-md-4 col-lg-4 col-xl-4 grey_div" id="profil_pannel_utils">
+				<div class="black_grey_div" id="user_info_container" style="color:white; padding:2%; margin-bottom: 10px;">
 					<div id="pp_profil_page_div" style="float:left; width:20%; margin-right :2%; border-radius: 600px; border: 3px solid #59351B;">
 						<img id="pp_profil_page_img" style="width:100%; border-radius: 600px;" >
 					</div>
@@ -20,37 +25,67 @@
 					<button style="clear:both; display:block; margin:auto; margin-top:5px;">Change password</button>
 					<script src="{% static 'javascript/profil/profil.js' %}" ></script>
 				</div>
-				<div class="black_grey_div" id="42_container">
+				<div class="black_grey_div" id="42_container" style="margin-bottom: 10px;">
 					<p id="42_link_profil_page" style="margin:auto; color:white; text-align:center;">42 Link : <span id="42_link_status_profil"></span></p>
 					<button style=" display:block; margin:auto; margin-top:5px;">Unlink</button>
 					<script src="{% static 'javascript/profil/42_link.js' %}" ></script>
 				</div>
-				<div class="black_grey_div" id="achivement_container">
+				<div class="black_grey_div" id="achivement_container" style="margin-bottom: 10px;">
 					<p id="achivement_profil_page" style="margin:auto; color:white; text-align:center;">Achievement : <span id="achivement_counter_profil_page"></span></p>
 					<button style=" display:block; margin:auto; margin-top:5px;" id="successbutton" onclick=createpup('sucess')>Achievement</button>
 					
 				</div>
-				<div class="black_grey_div" id="contact_container">
+				<div class="black_grey_div" id="contact_container" style="margin-bottom: 10px;">
+					<p style="margin:auto; color:white; text-align:center;">Contact</p>
+					<div style="margin:auto; margin-top:5px; text-align:center;">
+						<button style=" display:inline-block;" id="successbutton" onclick=ContactList('friends')>Friends</button>
+						<button style=" display:inline-block;" id="successbutton" onclick=ContactList('blocked')>Blocked</button>
+					</div>
+					<script src="{% static 'javascript/profil/contact.js' %}" ></script>
 				</div>
-		  </div>
+				<button style=" display:block; margin:auto; margin-top:5px;" id="successbutton" onclick=Disconnect>Diconnect</button>
+			</div>
 
-		  <div class="col-md-8 col-lg-8 col-xl-8" id="profil_pannel_match_history">
-			<div class="grey_div" style="padding:10px">
-				<div id="win_rate" style="background-color: red; padding: 0%; height: 20px; border-radius: 30px;">
-					<div id="progg_bar_win_rate" style="background-color: green; display: inline-block; margin:  0%; width: 0%; height: 20px; border-radius: 30px;">
-						<script src="{% static 'javascript/profil/win_rate.js' %}" ></script>
+
+
+
+
+
+
+			<!-- Block Win Rate && Match History-->
+
+			<div class="col-md-8 col-lg-8 col-xl-8" id="profil_pannel_match_history">
+
+				<!-- Win Rate-->
+
+				<div class="grey_div" style=" height: 10vw; padding:5px; max-height:40px;">
+					<div class="black_grey_div" style="width:30%; display:block; color:white; padding-left:3px; padding-right:3px; height: 100%; left:0%; position:relative;">
+						<p style="height:100%; text-align:center; vertical-align:center; padding:0px" class="profil_win_rate_font">
+							Win Rate : <span id="win_rate_indicator"></span> %
+						</p>
+					</div>
+					<div style="width:50%; display:block; left:32%; top:-100%; position:relative; height: 100%">
+						<div id="win_rate" style="background-color: red; padding: 0%; height: 100%; border-radius: 30px;">
+							<div id="progg_bar_win_rate" style="background-color: green; display: inline-block; margin:  0%; width: 0%; height: 100%; border-radius: 30px;">
+								<script src="{% static 'javascript/profil/win_rate.js' %}" ></script>
+	
+							</div>
+						</div>
+					</div>
+					<button class="profil_win_rate_font" style=" display:block; left:84%; width:16%; height: 100%; position:relative; top:-200%;" onclick=createpup('stats')>Stats</button>
+				</div>
+				<br>
+
+				<!-- Match history-->
+
+				<div id="match_history_content" style="background-color: rgba(40, 35, 23, 0.75); padding-top: 2%; padding-bottom: 2%;">
+					<div style="height: 400px; overflow-y:scroll;">
+						<table id="match_history" style="width: 100%; border-collapse: separate;" cellpadding="0px"cellspacing="6px">
+							<script src="{% static 'javascript/profil/match_history_creator.js' %}" ></script>
+						</table>
 					</div>
 				</div>
-			  </div>
-			<br>
-			<div id="match_history_content" style="background-color: rgba(40, 35, 23, 0.75); padding-top: 2%; padding-bottom: 2%;">
-				<div style="height: 400px; overflow-y:scroll;">
-					<table id="match_history" style="width: 100%; border-collapse: separate;" cellpadding="0px"cellspacing="6px">
-						<script src="{% static 'javascript/profil/match_history_creator.js' %}" ></script>
-					</table>
-				</div>
 			</div>
-		  </div>
 		</div>
 	</div>
 
