@@ -21,4 +21,10 @@ from . import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.index),
+	path('Hub', views.mainPage),
+	path('wait', views.waitPage),
+	path('fallen', views.ladderPage),
+	path('ct', views.createtournaPage),
+	path('t', views.tournaPage),
+	path('cgp', views.cgp),
 ]
