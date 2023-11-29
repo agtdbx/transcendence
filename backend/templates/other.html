@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+	<title>test</title>
+	<meta charset="utf-8"/>
+	</head>
+	<body>
+	<p id="lol">Hello there</p>
+
+		<div id="win_rate" style="background-color: red; padding: 0%; height: 20px; border-radius: 30px;">
+			<div id="progg_bar_win_rate" style="background-color: green; display: inline-block; margin:  0%; width: 0%; height: 20px; border-radius: 30px;">
+
+			</div>
+		</div>
+		
+	</body>
+	<script type="text/javascript">
+
+		function win_rate_calcul(win_rate) {
+			document.getElementById("progg_bar_win_rate").style.width = "" +  (win_rate * 100) +  "%"; 
+		}
+
+		win_rate_calcul(0.30);
+
+		{% comment %} var tryout = new XMLHttpRequest();  
+		tryout.open("POST", "http://localhost:4200/pytest");
+		tryout.withCredentials = true;
+		tryout.setRequestHeader("x-csrf-token", "fetch");	
+		tryout.setRequestHeader("Accept", "application/json");
+		tryout.setRequestHeader("Content-Type", "application/json; charset=utf-8");
+		tryout.send("");
+		tryout.onload = function()
+		{ {% endcomment %}
+		{% comment %} var csrfToken = '{% csrf_token %}';
+		console.log("csrfToken : " + csrfToken);
+		csrfToken = csrfToken.substr(55, 64);
+		console.log("csrfToken : " + csrfToken); {% endcomment %}
+
+		var requete = new XMLHttpRequest();
+		requete.open("POST", "http://localhost:4200/pytest");
+		{% comment %} requete.setRequestHeader("x-csrf-token", csrfToken);   {% endcomment %}
+		requete.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+		requete.withCredentials = true;
+		{% comment %} .setRequestHeader("Content-Type", "application/json; charset=utf-8"); {% endcomment %}
+		requete.send("test45" /*content to send*/);
+		requete.onload = function()
+		{
+			//La variable à passer est alors contenue dans l'objet response et l'attribut responseText.
+			var variableARecuperee = this.responseText;
+			document.getElementById("lol").textContent = variableARecuperee
+		}
+		{% comment %} } {% endcomment %}
+
+
+	</script>

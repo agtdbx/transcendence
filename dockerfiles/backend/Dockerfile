@@ -6,6 +6,9 @@ RUN rm -f /var/cache/apk/*
 
 RUN pip install django django.db psycopg2
 
+RUN pip install pytz --upgrade
+RUN pip install tzdata --upgrade
+
 WORKDIR /backend
 
 CMD sleep 5 && python manage.py makemigrations db_test && python3 manage.py migrate && python3 manage.py runserver 0.0.0.0:8000
