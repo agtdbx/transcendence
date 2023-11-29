@@ -6,7 +6,7 @@
 #    By: lflandri <lflandri@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/08 14:00:09 by lflandri          #+#    #+#              #
-#    Updated: 2023/11/29 13:34:35 by lflandri         ###   ########.fr        #
+#    Updated: 2023/11/29 13:38:04 by lflandri         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -38,20 +38,13 @@ def tournaPage(request):
 
 def cgp(request):
   return render(request,"createGameRoom.html")
- 
 
-def index(request):
-    # print >>sys.stderr, 'Goodbye, cruel world!'
-    print(request, file=sys.stderr)
-    if request.method == "POST" and request.POST["page"] == "profil":
-        print(request, file=sys.stderr)
-        return render(request,"profil_content.html")
-    else :
-    	return render(request,"index.html")
+def profil(request):
+    return render(request,"profil_content.html")
 
-def testJS(request):
-    return render(request,"other.html")
+# def testJS(request):
+#     return render(request,"other.html")
 	
-@csrf_exempt
-def testPY(request):
-    return HttpResponse("success")
+# @csrf_exempt
+# def testPY(request):
+#     return HttpResponse("success")
