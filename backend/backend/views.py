@@ -6,20 +6,17 @@
 #    By: hde-min <hde-min@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/08 14:00:09 by lflandri          #+#    #+#              #
-#    Updated: 2023/11/29 12:16:01 by hde-min          ###   ########.fr        #
+#    Updated: 2023/11/29 16:04:26 by hde-min          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 
 from django.views.decorators.csrf import csrf_exempt
-from django.http import HttpResponse
+from django.http import Http404, HttpResponse
 from django.shortcuts import render
 
-i = 0
-
-def index(request):
-  if i == 0:
-    return render(request,"index.html")
+# def index(request):
+#     return render(request,"index.html")
 
 def mainPage(request):
   return render(request,"mainpage.html")
