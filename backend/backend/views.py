@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    views.py                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: hde-min <hde-min@student.42.fr>            +#+  +:+       +#+         #
+#    By: lflandri <lflandri@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/08 14:00:09 by lflandri          #+#    #+#              #
-#    Updated: 2023/11/29 12:16:01 by hde-min          ###   ########.fr        #
+#    Updated: 2023/11/29 13:38:04 by lflandri         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -38,14 +38,13 @@ def tournaPage(request):
 
 def cgp(request):
   return render(request,"createGameRoom.html")
- 
 
-def index(request):
-  return render(request,"index.html")
+def profil(request):
+    return render(request,"profil_content.html")
 
-def testJS(request):
-    return render(request,"other.html")
+# def testJS(request):
+#     return render(request,"other.html")
 	
-@csrf_exempt
-def testPY(request):
-    return HttpResponse("success")
+# @csrf_exempt
+# def testPY(request):
+#     return HttpResponse("success")

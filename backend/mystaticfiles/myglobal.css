@@ -2,7 +2,8 @@ html{
 	cursor: url("./image/cursor/cursor1.png"), auto;
 }
 
-body {
+ body {
+	font-family: KhazadDum;
 	cursor: url("./image/cursor/cursor1.png"), auto;
 	background-image:url(./image/background/Background.png);
 	background-attachment: fixed;
@@ -40,7 +41,6 @@ p {
 	font-family: "KhazadDum", sans-serif;
 }
 
-/* Bouton  background:linear-gradient(90deg,#ff9c00 0% 2%,white 0.1%,white 2% 4%,#ff9c00 0.1%,#ff9c00 4% 96%,white 0.1%,white 96% 98%,#ff9c00 0.1%, #ff9c00 98% 100%);*/
 
 .btn-drg {
   color: black;
@@ -1503,4 +1503,77 @@ background-color: rgba(207,188,188,0.5);
   background : rgba(18, 16, 11, 0.8);
   border: 3px solid #FF9C00;
   text-align: center;
+} */
+
+
+
+
+
+
+
+
+/*		PROFIL PAGE		*/
+
+
+
+.profil_win_rate_font {
+	font-size: 2.5vw;
+  }
+ @media screen and (min-width: 580px) {
+	.profil_win_rate_font {
+     font-size: 2vw;
+  }
 }
+@media screen and (min-width: 700px) {
+	.profil_win_rate_font {
+     font-size: 00.75rem;
+  }
+}
+@media screen and (min-width: 1000px) {
+	.profil_win_rate_font {
+     font-size: 1rem;
+  }
+}
+
+
+.grey_div
+{
+	background-color: rgba(40, 35, 23, 0.75);
+}
+
+.black_grey_div
+{
+	background-color: rgba(18,16,11, 0.75);
+}
+
+
+	/*MATCH HISTORY*/
+	.goal_point path {
+		opacity: 0;
+	}
+	.goal_point:hover path {
+	opacity: 1;
+	}
+	.goal_point path:hover {
+	opacity: 1;
+	}
+
+	.goal_point text {
+	opacity: 0;
+	}
+	.goal_point:hover text {
+	opacity: 1;
+	}
+	.goal_point text:hover {
+	opacity: 1;
+	}
+
+	tr .goalGraph {
+		display: none;
+	}
+	tr:hover .goalGraph {
+		display: block;
+	}
+	tr .goalGraph:hover {
+		display: block;
+	}
