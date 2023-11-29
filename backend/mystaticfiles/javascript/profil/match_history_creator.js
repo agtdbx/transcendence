@@ -6,7 +6,7 @@
 /*   By: lflandri <lflandri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/23 15:10:25 by lflandri          #+#    #+#             */
-/*   Updated: 2023/11/24 17:05:47 by lflandri         ###   ########.fr       */
+/*   Updated: 2023/11/29 16:48:28 by lflandri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -270,12 +270,16 @@ playerDiv.style.textAlign = "center";
 playerDiv.style.width = "80%";
 P1content.style.display = "inline-block";
 P2content.style.display = "inline-block";
-P1content.style.width = "39%";
-P2content.style.width = "39%";
+P1content.style.verticalAlign = "middle";
+P2content.style.verticalAlign = "middle";
+P1content.style.width = "38%";
+P2content.style.width = "38%";
 score.textContent = "" + scoreP1 + " VS " + scoreP2;
 score.style.display = "inline-block";
 score.style.width = "20%";
 score.style.color = "white";
+score.style.marginRight = "2%";
+score.style.marginLeft = "2%";
 score.style.textAlign = "center";
 result.style.textAlign = "center";
 if (scoreP1 > scoreP2)
@@ -291,21 +295,29 @@ result.style.color = "red";
 P1name.textContent = match["player1"]["name"];
 P2name.textContent = match["player2"]["name"];
 P1name.style.color = "white";
+P1name.style.width = "75%";
+P1name.style.display = "inline-block";
+P2name.style.display = "inline-block";
+P2name.style.width = "75%";
 P2name.style.color = "white";
-P1name.style.fontSize = "2vw";
-P1name.style.marginTop = "7%";
-P1name.style.marginBottom = "7%";
+P1name.style.fontSize = "200%";
+P1name.style.marginTop = "0%";
+P1name.style.marginBottom = "0%";
 P1name.style.textAlign = "left"
-P2name.style.fontSize = "2vw";
-P2name.style.marginTop = "7%";
-P2name.style.marginBottom = "7%";
-P2name.style.textAlign = "right"
+P2name.style.fontSize = "200%";
+P2name.style.marginTop = "0%";
+P2name.style.marginBottom = "0%";
+P2name.style.textAlign = "right";
+P1name.style.verticalAlign = "middle";
+P2name.style.verticalAlign = "middle";
+P1img.style.verticalAlign = "middle";
+P2img.style.verticalAlign = "middle";
 P1img.src = match["player1"]["pp"];
 P2img.src = match["player2"]["pp"];
-P1img.style.width = "20%";
-P2img.style.width = "20%";
-P1img.style.float = "left";
-P2img.style.float = "right";
+P1img.style.width = "25%";
+P2img.style.width = "25%";
+P1img.style.display = "inline-block";
+P2img.style.display = "inline-block";
 mapType.textContent = "Map : " + match["map"];
 mapType.style.color = "white";
 mapType.style.padding = "3%";
@@ -331,8 +343,8 @@ playerDiv.insertBefore(score, null);
 playerDiv.insertBefore(P2content, null);
 P1content.insertBefore(P1img, null);
 P1content.insertBefore(P1name, null);
-P2content.insertBefore(P2img, null);
 P2content.insertBefore(P2name, null);
+P2content.insertBefore(P2img, null);
 infoDiv.insertBefore(mapType, null);
 infoDiv.insertBefore(PowerUpTxt, null);
 PowerUpTxt.insertBefore(PowerUpBool, null);

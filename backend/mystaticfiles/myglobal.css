@@ -2,7 +2,8 @@ html{
 	cursor: url("./image/cursor/cursor1.png"), auto;
 }
 
-/* body {
+ body {
+	font-family: KhazadDum;
 	cursor: url("./image/cursor/cursor1.png"), auto;
 	background-image:url(./image/background/Background.png);
 	background-attachment: fixed;
@@ -40,7 +41,6 @@ p {
 	font-family: "KhazadDum", sans-serif;
 }
 
-/* Bouton  background:linear-gradient(90deg,#ff9c00 0% 2%,white 0.1%,white 2% 4%,#ff9c00 0.1%,#ff9c00 4% 96%,white 0.1%,white 96% 98%,#ff9c00 0.1%, #ff9c00 98% 100%);*/
 
 .btn-drg {
   color: black;
@@ -1504,6 +1504,11 @@ background-color: rgba(207,188,188,0.5);
   border: 3px solid #FF9C00;
   text-align: center;
 } */
+
+
+
+
+
 
 
 
