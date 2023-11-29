@@ -10,7 +10,7 @@
 	<title>Hub</title>
 </head>
 
-<body class="main-page">
+<body class="tournament-page">
 
 
 	<nav class=class="navbar navbar-light" id="header">
@@ -20,26 +20,24 @@
 		<button type="button" class ="btn-drg" id = "main-user-name">USER NAME HERE</button>
 		<button type="button" class ="btn-drg" id = "main-profile-user"></button>
 	  </nav>
-
-	<div class ="main-page-tournament" id = "main-page-tournament">
-		<p id="main-page-txt-tournament">TOURNAMENT</p>
-		<button type="button" class ="btn-drg" id = "main-btn-join">JOIN</button>
-	</div>
-
-	<div class ="main-page-chat" id = "main-page-chat">
-		<div class ="main-page-chat-write" id = "main-page-chat-write">
+	<div class ="tournamentCreate" id = "tournamentCreate">
+		<div class ="tournamentCreatePowerUp" id = "tournamentCreatePowerUp">
+			<p id="tournament-create-text1">Power up</p>
+			<p id="tournament-create-text2">on</p>
+			<button type="button" class ="btn-drg" id = "btn-tournament-create-desac">Desactivate</button>
 		</div>
-		<input type="text" id="main-chat" name="main-chat"><br><br>
+		
+		
+		<div class ="tournamentCreateMap" id = "tournamentCreateMap">
+			<p id="tournament-create-text3">Map</p>
+			<button type="button" class ="btn-drg" id = "btn-tournament-create-map1">Classic  Easy</button>
+			<button type="button" class ="btn-drg" id = "btn-tournament-create-map2">Dwarf cave  medium</button>
+			<button type="button" class ="btn-drg" id = "btn-tournament-create-map3">Around the sun  HARD</button>
+		</div>
 	</div>
-
-	<div class ="main-page-chat-switch" id = "main-page-chat-switch">
-		<button type="button" class ="btn-drg" id ="global">GLOBAL</button>
-	</div>
-
-
-	<button type="button" class ="btn-drg" id = "main-btn-quick">QUICK GAME</button>
-	<button type="button" class ="btn-drg" id = "main-btn-custom">CUSTOM GAME</button>
 	
+	<button type="button" class ="btn-drg" id = "btn-tournament-create-start">Start</button>
+
 </body>
 
 </html>

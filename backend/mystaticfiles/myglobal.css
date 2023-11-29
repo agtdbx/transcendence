@@ -1,5 +1,1508 @@
+html{
+	cursor: url("./image/cursor/cursor1.png"), auto;
+}
+
 /* body {
-  color: green;
+	cursor: url("./image/cursor/cursor1.png"), auto;
+	background-image:url(./image/background/Background.png);
+	background-attachment: fixed;
+  background-repeat:   no-repeat;
+	background-size: cover;
+	max-width: 100%;
+	height: auto;
+}
+
+@font-face {
+	font-family: KhazadDum;
+	src: url('./image/fonts/KhazadDum-0WXEr.ttf');
+}
+
+H1{
+	text-align : center;
+	margin-top : 10%;
+	font-size: 900%;
+	color: #ff9c00;
+	-webkit-text-stroke: 2px #fd4c00;
+	font-family: "KhazadDum", sans-serif;
+}
+
+.title{
+	text-align : center;
+	margin-top : 10%;
+	font-size: 900%;
+	color: #ff9c00;
+	-webkit-text-stroke: 2px #fd4c00;
+	font-family: "KhazadDum", sans-serif;
+}
+
+
+p {
+	font-family: "KhazadDum", sans-serif;
+}
+
+/* Bouton  background:linear-gradient(90deg,#ff9c00 0% 2%,white 0.1%,white 2% 4%,#ff9c00 0.1%,#ff9c00 4% 96%,white 0.1%,white 96% 98%,#ff9c00 0.1%, #ff9c00 98% 100%);*/
+
+.btn-drg {
+  color: black;
+  background: rgb(187,114,11);
+  background:linear-gradient(90deg,#ff9c00 0% 2%,rgba(0,0,0,0) 0.1%,rgba(0,0,0,0) 2% 4%,#ff9c00 0.1%,#ff9c00 4% 96%,rgba(0,0,0,0) 0.1%,rgba(0,0,0,0) 96% 98%,#ff9c00 0.1%, #ff9c00 98% 100%);
+  border: none;
+  animation: animate 0.40s infinite;
+  font-family: "KhazadDum", sans-serif;
+}
+
+#btn-log {
+	margin: auto;
+  display : block;
+  visibility: visible;
+  margin-top: 7%;
+  width: 5em;
+  height: 1.5em;
+  font-size: 400%;
+  
+}
+
+#btn-sign {
+  margin: auto;
+  display : block;
+  visibility: visible;
+  margin-top: 1%;
+  width: 5em;
+  height: 1.5em;
+  font-size: 400%;
+}
+
+@keyframes animate{
+  0%{ 
+    cursor: url("./image/cursor/cursor1.png"), auto;
+  }
+  20%{ 
+    cursor: url("./image/cursor/cursor1.png"), auto;
+  }
+  40%{ 
+    cursor: url("./image/cursor/cursor2.png"), auto;
+  }
+  60%{ 
+    cursor: url("./image/cursor/cursor2.png"), auto;
+  }
+  80%{ 
+    cursor: url("./image/cursor/cursor4.png"), auto;
+  }
+  100%{ 
+    cursor: url("./image/cursor/cursor4.png"), auto;
+  }
+}
+
+/* Clique on login */
+
+.popupLogin{
+    width:50%;
+    height:30em;
+	position: relative;
+    background: rgba(40, 35, 23, 0.75);
+	margin: auto;
+	visibility: hidden;
+	display: none;
+}
+
+.popupSign{
+    width:50%;
+    height:30em;
+	position: relative;
+    background: rgba(40, 35, 23, 0.75);
+	margin: auto;
+	visibility: hidden;
+	display: none;
+}
+
+/* login input */
+
+.rectLogin{
+	position: relative;
+	top: 7%;
+    width:60%;
+    height:8%;
+    background: rgba(18, 16, 11, 0.80);
+	margin: auto;
+}
+
+.textRectLogin{
+	position: absolute;
+	top: 0%;
+	left: 0%;
+    width:28%;
+    height:100%;
+	text-align: center;
+    background: transparent;
+}
+
+#textLogin{
+	color: #ff9c00;
+	font-size: 1.5vw;
+	position: absolute;
+	top: 0%;
+	left : 30%;
+	-webkit-text-stroke: 1px #fd4c00;
+}
+
+#login{
+  position: absolute;
+  top: 4%; 
+  left: 30%;
+  color: white;
+  width: 68%;
+  background-color: transparent; 
+  font-size: 20px; 
+  border: 2px solid #ff9c00;
+}
+
+#loginSign{
+  position: absolute;
+  top: 4%; 
+  left: 30%;
+  color: white;
+  width: 68%;
+  background-color: transparent; 
+  font-size: 20px; 
+  border: 2px solid #ff9c00;
+}
+
+.speratorLogin{
+	position: absolute;
+	top: 0%;
+	left: 28%;
+    width:1%;
+    height:100%;
+    background: rgba(255, 156, 0, 0.30);
+}
+
+/* password input */
+
+.rectPassword{
+	position: relative;
+	top: 10%;
+    width:60%;
+    height:8%;
+    background: rgba(18, 16, 11, 0.80);
+	margin: auto;
+}
+
+.textRectPassword{
+	position: absolute;
+	top: 0%;
+	left: 0%;
+    width:28%;
+    height:100%;
+	text-align: center;
+    background: transparent;
+}
+
+#textPassword{
+	color: #ff9c00;
+	font-size: 1.5vw;
+	-webkit-text-stroke: 1px #fd4c00;
+	position: absolute;
+	top: -0%;
+	left : 25%;
+}
+
+#password{
+  position: absolute;
+  top: 4%; 
+  left: 30%;
+  color: white;
+  width: 68%;
+  background-color: transparent; 
+  font-size: 20px; 
+  border: 2px solid #ff9c00;
+}
+
+#passwordSign{
+  position: absolute;
+  top: 4%; 
+  left: 30%;
+  color: white;
+  width: 68%;
+  background-color: transparent; 
+  font-size: 20px; 
+  border: 2px solid #ff9c00;
+}
+
+.speratorPassword{
+	position: absolute;
+	top: 0%;
+	left: 28%;
+    width:1%;
+    height:100%;
+    background: rgba(255, 156, 0, 0.30);
+}
+
+/*  confirm */
+
+.rectConfirm{
+	position: relative;
+	top: 13%;
+    width:60%;
+    height:8%;
+    background: rgba(18, 16, 11, 0.80);
+	margin: auto;
+}
+
+.textRectConfirm{
+	position: absolute;
+	top: 0%;
+	left: 0%;
+    width:28%;
+    height:100%;
+	text-align: center;
+    background: transparent;
+}
+
+#textConfirm{
+	color: #ff9c00;
+	font-size: 1.5vw;
+	-webkit-text-stroke: 1px #fd4c00;
+	position: absolute;
+	top: -0%;
+	left : 25%;
+}
+
+#confirm{
+  position: absolute;
+  top: 4%; 
+  left: 30%;
+  color: white;
+  width: 68%;
+  background-color: transparent; 
+  font-size: 20px; 
+  border: 2px solid #ff9c00;
+}
+
+.speratorConfirm{
+	position: absolute;
+	top: 0%;
+	left: 28%;
+    width:1%;
+    height:100%;
+    background: rgba(255, 156, 0, 0.30);
+}
+
+/* script */
+
+.open-Popup{
+	visibility: visible;
+	display: block;
+}
+
+/* bouton/test pop up login/sign in/42 */
+
+#btn-pop-login {
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  position: absolute;
+  display: block;
+  visibility: visible;
+  top: 40%;
+  left: 50%;
+  width: 5em;
+  height: 1.5em;
+  font-size: 200%;
+}
+
+#text42{
+	position: absolute;
+	display: block;
+	top: 65%;
+	left: 14%;
+	color: #ff9c00;
+	font-size: 1vw;
+	-webkit-text-stroke: 1px #fd4c00;
+}
+
+#btn-pop-link-42{
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  position: absolute;
+  display: block;
+  visibility: visible;
+  top: 80%;
+  left: 20%;
+  width: 5em;
+  height: 1.5em;
+  font-size: 200%;
+}
+
+#textPopSignIn{
+	position: absolute;
+	display: block;
+	top: 65%;
+	left: 78%;
+	color: #ff9c00;
+	font-size: 1vw;
+	-webkit-text-stroke: 1px #fd4c00;
+}
+
+#textPopLogIn{
+	position: absolute;
+	display: block;
+	top: 65%;
+	left: 72%;
+	color: #ff9c00;
+	font-size: 1vw;
+	-webkit-text-stroke: 1px #fd4c00;
+}
+
+#btn-popLog-sign{
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  position: absolute;
+  display: block;
+  visibility: visible;
+  top: 80%;
+  left: 80%;
+  width: 5em;
+  height: 1.5em;
+  font-size: 200%;
+}
+
+#btn-pop-sign{
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  position: absolute;
+  display: block;
+  visibility: visible;
+  top: 45%;
+  left: 50%;
+  width: 5em;
+  height: 1.5em;
+  font-size: 200%;
+}
+
+#btn-pop-sign-log{
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  position: absolute;
+  display: block;
+  visibility: visible;
+  top: 80%;
+  left: 80%;
+  width: 5em;
+  height: 1.5em;
+  font-size: 200%;
+}
+
+/* Header */
+#header{
+	position: absolute;
+	top: 0%;
+	left: 0%;
+  width:100%;
+  height:10%;
+  border: 3px solid rgb(102,71,44);
+  background-color:  rgba(50,36,25,0.82);
+}
+
+#header_title{
+  position: absolute;
+	top: 0%;
+	left: 2%;
+	color: #ff9c00;
+	-webkit-text-stroke: 1px #fd4c00;
+  margin-top: 0%;
+  font-size: 300%;
+  font-family: "KhazadDum", sans-serif;
+}
+
+#main-user-name{
+	position: absolute;
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+	top: 50%;
+	left: 84%;
+	color: black;
+	font-size: 2vw;
+	background: transparent;
+}
+
+
+#main-profile-user {
+	position: absolute;
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+	top: 50%;
+	left: 95%;
+  width: 70px;
+  height: 70px;
+  border-radius: 35px;
+  background: green;
+}
+
+/* main page */
+
+
+.main-page{
+	
+	cursor: url("./image/cursor/cursor1.png"), auto;
+	background-image:url(./image/background/mainpage.png);
+	background-attachment: auto;
+  background-repeat:   no-repeat;
+}
+
+#main-btn-quick {
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  display : block;
+  position: absolute;
+  top: 40%;
+  left: 30%;
+  visibility: visible;
+  margin-top: 1%;
+  width: 10em;
+  height: 2.5em;
+  font-size: 200%;
+}
+
+#main-btn-custom {
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  display : block;
+  position: absolute;
+  top: 40%;
+  left: 70%;
+  visibility: visible;
+  margin-top: 1%;
+  width: 10em;
+  height: 2.5em;
+  font-size: 200%;
+}
+
+#main-page-tournament{
+  position: absolute;
+  top: 60%;
+  left: 0%;
+  width:20%;
+  height:40%;
+  background: rgba(40, 35, 23, 0.75);
+}
+
+#main-page-txt-tournament{
+  position: absolute;
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+	top: 10%;
+	left: 50%;
+  margin-top: 0%;
+  font-size: 2.5em;
+  color: 	white;
+  font-family: "KhazadDum", sans-serif;
+}
+
+
+#main-btn-join{
+  position: absolute;
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  top: 50%;
+  left: 50%;
+  visibility: visible;
+  margin-top: 1%;
+  width: 60%;
+  height: 20%;
+  font-size: 200%;
+}
+
+#main-page-chat{
+  position: absolute;
+  top: 60%;
+  left: 22%;
+  width:56%;
+  height:40%;
+  background: rgba(40, 35, 23, 0.75);
+}
+
+#main-page-chat-write{
+  position: absolute;
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  top: 44%;
+  left: 50%;
+  width:98%;
+  height:82%;
+  background: 	rgba(18, 16, 11, 0.8);
+}
+
+#main-chat{
+  position: absolute;
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+	top: 92%;
+	left: 50%;
+	width: 98%;
+	color: white;
+	background-color: rgba(207,188,188,0.5); 
+	font-size: 1vw;
+}
+
+#main-page-chat-switch{
+  position: absolute;
+  top: 60%;
+  left: 80%;
+  width:20%;
+  height:40%;
+  background: rgba(40, 35, 23, 0.75);
+}
+
+#global{
+  position: absolute;
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+	top: 6%;
+	left: 50%;
+  height: 10%;
+	width: 98%;
+	color: white;
+  background : rgba(18, 16, 11, 0.8);
+  border: 3px solid #FF9C00;
+}
+
+
+/* wait page */
+.wait-page{
+	cursor: url("./image/cursor/cursor1.png"), auto;
+	background-image:url(./image/background/waitpage.png);
+	background-attachment: auto;
+  background-repeat:   no-repeat;
+}
+
+#wait-page-text{
+  position: absolute;
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  top: 54%;
+  left: 50%;
+  width:15%;
+  height:20%;
+  background: hidden;
+  text-align: center;
+}
+
+#wait-page-waiting{
+  position: absolute;
+	top: 60%;
+	left: 5%;
+  color: white;
+  font-size: 150%;
+  -webkit-text-stroke: 0.5px black;
+  margin-top: 0%;
+  
+}
+
+#wait-page-left-bosco{
+  position: absolute;
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  top: 59%;
+  left: 40%;
+  width: 96px;
+  height: 99px;
+  background-image:url(./image/background/bosco_move.gif);
+  text-align: center;
+}
+
+#wait-page-right-bosco{
+  position: absolute;
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  top: 59%;
+  left: 59.5%;
+  width: 96px;
+  height: 99px;
+  background-image:url(./image/background/bosco_move.gif);
+  text-align: center;
+}
+
+#wait-btn-cancel{
+  position: absolute;
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+	top: 70%;
+	left: 50%;
+  height: 10%;
+	width: 15%;
+}
+
+#wait-page-chat{
+  position: absolute;
+  top: 11%;
+  left: 0.5%;
+  width:25%;
+  height:88%;
+  background: rgba(40, 35, 23, 0.75);
+}
+
+#wait-page-chat-write{
+  position: absolute;
+  top: 1%;
+  left: 1%;
+  width:98%;
+  height:93%;
+  background: rgba(40, 35, 23, 0.75);
+}
+
+#wait-chat{
+  position: absolute;
+	top: 95%;
+	left: 1%;
+	width: 98%;
+	color: white;
+	background-color: rgba(207,188,188,0.5); 
+	font-size: 1vw;
+}
+
+#wait-page-global{
+  position: absolute;
+  top: 11%;
+  left: 74.5%;
+  width:25%;
+  height:88%;
+  background: rgba(40, 35, 23, 0.75);
+}
+
+#wait-global{
+  position: absolute;
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+	top: 6%;
+	left: 50%;
+  height: 10%;
+	width: 98%;
+	color: white;
+  background : rgba(18, 16, 11, 0.8);
+  border: 3px solid #FF9C00;
+}
+
+/* ladder page */
+
+.ladder-page{
+	cursor: url("./image/cursor/cursor1.png"), auto;
+	background-image:url(./image/background/ladder.png);
+	background-attachment: auto;
+  background-repeat:   no-repeat;
+}
+
+/* ladder*/
+
+.rectladder{
+	-ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+	position: absolute;
+	top: 53%;
+	left: 50%;
+    width:90%;
+    height:80%;
+	text-align: center;
+    background: rgba(40,35,23,0.5);
+}
+
+.ladder{
+	position: absolute;
+    width:30%;
+    height:15.5%;
+	text-align: center;
+    background: rgba(18,16,11,0.8);
+}
+
+.credit{
+	position: absolute;
+    width:5%;
+    height:25%;
+	top: 4%;
+	left: 94%;
+	object-fit: cover;
+	text-align: right;
+}
+
+#imgcredit{
+    width:100%;
+    height:100%;
+}
+
+#credittext{
+    position: absolute;
+    width:25%;
+    height:25%;
+	top: 4%;
+	left: 68.5%;
+	object-fit: cover;
+	background: hidden;
+	color: white;
+}
+
+#ladderpp{
+	position: absolute;
+    width:25%;
+    height:100%;
+	top: 0%;
+	left: 2%;
+	color: red;
+}
+
+.sameladderpp{
+    width:100%;
+    height:100%;
+}
+
+.ppPlayer{
+	position: absolute;
+    width:15%;
+    height:65%;
+	top: 35%;
+	left: 7%;
+	text-align: center;
+    border-radius: 100%;
+    background: green;
+}
+
+
+.playerName{
+	position: absolute;
+    width:50%;
+    height:65%;
+	top: 30%;
+	left: 30%;
+    background: hidden;
+}
+
+.policeSize{
+	font-size: 400%;
+	text-align: left;
+	color: white;
+	/* js*/
+}
+
+
+#ladder1{
+	top: 2.5%;
+	left: 4%;
+}
+
+#credits1{
+	font-size: 150%;
+	text-align: right;
+	/* js*/
+}
+
+#ladder2{
+	top: 18.4%;
+	left: 4%;
+}
+
+#credits2{
+	font-size: 150%;
+	text-align: right;
+	/* js*/
+}
+
+#ladder3{
+	top: 34.3%;
+	left: 4%;
+}
+
+#credits3{
+	font-size: 150%;
+	text-align: right;
+	/* js*/
+}
+
+#ladder4{
+	top: 50.2%;
+	left: 4%;
+}
+
+#credits4{
+	font-size: 150%;
+	text-align: right;
+	/* js*/
+}
+
+#ladder5{
+	top: 66.1%;
+	left: 4%;
+}
+
+#credits5{
+	font-size: 150%;
+	text-align: right;
+	/* js*/
+}
+
+#ladder6{
+	top: 82%;
+	left: 4%;
+} 
+
+#credits6{
+	font-size: 150%;
+	text-align: right;
+	/* js*/
+}
+
+#ladder7{
+	top: 2.5%;
+	left: 35%;
+}
+
+#credits7{
+	font-size: 150%;
+	text-align: right;
+	/* js*/
+}
+
+#ladder8{
+	top: 18.4%;
+	left: 35%;
+}
+
+#credits8{
+	font-size: 150%;
+	text-align: right;
+	/* js*/
+}
+
+#ladder9{
+	top: 34.3%;
+	left: 35%;
+}
+
+#credits9{
+	font-size: 150%;
+	text-align: right;
+	/* js*/
+}
+
+#ladder10{
+	top: 50.2%;
+	left: 35%;
+}
+
+#credits10{
+	font-size: 150%;
+	text-align: right;
+	/* js*/
+}
+
+#ladder11{
+	top: 66.1%;
+	left: 35%;
+}
+
+#credits11{
+	font-size: 150%;
+	text-align: right;
+	/* js*/
+}
+
+#ladder12{
+	top: 82%;
+	left: 35%;
+} 
+
+#credits12{
+	font-size: 150%;
+	text-align: right;
+	/* js*/
+}
+
+#ladder13{
+	top: 2.5%;
+	left: 66%;
+}
+
+#credits13{
+	font-size: 150%;
+	text-align: right;
+	/* js*/
+}
+
+#ladder14{
+	top: 18.4%;
+	left: 66%;
+}
+
+#credits14{
+	font-size: 150%;
+	text-align: right;
+	/* js*/
+}
+
+#ladder15{
+	top: 34.3%;
+	left: 66%;
+}
+
+#credits15{
+	font-size: 150%;
+	text-align: right;
+	/* js*/
+}
+
+#ladder16{
+	top: 50.2%;
+	left: 66%;
+}
+
+#credits16{
+	font-size: 150%;
+	text-align: right;
+	/* js*/
+}
+
+#ladder17{
+	top: 66.1%;
+	left: 66%;
+}
+
+#credits17{
+	font-size: 150%;
+	text-align: right;
+	/* js*/
+}
+
+#ladder18{
+	top: 82%;
+	left: 66%;
+} 
+
+#credits18{
+	font-size: 150%;
+	text-align: right;
+	/* js*/
+}
+
+
+/* tournament page */
+
+.tournament-page{
+	cursor: url("cursor1.png"), auto;
+	background-attachment: auto;
+    background-repeat:   no-repeat;
+}
+
+#tournamentChangeChat{
+	position: absolute;
+	top: 11%;
+	left: 0%;
+    width:30%;
+    height:45%;
+	text-align: center;
+    background: rgba(40,35,23,0.75);
+}
+
+#tournamentChat{
+	position: absolute;
+	top: 58%;
+	left: 0%;
+    width:30%;
+    height:42%;
+	text-align: center;
+    background: rgba(40,35,23,0.75);
+}
+
+#tournamentStatus{
+	position: absolute;
+	top: 68%;
+	left: 30%;
+    width:25%;
+    height:32%;
+	text-align: center;
+    background: rgba(40,35,23,0.75);
+}
+
+#tournamentNextMatch{
+	position: absolute;
+	top: 68%;
+	left: 55%;
+    width:45%;
+    height:32%;
+	text-align: center;
+    background: rgba(40,35,23,0.75);
+}
+
+#tournamentProgress{
+	position: absolute;
+	top: 11%;
+	left: 55%;
+    width:45%;
+    height:57%;
+	text-align: center;
+    background: rgba(40,35,23,0.75);
+}
+
+#tournamentrect1{
+	position: absolute;
+	-ms-transform: translate(-50%, -50%);
+	transform: translate(-50%, -50%);
+	top: 44%;
+	left: 50%;
+    width:96%;
+    height:80%;
+	text-align: center;
+    background: rgba(18,16,11, 0.8);
+}
+
+#tournamentrect2{
+	position: absolute;
+	-ms-transform: translate(-50%, -50%);
+	transform: translate(-50%, -50%);
+	top: 50%;
+	left: 50%;
+    width:99%;
+    height:97%;
+	text-align: center;
+    background: rgba(18,16,11, 0.8);
+}
+
+#tournamentrect3{
+	position: absolute;
+	-ms-transform: translate(-50%, -50%);
+	transform: translate(-50%, -50%);
+	top: 51%;
+	left: 50%;
+    width:99%;
+    height:98%;
+	text-align: center;
+    background: rgba(18,16,11, 0.8);
+}
+
+#tournament-chat{
+    position: absolute;
+	top: 86%;
+	left: 1.5%;
+	width: 96.5%;
+	color: white;
+	background-color: rgba(207,188,188,0.5); 
+	font-size: 1vw;
+}
+
+#tournament-name-text1{
+    position: absolute;
+	-ms-transform: translate(-50%, -50%);
+	transform: translate(-50%, -50%);
+	top: 10%;
+	left: 50%;
+	color: white;
+	background-color: transparent; 
+	font-size: 200%;
+}
+
+#tournament-name-text2{
+    position: absolute;
+	-ms-transform: translate(-50%, -50%);
+	transform: translate(-50%, -50%);
+	top: 25%;
+	left: 50%;
+	color: white;
+	background-color: transparent; 
+	font-size: 200%;
+}
+
+#tournament-name{
+    position: absolute;
+	-ms-transform: translate(-50%, -50%);
+	transform: translate(-50%, -50%);
+	top: 40%;
+	left: 50%;
+	width: 60%;
+	height: 15%;
+	color: white;
+	background-color: transparent; 
+	font-size: 1vw;
+	text-align: center;
+	border: 2px solid #ff9c00;
+}
+
+#tournament-status-text{
+    position: absolute;
+	-ms-transform: translate(-50%, -50%);
+	transform: translate(-50%, -50%);
+	top: 56%;
+	left: 50%;
+	color: white;
+	background-color: transparent; 
+	font-size: 200%;
+}
+
+#tournament-wait-text{
+    position: absolute;
+	-ms-transform: translate(-50%, -50%);
+	transform: translate(-50%, -50%);
+	top: 68%;
+	left: 50%;
+	color: red;
+	background-color: transparent; 
+	font-size: 200%;
+}
+
+#btn-set{
+    position: absolute;
+	-ms-transform: translate(-50%, -50%);
+	transform: translate(-50%, -50%);
+	top: 86%;
+	left: 50%;
+	background-color: transparent;
+	width: 60%;
+	font-size: 100%;
+}
+
+#tournament-next-match-text{
+    position: absolute;
+	-ms-transform: translate(-50%, -50%);
+	transform: translate(-50%, -50%);
+	top: 10%;
+	left: 50%;
+	color: white;
+	font-size: 200%;
+}
+
+#tournament-VS-text{
+    position: absolute;
+	-ms-transform: translate(-50%, -50%);
+	transform: translate(-50%, -50%);
+	top: 50%;
+	left: 50%;
+	color: white;
+	font-size: 225%;
+}
+
+#tournamentmapTextRect{
+    position: absolute;
+	top: 80%;
+	left: 2%;
+	width: 60%;
+	height: 15%;
+	background-color: hidden;
+}
+
+#tournament-map-text{
+    position: absolute;
+	top: 0%;
+	left: 0%;
+	color: white;
+	font-size: 1.5rem;
+}
+
+#tournamentPowerTextRect{
+    position: absolute;
+	top: 80%;
+	left: 58%;
+	width: 40%;
+	height: 15%;
+	text-align: end;
+	background-color: hidden;	
+}
+
+.tournament-power-text{
+	object-fit: cover;
+	text-align: right;
+}
+
+#tournament-power-text{
+	color: white;
+	font-size: 1.5rem;
+	text-align: right;
+}
+
+/* tournamentCreate*/
+
+#tournamentCreate{
+  position: absolute;
+top: 11%;
+left: 0%;
+width: 40%;
+height: 40%;
+background-color: rgba(40,35,23,0.75);	
+}
+
+#tournamentCreatePowerUp{
+  position: absolute;
+top: 2%;
+left: 1%;
+width: 40%;
+height: 96%;
+background-color: rgba(18,16,11,0.8);	
+}
+
+#tournamentCreateMap{
+  position: absolute;
+top: 2%;
+left: 42%;
+width: 57%;
+height: 96%;
+background-color: rgba(18,16,11,0.8);
+}
+
+#tournament-create-text1{
+  position: absolute;
+-ms-transform: translate(-50%, -50%);
+transform: translate(-50%, -50%);
+top: 20%;
+left: 50%;
+font-size: 150%;
+text-align: center;
+color: white;
+}
+
+
+#tournament-create-text2{
+  position: absolute;
+-ms-transform: translate(-50%, -50%);
+transform: translate(-50%, -50%);
+color: green;
+top: 44%;
+left: 50%;	
+}
+
+#btn-tournament-create-desac{
+  position: absolute;
+-ms-transform: translate(-50%, -50%);
+transform: translate(-50%, -50%);
+top: 70%;
+left: 50%;
+width: 70%;
+height: 20%;
+font-size: 1rem;
+}
+
+
+#tournament-create-text3{
+  position: absolute;
+-ms-transform: translate(-50%, -50%);
+transform: translate(-50%, -50%);
+color: white;
+top: 10%;
+left: 50%;
+font-size: 200%;
+}
+
+#btn-tournament-create-map1{
+  position: absolute;
+-ms-transform: translate(-50%, -50%);
+transform: translate(-50%, -50%);
+top: 30%;
+left: 50%;
+width: 70%;
+height: 20%;
+font-size: 1rem;
+}
+
+#btn-tournament-create-map2{
+  position: absolute;
+-ms-transform: translate(-50%, -50%);
+transform: translate(-50%, -50%);
+top: 50%;
+left: 50%;
+width: 70%;
+height: 20%;
+font-size: 1rem;
+}
+
+#btn-tournament-create-map3{
+  position: absolute;
+-ms-transform: translate(-50%, -50%);
+transform: translate(-50%, -50%);
+top: 70%;
+left: 50%;
+width: 70%;
+height: 20%;
+font-size: 1rem;
+}
+
+#btn-tournament-create-start{
+  position: absolute;
+-ms-transform: translate(-50%, -50%);
+transform: translate(-50%, -50%);
+top: 70%;
+left: 50%;
+width: 30%;
+height: 55%;
+font-size: 5rem;
+border-radius: 100%;
+font-family: "KhazadDum", sans-serif;
+background-color : rgba(0,128,0, 0.8);
+background: rgba(0,128,0, 0.8);
+}
+
+
+
+/* create game*/
+
+#btn-create-game-start{
+  position: absolute;
+-ms-transform: translate(-50%, -50%);
+transform: translate(-50%, -50%);
+top: 25%;
+left: 50%;
+width: 15%;
+height: 7%;
+}
+
+#btn-create-game-quit{
+  position: absolute;
+-ms-transform: translate(-50%, -50%);
+transform: translate(-50%, -50%);
+top: 16%;
+left: 50%;
+width: 10%;
+height: 5%;
+}
+
+
+#createGameTopLeft{
+  position: absolute;
+background-color: rgba(40,35,23, 0.75);
+top: 10%;
+left: 0%;
+width: 24%;
+height: 44%;
+}
+
+#createGameBotLeft{
+  position: absolute;
+background-color: rgba(40,35,23, 0.75);
+top: 56%;
+left: 0%;
+width: 24%;
+height: 44%;
+}
+
+#createGameMiddle{
+  position: absolute;
+background-color: rgba(40,35,23, 0.75);
+top: 70%;
+left: 26%;
+width: 48%;
+height: 30%;
+}
+
+#createGameBotRight{
+  position: absolute;
+background-color: rgba(40,35,23, 0.75);
+top: 10%;
+left: 76%;
+width: 24%;
+height: 44%;
+}
+
+#createGameTopRight{
+  position: absolute;
+background-color: rgba(40,35,23, 0.75);
+top: 56%;
+left: 76%;
+width: 24%;
+height: 44%;
+}
+
+#btn-create-game-desac{
+  position: absolute;
+-ms-transform: translate(-50%, -50%);
+transform: translate(-50%, -50%);
+top: 70%;
+left: 50%;
+width: 70%;
+height: 20%;
+font-size: 1rem;
+}
+
+#btn-create-game-map1{
+  position: absolute;
+-ms-transform: translate(-50%, -50%);
+transform: translate(-50%, -50%);
+top: 30%;
+left: 50%;
+width: 70%;
+height: 20%;
+font-size: 1rem;
+}
+
+#btn-create-game-map2{
+  position: absolute;
+-ms-transform: translate(-50%, -50%);
+transform: translate(-50%, -50%);
+top: 50%;
+left: 50%;
+width: 70%;
+height: 20%;
+font-size: 1rem;
+}
+
+#btn-create-game-map3{
+  position: absolute;
+-ms-transform: translate(-50%, -50%);
+transform: translate(-50%, -50%);
+top: 70%;
+left: 50%;
+width: 70%;
+height: 20%;
+font-size: 1rem;
+}
+
+#createGameChat{
+ position: absolute;
+top: 2%;
+left: 2%;
+width: 96%;
+height: 80%;
+background-color: rgba(40,35,23, 0.75);
+}
+
+#createGameChatInput{
+  position: absolute;
+top: 87%;
+left: 2%;
+width: 96%;
+height: 10%;
+background-color: rgba(207,188,188,0.5); 
+}
+
+#global-create-game{
+  position: absolute;
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+	top: 6%;
+	left: 50%;
+  height: 10%;
+	width: 98%;
+	color: white;
+  background : rgba(18, 16, 11, 0.8);
+  border: 3px solid #FF9C00;
+}
+
+#create-game-team1{
+  position: absolute;
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+	top: 6%;
+	left: 50%;
+  height: 10%;
+	width: 98%;
+	color: white;
+  background : rgba(18, 16, 11, 0.8);
+  border: 3px solid #FF9C00;
+  text-align: center;
+}
+
+#create-game-team2{
+  position: absolute;
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+	top: 6%;
+	left: 50%;
+  height: 10%;
+	width: 98%;
+	color: white;
+  background : rgba(18, 16, 11, 0.8);
+  border: 3px solid #FF9C00;
+  text-align: center;
 } */
 
 
