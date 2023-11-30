@@ -33,7 +33,6 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-	'spage',
 	'db_test.apps.DbTestConfig',
     'django.contrib.admin',
     'django.contrib.auth',
