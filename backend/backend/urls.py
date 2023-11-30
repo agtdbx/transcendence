@@ -30,7 +30,8 @@ urlpatterns = [
 	path('ct', views.createtournaPage),
 	path('t', views.tournaPage),
 	path('cgp', views.cgp),
-	path('profil', views.profil),
-	# path('test',  views.testJS),
-	# path('pytest',  views.testPY)
+	path('pytest',  views.testPY),
+
+    path("",views.index2, name=""),
+    path("<int:num>", views.section, name="section")
 ]

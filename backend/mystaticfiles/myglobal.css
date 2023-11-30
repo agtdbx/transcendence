@@ -443,7 +443,7 @@ p {
 .main-page{
 	
 	cursor: url("./image/cursor/cursor1.png"), auto;
-	background-image:url(./image/background/mainpage.png);
+	background-image:url("./image/background/mainpage.png");
 	background-attachment: auto;
   background-repeat:   no-repeat;
 }

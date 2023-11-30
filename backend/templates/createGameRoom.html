@@ -1,28 +1,7 @@
-{% load static %}
-<!DOCTYPE html>
-<html lang="en-US">
-
-<head>
-	<meta charset="utf-8" />
-	<link rel="stylesheet" href="{% static 'myglobal.css' %}">
-	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
-	<title>Game room</title>
-</head>
-
-<body class="create-game-page">
-
-	<nav class=class="navbar navbar-light" id="header">
-		<span class="navbar-text" id = "header_title">
-		  Rock and Pong
-		</span>
-		<button type="button" class ="btn-drg" id = "main-user-name">USER NAME HERE</button>
-		<button type="button" class ="btn-drg" id = "main-profile-user"></button>
-	  </nav>
-
+<div id = "Page">
 
 	<button type="button" class ="btn-drg" id = "btn-create-game-start">start</button>
-	<button type="button" class ="btn-drg" id = "btn-create-game-quit">quit</button>
+	<button data-section="1" type="button" class ="changePage btn-drg" id = "btn-create-game-quit" onclick="showcontent(this.dataset.section)">quit</button>
 	
 	<div class ="createGameTopLeft" id = "createGameTopLeft">
 		<button type="button" class ="btn-drg" id ="global-create-game">GLOBAL</button>
@@ -58,6 +37,4 @@
 	<div class ="createGameTopRight" id = "createGameTopRight">
 		<p id="create-game-team2">team 2</p>
 	</div>
-</body>
-
-</html>
+</div>

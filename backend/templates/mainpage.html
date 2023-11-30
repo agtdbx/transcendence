@@ -1,29 +1,9 @@
-{% load static %}
-<!DOCTYPE html>
-<html lang="en-US">
-
-<head>
-	<meta charset="utf-8" />
-	<link rel="stylesheet" href="{% static 'myglobal.css' %}">
-	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
-	<title>Hub</title>
-</head>
-
-<body class="main-page">
-
-
-	<nav class=class="navbar navbar-light" id="header">
-		<span class="navbar-text" id = "header_title">
-		  Rock and Pong
-		</span>
-		<button type="button" class ="btn-drg" id = "main-user-name">USER NAME HERE</button>
-		<button type="button" class ="btn-drg" id = "main-profile-user"></button>
-	  </nav>
+  
+	<div id="Page">
 
 	<div class ="main-page-tournament" id = "main-page-tournament">
 		<p id="main-page-txt-tournament">TOURNAMENT</p>
-		<button type="button" class ="btn-drg" id = "main-btn-join">JOIN</button>
+		<button data-section="4" type="button" class ="changePage btn-drg" id = "main-btn-join" onclick="showcontent(this.dataset.section)">JOIN</button>
 	</div>
 
 	<div class ="main-page-chat" id = "main-page-chat">
@@ -36,10 +16,6 @@
 		<button type="button" class ="btn-drg" id ="global">GLOBAL</button>
 	</div>
 
-
-	<button type="button" class ="btn-drg" id = "main-btn-quick">QUICK GAME</button>
-	<button type="button" class ="btn-drg" id = "main-btn-custom">CUSTOM GAME</button>
-	
-</body>
-
-</html>
+	<button data-section="2" type="button" class ="changePage btn-drg" id = "main-btn-quick" onclick="showcontent(this.dataset.section)">QUICK GAME</button>
+	<button data-section="3" type="button" class ="changePage btn-drg" id = "main-btn-custom" onclick="showcontent(this.dataset.section)">CUSTOM GAME</button>
+</div>
