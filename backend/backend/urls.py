@@ -24,15 +24,15 @@ from . import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-	path('', views.index),
+	path('a', views.index),
 	path('Hub', views.mainPage),
 	path('wait', views.waitPage),
 	path('fallen', views.ladderPage),
 	path('ct', views.createtournaPage),
-	path('t', views.tournaPage),
+	path('tewd', views.tournaPage),
 	path('cgp', views.cgp),
 	path('pytest',  views.testPY),
 
-    path("test/",views.index2, name="test"),
-    path("test/<int:num>", views.section, name="section")
+    path("",views.index2, name=""),
+    path("<int:num>", views.section, name="section")
 ]

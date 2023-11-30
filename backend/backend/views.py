@@ -6,7 +6,7 @@
 #    By: hde-min <hde-min@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/08 14:00:09 by lflandri          #+#    #+#              #
-#    Updated: 2023/11/30 11:14:21 by hde-min          ###   ########.fr        #
+#    Updated: 2023/11/30 14:26:27 by hde-min          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -49,16 +49,22 @@ def testPY(request):
 
 
 def index2(request):
-    return render(request, 'test.html')
+    return render(request, 'index.html')
 
 randomstring = ["This is section 1.","This is section 2.", "This is section 3."]
 
 def section(request, num):
-    if num == 1:
-        return render(request,"index.html")
+    if num == 0:
+        return render(request,"navbar.html")
+    elif num == 1:
+        return render(request,"mainpage.html")
     elif num == 2:
         return render(request,"waitpage.html")
     elif num == 3:
-        return render(request,"ladder.html")
+        return render(request,"createGameRoom.html")
+    elif num == 4:
+        return render(request,"tournament.html")
+    elif num == 4:
+        return render(request,"other.html")
     else:
         raise Http404('No such section')
