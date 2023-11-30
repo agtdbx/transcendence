@@ -6,7 +6,7 @@
 #    By: hde-min <hde-min@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/08 14:00:09 by lflandri          #+#    #+#              #
-#    Updated: 2023/11/29 16:04:26 by hde-min          ###   ########.fr        #
+#    Updated: 2023/11/30 11:14:21 by hde-min          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -46,3 +46,19 @@ def testJS(request):
 @csrf_exempt
 def testPY(request):
     return HttpResponse("success")
+
+
+def index2(request):
+    return render(request, 'test.html')
+
+randomstring = ["This is section 1.","This is section 2.", "This is section 3."]
+
+def section(request, num):
+    if num == 1:
+        return render(request,"index.html")
+    elif num == 2:
+        return render(request,"waitpage.html")
+    elif num == 3:
+        return render(request,"ladder.html")
+    else:
+        raise Http404('No such section')

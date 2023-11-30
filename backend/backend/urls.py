@@ -13,6 +13,7 @@ Class-based views
 Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
+        path('test/', include("spage.urls")),
 """
 from django.contrib import admin
 from django.urls import include,path
@@ -23,7 +24,6 @@ from . import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('test/', include("spage.urls")),
 	path('', views.index),
 	path('Hub', views.mainPage),
 	path('wait', views.waitPage),
@@ -31,5 +31,8 @@ urlpatterns = [
 	path('ct', views.createtournaPage),
 	path('t', views.tournaPage),
 	path('cgp', views.cgp),
-	path('pytest',  views.testPY)
+	path('pytest',  views.testPY),
+
+    path("test/",views.index2, name="test"),
+    path("test/<int:num>", views.section, name="section")
 ]
