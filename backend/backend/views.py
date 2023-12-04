@@ -6,7 +6,7 @@
 #    By: hde-min <hde-min@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/08 14:00:09 by lflandri          #+#    #+#              #
-#    Updated: 2023/11/30 14:40:27 by hde-min          ###   ########.fr        #
+#    Updated: 2023/12/04 14:07:03 by hde-min          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -63,7 +63,7 @@ def section(request, num):
         return render(request,"createGameRoom.html")
     elif num == 4:
         return render(request,"tournament.html")
-    elif num == 4:
-        return render(request,"other.html")
+    elif num == 5:
+        return render(request,"profil_content.html")
     else:
         raise Http404('No such section')
