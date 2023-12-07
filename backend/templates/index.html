@@ -112,7 +112,10 @@
 		document.addEventListener('DOMContentLoaded', function(){
 			document.querySelectorAll('.changePage').forEach(button => {
 				button.onclick = function(){
-					showcontent(this.dataset.section);
+					if (this.dataset.section != 1)
+					{
+						showcontent(this.dataset.section);
+					}
 				};
 			});
 		});
