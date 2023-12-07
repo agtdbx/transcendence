@@ -12,6 +12,7 @@
 
 	<script>
 		
+		
 		function openPopupLog(){
 		let popup = document.getElementById("popupLogin");
 		popup.classList.add("open-Popup");
@@ -125,72 +126,133 @@
 	</div>
 	<div id="content">  
 	<div id="Page">  
-	<H1 class="title">ROCK AND PONG</H1>
-	  <button type="button" class ="btn-drg" id = "btn-log" onclick="openPopupLog()">LOG IN</button>
-	  <button type="button" class ="btn-drg" id = "btn-sign" onclick="openPopupSign()">SIGN IN</button>
-		  
-
-		  <div class ="popupLogin" id = "popupLogin">
-	  
-			<div class ="rectLogin" id = "rectLogin">
-				<div class ="textRectLogin" id = "textRectLogin">
-					<p id="textLogin">LOG-IN</p>
-				</div>
-				<input type="text" id="login" name="login"><br><br>
-				<div class ="speratorLogin" id = "speratorlog"></div>
-			</div>
-			
-			<div class ="rectPassword" id = "rectPassword">
-				<div class ="textRectPassword" id = "textRectPassword">
-					<p id="textPassword">PASSWORD</p>
-				</div>
-				<input type="password" id="password" name="password"><br><br>
-				<div class ="speratorPassword" id = "speratorPassword"></div>
-			</div>
-			
-			<button data-section="1" type="button" class ="changePage btn-drg" id = "btn-pop-login">LOG IN</button>
-			<p id="text42">STUDENT AT 42 ?</p>
-			<button type="button" class ="btn-drg" id = "btn-pop-link-42">LINK 42</button>
-			<p id="textPopSignIn">NEW ?</p>
-			<button type="button" class ="btn-drg" id = "btn-popLog-sign" onclick="swapToSign()">SIGN IN</button>
-			
-		</div>
 
 
-		<div class ="popupSign" id = "popupSign">
-	  
-			<div class ="rectLogin" id = "rectLogin">
-				<div class ="textRectLogin" id = "textRectLogin">
-					<p id="textLogin">LOG-IN</p>
-				</div>
-				<input type="text" id="loginSign" name="login"><br><br>
-				<div class ="speratorLogin" id = "speratorlog"></div>
-			</div>
+
+
+
+
+		<H1 class="title">ROCK AND PONG</H1>
+		<button type="button" class ="btn-drg" id = "btn-log" onclick="openPopupLog()">LOG IN</button>
+		<button type="button" class ="btn-drg" id = "btn-sign" onclick="openPopupSign()">SIGN IN</button>
 			
-			<div class ="rectPassword" id = "rectPassword">
-				<div class ="textRectPassword" id = "textRectPassword">
-					<p id="textPassword">PASSWORD</p>
-				</div>
-				<input type="password" id="passwordSign" name="password"><br><br>
-				<div class ="speratorPassword" id = "speratorPassword"></div>
-			</div>
-			
-			<div class ="rectConfirm" id = "rectConfirm">
-				<div class ="textRectConfirm" id = "textRectConfirm">
-					<p id="textConfirm">CONFIRM</p>
-				</div>
-				<input type="test" id="confirm" name="confirm"><br><br>
-				<div class ="speratorConfirm" id = "speratorConfirm"></div>
-			</div>
-			
-			<button data-section="1" type="button" class ="changePage btn-drg" id = "btn-pop-sign">SIGN IN</button>
-			<p id="text42">STUDENT AT 42 ?</p>
-			<button type="button" class ="btn-drg" id = "btn-pop-link-42">LINK 42</button>
-			<p id="textPopLogIn">ALREADY AN ACCOUT ?</p>
-			<button type="button" class ="btn-drg" id = "btn-pop-sign-log" onclick="swapToLog()">LOG IN</button>
-			
-		</div>
-	  
+  
+			<div class ="popupLogin" id = "popupLogin">
+				
+				<form id="form_log" method="post">
+					{% csrf_token %}
+					<div class ="rectLogin" id = "rectLogin">
+						<div class ="textRectLogin" id = "textRectLogin">
+							<p id="textLogin">LOG-IN</p>
+						</div>
+						<input type="text" id="login" name="login" required><br>
+						<div class ="speratorLogin" id = "speratorlog"></div>
+					</div>
+					
+					<div class ="rectPassword" id = "rectPassword">
+						<div class ="textRectPassword" id = "textRectPassword">
+							<p id="textPassword">PASSWORD</p>
+						</div>
+						<input type="password" id="password" name="password" required><br>
+						<div class ="speratorPassword" id = "speratorPassword"></div>
+					</div>
+					
+					<button data-section="1" type="submit" class ="changePage btn-drg" id = "btn-pop-login">LOG IN</button>
+					<script>
+
+						const form = document.getElementById('form_log');
+
+						form.addEventListener('submit', async event => {
+						  event.preventDefault();
+						
+						  const data = new FormData(form);
+						
+						  console.log(Array.from(data));
+						
+						  try {
+							{% comment %} const res = await fetch(
+							  'https://jsonplaceholder.typicode.com/users',
+							  {
+								method: 'POST',
+								body: data,
+							  },
+							);
+						
+							const resData = await res.json();
+						
+							console.log(resData); {% endcomment %}
+
+							fetch( '1',
+							{
+							  method: 'POST',
+							  body: data,
+							},)
+							.then(response => response.text())
+							.then (text => {
+								document.getElementById("Page").remove()
+								let body = document.getElementById('body');
+								document.querySelector('#content').innerHTML = text;
+								body.style.backgroundImage = 'url(/static/image/background/mainpage.png)';
+								addHeader();
+
+							})
+
+						  } catch (err) {
+							console.log(err.message);
+						  }
+						});
+					</script>
+				</form>
+
+			  <p id="text42">STUDENT AT 42 ?</p>
+			  <button type="button" class ="btn-drg" id = "btn-pop-link-42">LINK 42</button>
+			  <p id="textPopSignIn">NEW ?</p>
+			  <button type="button" class ="btn-drg" id = "btn-popLog-sign" onclick="swapToSign()">SIGN IN</button>
+			  
+		  </div>
+  
+  
+		  <div class ="popupSign" id = "popupSign">
+		
+			  <div class ="rectLogin" id = "rectLogin">
+				  <div class ="textRectLogin" id = "textRectLogin">
+					  <p id="textLogin">LOG-IN</p>
+				  </div>
+				  <input type="text" id="loginSign" name="login"><br><br>
+				  <div class ="speratorLogin" id = "speratorlog"></div>
+			  </div>
+			  
+			  <div class ="rectPassword" id = "rectPassword">
+				  <div class ="textRectPassword" id = "textRectPassword">
+					  <p id="textPassword">PASSWORD</p>
+				  </div>
+				  <input type="password" id="passwordSign" name="password"><br><br>
+				  <div class ="speratorPassword" id = "speratorPassword"></div>
+			  </div>
+			  
+			  <div class ="rectConfirm" id = "rectConfirm">
+				  <div class ="textRectConfirm" id = "textRectConfirm">
+					  <p id="textConfirm">CONFIRM</p>
+				  </div>
+				  <input type="test" id="confirm" name="confirm"><br><br>
+				  <div class ="speratorConfirm" id = "speratorConfirm"></div>
+			  </div>
+			  
+			  <button data-section="1" type="button" class ="changePage btn-drg" id = "btn-pop-sign">SIGN IN</button>
+			  <p id="text42">STUDENT AT 42 ?</p>
+			  <button type="button" class ="btn-drg" id = "btn-pop-link-42">LINK 42</button>
+			  <p id="textPopLogIn">ALREADY AN ACCOUT ?</p>
+			  <button type="button" class ="btn-drg" id = "btn-pop-sign-log" onclick="swapToLog()">LOG IN</button>
+			  
+		  </div>
+
+
+
+
+
+
+
+
 	</div>
 	</div>
   </body>
