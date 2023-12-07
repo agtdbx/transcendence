@@ -6,7 +6,7 @@
 /*   By: lflandri <lflandri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/23 15:24:40 by lflandri          #+#    #+#             */
-/*   Updated: 2023/11/29 12:55:30 by lflandri         ###   ########.fr       */
+/*   Updated: 2023/12/07 14:48:20 by lflandri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,7 +142,7 @@ function createSuccess()
 	const containerContentSuccesBlock = document.createElement("div");
 	const contentSuccesBlock = document.createElement("div");
 	const succesBlock = document.createElement("div");
-	const gameDiv = document.getElementById("main_block_profil");
+	const gameDiv = document.getElementById("content");
 	body.insertBefore(containerContentSuccesBlock, gameDiv);
 	containerContentSuccesBlock.insertBefore(contentSuccesBlock, null);
 	contentSuccesBlock.insertBefore(succesBlock, null);
@@ -235,7 +235,7 @@ function createStats()
 	const containerContentSuccesBlock = document.createElement("div");
 	const contentSuccesBlock = document.createElement("div");
 	const succesBlock = document.createElement("div");
-	const gameDiv = document.getElementById("main_block_profil");
+	const gameDiv = document.getElementById("content");
 	body.insertBefore(containerContentSuccesBlock, gameDiv);
 	containerContentSuccesBlock.insertBefore(contentSuccesBlock, null);
 	contentSuccesBlock.insertBefore(succesBlock, null);

@@ -6,7 +6,7 @@
 /*   By: lflandri <lflandri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/23 15:27:08 by lflandri          #+#    #+#             */
-/*   Updated: 2023/11/29 13:21:51 by lflandri         ###   ########.fr       */
+/*   Updated: 2023/12/07 14:49:05 by lflandri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ function contactPop(type, listContact)
 	const containerContentSuccesBlock = document.createElement("div");
 	const contentSuccesBlock = document.createElement("div");
 	const succesBlock = document.createElement("div");
-	const gameDiv = document.getElementById("main_block_profil");
+	const gameDiv = document.getElementById("content");
 	const title = document.createElement("h4");
 	body.insertBefore(containerContentSuccesBlock, gameDiv);
 	containerContentSuccesBlock.insertBefore(contentSuccesBlock, null);
