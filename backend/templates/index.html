@@ -11,8 +11,6 @@
 	<title>PONG</title>
 
 	<script>
-
-
 		
 		function openPopupLog(){
 		let popup = document.getElementById("popupLogin");
@@ -94,8 +92,12 @@
 							addHeader();
 							break;
 						case "5":
-							body.style.backgroundImage = "url('https://images.squarespace-cdn.com/content/v1/5925832e03596efb6d4b502a/1552467562015-MWVX7EH618KN61QMDLEP/DRG_Wallpaper_CrystalCaves.jpg?format=2500w')";
+							body.style.backgroundImage = 'url(/static/image/background/DRG_Wallpaper_CrystalCaves.jpg)';
 							addHeader();
+							break;
+						case "6":
+							body.style.backgroundImage = 'url(/static/image/background/Background.png)';
+							removeHeader();
 							break;
 						default:
 							break;

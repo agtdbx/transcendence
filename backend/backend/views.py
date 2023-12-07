@@ -6,7 +6,7 @@
 #    By: lflandri <lflandri@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/08 14:00:09 by lflandri          #+#    #+#              #
-#    Updated: 2023/11/30 14:46:03 by lflandri         ###   ########.fr        #
+#    Updated: 2023/12/07 14:41:52 by lflandri         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -65,5 +65,7 @@ def section(request, num):
         return render(request,"tournament.html")
     elif num == 5:
         return render(request,"profil_content.html")
+    elif num == 6:
+        return render(request,"index.html")
     else:
         raise Http404('No such section')
