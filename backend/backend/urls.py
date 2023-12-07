@@ -17,20 +17,13 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from . import views
+from .views import *
 
 
 
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-	path('Hub', views.mainPage),
-	path('wait', views.waitPage),
-	path('fallen', views.ladderPage),
-	path('ct', views.createtournaPage),
-	path('t', views.tournaPage),
-	path('cgp', views.cgp),
-	path('pytest',  views.testPY),
-
-    path("",views.index2, name=""),
-    path("<int:num>", views.section, name="section")
+    path("",views.index, name=""),
+    path("<int:num>", views.section, name="section"),
+    path('user/', user, name='user'),
 ]
