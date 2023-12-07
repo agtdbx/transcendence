@@ -93,9 +93,30 @@
 							body.style.backgroundImage = 'url(/static/image/background/tournamentpage.png)';
 							addHeader();
 							break;
+						case "5":
+							body.style.backgroundImage = "url('https://images.squarespace-cdn.com/content/v1/5925832e03596efb6d4b502a/1552467562015-MWVX7EH618KN61QMDLEP/DRG_Wallpaper_CrystalCaves.jpg?format=2500w')";
+							addHeader();
+							break;
 						default:
 							break;
 					}
+
+					/* this is an advertissement : don't try to understand, i know, you don't*/
+					var scripts = document.querySelector('#content').querySelectorAll("script");
+					for (var i = 0; i < scripts.length; i++) {
+						if (scripts[i].innerText) {
+						  eval(scripts[i].innerText);
+						} else {
+						  fetch(scripts[i].src).then(function (data) {
+							data.text().then(function (r) {
+							  eval(r);
+							})
+						  });
+					
+						}
+						// To not repeat the element
+						//scripts[i].parentNode.removeChild(scripts[i]);
+					  }
 					
 				})
 		}
