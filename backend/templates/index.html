@@ -92,7 +92,7 @@
 							addHeader();
 							break;
 						case "4":
-							body.style.backgroundImage = 'url(/static/image/background/tournamentpage.png)';
+							body.style.backgroundImage = 'url(https://images.squarespace-cdn.com/content/v1/5925832e03596efb6d4b502a/1547827451369-JX3S8JTAWQMWHYFYDVNK/Magma.jpg?format=2500w)';
 							addHeader();
 							break;
 						case "5":
@@ -110,9 +110,12 @@
 					/* this is an advertissement : don't try to understand, i know, you don't*/
 					var scripts = document.querySelector('#content').querySelectorAll("script");
 					for (var i = 0; i < scripts.length; i++) {
+						console.log("SCRIPT : " + scripts[i])
+						console.log("len : " + scripts.length)
 						if (scripts[i].innerText) {
 						  eval(scripts[i].innerText);
 						} else {
+						  console.log("src : " + scripts[i].src)
 						  fetch(scripts[i].src).then(function (data) {
 							data.text().then(function (r) {
 							  eval(r);
