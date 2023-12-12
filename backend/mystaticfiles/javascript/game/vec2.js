@@ -1,48 +1,60 @@
 // import math
 
 class Vec2 {
-	def constructor ( x, y) -> None:
+	constructor ( x, y)
+	{
 		this.x = x
 		this.y = y
+	}
 
 
-	def __str__(this) -> str:
+	__str__(this){
 		return "<{x:+.2f},{y:+.2f}>".format(x=this.x, y=this.y)
+	}
 
 
-	def add( vec) -> None:
+	add( vec){
 		this.x += vec.x
 		this.y += vec.y
+	}
 
 
-	def subBy( vec) -> None:
+	subBy( vec){
 		this.x -= vec.x
 		this.y -= vec.y
+	}
 
 
-	def multiply( nb) -> None:
+	multiply( nb){
 		this.x *= nb
 		this.y *= nb
+	}
 
 
-	def divide( nb) -> None:
-		if nb == 0:
+	divide( nb){
+		if (nb == 0)
 			return
 		this.x /= nb
 		this.y /= nb
+	}
 
 
-	def translate( x, y) -> None:
+	translate( x, y)
+	{
 		this.x += x
 		this.y += y
+	}
 
 
-	def translateAlong( vec, dist) -> None:
+	translateAlong( vec, dist)
+	{
 		this.x += vec.x * dist
 		this.y += vec.y * dist
+	}
 
 
-	def rotateAround( x, y, sinTmp, cosTmp) -> None:
+	rotateAround( x, y, sinTmp, cosTmp)
+	{
 		// Move point to center
 		this.x -= x
 		this.y -= y
@@ -56,31 +68,42 @@ class Vec2 {
 		// Uncenter point
 		this.x += x
 		this.y += y
+	}
 
 
-	def asTupple(this) -> tuple:
+	asTupple()
+	{
 		return (this.x, this.y)
+	}
 
 
-	def asTuppleCenter( x, y) -> tuple:
+	asTuppleCenter( x, y)
+	{
 		return (this.x - x, this.y - y)
+	}
 
 
-	def norm(this) -> float:
+	norm()
+	{
 		return math.sqrt(this.x**2 + this.y**2)
+	}
 
 
-	def normalize(this) -> None:
+	normalize()
+	{
 		norm = this.norm()
-		if norm != 0:
+		if (norm != 0){
 			this.x /= norm
 			this.y /= norm
+		}
+	}
 
 
-	def rotate( angle) -> None:
-		while angle < 0:
+	rotate( angle)
+	{
+		while (angle < 0)
 			angle += 360
-		while angle > 359:
+		while (angle > 359)
 			angle -= 360
 
 		rad = angle * (math.pi / 180)
@@ -91,43 +114,57 @@ class Vec2 {
 		this.y = this.x * sinRad + this.y * cosRad
 
 		this.normalize()
+	}
 
 
-	def dup(this):
+	dup()
+	{
 		return Vec2(this.x, this.y)
+	}
 
+}
 
-
-def vec2Add(vec1, vec2) -> Vec2:
+function vec2Add(vec1, vec2)
+{
 	return Vec2(vec1.x + vec2.x, vec1.y + vec2.y)
+}
 
 
-def vec2Sub(vec1, vec2) -> Vec2:
+function vec2Sub(vec1, vec2)
+{
 	return Vec2(vec1.x - vec2.x, vec1.y - vec2.y)
+}
 
 
-def vec2Dot(vec1, vec2) -> int:
+function vec2Dot(vec1, vec2)
+{
 	return (vec1.x * vec2.x) + (vec1.y * vec2.y)
+}
 
 
-def vec2Cross(vec1, vec2) -> int:
+function vec2Cross(vec1, vec2)
+{
 	return (vec1.x * vec2.y) - (vec1.y * vec2.x)
+}
 
 
-def getNormalOfSegment(vec1, vec2) -> Vec2:
+function getNormalOfSegment(vec1, vec2)
+{
 	dx = vec2.x - vec1.x
 	dy = vec2.y - vec1.y
 	vec = Vec2(-dy, dx)
 	vec.normalize()
 	return vec
+}
 
 
-def reflectionAlongVec2(normal:Vec2, vec:Vec2) -> Vec2:
-	if (vec2Dot(normal, vec) >= 0):
+function reflectionAlongVec2(normal, vec)
+{
+	if (vec2Dot(normal, vec) >= 0)
 		normal.multiply(-1)
 
 	divider = vec2Dot(vec, vec)
-	if (divider == 0):
+	if (divider == 0)
 		return (vec)
 	vecProjOnNormal = normal.dup()
 	vecProjOnNormal.multiply(vec2Dot(normal, vec) / divider)
@@ -138,5 +175,5 @@ def reflectionAlongVec2(normal:Vec2, vec:Vec2) -> Vec2:
 	reflectedVec.normalize()
 
 	return reflectedVec
-
 }
+

@@ -3,7 +3,8 @@
 // import client_side.hitbox as hitbox
 
 class Paddle {
-	def	constructor ( x, y, id, team) -> None:
+	constructor ( x, y, id, team)
+	{
 		this.id = id
 		this.pos = Vec2(x, y)
 		this.w = PADDLE_WIDTH
@@ -38,63 +39,85 @@ class Paddle {
 		this.maxBounceBallGoal = 0
 		this.numberOfContreCamp = 0
 		this.numberOfPerfectShoot = 0
+	}
 
 
-	def updateTimes(this, delta):
-		if this.waitLaunch > 0:
+	updateTimes(this, delta)
+	{
+		if (this.waitLaunch > 0)
+		{
 			this.waitLaunch -= delta
-			if this.waitLaunch < 0:
+			if (this.waitLaunch < 0)
 				this.waitLaunch = 0
+		}
 
-		if this.waitUsePowerUp > 0:
+		if (this.waitUsePowerUp > 0)
+		{
 			this.waitUsePowerUp -= delta
-			if this.waitUsePowerUp < 0:
+			if (this.waitUsePowerUp < 0)
 				this.waitUsePowerUp = 0
+		}
 
 		powerUpEffectToRemove = []
-
-		for i in range(len(this.powerUpEffects)):
+		for (let i = 0; i < this.powerUpEffects.length; i++)
+		{
 			powerUpEffect = this.powerUpEffects[i]
-			if powerUpEffect[1] > 0:
+			if (powerUpEffect[1] > 0)
+			{
 				powerUpEffect[1] -= delta
 				// If the time of the power up ended
-				if powerUpEffect[1] < 0:
+				if (powerUpEffect[1] < 0)
+				{
 					powerUpEffect[1] = 0
 					powerUpEffectToRemove.append(i)
 					// Remove the effect of the power up
-					if powerUpEffect[0] == POWER_UP_PADDLE_FAST:
+					if (powerUpEffect[0] == POWER_UP_PADDLE_FAST)
 						this.modifierSpeed /= POWER_UP_PADDLE_FAST_SPEED_FACTOR
 
-					else if powerUpEffect[0] == POWER_UP_PADDLE_SLOW:
+					else if (powerUpEffect[0] == POWER_UP_PADDLE_SLOW)
 						this.modifierSpeed *= POWER_UP_PADDLE_SLOW_SPEED_FACTOR
 
-					else if powerUpEffect[0] == POWER_UP_PADDLE_BIG:
+					else if (powerUpEffect[0] == POWER_UP_PADDLE_BIG)
+					{
 						this.modifierSize /= POWER_UP_PADDLE_BIG_SIZE_FACTOR
 						this.modifySize(this.modifierSize)
+					}
 
-					else if powerUpEffect[0] == POWER_UP_PADDLE_LITTLE:
+					else if (powerUpEffect[0] == POWER_UP_PADDLE_LITTLE)
+					{
 						this.modifierSize *= POWER_UP_PADDLE_LITTLE_SIZE_FACTOR
 						this.modifySize(this.modifierSize)
+					}
+				}
+			}
+		}
 
-		for i in range(len(powerUpEffectToRemove)):
+		for (let i = 0; i < powerUpEffectToRemove.length; i++)
 			this.powerUpEffects.pop(powerUpEffectToRemove[i] - i)
+	}
 
-
-	def move(this, dir, delta):
-		if dir == "up":
+	move(this, dir, delta)
+	{
+		if (dir == "up")
+		{
 			this.pos.y -= PADDLE_SPEED * this.modifierSpeed * delta
-			if this.pos.y - (this.halfH * this.modifierSize) < AREA_RECT[1] + PERFECT_SHOOT_SIZE:
+			if (this.pos.y - (this.halfH * this.modifierSize) < AREA_RECT[1] + PERFECT_SHOOT_SIZE)
 				this.pos.y = AREA_RECT[1] + PERFECT_SHOOT_SIZE + (this.halfH * this.modifierSize)
 			this.hitbox.setPos(this.pos.dup())
+		}
 
-		else if dir == "down":
+		else if (dir == "down")
+		{
 			this.pos.y += PADDLE_SPEED * this.modifierSpeed * delta
-			if this.pos.y + (this.halfH * this.modifierSize) > AREA_RECT[1] + AREA_RECT[3] - PERFECT_SHOOT_SIZE:
+			if (this.pos.y + (this.halfH * this.modifierSize) > AREA_RECT[1] + AREA_RECT[3] - PERFECT_SHOOT_SIZE)
 				this.pos.y = AREA_RECT[1] + AREA_RECT[3] - PERFECT_SHOOT_SIZE - (this.halfH * this.modifierSize)
 			this.hitbox.setPos(this.pos.dup())
+		}
+	}
 
 
-	def modifySize(this, modifier):
+	modifySize(this, modifier)
+	{
 		this.modifierSize = modifier
 		this.hitbox.clearPoints()
 		this.hitbox.addPoint(-this.halfW, -this.halfH * this.modifierSize)
@@ -102,33 +125,44 @@ class Paddle {
 		this.hitbox.addPoint(this.halfW, this.halfH * this.modifierSize)
 		this.hitbox.addPoint(-this.halfW, this.halfH * this.modifierSize)
 
-		if this.pos.y - (this.halfH * this.modifierSize) < AREA_RECT[1] + PERFECT_SHOOT_SIZE:
+		if (this.pos.y - (this.halfH * this.modifierSize) < AREA_RECT[1] + PERFECT_SHOOT_SIZE)
+		{
 			this.pos.y = AREA_RECT[1] + PERFECT_SHOOT_SIZE + (this.halfH * this.modifierSize)
 			this.hitbox.setPos(this.pos.dup())
-		if this.pos.y + (this.halfH * this.modifierSize) > AREA_RECT[1] + AREA_RECT[3] - PERFECT_SHOOT_SIZE:
+		}
+		if (this.pos.y + (this.halfH * this.modifierSize) > AREA_RECT[1] + AREA_RECT[3] - PERFECT_SHOOT_SIZE)
+		{
 			this.pos.y = AREA_RECT[1] + AREA_RECT[3] - PERFECT_SHOOT_SIZE - (this.halfH * this.modifierSize)
 			this.hitbox.setPos(this.pos.dup())
+		}
 
-		if modifier != 1:
+		if (modifier != 1)
 			this.modifierTimeEffect = 5
+	}
 
 
-	def draw(this, win):
-		if len(this.powerUpInCharge) > 0:
-			if this.powerUpInCharge[0] == POWER_UP_BALL_FAST:
+	draw(this, win)
+	{
+		if (this.powerUpInCharge.length > 0)
+		{
+			if (this.powerUpInCharge[0] == POWER_UP_BALL_FAST)
 				this.hitbox.fillColor = POWER_UP_BALL_FAST_COLOR
-			else if this.powerUpInCharge[0] == POWER_UP_BALL_WAVE:
+			else if (this.powerUpInCharge[0] == POWER_UP_BALL_WAVE)
 				this.hitbox.fillColor = POWER_UP_BALL_WAVE_COLOR
-			else if this.powerUpInCharge[0] == POWER_UP_BALL_INVISIBLE:
+			else if (this.powerUpInCharge[0] == POWER_UP_BALL_INVISIBLE)
 				this.hitbox.fillColor = POWER_UP_BALL_INVISIBLE_COLOR
-		else:
+		}
+		else
 			this.hitbox.fillColor = PADDLE_COLOR
 		this.hitbox.drawFill(win)
-		if DRAW_HITBOX:
+		if (DRAW_HITBOX)
 			this.hitbox.draw(win)
+	}
 
 
-	def setPos(this, x, y):
+	setPos(this, x, y)
+	{
 		this.pos = Vec2(x, y)
 		this.hitbox.setPos(Vec2(x, y))
+	}
 }
