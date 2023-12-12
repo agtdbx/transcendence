@@ -157,7 +157,6 @@ function getNormalOfSegment(vec1, vec2)
 	return vec
 }
 
-
 function reflectionAlongVec2(normal, vec)
 {
 	if (vec2Dot(normal, vec) >= 0)
