@@ -1,13 +1,15 @@
+echo "PGDATA=db_data" > .env
+
 echo -n "Name for database : "
 read dbname
+echo "POSTGRES_DB=$dbname" >> .env
+
 echo -n "User for database : "
 read dbuser
+echo "POSTGRES_USER=$dbuser" >> .env
+
 echo -n "Password for database : "
 read dbpass
-
-echo "PGDATA=db_data" > .env
-echo "POSTGRES_DB=$dbname" >> .env
-echo "POSTGRES_USER=$dbuser" >> .env
 echo "POSTGRES_PASSWORD=$dbpass" >> .env
 
-echo 'Generating .nev done !'
+echo 'Generating .env done !'

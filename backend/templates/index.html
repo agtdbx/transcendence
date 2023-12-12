@@ -71,8 +71,12 @@
 			document.getElementById("header").remove()
 		}
 
-		function showcontent(num) {
-			fetch(`${num}`)
+		function showcontent(num, data) {
+			fetch(`${num}`,
+			{
+			  method: 'POST',
+			  body: data,
+			},)
 				.then(response => response.text())
 				.then (text => {
 					document.getElementById("Page").remove()
@@ -81,26 +85,28 @@
 
 					switch (num) {
 						case "1":
+						case "2":
+						case "3":
 							body.style.backgroundImage = 'url(/static/image/background/mainpage.png)';
 							addHeader();
 							break;
-						case "2":
-							body.style.backgroundImage = 'url(/static/image/background/waitpage.png)';
-							addHeader();
-							break;
-						case "3":
-							body.style.backgroundImage = 'url(/static/image/background/waitpage.png)';
-							addHeader();
-							break;
 						case "4":
-							body.style.backgroundImage = 'url(https://images.squarespace-cdn.com/content/v1/5925832e03596efb6d4b502a/1547827451369-JX3S8JTAWQMWHYFYDVNK/Magma.jpg?format=2500w)';
+							body.style.backgroundImage = 'url(/static/image/background/waitpage.png)';
 							addHeader();
 							break;
 						case "5":
-							body.style.backgroundImage = 'url(/static/image/background/DRG_Wallpaper_CrystalCaves.jpg)';
+							body.style.backgroundImage = 'url(/static/image/background/waitpage.png)';
 							addHeader();
 							break;
 						case "6":
+							body.style.backgroundImage = 'url(https://images.squarespace-cdn.com/content/v1/5925832e03596efb6d4b502a/1547827451369-JX3S8JTAWQMWHYFYDVNK/Magma.jpg?format=2500w)';
+							addHeader();
+							break;
+						case "7":
+							body.style.backgroundImage = 'url(/static/image/background/DRG_Wallpaper_CrystalCaves.jpg)';
+							addHeader();
+							break;
+						case "8":
 							body.style.backgroundImage = 'url(/static/image/background/Background.png)';
 							removeHeader();
 							break;
@@ -130,19 +136,6 @@
 					
 				})
 		}
-
-
-
-		document.addEventListener('DOMContentLoaded', function(){
-			document.querySelectorAll('.changePage').forEach(button => {
-				button.onclick = function(){
-					if (this.dataset.section != 1)
-					{
-						showcontent(this.dataset.section);
-					}
-				};
-			});
-		});
 
 	</script>
 </head>
@@ -184,7 +177,7 @@
 						<div class ="speratorPassword" id = "speratorPassword"></div>
 					</div>
 					
-					<button data-section="1" type="submit" class ="changePage btn-drg" id = "btn-pop-login">LOG IN</button>
+					<button data-section="1" type="submit" class ="btn-drg" id = "btn-pop-login">LOG IN</button>
 					<script>
 
 						const form = document.getElementById('form_log');
@@ -193,40 +186,7 @@
 						  event.preventDefault();
 						
 						  const data = new FormData(form);
-						
-						  console.log(Array.from(data));
-						
-						  try {
-							{% comment %} const res = await fetch(
-							  'https://jsonplaceholder.typicode.com/users',
-							  {
-								method: 'POST',
-								body: data,
-							  },
-							);
-						
-							const resData = await res.json();
-						
-							console.log(resData); {% endcomment %}
-
-							fetch( '1',
-							{
-							  method: 'POST',
-							  body: data,
-							},)
-							.then(response => response.text())
-							.then (text => {
-								document.getElementById("Page").remove()
-								let body = document.getElementById('body');
-								document.querySelector('#content').innerHTML = text;
-								body.style.backgroundImage = 'url(/static/image/background/mainpage.png)';
-								addHeader();
-
-							})
-
-						  } catch (err) {
-							console.log(err.message);
-						  }
+							showcontent('1', data)
 						});
 					</script>
 				</form>
@@ -240,12 +200,13 @@
   
   
 		  <div class ="popupSign" id = "popupSign">
-		
+			<form id="form_sign" method="post">
+				{% csrf_token %}
 			  <div class ="rectLogin" id = "rectLogin">
 				  <div class ="textRectLogin" id = "textRectLogin">
 					  <p id="textLogin">LOG-IN</p>
 				  </div>
-				  <input type="text" id="loginSign" name="login"><br><br>
+				  <input type="text" id="loginSign" name="login2" required><br><br>
 				  <div class ="speratorLogin" id = "speratorlog"></div>
 			  </div>
 			  
@@ -253,7 +214,7 @@
 				  <div class ="textRectPassword" id = "textRectPassword">
 					  <p id="textPassword">PASSWORD</p>
 				  </div>
-				  <input type="password" id="passwordSign" name="password"><br><br>
+				  <input type="password" id="passwordSign" name="password2" required><br><br>
 				  <div class ="speratorPassword" id = "speratorPassword"></div>
 			  </div>
 			  
@@ -261,15 +222,26 @@
 				  <div class ="textRectConfirm" id = "textRectConfirm">
 					  <p id="textConfirm">CONFIRM</p>
 				  </div>
-				  <input type="test" id="confirm" name="confirm"><br><br>
+				  <input type="password" id="confirm" name="confirm" required><br><br>
 				  <div class ="speratorConfirm" id = "speratorConfirm"></div>
 			  </div>
 			  
-			  <button data-section="1" type="button" class ="changePage btn-drg" id = "btn-pop-sign">SIGN IN</button>
-			  <p id="text42">STUDENT AT 42 ?</p>
-			  <button type="button" class ="btn-drg" id = "btn-pop-link-42">LINK 42</button>
-			  <p id="textPopLogIn">ALREADY AN ACCOUT ?</p>
-			  <button type="button" class ="btn-drg" id = "btn-pop-sign-log" onclick="swapToLog()">LOG IN</button>
+			  <button data-section="2" type="submit" class ="btn-drg" id = "btn-pop-sign">SIGN IN</button>
+					<script>
+
+						const form2 = document.getElementById('form_sign');
+						form2.addEventListener('submit', async event => {
+						  event.preventDefault();
+						
+						  const data2 = new FormData(form2);
+							showcontent('2', data2)
+						});
+			</script>
+		</form>
+		<p id="text42">STUDENT AT 42 ?</p>
+		<button type="button" class ="btn-drg" id = "btn-pop-link-42">LINK 42</button>
+		<p id="textPopLogIn">ALREADY AN ACCOUT ?</p>
+		<button type="button" class ="btn-drg" id = "btn-pop-sign-log" onclick="swapToLog()">LOG IN</button>
 			  
 		  </div>
 
