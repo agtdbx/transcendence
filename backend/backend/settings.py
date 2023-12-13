@@ -27,12 +27,15 @@ SECRET_KEY = 'django-insecure-v21tl+u&*htdopsf2jl6w0)_&ao^#^*zwagrmp&sb1+sg*uq'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    '*'
+]
 
 
 # Application definition
 
 INSTALLED_APPS = [
+    'sslserver',
 	'db_test.apps.DbTestConfig',
     'django.contrib.admin',
     'django.contrib.auth',
