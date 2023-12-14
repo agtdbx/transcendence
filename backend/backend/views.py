@@ -3,27 +3,46 @@
 #                                                         :::      ::::::::    #
 #    views.py                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: hde-min <hde-min@student.42.fr>            +#+  +:+       +#+         #
+#    By: aderouba <aderouba@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/08 14:00:09 by lflandri          #+#    #+#              #
-#    Updated: 2023/12/14 11:53:38 by hde-min          ###   ########.fr        #
+#    Updated: 2023/12/14 16:17:28 by aderouba         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 import hashlib, sys
 
 from django.views.decorators.csrf import csrf_exempt
-from django.http import Http404, HttpResponse
+from django.http import Http404, HttpResponse, JsonResponse
 from django.shortcuts import render
+
+from rest_framework.views import APIView
+from rest_framework_simplejwt.tokens import RefreshToken
+from django.contrib.auth import authenticate
+from django.contrib.auth.models import User
+
 
 from db_test.models import User
 from db_test.models import Status
 from db_test.models import connectionPassword
 
 
+# Create check JWT Token
+class LoginView(APIView):
+    def post(sefl, request):
+        username = request.data.get('username')
+        password = request.data.get('password')
+        user = authenticate(username=username, password=password)
+        refresh = RefreshToken.for_user(user)
+        return JsonResponse({
+            'refresh':str(refresh),
+            'access':str(refresh.access_token)
+        })
+
+
 # def testJS(request):
 #     return render(request,"other.html")
-	
+
 @csrf_exempt
 def testPY(request):
     return HttpResponse("success")
@@ -46,11 +65,11 @@ def section(request, num):
             username_check = User.objects.all().filter(username=username)
             if len(username_check) == 0:
                 return HttpResponse("Username not here")
-            
+
             password_check = connectionPassword.objects.all().filter(idUser=username_check[0].idUser)
             if len(password_check) == 0:
                 return HttpResponse("42 user should use superior 42 login method")
-            
+
             hash = hashlib.sha512(password.encode(), usedforsecurity=True)
             if hash.hexdigest() != password_check[0].password:
                 return HttpResponse("Wrong password")
@@ -62,28 +81,28 @@ def section(request, num):
             username = request.POST.get('login2')
             password = request.POST.get('password2')
             passwordconfirm = request.POST.get('confirm')
-            
+
             test = User.objects.all().filter(username=username)
             if len(test):
                 return HttpResponse("Username already use")
-            
+
             if password != passwordconfirm:
                 return render(request,"index.html")
 
             hashPwd = hashlib.sha512(password.encode(), usedforsecurity=True)
-            
+
             id = User.objects.all().count() + 1
             idType = 1
-            
+
             status= Status(idStatus='0', name="On")
             status.save()
 
             if not username or password == "":
-                return HttpResponse("No empty fields") 
-            
+                return HttpResponse("No empty fields")
+
             user = User(idUser=id, idType=idType, username=username, profilPicture="NULL", tokenJWT="NULL", money=0, idStatus=Status.objects.get(idStatus=0))
             user.save()
-            
+
             password = connectionPassword(idPassword=id, password=hashPwd.hexdigest(), idUser=user)
             password.save()
             return render(request,"mainpage.html")
