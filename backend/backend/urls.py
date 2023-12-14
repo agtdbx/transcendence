@@ -25,5 +25,4 @@ from .views import *
 urlpatterns = [
     path("",views.index, name=""),
     path("<int:num>", views.section, name="section"),
-    path('user/', user, name='user'),
 ]
