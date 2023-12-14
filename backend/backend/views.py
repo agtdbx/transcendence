@@ -6,11 +6,11 @@
 #    By: hde-min <hde-min@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/08 14:00:09 by lflandri          #+#    #+#              #
-#    Updated: 2023/12/12 18:02:07 by hde-min          ###   ########.fr        #
+#    Updated: 2023/12/14 11:53:38 by hde-min          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-import hashlib
+import hashlib, sys
 
 from django.views.decorators.csrf import csrf_exempt
 from django.http import Http404, HttpResponse
@@ -36,7 +36,8 @@ randomstring = ["This is section 1.","This is section 2.", "This is section 3."]
 
 def section(request, num):
     if num == 0:
-        return render(request,"navbar.html")
+        user = User.objects.all()
+        return render(request,"navbar.html", {'user': user[0] })
     elif num == 1:                      #login classique
             username = request.POST.get('login')
             password = request.POST.get('password')
@@ -54,6 +55,7 @@ def section(request, num):
             if hash.hexdigest() != password_check[0].password:
                 return HttpResponse("Wrong password")
 
+            #return HttpResponse(user[0].username)
             return render(request,"mainpage.html")
     elif num == 2:       #aller  a la main page en sign in
         if request.method == 'POST':
@@ -88,7 +90,7 @@ def section(request, num):
         else:
             return HttpResponse("Cheh mechant pti hacker")
     elif num == 3:
-        return render(request,"mainpage.html")   #aller  a la main page deja connecters
+        return render(request,"mainpage.html")#aller  a la main page deja connecters
     elif num == 4:
         return render(request,"waitpage.html")
     elif num == 5:
