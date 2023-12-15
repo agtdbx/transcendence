@@ -1,5 +1,6 @@
-import "./vec2.js"
-import "./client_define.js"
+import {Vec2} from "./vec2.js"
+import * as dc from "./client_define.js"
+import * as d from "./define.js"
 
 // import pygame as pg
 // import math
@@ -9,19 +10,19 @@ function collideBetweenSegments(p1, p2, p3, p4)
 {
 	divisor = (p1.x - p2.x) * (p3.y - p4.y) - (p1.y - p2.y) * (p3.x - p4.x)
 	if (divisor == 0)
-		return False, None
+		return false, None
 
 	t = (p1.x - p3.x) * (p3.y - p4.y) - (p1.y - p3.y) * (p3.x - p4.x)
 	t /= divisor
 
 	if (t < 0 || 1 < t)
-		return False, None
+		return false, None
 
 	u = (p1.x - p3.x) * (p1.y - p2.y) - (p1.y - p3.y) * (p1.x - p2.x)
 	u /= divisor
 
 	if (u < 0 || 1 < u)
-		return False, None
+		return false, None
 
 	// Point of intersection
 	s1Dir = vec2Sub(p2, p1)
@@ -32,10 +33,10 @@ function collideBetweenSegments(p1, p2, p3, p4)
 }
 
 
-class Hitbox {
+export class Hitbox {
 	constructor ( x, y, color, fillColor = (255, 255, 255))
 	{
-		this.pos = Vec2(x, y)
+		this.pos = new Vec2(x, y)
 
 		this.color = color
 		this.fillColor = fillColor
@@ -56,7 +57,7 @@ class Hitbox {
 
 	addPoint( x, y)
 	{
-		this.points.append(Vec2(this.pos.x + x, this.pos.y + y))
+		this.points.push( new Vec2(this.pos.x + x, this.pos.y + y))
 		this.computeSurroundingRect()
 	}
 
@@ -67,7 +68,7 @@ class Hitbox {
 		{
 			const x = pair[0];
 			const y = pair[1];
-			this.points.append(Vec2(this.pos.x + x, this.pos.y + y))
+			this.points.push( new Vec2(this.pos.x + x, this.pos.y + y))
 			this.computeSurroundingRect()
 		}
 	}
@@ -84,13 +85,12 @@ class Hitbox {
 		if (this.points.length == 0)
 			return
 
-		pos = this.points[0].asTuppleCenter(this.pos.x, this.pos.y)
+		let pos = this.points[0].asTuppleCenter(this.pos.x, this.pos.y)
 
-		xLeft = pos[0]
-		xRight = pos[0]
-		yUp = pos[1]
-		yDown = pos[1]
-			const element = array[index];
+		let xLeft = pos[0]
+		let xRight = pos[0]
+		let yUp = pos[1]
+		let yDown = pos[1]
 			
 
 		for (let i = 1; i < this.points.length; i++)
@@ -117,8 +117,8 @@ class Hitbox {
 
 	setPos( vec)
 	{
-		dx = vec.x - this.pos.x
-		dy = vec.y - this.pos.y
+		let dx = vec.x - this.pos.x
+		let dy = vec.y - this.pos.y
 		this.pos = vec
 		for (let i = 0; i < this.points.length; i++)
 			this.points[i].translate(dx, dy)
@@ -139,9 +139,9 @@ class Hitbox {
 	{
 		this.rotation += degrees
 
-		radiant = degrees * (math.pi / 180)
-		sinTmp = math.sin(radiant)
-		cosTmp = math.cos(radiant)
+		let radiant = degrees * (math.pi / 180)
+		let sinTmp = math.sin(radiant)
+		let cosTmp = math.cos(radiant)
 
 		for (let i = 0; i < this.points.length; i++)
 			this.points[i].rotateAround(this.pos.x, this.pos.y, sinTmp, cosTmp)
@@ -173,14 +173,14 @@ class Hitbox {
 	{
 		//TODO change to correct transition
 
-		if (DRAW_HITBOX)
-			points = []
+		if (d.DRAW_HITBOX)
+		{
+			let points = []
 			for (const p of this.points)
-				points.append(p.asTupple())
-
-			pg.draw.polygon(win, this.color, points, 1)
-
-		if (DRAW_HITBOX_NORMALS)
+				points.push(p.asTupple())
+			// pg.draw.polygon(win, this.color, points, 1)
+		}
+		if (d.DRAW_HITBOX_NORMALS)
 			this.drawNormals(win)
 	}
 
@@ -189,11 +189,11 @@ class Hitbox {
 	{
 		//TODO change to correct transition
 
-		points = []
+		let points = []
 		for (const p of this.points)
-			points.append(p.asTupple())
+			points.push(p.asTupple())
 
-		pg.draw.polygon(win, this.fillColor, points)
+		// pg.draw.polygon(win, this.fillColor, points)
 	}
 
 
@@ -201,11 +201,11 @@ class Hitbox {
 	{
 		pointsSize = this.points.length
 		if (pointsSize <= 1)
-			return False
+			return false
 
 		hitboxPointsSize = len(hitbox.points)
 		if (hitboxPointsSize <= 1)
-			return False
+			return false
 
 		if (this.rect[0] + this.rect[2] >= hitbox.rect[0] && this.rect[0] <= hitbox.rect[0] + hitbox.rect[2] &&
 			this.rect[1] + this.rect[3] >= hitbox.rect[1] && this.rect[1] <= hitbox.rect[1] + hitbox.rect[3])

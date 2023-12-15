@@ -1,6 +1,6 @@
 // import math
 
-class Vec2 {
+export class Vec2 {
 	constructor ( x, y)
 	{
 		this.x = x

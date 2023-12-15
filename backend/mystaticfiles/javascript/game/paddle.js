@@ -1,18 +1,19 @@
-import "./client_define.js"
-import "./vec2.js"
+import * as dc from "./client_define.js"
+import * as d from "./define.js"
+import {Vec2} from "./vec2.js"
 import * as hitbox from "./hitbox.js"
 
-class Paddle {
+export class Paddle {
 	constructor ( x, y, id, team)
 	{
 		this.id = id
-		this.pos = Vec2(x, y)
-		this.w = PADDLE_WIDTH
-		this.h = PADDLE_HEIGHT
-		this.halfW = PADDLE_WIDTH / 2
-		this.halfH = PADDLE_HEIGHT / 2
+		this.pos = new Vec2(x, y)
+		this.w = dc.PADDLE_WIDTH
+		this.h = dc.PADDLE_HEIGHT
+		this.halfW = dc.PADDLE_WIDTH / 2
+		this.halfH = dc.PADDLE_HEIGHT / 2
 
-		this.hitbox = hitbox.Hitbox(x, y, HITBOX_PADDLE_COLOR, PADDLE_COLOR)
+		this.hitbox = new hitbox.Hitbox(x, y, d.HITBOX_PADDLE_COLOR, d.PADDLE_COLOR)
 		this.hitbox.addPoint(-this.halfW, -this.halfH)
 		this.hitbox.addPoint(this.halfW, -this.halfH)
 		this.hitbox.addPoint(this.halfW, this.halfH)
@@ -29,7 +30,7 @@ class Paddle {
 		// Represente the effect on paddle [POWER_UP, TIME_EFFECT]
 		this.powerUpEffects = []
 
-		this.powerUp = POWER_UP_NONE
+		this.powerUp = d.POWER_UP_NONE
 
 		this.powerUpInCharge = []
 
@@ -145,17 +146,17 @@ class Paddle {
 	{
 		if (this.powerUpInCharge.length > 0)
 		{
-			if (this.powerUpInCharge[0] == POWER_UP_BALL_FAST)
-				this.hitbox.fillColor = POWER_UP_BALL_FAST_COLOR
-			else if (this.powerUpInCharge[0] == POWER_UP_BALL_WAVE)
-				this.hitbox.fillColor = POWER_UP_BALL_WAVE_COLOR
-			else if (this.powerUpInCharge[0] == POWER_UP_BALL_INVISIBLE)
-				this.hitbox.fillColor = POWER_UP_BALL_INVISIBLE_COLOR
+			if (this.powerUpInCharge[0] == d.POWER_UP_BALL_FAST)
+				this.hitbox.fillColor = dc.POWER_UP_BALL_FAST_COLOR
+			else if (this.powerUpInCharge[0] == d.POWER_UP_BALL_WAVE)
+				this.hitbox.fillColor = dc.POWER_UP_BALL_WAVE_COLOR
+			else if (this.powerUpInCharge[0] == d.POWER_UP_BALL_INVISIBLE)
+				this.hitbox.fillColor = dc.POWER_UP_BALL_INVISIBLE_COLOR
 		}
 		else
-			this.hitbox.fillColor = PADDLE_COLOR
+			this.hitbox.fillColor = d.PADDLE_COLOR
 		this.hitbox.drawFill(win)
-		if (DRAW_HITBOX)
+		if (d.DRAW_HITBOX)
 			this.hitbox.draw(win)
 	}
 

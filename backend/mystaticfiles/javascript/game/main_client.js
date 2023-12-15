@@ -1,5 +1,5 @@
 import "./define.js"
-import /*{runGameClient} from*/ "./tcp_client.js"
+import {runGameClient} from "./tcp_client.js"
 
 
 

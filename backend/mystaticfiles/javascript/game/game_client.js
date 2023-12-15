@@ -1,4 +1,5 @@
-import "./client_define.js"
+import * as dc from "./client_define.js"
+import * as d from "./define.js"
 import "./vec2.js"
 import * as hitbox from "./hitbox.js"
 import * as team from "./team.js"
@@ -38,7 +39,7 @@ function createObstacle(x, y, listPoint, color)
 
 
 
-class GameClient {
+export class GameClient {
 	constructor()
 	{
 		/*
@@ -49,29 +50,30 @@ class GameClient {
 
 
 		// We remove the toolbar of the window's height
-		this.winSize = ((WIN_WIDTH, WIN_HEIGHT))
+		this.winSize = ((dc.WIN_WIDTH, dc.WIN_HEIGHT))
 		// We create the window
-		this.win = pg.display.set_mode(this.winSize, pg.RESIZABLE)
+		//this.win = pg.display.set_mode(this.winSize, pg.RESIZABLE)
 
-		this.clock = pg.time.Clock() // The clock be used to limit our fps
+		// this.clock = pg.time.Clock() // The clock be used to limit our fps
 		this.fps = 60
 		this.time = 0
 
-		this.last = time.time()
+		// this.last = time.time()
+		this.last = new Date().getTime();
 
 		this.runMainLoop = true
 
 		this.inputWait = 0
 
 		// Creation of state list for player keys
-		this.paddlesKeyState = PADDLES_KEYS_STATE.copy()
+		this.paddlesKeyState =  [...d.PADDLES_KEYS_STATE]
 
 		// Team creation
-		this.teamLeft = team.Team(0, TEAM_LEFT)
-		this.teamRight = team.Team(0, TEAM_RIGHT)
+		this.teamLeft = new team.Team(0, d.TEAM_LEFT)
+		this.teamRight = new team.Team(0, d.TEAM_RIGHT)
 
 		// Ball creation
-		this.balls = [ball.Ball(WIN_WIDTH / 2, WIN_HEIGHT / 2)]
+		this.balls = [ new ball.Ball(dc.WIN_WIDTH / 2, dc.WIN_HEIGHT / 2)]
 
 		// // Ball begin left side
 		// if (random.random() > 0.5)
@@ -85,9 +87,9 @@ class GameClient {
 		// }
 
 		// Power up creation
-		this.powerUpEnable = False
-		this.powerUp = [POWER_UP_SPAWN_COOLDOWN, hitbox.Hitbox(0, 0, (0, 0, 200), POWER_UP_HITBOX_COLOR), -1]
-		for ( const p of ball.getPointOfCircle(POWER_UP_HITBOX_RADIUS, POWER_UP_HITBOX_PRECISION, 0))
+		this.powerUpEnable = false
+		this.powerUp = [d.POWER_UP_SPAWN_COOLDOWN, new hitbox.Hitbox(0, 0, (0, 0, 200), d.POWER_UP_HITBOX_COLOR), -1]
+		for ( const p of ball.getPointOfCircle(d.POWER_UP_HITBOX_RADIUS, d.POWER_UP_HITBOX_PRECISION, 0))
 			this.powerUp[1].addPoint(p[0], p[1])
 
 		// Walls creation
@@ -127,10 +129,10 @@ class GameClient {
 	{
 		/*
 		This method is the main function of the game
-		Call it in a while, it need to be re call until this.runMainLoop equals to False
+		Call it in a while, it need to be re call until this.runMainLoop equals to false
 		*/
 		// Clear the message for server
-		this.messageForServer.clear()
+		this.messageForServer.length = []
 
 		this.parseMessageFromServer()
 		// Game loop
@@ -143,7 +145,7 @@ class GameClient {
 			// this.clock.tick(this.fps)
 
 		// After compute it, clear message from the server
-		this.messageFromServer.clear()
+		this.messageFromServer = []
 	}
 
 
@@ -155,94 +157,94 @@ class GameClient {
 		The method catch user's inputs, as key presse or a mouse click
 		*/
 		// We check each event
-		for (const event of pg.event.get())
-		{
-			// If the event it a click on the top right cross, we quit the game
-			if (event.type == pg.QUIT)
-				this.runMainLoop = False
-		}
+		// for (const event of pg.event.get())
+		// {
+		// 	// If the event it a click on the top right cross, we quit the game
+		// 	if (event.type == pg.QUIT)
+		// 		this.runMainLoop = false
+		// }
 
-		this.keyboardState = pg.key.get_pressed()
-		this.mouseState = pg.mouse.get_pressed()
-		this.mousePos = pg.mouse.get_pos()
+		// this.keyboardState = pg.key.get_pressed()
+		// this.mouseState = pg.mouse.get_pressed()
+		// this.mousePos = pg.mouse.get_pos()
 
 		// Press espace to quit
-		if (this.keyboardState[pg.K_ESCAPE])
-			this.runMainLoop = False
+		// if (this.keyboardState[pg.K_ESCAPE])
+		// 	this.runMainLoop = false
 
 		// Update paddles keys
 		for (let i = 0; i < 4; i++)
 		{
-			// {id_paddle, id_key, key_action [true = press, False = release]}
-			templateContent = {"paddleId" : i, "keyId" : 0, "keyAction" : true}
+			// {id_paddle, id_key, key_action [true = press, false = release]}
+			let templateContent = {"paddleId" : i, "keyId" : 0, "keyAction" : true}
 
-			if (this.keyboardState[PLAYER_KEYS[i][KEY_UP]] && ! this.paddlesKeyState[i * 4 + KEY_UP])
-			{
-				this.paddlesKeyState[i * 4 + KEY_UP] = true
-				content = templateContent.copy()
-				content["keyId"] = KEY_UP
-				content["keyAction"] = true
-				this.messageForServer.append((CLIENT_MSG_TYPE_USER_EVENT, content))
-			}
-			else if (! this.keyboardState[PLAYER_KEYS[i][KEY_UP]] && this.paddlesKeyState[i * 4 + KEY_UP])
-			{
-				this.paddlesKeyState[i * 4 + KEY_UP] = False
-				content = templateContent.copy()
-				content["keyId"] = KEY_UP
-				content["keyAction"] = False
-				this.messageForServer.append((CLIENT_MSG_TYPE_USER_EVENT, content))
-			}
+			// if (this.keyboardState[PLAYER_KEYS[i][KEY_UP]] && ! this.paddlesKeyState[i * 4 + KEY_UP])
+			// {
+			// 	this.paddlesKeyState[i * 4 + KEY_UP] = true
+			// 	let content = templateContent.copy()
+			// 	content["keyId"] = KEY_UP
+			// 	content["keyAction"] = true
+			// 	this.messageForServer.append((CLIENT_MSG_TYPE_USER_EVENT, content))
+			// }
+			// else if (! this.keyboardState[PLAYER_KEYS[i][KEY_UP]] && this.paddlesKeyState[i * 4 + KEY_UP])
+			// {
+			// 	this.paddlesKeyState[i * 4 + KEY_UP] = false
+			// 	let content = templateContent.copy()
+			// 	content["keyId"] = KEY_UP
+			// 	content["keyAction"] = false
+			// 	this.messageForServer.append((CLIENT_MSG_TYPE_USER_EVENT, content))
+			// }
 
-			if (this.keyboardState[PLAYER_KEYS[i][KEY_DOWN]] && ! this.paddlesKeyState[i * 4 + KEY_DOWN])
-			{
-				this.paddlesKeyState[i * 4 + KEY_DOWN] = true
-				content = templateContent.copy()
-				content["keyId"] = KEY_DOWN
-				content["keyAction"] = true
-				this.messageForServer.append((CLIENT_MSG_TYPE_USER_EVENT, content))
-			}
-			else if (! this.keyboardState[PLAYER_KEYS[i][KEY_DOWN]] && this.paddlesKeyState[i * 4 + KEY_DOWN])
-			{
-				this.paddlesKeyState[i * 4 + KEY_DOWN] = False
-				content = templateContent.copy()
-				content["keyId"] = KEY_DOWN
-				content["keyAction"] = False
-				this.messageForServer.append((CLIENT_MSG_TYPE_USER_EVENT, content))
-			}
+			// if (this.keyboardState[PLAYER_KEYS[i][KEY_DOWN]] && ! this.paddlesKeyState[i * 4 + KEY_DOWN])
+			// {
+			// 	this.paddlesKeyState[i * 4 + KEY_DOWN] = true
+			// 	let content = templateContent.copy()
+			// 	content["keyId"] = KEY_DOWN
+			// 	content["keyAction"] = true
+			// 	this.messageForServer.append((CLIENT_MSG_TYPE_USER_EVENT, content))
+			// }
+			// else if (! this.keyboardState[PLAYER_KEYS[i][KEY_DOWN]] && this.paddlesKeyState[i * 4 + KEY_DOWN])
+			// {
+			// 	this.paddlesKeyState[i * 4 + KEY_DOWN] = false
+			// 	let content = templateContent.copy()
+			// 	content["keyId"] = KEY_DOWN
+			// 	content["keyAction"] = false
+			// 	this.messageForServer.append((CLIENT_MSG_TYPE_USER_EVENT, content))
+			// }
 
-			if (this.keyboardState[PLAYER_KEYS[i][KEY_POWER_UP]] && ! this.paddlesKeyState[i * 4 + KEY_POWER_UP])
-			{
-				this.paddlesKeyState[i * 4 + KEY_POWER_UP] = true
-				content = templateContent.copy()
-				content["keyId"] = KEY_POWER_UP
-				content["keyAction"] = true
-				this.messageForServer.append((CLIENT_MSG_TYPE_USER_EVENT, content))
-			}
-			else if (! this.keyboardState[PLAYER_KEYS[i][KEY_POWER_UP]] && this.paddlesKeyState[i * 4 + KEY_POWER_UP])
-			{
-				this.paddlesKeyState[i * 4 + KEY_POWER_UP] = False
-				content = templateContent.copy()
-				content["keyId"] = KEY_POWER_UP
-				content["keyAction"] = False
-				this.messageForServer.append((CLIENT_MSG_TYPE_USER_EVENT, content))
-			}
+			// if (this.keyboardState[PLAYER_KEYS[i][KEY_POWER_UP]] && ! this.paddlesKeyState[i * 4 + KEY_POWER_UP])
+			// {
+			// 	this.paddlesKeyState[i * 4 + KEY_POWER_UP] = true
+			// 	let content = templateContent.copy()
+			// 	content["keyId"] = KEY_POWER_UP
+			// 	content["keyAction"] = true
+			// 	this.messageForServer.append((CLIENT_MSG_TYPE_USER_EVENT, content))
+			// }
+			// else if (! this.keyboardState[PLAYER_KEYS[i][KEY_POWER_UP]] && this.paddlesKeyState[i * 4 + KEY_POWER_UP])
+			// {
+			// 	this.paddlesKeyState[i * 4 + KEY_POWER_UP] = false
+			// 	let content = templateContent.copy()
+			// 	content["keyId"] = KEY_POWER_UP
+			// 	content["keyAction"] = false
+			// 	this.messageForServer.append((CLIENT_MSG_TYPE_USER_EVENT, content))
+			// }
 
-			if (this.keyboardState[PLAYER_KEYS[i][KEY_LAUNCH_BALL]] && ! this.paddlesKeyState[i * 4 + KEY_LAUNCH_BALL])
-			{
-				this.paddlesKeyState[i * 4 + KEY_LAUNCH_BALL] = true
-				content = templateContent.copy()
-				content["keyId"] = KEY_LAUNCH_BALL
-				content["keyAction"] = true
-				this.messageForServer.append((CLIENT_MSG_TYPE_USER_EVENT, content))
-			}
-			else if (! this.keyboardState[PLAYER_KEYS[i][KEY_LAUNCH_BALL]] && this.paddlesKeyState[i * 4 + KEY_LAUNCH_BALL])
-			{
-				this.paddlesKeyState[i * 4 + KEY_LAUNCH_BALL] = False
-				content = templateContent.copy()
-				content["keyId"] = KEY_LAUNCH_BALL
-				content["keyAction"] = False
-				this.messageForServer.append((CLIENT_MSG_TYPE_USER_EVENT, content))
-			}
+			// if (this.keyboardState[PLAYER_KEYS[i][KEY_LAUNCH_BALL]] && ! this.paddlesKeyState[i * 4 + KEY_LAUNCH_BALL])
+			// {
+			// 	this.paddlesKeyState[i * 4 + KEY_LAUNCH_BALL] = true
+			// 	let content = templateContent.copy()
+			// 	content["keyId"] = KEY_LAUNCH_BALL
+			// 	content["keyAction"] = true
+			// 	this.messageForServer.append((CLIENT_MSG_TYPE_USER_EVENT, content))
+			// }
+			// else if (! this.keyboardState[PLAYER_KEYS[i][KEY_LAUNCH_BALL]] && this.paddlesKeyState[i * 4 + KEY_LAUNCH_BALL])
+			// {
+			// 	this.paddlesKeyState[i * 4 + KEY_LAUNCH_BALL] = false
+			// 	let content = templateContent.copy()
+			// 	content["keyId"] = KEY_LAUNCH_BALL
+			// 	content["keyAction"] = false
+			// 	this.messageForServer.append((CLIENT_MSG_TYPE_USER_EVENT, content))
+			// }
 		}
 	}
 
@@ -252,17 +254,17 @@ class GameClient {
 		/*
 		This is the method where all calculations will be done
 		*/
-		tmp = time.time()
-		delta = tmp - this.last
+		let tmp = new Date().getTime()
+		let delta = tmp - this.last
 		this.last = tmp
 
 		this.time += delta
 
 		// Check if ball move. If no ball move, all time base event are stopping
-		updateTime = False
+		let updateTime = false
 		for (const b of this.balls)
 		{
-			if (b.state == STATE_RUN)
+			if (b.state == d.STATE_RUN)
 			{
 				updateTime = true
 				break
@@ -275,8 +277,8 @@ class GameClient {
 				this.inputWait = 0
 		}
 
-		if (! updateTime && this.powerUp[0] != POWER_UP_SPAWN_COOLDOWN)
-			this.powerUp[0] = POWER_UP_SPAWN_COOLDOWN
+		if (! updateTime && this.powerUp[0] != d.POWER_UP_SPAWN_COOLDOWN)
+			this.powerUp[0] = d.POWER_UP_SPAWN_COOLDOWN
 
 		this.teamLeft.tick(delta, this.paddlesKeyState, updateTime)
 		this.teamRight.tick(delta, this.paddlesKeyState, updateTime)
@@ -288,7 +290,8 @@ class GameClient {
 				b.updateTime(delta)
 		}
 
-		pg.display.set_caption("time : " + str(this.time))
+		//pg.display.set_caption("time : " + str(this.time))
+		console.log("time : " + this.time);
 	}
 
 
@@ -297,13 +300,13 @@ class GameClient {
 		This is the method where all graphic update will be done
 		*/
 		// We clean our screen with one color
-		this.win.fill((0, 0, 0))
+		//this.win.fill((0, 0, 0))
 
 		// Draw area
 		// pg.draw.rect(this.win, AREA_COLOR, AREA_RECT)
-		pg.draw.rect(this.win, AREA_TEAM_COLOR, AREA_LEFT_TEAM_RECT)
-		pg.draw.rect(this.win, AREA_COLOR, AREA_MIDDLE_RECT)
-		pg.draw.rect(this.win, AREA_TEAM_COLOR, AREA_RIGTH_TEAM_RECT)
+		// pg.draw.rect(this.win, AREA_TEAM_COLOR, AREA_LEFT_TEAM_RECT)
+		// pg.draw.rect(this.win, AREA_COLOR, AREA_MIDDLE_RECT)
+		// pg.draw.rect(this.win, AREA_TEAM_COLOR, AREA_RIGTH_TEAM_RECT)
 
 		// Draw walls
 		for (const w of this.walls)
@@ -314,7 +317,7 @@ class GameClient {
 		}
 
 		// Power up draw
-		if (this.powerUp[0] == POWER_UP_VISIBLE)
+		if (this.powerUp[0] == d.POWER_UP_VISIBLE)
 		{
 			this.powerUp[1].drawFill(this.win)
 			if (DRAW_HITBOX)
@@ -331,7 +334,8 @@ class GameClient {
 
 		// We update the drawing.
 		// Before the function call, any changes will be not visible
-		pg.display.update()}
+		// pg.display.update()
+	}
 
 
 	quit()
@@ -340,7 +344,7 @@ class GameClient {
 		This is the quit method
 		*/
 		// Pygame quit
-		this.runMainLoop = False
+		this.runMainLoop = false
 		pg.quit()
 	}
 
@@ -372,7 +376,7 @@ class GameClient {
 		// Content of obstacles :
 		// {
 		// 	obstables : [ {position:[x, y], points:[[x, y]], color:(r, g, b)} ]
-		// 	powerUp : true or False
+		// 	powerUp : true or false
 		// }
 		this.walls.clear()
 

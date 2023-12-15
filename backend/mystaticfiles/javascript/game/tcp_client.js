@@ -1,10 +1,10 @@
 import "./define.js"
-import  /*{GameClient} from*/ "./game_client.js"
+import  {GameClient} from "./game_client.js"
 
 // import select
 // import socket
 
-function runGameClient(
+export function runGameClient(
         host="127.0.0.1",
         port=20000
     )
@@ -16,10 +16,10 @@ function runGameClient(
     // pollerObject = select.poll()
     // pollerObject.register(clientSocket, select.POLLIN)
 
-    runTcpClient = true
+    let runTcpClient = true
 
     // Start game client
-    gameClient = GameClient()
+    let gameClient = new GameClient()
 
     // Clients loop
     while(runTcpClient && gameClient.runMainLoop)

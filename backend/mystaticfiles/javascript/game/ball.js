@@ -1,5 +1,6 @@
-import "./client_define.js"
-import "./vec2.js"
+import * as dc from "./client_define.js"
+import * as d from "./define.js"
+import {Vec2} from "./vec2.js"
 import "./hitbox.js"
 import * as hitbox from "./hitbox.js"
 import * as paddle from "./paddle.js"
@@ -8,54 +9,54 @@ import * as paddle from "./paddle.js"
 
 
 
-function getPointOfCircle(radius, precision, beginDegree = 0)
+export function getPointOfCircle(radius, precision, beginDegree = 0)
 {
 	let points = []
 	for (let i = 0; i < precision; i++)
 	{
-		degree = 360 / precision * i + beginDegree
-		radian = degree * (math.pi / 180)
-		x = radius * math.cos(radian)
-		y = radius * math.sin(radian)
-		points.append((x, y))
+		let degree = 360 / precision * i + beginDegree
+		let radian = degree * (Math.PI / 180)
+		let x = radius * Math.cos(radian)
+		let y = radius * Math.sin(radian)
+		points.push((x, y))
 	}
 	return points
 }
 
 
 
-class Ball {
+export class Ball {
 	constructor ( x, y)
 	{
 		// Geometry
-		this.pos = Vec2(x, y)
-		this.radius = BALL_RADIUS
-		this.speed = BALL_START_SPEED
-		this.direction = Vec2(1, 0)
+		this.pos = new Vec2(x, y)
+		this.radius = d.BALL_RADIUS
+		this.speed = d.BALL_START_SPEED
+		this.direction = new Vec2(1, 0)
 
 		// Graphique
-		this.color = BALL_COLOR
-		this.originalSprite = pg.image.load("client_side/imgs/ball.png")
-		this.sprite = pg.transform.scale(this.originalSprite, (this.radius * 2, this.radius * 2))
+		this.color = d.BALL_COLOR
+		// this.originalSprite = pg.image.load("client_side/imgs/ball.png")
+		// this.sprite = pg.transform.scale(this.originalSprite, (this.radius * 2, this.radius * 2))
 
 		// Hitbox creation
-		this.hitbox = hitbox.Hitbox(this.pos.x, this.pos.y, HITBOX_BALL_COLOR)
+		this.hitbox = new hitbox.Hitbox(this.pos.x, this.pos.y, d.HITBOX_BALL_COLOR)
 		this.hitbox.setPos(this.pos)
-		let points = getPointOfCircle(this.radius, BALL_HITBOX_PRECISION, 360 / (BALL_HITBOX_PRECISION * 2))
+		let points = getPointOfCircle(this.radius, d.BALL_HITBOX_PRECISION, 360 / (d.BALL_HITBOX_PRECISION * 2))
 
 		for (let index = 0; index < points.length; index++)
 		{
-			const p = array[index];
+			const p = new Array(index)
 			this.hitbox.addPoint(p[0], p[1]);
 		}
 
 		// Modifier
 		this.modifierSpeed = 1
 		this.modifierSize = 1
-		this.modifierSkipCollision = False
-		this.modifierInvisibleBall = False
+		this.modifierSkipCollision = false
+		this.modifierInvisibleBall = false
 		this.modifierInvisibleBallTimer = 0
-		this.modifierWaveBall = False
+		this.modifierWaveBall = false
 		this.modifierWaveBallTimer = 0
 		this.modifierStopBallTimer = 0
 
@@ -64,14 +65,14 @@ class Ball {
 
 		this.lastPositions = [];
 		this.lastColors = [];
-		for (let index = 0; index < BALL_TRAIL_LENGTH; index++) {
+		for (let index = 0; index < d.BALL_TRAIL_LENGTH; index++) {
 			this.lastPositions.push((x, y));
 			this.lastColors.push(BALL_COLOR);
 		}
-		this.state = STATE_IN_FOLLOW
+		this.state = d.STATE_IN_FOLLOW
 
 		this.lastPaddleHitId = 0
-		this.lastPaddleTeam = TEAM_LEFT
+		this.lastPaddleTeam = dc.TEAM_LEFT
 
 		// For stat
 		this.numberOfBounce = 0
@@ -83,10 +84,10 @@ class Ball {
 	{
 		this.hitbox.setPos(this.pos)
 		this.hitbox.clearPoints()
-		let points = getPointOfCircle(this.radius * this.modifierSize, BALL_HITBOX_PRECISION, 360 / (BALL_HITBOX_PRECISION * 2))
+		let points = getPointOfCircle(this.radius * this.modifierSize, d.BALL_HITBOX_PRECISION, 360 / (d.BALL_HITBOX_PRECISION * 2))
 		for (let index = 0; index < points.length; index++)
 		{
-			const p = array[index];
+			const p = new Array(index);
 			this.hitbox.addPoint(p[0], p[1]);
 		}
 	}
@@ -97,10 +98,10 @@ class Ball {
 		this.modifierSpeed = 1
 		if (this.modifierSize != 1)
 			this.modifySize(1);
-		this.modifierSkipCollision = False
-		this.modifierInvisibleBall = False
+		this.modifierSkipCollision = false
+		this.modifierInvisibleBall = false
 		this.modifierInvisibleBallTimer = 0
-		this.modifierWaveBall = False
+		this.modifierWaveBall = false
 		this.modifierWaveBallTimer = 0
 	}
 
@@ -117,29 +118,29 @@ class Ball {
 	{
 		//TODO change content to adapt
 
-		if (this.state == STATE_RUN)
+		if (this.state == d.STATE_RUN)
 		{
-			for (let i = 0; i < BALL_TRAIL_LENGTH; i++) {
-				gradiant = i / BALL_TRAIL_LENGTH;
-				color = (parseInt(this.lastColors[i][0] * BALL_TRAIL_OPACITY),
-				parseInt(this.lastColors[i][1] * BALL_TRAIL_OPACITY),
-				parseInt(this.lastColors[i][2] * BALL_TRAIL_OPACITY));
-				if ((! (this.modifierInvisibleBall)) || (parseInt(this.modifierInvisibleBallTimer * 5) % 2))
-					pg.draw.circle(win, color, this.lastPositions[i], (this.radius * gradiant) * this.modifierSize)	
+			for (let i = 0; i < d.BALL_TRAIL_LENGTH; i++) {
+				let gradiant = i / d.BALL_TRAIL_LENGTH;
+				let color = (parseInt(this.lastColors[i][0] * d.BALL_TRAIL_OPACITY),
+				parseInt(this.lastColors[i][1] * d.BALL_TRAIL_OPACITY),
+				parseInt(this.lastColors[i][2] * d.BALL_TRAIL_OPACITY));
+				// if ((! (this.modifierInvisibleBall)) || (parseInt(this.modifierInvisibleBallTimer * 5) % 2))
+				// 	pg.draw.circle(win, color, this.lastPositions[i], (this.radius * gradiant) * this.modifierSize)	
 			}
 
 
 		}
 		else if (this.lastPositions[-1] != this.pos.asTupple())
 		{
-			for (let i = 0; i < BALL_TRAIL_LENGTH; i++)
+			for (let i = 0; i < d.BALL_TRAIL_LENGTH; i++)
 			{
 				this.lastPositions[i] = this.pos.asTupple()
 			}
 		}
 
-		if ((! (this.modifierInvisibleBall)) || (parseInt(this.modifierInvisibleBallTimer * POWER_UP_BALL_INVISIBLE_SPEED_FACTOR) % 2))
-			win.blit(this.sprite, (this.pos.x - (this.radius * this.modifierSize), this.pos.y - (this.radius * this.modifierSize)));
+		// if ((! (this.modifierInvisibleBall)) || (parseInt(this.modifierInvisibleBallTimer * d.POWER_UP_BALL_INVISIBLE_SPEED_FACTOR) % 2))
+		// 	win.blit(this.sprite, (this.pos.x - (this.radius * this.modifierSize), this.pos.y - (this.radius * this.modifierSize)));
 		this.hitbox.draw(win);
 	}
 
@@ -174,21 +175,21 @@ class Ball {
 					powerUpEffectToRemove.append(i)
 					// Remove the effect of the power up
 
-					if (powerUpEffect[0] == POWER_UP_BALL_SLOW)
+					if (powerUpEffect[0] == d.POWER_UP_BALL_SLOW)
 					{
-						this.modifierSpeed *= POWER_UP_BALL_SLOW_SPEED_FACTOR
+						this.modifierSpeed *= d.POWER_UP_BALL_SLOW_SPEED_FACTOR
 						if (this.modifierSpeed > 1)
 							this.modifierSpeed = 1
 					}
 
-					else if (powerUpEffect[0] == POWER_UP_BALL_BIG){
-						this.modifierSize /= POWER_UP_BALL_BIG_SIZE_FACTOR
+					else if (powerUpEffect[0] == d.POWER_UP_BALL_BIG){
+						this.modifierSize /= d.POWER_UP_BALL_BIG_SIZE_FACTOR
 						this.modifySize(this.modifierSize)
 					}
 
-					else if (powerUpEffect[0] == POWER_UP_BALL_LITTLE)
+					else if (powerUpEffect[0] == d.POWER_UP_BALL_LITTLE)
 					{
-						this.modifierSize *= POWER_UP_BALL_LITTLE_SIZE_FACTOR
+						this.modifierSize *= d.POWER_UP_BALL_LITTLE_SIZE_FACTOR
 						this.modifySize(this.modifierSize)
 					}
 				}
@@ -214,7 +215,7 @@ class Ball {
 
 	updatePosition( delta, paddlesLeft, paddlesRight, walls, powerUp)
 	{
-		if (this.state != STATE_RUN || this.modifierStopBallTimer > 0)
+		if (this.state != d.STATE_RUN || this.modifierStopBallTimer > 0)
 			return
 
 		// Store last positions
@@ -243,7 +244,7 @@ class Ball {
 			newpos.translateAlong(realDirection, step)
 			this.hitbox.setPos(newpos)
 
-			collision = False
+			collision = false
 
 			// Collision with powerUp
 			if (powerUp[0] == POWER_UP_VISIBLE && this.hitbox.isCollide(powerUp[1]))
@@ -259,7 +260,7 @@ class Ball {
 					realDirection = this.getRealDirection()
 					newpos = this.pos.dup()
 					newpos.translateAlong(realDirection, step)
-					collision = False
+					collision = false
 				}
 				collision = this.makeCollisionWithPaddle(p)
 			}
@@ -269,7 +270,7 @@ class Ball {
 					realDirection = this.getRealDirection()
 					newpos = this.pos.dup()
 					newpos.translateAlong(realDirection, step)
-					collision = False
+					collision = false
 				}
 				collision = this.makeCollisionWithPaddle(p)
 			}
@@ -282,7 +283,7 @@ class Ball {
 					realDirection = this.getRealDirection()
 					newpos = this.pos.dup()
 					newpos.translateAlong(realDirection, step)
-					collision = False
+					collision = false
 				}
 				collision = this.makeCollisionWithWall(w)
 			}
@@ -386,14 +387,14 @@ class Ball {
 	makeCollisionWithWall( hitboxe)
 	{
 		if (this.modifierSkipCollision)
-			return False
+			return false
 
 		if (! (hitboxe.isCollide(this.hitbox)))
-			return False
+			return false
 
 		collideInfos = hitboxe.getCollideInfo(this.hitbox)
 
-		collide = False
+		collide = false
 
 		hitPos = []
 		newDirections = []
@@ -434,7 +435,7 @@ class Ball {
 	makeCollisionWithPaddle( paddlee)
 	{
 		if (! (paddlee.hitbox.isCollide(this.hitbox)))
-			return False
+			return false
 
 		// Speed stat
 		realSpeed = this.speed * this.modifierSpeed
@@ -465,12 +466,12 @@ class Ball {
 		this.lastPaddleTeam = paddlee.team
 
 		// Reset modifier
-		this.modifierSkipCollision = False
+		this.modifierSkipCollision = false
 
-		this.modifierInvisibleBall = False
+		this.modifierInvisibleBall = false
 		this.modifierInvisibleBallTimer = 0
 
-		this.modifierWaveBall = False
+		this.modifierWaveBall = false
 		this.modifierWaveBallTimer = 0
 		if (this.modifierSpeed > 1)
 			this.modifierSpeed = 1
