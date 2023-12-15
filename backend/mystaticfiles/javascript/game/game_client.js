@@ -291,7 +291,7 @@ export class GameClient {
 		}
 
 		//pg.display.set_caption("time : " + str(this.time))
-		console.log("time : " + this.time);
+		// console.log("time : " + this.time);
 	}
 
 

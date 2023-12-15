@@ -4,7 +4,7 @@ import  {GameClient} from "./game_client.js"
 // import select
 // import socket
 
-export function runGameClient(
+export async function runGameClient(
         host="127.0.0.1",
         port=20000
     )
@@ -24,6 +24,7 @@ export function runGameClient(
     // Clients loop
     while(runTcpClient && gameClient.runMainLoop)
 	{
+		//console.log("game running")
         // Check if we recived message
         //fdVsEvent = pollerObject.poll(10)
 
