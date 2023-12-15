@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<!-- TODO when the game work correctly, remove the link (CSS) and script (JS) balise at line 4 and 5 -->
+{% load static %}
+<link rel="stylesheet" href="{% static 'myglobal.css' %}">
+
+
+<div id="Page" > 
+
+	<svg id="svgGameBox"  viewBox="0, 0, 800, 300" style="width:100%; height:100%;" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+		<g id="GameBox">
+
+
+		</g>
+	</svg>
+	<script type="module" src="{% static 'javascript/game/main_client.js' %}" ></script>
+
+</div>

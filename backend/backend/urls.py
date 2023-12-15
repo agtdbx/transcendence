@@ -26,4 +26,5 @@ urlpatterns = [
     path("",views.index, name=""),
     path("<int:num>", views.section, name="section"),
     path('user/', user, name='user'),
+	path('gamePage/', views.gamePage, name='gamePage'),
 ]

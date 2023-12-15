@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    views.py                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: hde-min <hde-min@student.42.fr>            +#+  +:+       +#+         #
+#    By: lflandri <lflandri@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/08 14:00:09 by lflandri          #+#    #+#              #
-#    Updated: 2023/12/07 16:58:38 by hde-min          ###   ########.fr        #
+#    Updated: 2023/12/15 17:53:38 by lflandri         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -83,3 +83,6 @@ def user(request):
         return render(request,"mainpage.html")
     else:
         return HttpResponse("Invalid request method.")
+
+def gamePage(request):
+	return render(request,"game.html")
