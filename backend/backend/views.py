@@ -6,7 +6,7 @@
 #    By: aderouba <aderouba@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/08 14:00:09 by lflandri          #+#    #+#              #
-#    Updated: 2023/12/14 16:17:28 by aderouba         ###   ########.fr        #
+#    Updated: 2023/12/15 14:49:57 by aderouba         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -45,6 +45,7 @@ class LoginView(APIView):
 
 @csrf_exempt
 def testPY(request):
+
     return HttpResponse("success")
 
 
@@ -53,6 +54,10 @@ def index(request):
 
 randomstring = ["This is section 1.","This is section 2.", "This is section 3."]
 
+def checkLogin(request):
+    # raise Http404('No such section')
+    return JsonResponse({"success" : True, "token" : "good_boy"})
+
 def section(request, num):
     if num == 0:
         user = User.objects.all()
@@ -60,7 +65,6 @@ def section(request, num):
     elif num == 1:                      #login classique
             username = request.POST.get('login')
             password = request.POST.get('password')
-
 
             username_check = User.objects.all().filter(username=username)
             if len(username_check) == 0:
