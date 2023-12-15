@@ -1,7 +1,8 @@
-// from client_side.client_define import *
-// from client_side.vec2 import *
-// import client_side.hitbox as hitbox
-// import client_side.paddle as paddle
+import "./client_define.js"
+import "./vec2.js"
+import "./hitbox.js"
+import * as hitbox from "./hitbox.js"
+import * as paddle from "./paddle.js"
 
 // import pygame as pg
 
@@ -78,7 +79,7 @@ class Ball {
 	
 
 
-	resetHitbox(this)
+	resetHitbox()
 	{
 		this.hitbox.setPos(this.pos)
 		this.hitbox.clearPoints()
@@ -91,7 +92,7 @@ class Ball {
 	}
 
 
-	resetModifier(this)
+	resetModifier()
 	{
 		this.modifierSpeed = 1
 		if (this.modifierSize != 1)

@@ -1,5 +1,5 @@
-// from client_side.vec2 import *
-// from client_side.client_define import *
+import "./vec2.js"
+import "./client_define.js"
 
 // import pygame as pg
 // import math

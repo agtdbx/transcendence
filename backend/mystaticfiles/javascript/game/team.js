@@ -1,6 +1,6 @@
-// from client_side.client_define import *
-// from client_side.pg_utils import *
-// import client_side.paddle as paddle
+import "./client_define.js"
+import "./pg_utils.js"
+
 
 class Team {
 	constructor ( numberOfPlayers, team){

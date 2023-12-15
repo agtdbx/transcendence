@@ -1,5 +1,6 @@
-from define import *
-from client_side.tcp_client import runGameClient
+import "./define.js"
+import /*{runGameClient} from*/ "./tcp_client.js"
+
 
 
 runGameClient()

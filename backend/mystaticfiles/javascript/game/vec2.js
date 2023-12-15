@@ -8,7 +8,8 @@ class Vec2 {
 	}
 
 
-	__str__(this){
+	print()
+	{
 		return "<{x:+.2f},{y:+.2f}>".format(x=this.x, y=this.y)
 	}
 

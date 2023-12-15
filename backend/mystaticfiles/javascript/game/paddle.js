@@ -1,6 +1,6 @@
-// from client_side.client_define import *
-// from client_side.vec2 import *
-// import client_side.hitbox as hitbox
+import "./client_define.js"
+import "./vec2.js"
+import * as hitbox from "./hitbox.js"
 
 class Paddle {
 	constructor ( x, y, id, team)
@@ -42,7 +42,7 @@ class Paddle {
 	}
 
 
-	updateTimes(this, delta)
+	updateTimes( delta)
 	{
 		if (this.waitLaunch > 0)
 		{
@@ -96,7 +96,7 @@ class Paddle {
 			this.powerUpEffects.pop(powerUpEffectToRemove[i] - i)
 	}
 
-	move(this, dir, delta)
+	move( dir, delta)
 	{
 		if (dir == "up")
 		{
@@ -116,7 +116,7 @@ class Paddle {
 	}
 
 
-	modifySize(this, modifier)
+	modifySize( modifier)
 	{
 		this.modifierSize = modifier
 		this.hitbox.clearPoints()
@@ -141,7 +141,7 @@ class Paddle {
 	}
 
 
-	draw(this, win)
+	draw( win)
 	{
 		if (this.powerUpInCharge.length > 0)
 		{
@@ -160,7 +160,7 @@ class Paddle {
 	}
 
 
-	setPos(this, x, y)
+	setPos( x, y)
 	{
 		this.pos = Vec2(x, y)
 		this.hitbox.setPos(Vec2(x, y))

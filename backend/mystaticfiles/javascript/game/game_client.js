@@ -1,9 +1,9 @@
-// from client_side.client_define import *
-// from client_side.vec2 import *
-// import client_side.hitbox as hitbox
-// import client_side.team as team
-// import client_side.paddle as paddle
-// import client_side.ball as ball
+import "./client_define.js"
+import "./vec2.js"
+import * as hitbox from "./hitbox.js"
+import * as team from "./team.js"
+import * as paddle from "./paddle.js"
+import * as ball from "./ball.js"
 
 // import pygame as pg
 // import random
@@ -73,16 +73,16 @@ class GameClient {
 		// Ball creation
 		this.balls = [ball.Ball(WIN_WIDTH / 2, WIN_HEIGHT / 2)]
 
-		// Ball begin left side
-		if (random.random() > 0.5)
-			this.balls[0].lastPaddleHitId = random.choice(this.teamLeft.paddles).id
-		// Ball begin right side
-		else
-		{
-			this.balls[0].lastPaddleHitId = random.choice(this.teamRight.paddles).id
-			this.balls[0].direction = Vec2(-1, 0)
-			this.balls[0].lastPaddleTeam = TEAM_RIGHT
-		}
+		// // Ball begin left side
+		// if (random.random() > 0.5)
+		// 	this.balls[0].lastPaddleHitId = random.choice(this.teamLeft.paddles).id
+		// // Ball begin right side
+		// else
+		// {
+		// 	this.balls[0].lastPaddleHitId = random.choice(this.teamRight.paddles).id
+		// 	this.balls[0].direction = Vec2(-1, 0)
+		// 	this.balls[0].lastPaddleTeam = TEAM_RIGHT
+		// }
 
 		// Power up creation
 		this.powerUpEnable = False
