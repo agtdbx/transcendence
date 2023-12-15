@@ -5,8 +5,8 @@ import {runGameClient} from "./tcp_client.js"
 document.onreadystatechange = () => {
 	if (document.readyState === 'complete') {
 	  // document ready			
-	console.log("test4")
+	console.log("launching game")
 	runGameClient();
-	console.log("test3")
+	console.log("exit document_waiting state")
 	}
   };

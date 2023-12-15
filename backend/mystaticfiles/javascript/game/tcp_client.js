@@ -6,6 +6,11 @@ import  {GameClient} from "./game_client.js"
 
 const sleep = ms => new Promise(r => setTimeout(r, ms));
 
+function GameAddStep(gameClient)
+{
+
+}
+
 export async function runGameClient(
         host="127.0.0.1",
         port=20000
@@ -24,11 +29,32 @@ export async function runGameClient(
     let gameClient = new GameClient()
 
     // Clients loop
-    while(runTcpClient && gameClient.runMainLoop)
+
+	if (runTcpClient && gameClient.runMainLoop)
 	{
-		console.log("game running")
-		sleep(30)
-		console.log("games running")
+		var intervalGame = setInterval(
+			function ()
+			{
+
+				if (runTcpClient && gameClient.runMainLoop)
+				{
+					gameClient.step()
+					console.log("game step")
+				}
+				else
+				{
+					console.log("game end")
+					gameClient.quit()
+					clearInterval(interval);
+				}	
+				GameAddStep(gameClient)
+			},
+			16);
+	}
+
+
+    // while(runTcpClient && gameClient.runMainLoop)
+	// {
 
         // Check if we recived message
         //fdVsEvent = pollerObject.poll(10)
@@ -65,16 +91,13 @@ export async function runGameClient(
 		// }
 
         // Run game client step
-        gameClient.step()
 
         // Send the server state to client
         // for (const msg of gameClient.messageForServer)
         //     clientSocket.sendall(bytes(str(msg) + "|", encoding='utf-8'))
-	}
+	// }
     // if (gameClient.runMainLoop == false)
     //     clientSocket.sendall(bytes(str("STOP"), encoding='utf-8'))
 
-    print("Client_end")
-    gameClient.quit()
 }
 
