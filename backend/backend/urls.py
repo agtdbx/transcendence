@@ -26,7 +26,5 @@ urlpatterns = [
     path("",views.index, name=""),
     path("<int:num>", views.section, name="section"),
     path("api/checkLogin", views.checkLogin, name="checkLogin"),
-
-    path('api/token/', jwt_views.TokenObtainPairView.as_view(), name='token_obtain_pair'),
-    path('api/token/refresh/', jwt_views.TokenRefreshView.as_view(), name='token_refresh'),
+    path("api/checkSignin", views.checkSignin, name="checkSignin"),
 ]
