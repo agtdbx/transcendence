@@ -19,12 +19,8 @@ from django.urls import path
 from . import views
 from .views import *
 
-from rest_framework_simplejwt import views as jwt_views
-
 
 urlpatterns = [
     path("",views.index, name=""),
     path("<int:num>", views.section, name="section"),
-    path("api/checkLogin", views.checkLogin, name="checkLogin"),
-    path("api/checkSignin", views.checkSignin, name="checkSignin"),
 ]
