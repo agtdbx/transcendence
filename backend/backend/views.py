@@ -22,22 +22,9 @@ from db_test.models import Status
 from db_test.models import connectionPassword
 
 
-
-# def testJS(request):
-#     return render(request,"other.html")
-
-@csrf_exempt
-def testPY(request):
-
-    return HttpResponse("success")
-
-
-def index(request):
-    return render(request, 'index.html')
-
-randomstring = ["This is section 1.","This is section 2.", "This is section 3."]
-
-
+# **************************************************************************** #
+#                                Check Functions                               #
+# **************************************************************************** #
 def checkLogin(request):
     username = request.POST.get('login')
     password = request.POST.get('password')
@@ -129,6 +116,13 @@ def checkToken(request):
     return {"success" : True, "userId" : userId}
 
 
+# **************************************************************************** #
+#                                 Page Function                                #
+# **************************************************************************** #
+def index(request):
+    return render(request, 'index.html')
+
+
 def section(request, num):
     if request.method != 'POST':
         return JsonResponse({"success" : False, "error" : "Get access refused"})
@@ -157,7 +151,8 @@ def section(request, num):
         user = User.objects.all().filter(idUser=userId)
         htmlText = render(request,"navbar.html", {'user': user[0] }).getvalue().decode()
         return JsonResponse({"success" : True, "html" : htmlText})
-    if num == 3:# Page de création de compte
+
+    elif num == 3:# Page de création de compte
         htmlText = render(request,"mainpage.html").getvalue().decode()
         return JsonResponse({"success" : True, "html" : htmlText})
 
