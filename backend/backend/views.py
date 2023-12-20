@@ -6,7 +6,7 @@
 #    By: aderouba <aderouba@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/08 14:00:09 by lflandri          #+#    #+#              #
-#    Updated: 2023/12/18 18:35:22 by aderouba         ###   ########.fr        #
+#    Updated: 2023/12/20 14:12:40 by aderouba         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -122,7 +122,7 @@ def checkToken(request):
 def index(request):
     return render(request, 'index.html')
 
-
+@csrf_exempt
 def section(request, num):
     if request.method != 'POST':
         return JsonResponse({"success" : False, "error" : "Get access refused"})
@@ -158,7 +158,8 @@ def section(request, num):
 
     elif num == 4:
         htmlText = render(request,"waitpage.html").getvalue().decode()
-        return JsonResponse({"success" : True, "html" : htmlText})
+        res = JsonResponse({"success" : True, "html" : htmlText})
+        return res
 
     elif num == 5:
         htmlText = render(request,"createGameRoom.html").getvalue().decode()
