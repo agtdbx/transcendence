@@ -6,7 +6,7 @@
 #    By: aderouba <aderouba@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/08 14:00:09 by lflandri          #+#    #+#              #
-#    Updated: 2023/12/20 14:12:40 by aderouba         ###   ########.fr        #
+#    Updated: 2023/12/20 14:53:27 by aderouba         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -124,8 +124,8 @@ def index(request):
 
 @csrf_exempt
 def section(request, num):
-    if request.method != 'POST':
-        return JsonResponse({"success" : False, "error" : "Get access refused"})
+    # if request.method != 'POST':
+    #     return JsonResponse({"success" : False, "error" : "Get access refused"})
 
     if num == 1: # Page d'accueil
         check = checkLogin(request)

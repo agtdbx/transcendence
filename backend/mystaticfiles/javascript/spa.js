@@ -1,33 +1,37 @@
-function openPopupLog(){
-let popup = document.getElementById("popupLogin");
-popup.classList.add("open-Popup");
-document.getElementById("btn-log").style.display= "none";
-document.getElementById("btn-sign").style.display= "none";
-document.getElementById("btn-log").style.visibility= "hidden";
-document.getElementById("btn-sign").style.visibility= "hidden";
+var app_href = window.location.href
+
+function openPopupLog()
+{
+	let popup = document.getElementById("popupLogin");
+	popup.classList.add("open-Popup");
+	document.getElementById("btn-log").style.display= "none";
+	document.getElementById("btn-sign").style.display= "none";
+	document.getElementById("btn-log").style.visibility= "hidden";
+	document.getElementById("btn-sign").style.visibility= "hidden";
 }
 
-function openPopupSign(){
-let popup2 = document.getElementById("popupSign");
-popup2.classList.add("open-Popup");
-document.getElementById("btn-log").style.display= "none";
-document.getElementById("btn-sign").style.display= "none";
-document.getElementById("btn-log").style.visibility= "hidden";
-document.getElementById("btn-sign").style.visibility= "hidden";
+function openPopupSign()
+{
+	let popup2 = document.getElementById("popupSign");
+	popup2.classList.add("open-Popup");
+	document.getElementById("btn-log").style.display= "none";
+	document.getElementById("btn-sign").style.display= "none";
+	document.getElementById("btn-log").style.visibility= "hidden";
+	document.getElementById("btn-sign").style.visibility= "hidden";
 }
 
-function swapToSign(){
-let popup = document.getElementById("popupLogin");
-let popup2 = document.getElementById("popupSign");
-
+function swapToSign()
+{
+	let popup = document.getElementById("popupLogin");
+	let popup2 = document.getElementById("popupSign");
 	popup.classList.remove("open-Popup");
 	popup2.classList.add("open-Popup");
 }
 
-function swapToLog(){
-let popup2 = document.getElementById("popupSign");
-let popup = document.getElementById("popupLogin");
-
+function swapToLog()
+{
+	let popup2 = document.getElementById("popupSign");
+	let popup = document.getElementById("popupLogin");
 	popup.classList.add("open-Popup");
 	popup2.classList.remove("open-Popup");
 }
@@ -66,7 +70,7 @@ function showcontent(num, data)
 	{
 		method: 'POST',
 		body: data,
-	},)
+	})
 	.then(response => response.json())
 	.then (jsonData => {
 
@@ -136,7 +140,9 @@ function showcontent(num, data)
 			}
 			// To not repeat the element
 			//scripts[i].parentNode.removeChild(scripts[i]);
-			}
-		})
+		}
+		// window.location.href = app_href + num
+		console.log(app_href + num)
+	})
 	.catch(error => console.log("ERROR FETCH :", error, '\n', data))
 }
