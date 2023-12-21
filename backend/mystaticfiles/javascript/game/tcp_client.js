@@ -49,7 +49,7 @@ export async function runGameClient(
 				}	
 				GameAddStep(gameClient)
 			},
-			16);
+			16); //value : 16
 	}
 
 

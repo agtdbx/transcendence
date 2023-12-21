@@ -10,7 +10,7 @@ export class Vec2 {
 
 	print()
 	{
-		return "<{x:+.2f},{y:+.2f}>".format(x=this.x, y=this.y)
+		console.log("<{" + this.x + ":+.2f},{" + this.y + ":+.2f}>");
 	}
 
 
@@ -120,20 +120,20 @@ export class Vec2 {
 
 	dup()
 	{
-		return Vec2(this.x, this.y)
+		return new Vec2(this.x, this.y)
 	}
 
 }
 
 function vec2Add(vec1, vec2)
 {
-	return Vec2(vec1.x + vec2.x, vec1.y + vec2.y)
+	return new Vec2(vec1.x + vec2.x, vec1.y + vec2.y)
 }
 
 
 function vec2Sub(vec1, vec2)
 {
-	return Vec2(vec1.x - vec2.x, vec1.y - vec2.y)
+	return new Vec2(vec1.x - vec2.x, vec1.y - vec2.y)
 }
 
 

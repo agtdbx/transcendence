@@ -199,11 +199,11 @@ export class Hitbox {
 
 	isCollide( hitbox)
 	{
-		pointsSize = this.points.length
+		let pointsSize = this.points.length
 		if (pointsSize <= 1)
 			return false
 
-		hitboxPointsSize = len(hitbox.points)
+		let hitboxPointsSize = hitbox.points.length
 		if (hitboxPointsSize <= 1)
 			return false
 
@@ -213,13 +213,13 @@ export class Hitbox {
 
 		for (let i = 1; i < pointsSize; i++)
 			{
-				p0 = this.points[i - 1]
-				p1 = this.points[i]
+				let p0 = this.points[i - 1]
+				let p1 = this.points[i]
 
 				for (let j = 1; j < hitboxPointsSize; i++)
 				{
-					p2 = hitbox.points[j - 1]
-					p3 = hitbox.points[j]
+					let p2 = hitbox.points[j - 1]
+					let p3 = hitbox.points[j]
 
 					if (collideBetweenSegments(p0, p1, p2, p3)[0])
 						return true

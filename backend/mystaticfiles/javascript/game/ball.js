@@ -33,6 +33,8 @@ export class Ball {
 		this.radius = d.BALL_RADIUS
 		this.speed = d.BALL_START_SPEED
 		this.direction = new Vec2(1, 0)
+		this.htmlObject = document.createElementNS('http://www.w3.org/2000/svg', 'image')
+		this.htmlObject.setAttributeNS('http://www.w3.org/1999/xlink','href', "/static/image/game/ball.png");
 
 		// Graphique
 		this.color = d.BALL_COLOR
@@ -69,7 +71,7 @@ export class Ball {
 			this.lastPositions.push((x, y));
 			this.lastColors.push(BALL_COLOR);
 		}
-		this.state = d.STATE_IN_FOLLOW
+		this.state = d.STATE_RUN
 
 		this.lastPaddleHitId = 0
 		this.lastPaddleTeam = dc.TEAM_LEFT
@@ -159,7 +161,7 @@ export class Ball {
 				this.modifierStopBallTimer = 0
 		}
 
-		powerUpEffectToRemove = [];
+		let powerUpEffectToRemove = [];
 
 		for (let i = 0; i < this.powerUpEffects.length; i++)
 		{
@@ -215,12 +217,14 @@ export class Ball {
 
 	updatePosition( delta, paddlesLeft, paddlesRight, walls, powerUp)
 	{
+		console.log("before :")
+		this.pos.print()
+
 		if (this.state != d.STATE_RUN || this.modifierStopBallTimer > 0)
 			return
-
 		// Store last positions
 		// Store last colors
-		for (let i = 1; i < BALL_TRAIL_LENGTH; i++)
+		for (let i = 1; i < dc.BALL_TRAIL_LENGTH; i++)
 		{
 			this.lastPositions[i - 1] = this.lastPositions[i]
 			this.lastColors[i - 1] = this.lastColors[i]
@@ -229,27 +233,32 @@ export class Ball {
 		this.lastColors[-1] = this.color
 
 		// Check position along direction and speed
-		deltaSpeed = this.speed * delta * this.modifierSpeed
+		console.log("delta : " + delta)
+		let deltaSpeed = this.speed * delta * this.modifierSpeed
 
-		nbCheckCollisionStep = int(deltaSpeed / BALL_MOVE_STEP)
-		lastStepMove = deltaSpeed - (nbCheckCollisionStep * BALL_MOVE_STEP)
+		let nbCheckCollisionStep = deltaSpeed / d.BALL_MOVE_STEP
+		let lastStepMove = deltaSpeed - (nbCheckCollisionStep * d.BALL_MOVE_STEP)
+
+		console.log("nbCheckCollisionStep : " + nbCheckCollisionStep)
 		for (let i = 0; i < nbCheckCollisionStep + 1; i++)
 		{
-			step = BALL_MOVE_STEP
+			let step = d.BALL_MOVE_STEP
 			if (i == nbCheckCollisionStep)
 				step = lastStepMove
 
-			realDirection = this.getRealDirection()
-			newpos = this.pos.dup()
+			let realDirection = this.getRealDirection()
+			let newpos = this.pos.dup()
 			newpos.translateAlong(realDirection, step)
+			// console.log("temp pos vect :")
+			// newpos.print()
 			this.hitbox.setPos(newpos)
 
-			collision = false
+			let collision = false
 
 			// Collision with powerUp
-			if (powerUp[0] == POWER_UP_VISIBLE && this.hitbox.isCollide(powerUp[1]))
+			if (powerUp[0] == d.POWER_UP_VISIBLE && this.hitbox.isCollide(powerUp[1]))
 			{
-				powerUp[0] = POWER_UP_TAKE
+				powerUp[0] = d.POWER_UP_TAKE
 				powerUp[2] = this.lastPaddleHitId
 			}
 			// Collision with paddle
@@ -296,77 +305,82 @@ export class Ball {
 			}
 
 			// Check if ball is in goal
-			if (newpos.x - this.radius < AREA_RECT[0])
+			if (newpos.x - this.radius < dc.AREA_RECT[0])
 			{
-				this.state = STATE_IN_GOAL_LEFT
+				this.state = d.STATE_IN_GOAL_LEFT
 				this.resetModifier()
 				this.powerUpEffects.clear()
 				return
 			}
 
-			if (newpos.x + this.radius > AREA_RECT[0] + AREA_RECT[2])
+			if (newpos.x + this.radius > dc.AREA_RECT[0] + dc.AREA_RECT[2])
 			{
-				this.state = STATE_IN_GOAL_RIGHT
+				this.state = d.STATE_IN_GOAL_RIGHT
 				this.resetModifier()
 				this.powerUpEffects.clear()
 				return
 			}
 
 			// Teleport from up to down
-			if (newpos.y + this.radius < AREA_RECT[1])
+			if (newpos.y + this.radius < dc.AREA_RECT[1])
 			{
 				newpos.y += AREA_RECT[3]
 				this.resetHitbox()
 			}
 			// Teleport from down to up
-			else if (newpos.y - this.radius > AREA_RECT[1] + AREA_RECT[3])
+			else if (newpos.y - this.radius > dc.AREA_RECT[1] + dc.AREA_RECT[3])
 			{
-				newpos.y -= AREA_RECT[3]
+				newpos.y -= dc.AREA_RECT[3]
 				this.resetHitbox()
 			}
 
 			// Affect position along direction and
 			this.pos = newpos.dup()
+			this.htmlObject.setAttribute('x', "" + this.pos.x);
+			this.htmlObject.setAttribute('y', "" + this.pos.y);
 			this.hitbox.setPos(this.pos)
 		}
-
-		if (this.speed < BALL_MAX_SPEED / 2)
+		console.log("after :")
+		this.pos.print()
+		let green_gradient = 0
+		let blue_gradient = 0
+		if (this.speed < d.BALL_MAX_SPEED / 2)
 		{
-			green_gradient = 1 - this.speed / BALL_MAX_SPEED
-			blue_gradient = 1 - this.speed / BALL_MAX_SPEED
+			green_gradient = 1 - this.speed / d.BALL_MAX_SPEED
+			blue_gradient = 1 - this.speed / d.BALL_MAX_SPEED
 		}
 		else
 		{
-			green_gradient = this.speed / BALL_MAX_SPEED
-			blue_gradient = 1 - this.speed / BALL_MAX_SPEED
+			green_gradient = this.speed / d.BALL_MAX_SPEED
+			blue_gradient = 1 - this.speed / d.BALL_MAX_SPEED
 		}
 
 		// Trail color
 		// If the ball is faster than normal, change tail color
 		if (this.modifierSpeed > 1)
 		{
-			this.color =	(BALL_COLOR[0] * green_gradient,
-							BALL_COLOR[1] * blue_gradient,
-							BALL_COLOR[2])
+			this.color =	(dc.BALL_COLOR[0] * green_gradient,
+							dc.BALL_COLOR[1] * blue_gradient,
+							dc.BALL_COLOR[2])
 		}
 		// Idem if slower
 		else if (this.modifierSpeed < 1)
 		{
-			this.color =	(BALL_COLOR[0] * blue_gradient,
-							BALL_COLOR[1],
-							BALL_COLOR[2]* green_gradient)
+			this.color =	(dc.BALL_COLOR[0] * blue_gradient,
+				dc.BALL_COLOR[1],
+				dc.BALL_COLOR[2]* green_gradient)
 		}
 		else
 		{
-			this.color =	(BALL_COLOR[0],
-							BALL_COLOR[1] * green_gradient,
-							BALL_COLOR[2] * blue_gradient)
+			this.color =	(dc.BALL_COLOR[0],
+				dc.BALL_COLOR[1] * green_gradient,
+				dc.BALL_COLOR[2] * blue_gradient)
 		}
 
 		// Friction
-		if (BALL_FRICTION && this.speed > 0)
+		if (d.BALL_FRICTION && this.speed > 0)
 		{
-			this.speed -= max(BALL_MINIMUM_FRICTION, (this.speed * BALL_FRICTION_STRENGTH)) * delta
+			this.speed -= max(d.BALL_MINIMUM_FRICTION, (this.speed * d.BALL_FRICTION_STRENGTH)) * delta
 			if (this.speed < 0)
 				this.speed = 0
 		}
@@ -376,6 +390,8 @@ export class Ball {
 	setPos( pos)
 	{
 		this.pos = pos
+		this.htmlObject.setAttribute('x', "" + this.pos.x);
+		this.htmlObject.setAttribute('y', "" + this.pos.y);
 		for (let i = 0; i < BALL_TRAIL_LENGTH; i++)
 		{
 			this.lastColors[i] = this.color

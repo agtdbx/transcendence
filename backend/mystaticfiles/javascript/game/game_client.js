@@ -53,6 +53,7 @@ export class GameClient {
 		this.winSize = ((dc.WIN_WIDTH, dc.WIN_HEIGHT))
 		// We create the window
 		//this.win = pg.display.set_mode(this.winSize, pg.RESIZABLE)
+		this.win = document.getElementById("GameBox");
 
 		// this.clock = pg.time.Clock() // The clock be used to limit our fps
 		this.fps = 60
@@ -74,6 +75,7 @@ export class GameClient {
 
 		// Ball creation
 		this.balls = [ new ball.Ball(dc.WIN_WIDTH / 2, dc.WIN_HEIGHT / 2)]
+		this.win.insertBefore(this.balls[0].htmlObject, null);
 
 		// // Ball begin left side
 		// if (random.random() > 0.5)
@@ -255,7 +257,7 @@ export class GameClient {
 		This is the method where all calculations will be done
 		*/
 		let tmp = new Date().getTime()
-		let delta = tmp - this.last
+		let delta = (tmp - this.last) / 1000
 		this.last = tmp
 
 		this.time += delta

@@ -59,10 +59,10 @@ export class Paddle {
 				this.waitUsePowerUp = 0
 		}
 
-		powerUpEffectToRemove = []
+		let powerUpEffectToRemove = []
 		for (let i = 0; i < this.powerUpEffects.length; i++)
 		{
-			powerUpEffect = this.powerUpEffects[i]
+			let powerUpEffect = this.powerUpEffects[i]
 			if (powerUpEffect[1] > 0)
 			{
 				powerUpEffect[1] -= delta
