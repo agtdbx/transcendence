@@ -35,6 +35,8 @@ export class Ball {
 		this.direction = new Vec2(1, 0)
 		this.htmlObject = document.createElementNS('http://www.w3.org/2000/svg', 'image')
 		this.htmlObject.setAttributeNS('http://www.w3.org/1999/xlink','href', "/static/image/game/ball.png");
+		this.htmlObject.setAttribute('transform-origin', "center");
+
 
 		// Graphique
 		this.color = d.BALL_COLOR
@@ -217,8 +219,8 @@ export class Ball {
 
 	updatePosition( delta, paddlesLeft, paddlesRight, walls, powerUp)
 	{
-		console.log("before :")
-		this.pos.print()
+		// console.log("before :")
+		// this.pos.print()
 
 		if (this.state != d.STATE_RUN || this.modifierStopBallTimer > 0)
 			return
@@ -233,13 +235,10 @@ export class Ball {
 		this.lastColors[-1] = this.color
 
 		// Check position along direction and speed
-		console.log("delta : " + delta)
 		let deltaSpeed = this.speed * delta * this.modifierSpeed
 
 		let nbCheckCollisionStep = deltaSpeed / d.BALL_MOVE_STEP
 		let lastStepMove = deltaSpeed - (nbCheckCollisionStep * d.BALL_MOVE_STEP)
-
-		console.log("nbCheckCollisionStep : " + nbCheckCollisionStep)
 		for (let i = 0; i < nbCheckCollisionStep + 1; i++)
 		{
 			let step = d.BALL_MOVE_STEP
@@ -317,7 +316,7 @@ export class Ball {
 			{
 				this.state = d.STATE_IN_GOAL_RIGHT
 				this.resetModifier()
-				this.powerUpEffects.clear()
+				this.powerUpEffects = []
 				return
 			}
 
@@ -340,8 +339,9 @@ export class Ball {
 			this.htmlObject.setAttribute('y', "" + this.pos.y);
 			this.hitbox.setPos(this.pos)
 		}
-		console.log("after :")
-		this.pos.print()
+		// console.log("after :")
+		// this.pos.print()
+		this.direction.print()
 		let green_gradient = 0
 		let blue_gradient = 0
 		if (this.speed < d.BALL_MAX_SPEED / 2)
@@ -499,10 +499,10 @@ export class Ball {
 			{
 				if (powerUp == POWER_UP_BALL_FAST)
 				{
-					this.modifierSpeed *= POWER_UP_BALL_FAST_FACTOR
-					this.modifierStopBallTimer = POWER_UP_BALL_FAST_TIME_STOP
-					for (let i = 0; i < this.lastPositions.length; i++) {
-						const element = array[i];
+					this.modifierSpeed *= d.POWER_UP_BALL_FAST_FACTOR
+					this.modifierStopBallTimer = d.POWER_UP_BALL_FAST_TIME_STOP
+					for (let i = 0; i < this.lastPositions.length; i++)
+					{
 						this.lastPositions[i] = this.pos.asTupple()
 						
 					}

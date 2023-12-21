@@ -70,8 +70,15 @@ export class GameClient {
 		this.paddlesKeyState =  [...d.PADDLES_KEYS_STATE]
 
 		// Team creation
-		this.teamLeft = new team.Team(0, d.TEAM_LEFT)
-		this.teamRight = new team.Team(0, d.TEAM_RIGHT)
+		this.teamLeft = new team.Team(1, d.TEAM_LEFT)
+		this.teamRight = new team.Team(1, d.TEAM_RIGHT)
+		let nbPlayerOfTeam = 1;
+		for (let nbplayer = 0; nbplayer < nbPlayerOfTeam; nbplayer++) {
+			this.win.insertBefore(this.teamLeft.paddles[nbplayer].htmlObject, null);
+
+			
+		}
+
 
 		// Ball creation
 		this.balls = [ new ball.Ball(dc.WIN_WIDTH / 2, dc.WIN_HEIGHT / 2)]
@@ -142,7 +149,7 @@ export class GameClient {
 		{
 			this.input()
 			this.tick()
-			this.render()
+			//this.render()
 		}
 			// this.clock.tick(this.fps)
 

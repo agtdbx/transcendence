@@ -8,20 +8,23 @@ export class Team {
 	constructor ( numberOfPlayers, team){
 		if (numberOfPlayers < 1)
 			numberOfPlayers = 1
-		else if (numberOfPlayers > TEAM_MAX_PLAYER)
-			numberOfPlayers = TEAM_MAX_PLAYER
+		else if (numberOfPlayers > d.TEAM_MAX_PLAYER)
+			numberOfPlayers = d.TEAM_MAX_PLAYER
 
 		this.team = team
 
 		let xPos = 0
 		if (this.team == dc.TEAM_LEFT)
-			xPos = dc.AREA_RECT[0] + dc.AREA_BORDER_SIZE * 2
+			xPos = dc.AREA_RECT[0] + d.AREA_BORDER_SIZE * 2
 		else
-			xPos = dc.AREA_RECT[0] + dc.AREA_RECT[2] - dc.AREA_BORDER_SIZE * 2
+			xPos = dc.AREA_RECT[0] + dc.AREA_RECT[2] - d.AREA_BORDER_SIZE * 2
 
 		this.paddles = []
 		if (numberOfPlayers == 1)
+		{
+			console.log("team create paddle at : [ " + xPos + " ] [ " + dc.AREA_RECT[1] + " + " + dc.AREA_RECT[3] + " / 2  = " + dc.AREA_RECT[1] + dc.AREA_RECT[3] / 2 + " ]")
 			this.paddles.push( new paddle.Paddle(xPos, dc.AREA_RECT[1] + dc.AREA_RECT[3] / 2, 0, this.team))
+		}
 		else
 		{
 			this.paddles.push( new paddle.Paddle(xPos, dc.AREA_RECT[1] + dc.AREA_RECT[3] / 3, 0, this.team))

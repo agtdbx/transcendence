@@ -8,10 +8,18 @@ export class Paddle {
 	{
 		this.id = id
 		this.pos = new Vec2(x, y)
-		this.w = dc.PADDLE_WIDTH
-		this.h = dc.PADDLE_HEIGHT
+		this.w = d.PADDLE_WIDTH
+		this.h = d.PADDLE_HEIGHT
 		this.halfW = dc.PADDLE_WIDTH / 2
 		this.halfH = dc.PADDLE_HEIGHT / 2
+		this.htmlObject = document.createElementNS('http://www.w3.org/2000/svg', 'rect')
+		console.log("create paddle at : " + x + "," + y)
+		this.htmlObject.setAttribute('x',  x);
+		this.htmlObject.setAttribute('y',  y);
+		this.htmlObject.setAttribute('width', this.w);
+		this.htmlObject.setAttribute('height',  this.h);
+		this.htmlObject.setAttribute('transform-origin', "center");
+
 
 		this.hitbox = new hitbox.Hitbox(x, y, d.HITBOX_PADDLE_COLOR, d.PADDLE_COLOR)
 		this.hitbox.addPoint(-this.halfW, -this.halfH)
@@ -114,6 +122,7 @@ export class Paddle {
 				this.pos.y = AREA_RECT[1] + AREA_RECT[3] - PERFECT_SHOOT_SIZE - (this.halfH * this.modifierSize)
 			this.hitbox.setPos(this.pos.dup())
 		}
+		this.htmlObject.setAttribute('y', "" + this.pos.y);
 	}
 
 

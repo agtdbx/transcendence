@@ -21,7 +21,7 @@ export const BALL_TRAIL_LENGTH = 30 // number of cicles in trail
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //                                        MAP DEFINE                                        //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-export const AREA_RECT = ((WIN_WIDTH - d.AREA_SIZE[0]) / 2, (WIN_HEIGHT - d.AREA_SIZE[1]) / 2, d.AREA_SIZE[0], d.AREA_SIZE[1])
+export var AREA_RECT = [(WIN_WIDTH - d.AREA_SIZE[0]) / 2, (WIN_HEIGHT - d.AREA_SIZE[1]) / 2, d.AREA_SIZE[0], d.AREA_SIZE[1]]
 export const AREA_COLOR = (100, 100, 100) // (r, g, b), channel int [0, 255]
 
 export const AREA_LEFT_TEAM_RECT = (AREA_RECT[0], AREA_RECT[1], d.SPACE_PART, d.AREA_SIZE[1])
