@@ -6,7 +6,7 @@
 #    By: aderouba <aderouba@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/08 14:00:09 by lflandri          #+#    #+#              #
-#    Updated: 2023/12/21 16:09:02 by aderouba         ###   ########.fr        #
+#    Updated: 2023/12/21 16:42:27 by aderouba         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,22 +30,22 @@ def checkLogin(request):
 
     username_check = User.objects.all().filter(username=username)
     if len(username_check) == 0:
-        return {"success" : False, "error" : "Username not exist"}
+        return JsonResponse({"success" : False, "error" : "Username not exist"})
 
     password_check = connectionPassword.objects.all().filter(idUser=username_check[0].idUser)
     if len(password_check) == 0:
-        return {"success" : False, "error" : "No password authentification"}
+        return JsonResponse({"success" : False, "error" : "No password authentification"})
 
     hash = hashlib.sha512(password.encode(), usedforsecurity=True)
     if hash.hexdigest() != password_check[0].password:
-        return {"success" : False, "error" : "Password incorrect"}
+        return JsonResponse({"success" : False, "error" : "Password incorrect"})
 
     token = jwt.encode({"userId": username_check[0].idUser}, settings.SECRET_KEY, algorithm="HS256")
 
     #username_check[0].tokenJWT = token
     #User.save()
 
-    return {"success" : True, "token" : token}
+    return JsonResponse({"success" : True, "token" : token})
 
 
 def checkSignin(request):
@@ -54,14 +54,14 @@ def checkSignin(request):
     passwordconfirm = request.POST.get('confirm')
 
     if not username or password == "" or passwordconfirm == "":
-        return {"success" : False, "error" : "Empty field aren't accept"}
+        return JsonResponse({"success" : False, "error" : "Empty field aren't accept"})
 
     test = User.objects.all().filter(username=username)
     if len(test):
-        return {"success" : False, "error" : "Username already use"}
+        return JsonResponse({"success" : False, "error" : "Username already use"})
 
     if password != passwordconfirm:
-        return {"success" : False, "error" : "Password and confirm aren't the same"}
+        return JsonResponse({"success" : False, "error" : "Password and confirm aren't the same"})
 
     hashPwd = hashlib.sha512(password.encode(), usedforsecurity=True)
 
@@ -72,28 +72,28 @@ def checkSignin(request):
         status= Status(idStatus='0', name="On")
         status.save()
     except:
-        return {"success" : False, "error" : "Error on status creation"}
+        return JsonResponse({"success" : False, "error" : "Error on status creation"})
 
     token = jwt.encode({"userId": id}, settings.SECRET_KEY, algorithm="HS256")
     try:
         user = User(idUser=id, idType=idType, username=username, profilPicture="NULL", tokenJWT=token, money=0, idStatus=Status.objects.get(idStatus=0))
         user.save()
     except:
-        return {"success" : False, "error" : "Error on user creation"}
+        return JsonResponse({"success" : False, "error" : "Error on user creation"})
 
     try:
         password = connectionPassword(idPassword=id, password=hashPwd.hexdigest(), idUser=user)
         password.save()
     except:
-        return {"success" : False, "error" : "Error on password creation"}
+        return JsonResponse({"success" : False, "error" : "Error on password creation"})
 
-    return {"success" : True, "token" : token}
+    return JsonResponse({"success" : True, "token" : token})
 
 
 def checkToken(request):
     token = request.COOKIES.get('token', None)
 
-    if token == None:
+    if token == None or token == "undefined":
         return {"success" : False, "error" : "No token send"}
 
     data = None
@@ -123,36 +123,30 @@ def index(request):
 
 @csrf_exempt
 def section(request, num):
-    if num == 1: # Page d'accueil
-        check = checkLogin(request)
-        if check["success"] == False:
-            return JsonResponse(check)
+    if num == 1: # Login -> mainPage
         htmlText = render(request,"mainpage.html").getvalue().decode()
-        return JsonResponse({"success" : True, "html" : htmlText, "token" : check["token"]})
+        return JsonResponse({"success" : True, "html" : htmlText})
 
-    elif num == 2: # Page de connexion
-        check = checkSignin(request)
-        if check["success"] == False:
-            return JsonResponse(check)
+    elif num == 2: # Signin -> mainPage
         htmlText = render(request,"mainpage.html").getvalue().decode()
-        return JsonResponse({"success" : True, "html" : htmlText, "token" : check["token"]})
+        return JsonResponse({"success" : True, "html" : htmlText})
 
     check = checkToken(request)
     if check["success"] == False:
         return JsonResponse(check)
 
     userId = check["userId"]
+    user = User.objects.all().filter(idUser=userId)[0]
 
-    if num == 0:
-        user = User.objects.all().filter(idUser=userId)
-        htmlText = render(request,"navbar.html", {'user': user[0] }).getvalue().decode()
+    if num == 0: # Get header
+        htmlText = render(request,"navbar.html", {'user': user}).getvalue().decode()
         return JsonResponse({"success" : True, "html" : htmlText})
 
-    elif num == 3:# Page de création de compte
+    elif num == 3: # Mainpage
         htmlText = render(request,"mainpage.html").getvalue().decode()
         return JsonResponse({"success" : True, "html" : htmlText})
 
-    elif num == 4:
+    elif num == 4: # Wait game page
         htmlText = render(request,"waitpage.html").getvalue().decode()
         res = JsonResponse({"success" : True, "html" : htmlText})
         return res

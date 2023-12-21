@@ -60,14 +60,10 @@ function removeHeader()
 	document.getElementById("header").remove()
 }
 
-function showcontent(num, data)
+function changePage(num, data)
 {
-	if (data == null)
-		data = new FormData()
 	fetch(`${num}`,
 	{
-		method: 'POST',
-		body: data,
 		cache: "default"
 	})
 	.then(response => response.json())
@@ -78,12 +74,6 @@ function showcontent(num, data)
 			console.log("ERROR :", jsonData["error"])
 			alert(jsonData["error"])
 			return
-		}
-
-		if (num == 1 || num == 2)
-		{
-			document.cookie = "token=" + jsonData['token']
-			data.set("token", jsonData['token'])
 		}
 
 		document.getElementById("Page").remove()
@@ -145,3 +135,64 @@ function showcontent(num, data)
 	})
 	.catch(error => console.log("ERROR FETCH :", error, '\n', data))
 }
+
+
+function showcontent(num, data)
+{
+	// When login
+	if (num == 1)
+	{
+		fetch("checkLogin",
+		{
+			method: 'POST',
+			body: data,
+			cache: "default"
+		})
+		.then(response => response.json())
+		.then(jsonData => {
+
+			if (jsonData["success"] != true)
+			{
+				console.log("ERROR :", jsonData["error"])
+				alert(jsonData["error"])
+				return
+			}
+
+			document.cookie = "token=" + jsonData['token']
+			data.set("token", jsonData['token'])
+
+			changePage(num, data)
+		})
+	}
+	// When signin
+	else if (num == 2)
+	{
+		fetch("checkSignin",
+		{
+			method: 'POST',
+			body: data,
+			cache: "default"
+		})
+		.then(response => response.json())
+		.then(jsonData => {
+
+			if (jsonData["success"] != true)
+			{
+				console.log("ERROR :", jsonData["error"])
+				alert(jsonData["error"])
+				return
+			}
+
+			document.cookie = "token=" + jsonData['token']
+			data.set("token", jsonData['token'])
+
+			changePage(num, data)
+		})
+	}
+	else
+	{
+		changePage(num, data)
+	}
+}
+
+// console.log("HREF base : ", app_href)
