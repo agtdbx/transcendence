@@ -6,7 +6,7 @@
 #    By: aderouba <aderouba@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/08 14:00:09 by lflandri          #+#    #+#              #
-#    Updated: 2023/12/20 14:53:27 by aderouba         ###   ########.fr        #
+#    Updated: 2023/12/21 15:45:27 by aderouba         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,6 @@ from django.shortcuts import render
 from db_test.models import User
 from db_test.models import Status
 from db_test.models import connectionPassword
-
 
 # **************************************************************************** #
 #                                Check Functions                               #
@@ -92,7 +91,8 @@ def checkSignin(request):
 
 
 def checkToken(request):
-    token = request.POST.get('token')
+    # token = request.POST.get('token')
+    token = request.COOKIES.get('token', None)
 
     if token == None:
         return {"success" : False, "error" : "No token send"}
@@ -126,6 +126,10 @@ def index(request):
 def section(request, num):
     # if request.method != 'POST':
     #     return JsonResponse({"success" : False, "error" : "Get access refused"})
+
+    # print("=======================================================================", file=sys.stderr)
+    # print(request.COOKIES['token'], file=sys.stderr)
+    # print("=======================================================================", file=sys.stderr)
 
     if num == 1: # Page d'accueil
         check = checkLogin(request)
