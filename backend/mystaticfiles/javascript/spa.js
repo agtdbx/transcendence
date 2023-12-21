@@ -40,7 +40,7 @@ function addHeader(data){
 	let header = document.getElementById("header");
 	if (header === null)
 	{
-		fetch(`0`, {method: 'POST', body: data})
+		fetch(`0`, {method: 'POST', body: data, cache: "default"})
 		.then(response => response.json())
 		.then (jsonData => {
 			if (jsonData['success'])
@@ -62,10 +62,8 @@ function removeHeader()
 
 function showcontent(num, data)
 {
-	var token = localStorage['token'] || 'none';
 	if (data == null)
 		data = new FormData()
-	data.append("token", token)
 	fetch(`${num}`,
 	{
 		method: 'POST',
@@ -84,7 +82,6 @@ function showcontent(num, data)
 
 		if (num == 1 || num == 2)
 		{
-			localStorage['token'] = jsonData['token']
 			document.cookie = "token=" + jsonData['token']
 			data.set("token", jsonData['token'])
 		}
