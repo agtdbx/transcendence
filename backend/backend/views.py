@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    views.py                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: aderouba <aderouba@student.42.fr>          +#+  +:+       +#+         #
+#    By: auguste <auguste@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/08 14:00:09 by lflandri          #+#    #+#              #
-#    Updated: 2023/12/21 16:42:27 by aderouba         ###   ########.fr        #
+#    Updated: 2023/12/28 22:07:05 by auguste          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,6 +24,7 @@ from db_test.models import connectionPassword
 # **************************************************************************** #
 #                                Check Functions                               #
 # **************************************************************************** #
+@csrf_exempt
 def checkLogin(request):
     username = request.POST.get('login')
     password = request.POST.get('password')
@@ -48,6 +49,7 @@ def checkLogin(request):
     return JsonResponse({"success" : True, "token" : token})
 
 
+@csrf_exempt
 def checkSignin(request):
     username = request.POST.get('login2')
     password = request.POST.get('password2')
@@ -90,6 +92,7 @@ def checkSignin(request):
     return JsonResponse({"success" : True, "token" : token})
 
 
+@csrf_exempt
 def checkToken(request):
     token = request.COOKIES.get('token', None)
 

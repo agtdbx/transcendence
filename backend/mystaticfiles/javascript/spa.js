@@ -121,17 +121,17 @@ function changePage(num, data)
 			} else {
 				console.log("src : " + scripts[i].src)
 				fetch(scripts[i].src).then(function (data) {
-				data.text().then(function (r) {
-					eval(r);
-				})
+					data.text().then(function (r) {
+						eval(r);
+					})
 				});
 
 			}
 			// To not repeat the element
 			//scripts[i].parentNode.removeChild(scripts[i]);
 		}
-		// window.location.href = app_href + num
 		console.log(app_href + num)
+		history.pushState({section: num}, '', num)
 	})
 	.catch(error => console.log("ERROR FETCH :", error, '\n', data))
 }
@@ -163,6 +163,7 @@ function showcontent(num, data)
 
 			changePage(num, data)
 		})
+		.catch(error => console.log("checkLogin error :", error))
 	}
 	// When signin
 	else if (num == 2)
@@ -188,6 +189,7 @@ function showcontent(num, data)
 
 			changePage(num, data)
 		})
+		.catch(error => console.log("checkSignin error :", error))
 	}
 	else
 	{
@@ -195,4 +197,16 @@ function showcontent(num, data)
 	}
 }
 
-// console.log("HREF base : ", app_href)
+window.onpopstate = function(event)
+{
+	try
+	{
+		console.log("Change to", event.state.section)
+		showcontent(event.state.section, null)
+	}
+	catch
+	{
+		console.log("Change to main")
+		window.location.href = app_href
+	}
+}
