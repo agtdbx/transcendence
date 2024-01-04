@@ -1,0 +1,122 @@
+<div id="Page">
+
+	<h1 class="title">ROCK AND PONG</h1>
+	<button type="button" class ="btn-drg" id = "btn-log" onclick="openPopupLog()">LOG IN</button>
+	<button type="button" class ="btn-drg" id = "btn-sign" onclick="openPopupSign()">SIGN IN</button>
+
+
+	<div class ="popupLogin" id = "popupLogin">
+
+		<form id="form_log" method="post">
+			{% csrf_token %}
+			<div class ="rectLogin" id = "rectLogin">
+				<div class ="textRectLogin" id = "textRectLogin">
+					<p id="textLogin">LOG-IN</p>
+				</div>
+				<input type="text" id="login" name="login" required><br>
+				<div class ="speratorLogin" id = "speratorlog"></div>
+			</div>
+
+			<div class ="rectPassword" id = "rectPassword">
+				<div class ="textRectPassword" id = "textRectPassword">
+					<p id="textPassword">PASSWORD</p>
+				</div>
+				<input type="password" id="password" name="password" required><br>
+				<div class ="speratorPassword" id = "speratorPassword"></div>
+			</div>
+
+			<button data-section="1" type="submit" class ="btn-drg" id = "btn-pop-login">LOG IN</button>
+			<script>
+
+				const form = document.getElementById('form_log');
+
+				form.addEventListener('submit', async event => {
+					event.preventDefault();
+
+					const data = new FormData(form);
+					showcontent('1', data)
+				});
+			</script>
+		</form>
+
+		<p id="text42">STUDENT AT 42 ?</p>
+		<button type="button" class ="btn-drg" id = "btn-pop-link-42">LINK 42</button>
+		<p id="textPopSignIn">NEW ?</p>
+		<button type="button" class ="btn-drg" id = "btn-popLog-sign" onclick="swapToSign()">SIGN IN</button>
+
+	</div>
+
+
+	<div class ="popupSign" id = "popupSign">
+		<form id="form_sign" method="post">
+			{% csrf_token %}
+
+			<div class ="rectLogin" id = "rectLogin">
+				<div class ="textRectLogin" id = "textRectLogin">
+					<p id="textLogin">LOG-IN</p>
+				</div>
+				<input type="text" id="loginSign" name="login2" required><br><br>
+				<div class ="speratorLogin" id = "speratorlog"></div>
+			</div>
+
+			<div class ="rectPassword" id = "rectPassword">
+				<div class ="textRectPassword" id = "textRectPassword">
+					<p id="textPassword">PASSWORD</p>
+				</div>
+				<input type="password" id="passwordSign" name="password2" required><br><br>
+				<div class ="speratorPassword" id = "speratorPassword"></div>
+			</div>
+
+			<div class ="rectConfirm" id = "rectConfirm">
+				<div class ="textRectConfirm" id = "textRectConfirm">
+					<p id="textConfirm">CONFIRM</p>
+				</div>
+				<input type="password" id="confirm" name="confirm" required><br><br>
+				<div class ="speratorConfirm" id = "speratorConfirm"></div>
+			</div>
+
+			<button data-section="2" type="submit" class ="btn-drg" id = "btn-pop-sign">SIGN IN</button>
+			<script>
+				const form2 = document.getElementById('form_sign');
+					form2.addEventListener('submit', async event => {
+					event.preventDefault();
+
+					const data2 = new FormData(form2);
+					showcontent('2', data2)
+				});
+			</script>
+		</form>
+
+		<p id="text42">STUDENT AT 42 ?</p>
+		<button type="button" class ="btn-drg" id = "btn-pop-link-42">LINK 42</button>
+		<p id="textPopLogIn">ALREADY AN ACCOUT ?</p>
+		<button type="button" class ="btn-drg" id = "btn-pop-sign-log" onclick="swapToLog()">LOG IN</button>
+
+	</div>
+
+</div>
+
+<script>
+	try
+	{
+		if (app_href != undefined)
+			console.log("LOAD FROM INDEX")
+	}
+	catch
+	{
+		console.log("LOAD ALONE")
+		let page = document.getElementById('Page');
+
+		fetch('indexbase')
+		.then(response => response.text())
+		.then(text => {
+			document.getElementsByTagName('body')[0].innerHTML = text
+
+			let body = document.getElementById('body');
+			console.log(body)
+			document.querySelector('#content').appendChild(page);
+		})
+		.catch(error => console.log("Nope fetch :", error))
+
+	}
+</script>

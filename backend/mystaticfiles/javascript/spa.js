@@ -1,4 +1,3 @@
-var app_href = window.location.href
 
 function openPopupLog()
 {
@@ -36,6 +35,12 @@ function swapToLog()
 	popup2.classList.remove("open-Popup");
 }
 
+///////////////////////////////////////////////////////////////////////////////////////////////
+//                                       SPA FUNCTIONS                                       //
+///////////////////////////////////////////////////////////////////////////////////////////////
+var app_href = window.location.href
+
+
 function addHeader(data){
 	let header = document.getElementById("header");
 	if (header === null)
@@ -66,23 +71,20 @@ function changePage(num, data)
 	{
 		cache: "default"
 	})
-	.then(response => response.json())
-	.then (jsonData => {
-
-		if (jsonData["success"] != true)
-		{
-			console.log("ERROR :", jsonData["error"])
-			alert(jsonData["error"])
-			return
-		}
+	.then(response => response.text())
+	.then (text => {
 
 		document.getElementById("Page").remove()
 		let body = document.getElementById('body');
-		document.querySelector('#content').innerHTML = jsonData['html'];
+		document.querySelector('#content').innerHTML = text;
 
 		switch (num) {
+			case "0":
+				body.style.backgroundImage = 'url(/static/image/background/Background.png)';
 			case "1":
+				body.style.backgroundImage = 'url(/static/image/background/Background.png)';
 			case "2":
+				body.style.backgroundImage = 'url(/static/image/background/Background.png)';
 			case "3":
 				body.style.backgroundImage = 'url(/static/image/background/mainpage.png)';
 				addHeader(data);
@@ -199,14 +201,8 @@ function showcontent(num, data)
 
 window.onpopstate = function(event)
 {
-	try
-	{
-		console.log("Change to", event.state.section)
-		showcontent(event.state.section, null)
-	}
-	catch
-	{
-		console.log("Change to main")
-		window.location.href = app_href
-	}
+	console.log("Change to", event.state.section)
+	changePage(event.state.section, null)
 }
+
+

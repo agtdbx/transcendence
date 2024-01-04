@@ -23,6 +23,7 @@ from .views import *
 urlpatterns = [
     path("",views.index, name=""),
     path("<int:num>", views.section, name="section"),
+    path("indexbase", views.indexbase, name="indexbase"),
     path("checkLogin", views.checkLogin, name="checkLogin"),
     path("checkSignin", views.checkSignin, name="checkSignin"),
 ]

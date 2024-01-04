@@ -6,7 +6,7 @@
 #    By: auguste <auguste@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/08 14:00:09 by lflandri          #+#    #+#              #
-#    Updated: 2023/12/28 22:07:05 by auguste          ###   ########.fr        #
+#    Updated: 2024/01/04 15:39:04 by auguste          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -122,55 +122,67 @@ def checkToken(request):
 #                                 Page Function                                #
 # **************************************************************************** #
 def index(request):
-    return render(request, 'index.html')
+    return render(request,"index.html")
+
+def indexbase(request):
+    return render(request,"indexbase.html")
 
 @csrf_exempt
-def section(request, num):
-    if num == 1: # Login -> mainPage
-        htmlText = render(request,"mainpage.html").getvalue().decode()
-        return JsonResponse({"success" : True, "html" : htmlText})
-
-    elif num == 2: # Signin -> mainPage
-        htmlText = render(request,"mainpage.html").getvalue().decode()
-        return JsonResponse({"success" : True, "html" : htmlText})
-
+def getNavbar(request):
+    # Check of token
     check = checkToken(request)
     if check["success"] == False:
         return JsonResponse(check)
-
+    # Get the user by the token
     userId = check["userId"]
     user = User.objects.all().filter(idUser=userId)[0]
 
-    if num == 0: # Get header
-        htmlText = render(request,"navbar.html", {'user': user}).getvalue().decode()
-        return JsonResponse({"success" : True, "html" : htmlText})
+    htmlText = render(request,"navbar.html", {'user': user}).getvalue().decode()
+    return JsonResponse({"success" : True, "html" : htmlText})
 
-    elif num == 3: # Mainpage
-        htmlText = render(request,"mainpage.html").getvalue().decode()
-        return JsonResponse({"success" : True, "html" : htmlText})
+
+@csrf_exempt
+def section(request, num):
+    """
+    Function to load content of page
+    """
+    if num == 0: # Index page
+        return render(request,"indexpage.html")
+
+    elif num == 1: # Login page
+        return render(request,"mainpage.html")
+
+    elif num == 2: # Signin page
+        return render(request,"mainpage.html")
+
+    # Check of token
+    check = checkToken(request)
+    if check["success"] == False:
+        raise Http404("Token error : " + check["error"])
+    # Get the user by the token
+    userId = check["userId"]
+    user = User.objects.all().filter(idUser=userId)[0]
+
+    if num == 3: # Mainpage
+        return render(request,"mainpage.html")
 
     elif num == 4: # Wait game page
-        htmlText = render(request,"waitpage.html").getvalue().decode()
-        res = JsonResponse({"success" : True, "html" : htmlText})
-        return res
+        return render(request,"waitpage.html")
 
-    elif num == 5:
-        htmlText = render(request,"createGameRoom.html").getvalue().decode()
-        return JsonResponse({"success" : True, "html" : htmlText})
+    elif num == 5: # Create game room page
+        return render(request,"createGameRoom.html")
 
-    elif num == 6:
-        htmlText = render(request,"tournament.html").getvalue().decode()
-        return JsonResponse({"success" : True, "html" : htmlText})
+    elif num == 6: # Tournament page
+        return render(request,"tournament.html")
 
-    elif num == 7:
-        htmlText = render(request,"profil_content.html").getvalue().decode()
-        return JsonResponse({"success" : True, "html" : htmlText})
+    elif num == 7: # Profile page
+        return render(request,"profil_content.html")
 
-    elif num == 8:
-        htmlText = render(request,"index.html").getvalue().decode()
-        return JsonResponse({"success" : True, "html" : htmlText})
+    # elif num == 8:
+    #     htmlText = render(request,"index.html")
+    #     return JsonResponse({"success" : True, "html" : htmlText})
 
     else:
-        return JsonResponse({"success" : False, "error" : "Section doesn't exist"})
+        raise Http404("Section doesn't exist")
 
 
