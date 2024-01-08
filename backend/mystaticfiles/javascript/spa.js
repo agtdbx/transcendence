@@ -162,6 +162,13 @@ function checkSignin(data)
 }
 
 
+function disconnection()
+{
+	document.cookie = "token=";
+	changePage("0");
+}
+
+
 window.onpopstate = function(event)
 {
 	try

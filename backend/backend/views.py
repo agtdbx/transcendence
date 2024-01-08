@@ -6,7 +6,7 @@
 #    By: aderouba <aderouba@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/08 14:00:09 by lflandri          #+#    #+#              #
-#    Updated: 2024/01/08 16:16:40 by aderouba         ###   ########.fr        #
+#    Updated: 2024/01/08 17:49:34 by aderouba         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -140,18 +140,17 @@ def getHeader(request):
 
 @csrf_exempt
 def section(request, num):
-    """_summary_
-
+    """
     Args:
         request (_type_): The request
         num (_type_): Which page to load
 
-    Raises:
-        Http404: When the num is incorrect
-
     Returns:
-        _type_: The page to render
+        The page to render
+        The login page is the token is invalid
+        The main page if the num page doesn't exist
     """
+
     if num == 0:
         return render(request, "index_spa.html")
 
@@ -164,7 +163,7 @@ def section(request, num):
     # Check token
     check = checkToken(request)
     if check["success"] == False:
-        return JsonResponse(check)
+        return render(request, "login.html")
 
     # Get the user
     userId = check["userId"]
@@ -195,4 +194,4 @@ def section(request, num):
         return render(request,"ladder.html")
 
     else:
-        raise Http404("Section doesn't exist")
+        return render(request, "index_spa.html")
