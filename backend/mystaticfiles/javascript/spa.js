@@ -31,9 +31,9 @@ function addHeader(){
 		.then(response => response.json())
 		.then (jsonData => {
 			if (jsonData['success'])
-				document.querySelector('#Header').innerHTML = jsonData['html']
+				document.querySelector('#Header').innerHTML = jsonData['html'];
 			else
-				console.log("ERROR HEADER", jsonData)
+				console.log("Header error :", jsonData["error"])
 		})
 	}
 }
@@ -44,20 +44,48 @@ function removeHeader()
 	let header = document.getElementById("header");
 	if (header === null)
 		return ;
-	document.getElementById("header").remove()
+	document.getElementById("header").remove();
 }
 
 
 function manageHeader(num)
 {
 	if (num >= 3 && num != 6)
-		addHeader()
+		addHeader();
 	else
-		removeHeader()
+		removeHeader();
 }
 
 
-function changePage(num)
+function runScript()
+{
+	/* this is an advertissement : don't try to understand, i know, you don't*/
+	var scripts = document.querySelector('#content').querySelectorAll("script");
+	for (var i = 0; i < scripts.length; i++) {
+		if (scripts[i].innerText) {
+			eval(scripts[i].innerText);
+		} else {
+			fetch(scripts[i].src).then(function (data) {
+				data.text().then(function (r) {
+					eval(r);
+				})
+			});
+		}
+	}
+}
+
+
+function getCookieValue(name)
+{
+	const regex = new RegExp(`(^| )${name}=([^;]+)`)
+	const match = document.cookie.match(regex)
+	if (match) {
+	return match[2]
+	}
+}
+
+
+function changePage(num, byArrow=false)
 {
 	fetch(`${num}`,
 	{
@@ -65,39 +93,18 @@ function changePage(num)
 	})
 	.then(response => response.text())
 	.then (htmlText => {
-		changeBackground(num);
-
-		manageHeader(num);
-
-		document.getElementById("Page").remove()
+		// Update the content of the page
 		document.querySelector('#content').innerHTML = htmlText;
 
-		/* this is an advertissement : don't try to understand, i know, you don't*/
-		var scripts = document.querySelector('#content').querySelectorAll("script");
-		for (var i = 0; i < scripts.length; i++) {
-			// console.log("SCRIPT : " + scripts[i])
-			// console.log("len : " + scripts.length)
-			if (scripts[i].innerText) {
-				eval(scripts[i].innerText);
-			} else {
-				// console.log("src : " + scripts[i].src)
-				fetch(scripts[i].src).then(function (data) {
-					data.text().then(function (r) {
-						eval(r);
-					})
-				});
+		changeBackground(num);
+		manageHeader(num);
 
-			}
-		}
+		// Run the script tag if they is one in the html load
+		runScript();
 
-		// If load page without connection, clear the token
-		if (num < 3)
-		{
-			data.set("token", null)
-		}
-
-		// Set the new page in the browser history
-		// history.pushState({section: num}, '', num)
+		// Set the new page in the browser history if the page isn't load by arrow, or not the wait and game page.
+		if (!byArrow && num != 4 && num != 6)
+			history.pushState({section: num}, '', num);
 	})
 	.catch(error => console.log("CHANGE PAGE ERROR FETCH :", error, '\n'))
 }
@@ -116,15 +123,14 @@ function checkLogin(data)
 
 			if (jsonData["success"] != true)
 			{
-				console.log("ERROR :", jsonData["error"])
-				alert(jsonData["error"])
-				return
+				alert(jsonData["error"]);
+				return ;
 			}
 
-			document.cookie = "token=" + jsonData['token']
-			data.set("token", jsonData['token'])
+			document.cookie = "token=" + jsonData['token'];
+			data.set("token", jsonData['token']);
 
-			changePage("3")
+			changePage("3");
 		})
 		.catch(error => console.log("checkLogin error :", error))
 }
@@ -143,15 +149,28 @@ function checkSignin(data)
 
 			if (jsonData["success"] != true)
 			{
-				console.log("ERROR :", jsonData["error"])
-				alert(jsonData["error"])
-				return
+				alert(jsonData["error"]);
+				return ;
 			}
 
-			document.cookie = "token=" + jsonData['token']
-			data.set("token", jsonData['token'])
+			document.cookie = "token=" + jsonData['token'];
+			data.set("token", jsonData['token']);
 
-			changePage("3")
+			changePage("3");
 		})
 		.catch(error => console.log("checkSignin error :", error))
+}
+
+
+window.onpopstate = function(event)
+{
+	try
+	{
+		console.log("Back", event.state.section)
+		changePage(event.state.section, true);
+	}
+	catch
+	{
+		changePage(0, true);
+	}
 }
