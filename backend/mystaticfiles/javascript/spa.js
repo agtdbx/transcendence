@@ -1,56 +1,43 @@
-var app_href = window.location.href
-
-function openPopupLog()
+function changeBackground(num)
 {
-	let popup = document.getElementById("popupLogin");
-	popup.classList.add("open-Popup");
-	document.getElementById("btn-log").style.display= "none";
-	document.getElementById("btn-sign").style.display= "none";
-	document.getElementById("btn-log").style.visibility= "hidden";
-	document.getElementById("btn-sign").style.visibility= "hidden";
+	let body = document.getElementById('body');
+
+	if (num == "3")
+		body.style.backgroundImage = 'url(/static/image/background/mainpage.png)';
+	else if (num == "4")
+		body.style.backgroundImage = 'url(/static/image/background/waitpage.png)';
+	else if (num == "5")
+		body.style.backgroundImage = 'url(/static/image/background/waitpage.png)';
+	else if (num == "6")
+		body.style.backgroundImage = 'url(/static/image/background/game.png)';
+	else if (num == "7")
+		body.style.backgroundImage = 'url(/static/image/background/tournament.jpg)';
+	else if (num == "8")
+		body.style.backgroundImage = 'url(/static/image/background/create_tournament.png)';
+	else if (num == "9")
+		body.style.backgroundImage = 'url(/static/image/background/profile.jpg)';
+	else if (num == "10")
+		body.style.backgroundImage = 'url(/static/image/background/ladder.png)';
+	else
+		body.style.backgroundImage = 'url(/static/image/background/index.png)';
 }
 
-function openPopupSign()
-{
-	let popup2 = document.getElementById("popupSign");
-	popup2.classList.add("open-Popup");
-	document.getElementById("btn-log").style.display= "none";
-	document.getElementById("btn-sign").style.display= "none";
-	document.getElementById("btn-log").style.visibility= "hidden";
-	document.getElementById("btn-sign").style.visibility= "hidden";
-}
 
-function swapToSign()
-{
-	let popup = document.getElementById("popupLogin");
-	let popup2 = document.getElementById("popupSign");
-	popup.classList.remove("open-Popup");
-	popup2.classList.add("open-Popup");
-}
-
-function swapToLog()
-{
-	let popup2 = document.getElementById("popupSign");
-	let popup = document.getElementById("popupLogin");
-	popup.classList.add("open-Popup");
-	popup2.classList.remove("open-Popup");
-}
-
-function addHeader(data){
+function addHeader(){
 	let header = document.getElementById("header");
 	if (header === null)
 	{
-		fetch(`0`, {method: 'POST', body: data, cache: "default"})
+		fetch("getHeader", {method: 'POST', cache: "default"})
 		.then(response => response.json())
 		.then (jsonData => {
 			if (jsonData['success'])
 				document.querySelector('#Header').innerHTML = jsonData['html']
 			else
 				console.log("ERROR HEADER", jsonData)
-		}
-		)
+		})
 	}
 }
+
 
 function removeHeader()
 {
@@ -60,66 +47,40 @@ function removeHeader()
 	document.getElementById("header").remove()
 }
 
-function changePage(num, data)
+
+function manageHeader(num)
+{
+	if (num >= 3 && num != 6)
+		addHeader()
+	else
+		removeHeader()
+}
+
+
+function changePage(num)
 {
 	fetch(`${num}`,
 	{
 		cache: "default"
 	})
-	.then(response => response.json())
-	.then (jsonData => {
+	.then(response => response.text())
+	.then (htmlText => {
+		changeBackground(num);
 
-		if (jsonData["success"] != true)
-		{
-			console.log("ERROR :", jsonData["error"])
-			alert(jsonData["error"])
-			return
-		}
+		manageHeader(num);
 
 		document.getElementById("Page").remove()
-		let body = document.getElementById('body');
-		document.querySelector('#content').innerHTML = jsonData['html'];
-
-		switch (num) {
-			case "1":
-			case "2":
-			case "3":
-				body.style.backgroundImage = 'url(/static/image/background/mainpage.png)';
-				addHeader(data);
-				break;
-			case "4":
-				body.style.backgroundImage = 'url(/static/image/background/waitpage.png)';
-				addHeader(data);
-				break;
-			case "5":
-				body.style.backgroundImage = 'url(/static/image/background/waitpage.png)';
-				addHeader(data);
-				break;
-			case "6":
-				body.style.backgroundImage = 'url(https://images.squarespace-cdn.com/content/v1/5925832e03596efb6d4b502a/1547827451369-JX3S8JTAWQMWHYFYDVNK/Magma.jpg?format=2500w)';
-				addHeader(data);
-				break;
-			case "7":
-				body.style.backgroundImage = 'url(/static/image/background/DRG_Wallpaper_CrystalCaves.jpg)';
-				addHeader(data);
-				break;
-			case "8":
-				body.style.backgroundImage = 'url(/static/image/background/Background.png)';
-				removeHeader();
-				break;
-			default:
-				break;
-		}
+		document.querySelector('#content').innerHTML = htmlText;
 
 		/* this is an advertissement : don't try to understand, i know, you don't*/
 		var scripts = document.querySelector('#content').querySelectorAll("script");
 		for (var i = 0; i < scripts.length; i++) {
-			console.log("SCRIPT : " + scripts[i])
-			console.log("len : " + scripts.length)
+			// console.log("SCRIPT : " + scripts[i])
+			// console.log("len : " + scripts.length)
 			if (scripts[i].innerText) {
 				eval(scripts[i].innerText);
 			} else {
-				console.log("src : " + scripts[i].src)
+				// console.log("src : " + scripts[i].src)
 				fetch(scripts[i].src).then(function (data) {
 					data.text().then(function (r) {
 						eval(r);
@@ -127,22 +88,24 @@ function changePage(num, data)
 				});
 
 			}
-			// To not repeat the element
-			//scripts[i].parentNode.removeChild(scripts[i]);
 		}
-		console.log(app_href + num)
-		history.pushState({section: num}, '', num)
+
+		// If load page without connection, clear the token
+		if (num < 3)
+		{
+			data.set("token", null)
+		}
+
+		// Set the new page in the browser history
+		// history.pushState({section: num}, '', num)
 	})
-	.catch(error => console.log("ERROR FETCH :", error, '\n', data))
+	.catch(error => console.log("CHANGE PAGE ERROR FETCH :", error, '\n'))
 }
 
 
-function showcontent(num, data)
+function checkLogin(data)
 {
-	// When login
-	if (num == 1)
-	{
-		fetch("checkLogin",
+	fetch("checkLogin",
 		{
 			method: 'POST',
 			body: data,
@@ -161,14 +124,15 @@ function showcontent(num, data)
 			document.cookie = "token=" + jsonData['token']
 			data.set("token", jsonData['token'])
 
-			changePage(num, data)
+			changePage("3")
 		})
 		.catch(error => console.log("checkLogin error :", error))
-	}
-	// When signin
-	else if (num == 2)
-	{
-		fetch("checkSignin",
+}
+
+
+function checkSignin(data)
+{
+	fetch("checkSignin",
 		{
 			method: 'POST',
 			body: data,
@@ -187,26 +151,7 @@ function showcontent(num, data)
 			document.cookie = "token=" + jsonData['token']
 			data.set("token", jsonData['token'])
 
-			changePage(num, data)
+			changePage("3")
 		})
 		.catch(error => console.log("checkSignin error :", error))
-	}
-	else
-	{
-		changePage(num, data)
-	}
-}
-
-window.onpopstate = function(event)
-{
-	try
-	{
-		console.log("Change to", event.state.section)
-		showcontent(event.state.section, null)
-	}
-	catch
-	{
-		console.log("Change to main")
-		window.location.href = app_href
-	}
 }

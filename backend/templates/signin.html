@@ -1,0 +1,52 @@
+<div id="Page">
+
+	<h1 class="title">ROCK AND PONG</h1>
+
+	<div class ="popupSign" id = "popupSign">
+		<form id="form_sign" method="post">
+			{% csrf_token %}
+
+			<div class ="rectLogin" id = "rectLogin">
+				<div class ="textRectLogin" id = "textRectLogin">
+					<p id="textLogin">LOG-IN</p>
+				</div>
+				<input type="text" id="loginSign" name="login2" required><br><br>
+				<div class ="speratorLogin" id = "speratorlog"></div>
+			</div>
+
+			<div class ="rectPassword" id = "rectPassword">
+				<div class ="textRectPassword" id = "textRectPassword">
+					<p id="textPassword">PASSWORD</p>
+				</div>
+				<input type="password" id="passwordSign" name="password2" required><br><br>
+				<div class ="speratorPassword" id = "speratorPassword"></div>
+			</div>
+
+			<div class ="rectConfirm" id = "rectConfirm">
+				<div class ="textRectConfirm" id = "textRectConfirm">
+					<p id="textConfirm">CONFIRM</p>
+				</div>
+				<input type="password" id="confirm" name="confirm" required><br><br>
+				<div class ="speratorConfirm" id = "speratorConfirm"></div>
+			</div>
+
+			<button data-section="2" type="submit" class ="btn-drg" id = "btn-pop-sign">SIGN IN</button>
+			<script>
+				const form = document.getElementById('form_sign');
+					form.addEventListener('submit', async event => {
+					event.preventDefault();
+
+					const data = new FormData(form);
+					checkSignin(data)
+				});
+			</script>
+		</form>
+
+		<p id="text42">STUDENT AT 42 ?</p>
+		<button type="button" class ="btn-drg" id = "btn-pop-link-42">LINK 42</button>
+		<p id="textPopLogIn">ALREADY AN ACCOUT ?</p>
+		<button data-section="2" type="button" class ="btn-drg" id = "btn-pop-sign-log" onclick="changePage(this.dataset.section)">LOG IN</button>
+
+	</div>
+
+</div>

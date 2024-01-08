@@ -12,7 +12,7 @@
 					<div id="pp_profil_page_div" style="float:left; width:20%; margin-right :2%; border-radius: 600px; border: 3px solid #59351B;">
 						<img id="pp_profil_page_img" style="width:100%; border-radius: 600px;" >
 					</div>
-					<button style="font-size:200%; background: transparent; color:white; border:none;" class="btn-drg" id="rank_profil_page">Rank : None</button>
+					<button data-section="10" style="font-size:200%; background: transparent; color:white; border:none;" class="btn-drg" id="rank_profil_page" onclick="changePage(this.dataset.section)">Rank : None</button>
 					<p style="font-size:200%;" id="pseudo_profil_page">Your pseudo</p>
 					<button class ="btn-drg" style="clear:both; display:block; margin:auto; margin-top:5px; width:50%; font-size:150%;">Change password</button>
 					<script src="{% static 'javascript/profil/profil.js' %}" ></script>
@@ -29,7 +29,7 @@
 				<div class="black_grey_div" id="achivement_container" style="margin-bottom: 10px; height:20%;">
 					<p id="achivement_profil_page" style="margin:auto; color:white; text-align:center; font-size:300%;">Achievement<span id="achivement_counter_profil_page"></span></p>
 					<button class ="btn-drg" style=" display:block; margin:auto; margin-top:5px; width:50%; font-size:200%;" id="successbutton" onclick="createpup('sucess')">Achievement</button>
-					
+
 				</div>
 
 
@@ -41,15 +41,9 @@
 					</div>
 				</div>
 
-				<button data-section="6" button class ="changePage btn-drg" style=" display:block; margin:auto; margin-top:7%; width:50%; font-size:200%;" id="successbutton" onclick="showcontent(this.dataset.section, null)">Diconnect</button>
+				<button data-section="0" button class ="changePage btn-drg" style=" display:block; margin:auto; margin-top:7%; width:50%; font-size:200%;" id="successbutton" onclick="changePage(this.dataset.section)">Diconnect</button>
 
 			</div>
-
-
-
-
-
-
 
 			<!-- Block Win Rate && Match History-->
 
@@ -67,7 +61,7 @@
 						<div id="win_rate" style="background-color: red; padding: 0%; height: 100%; border-radius: 30px;">
 							<div id="progg_bar_win_rate" style="background-color: green; display: inline-block; margin:  0%; width: 0%; height: 100%; border-radius: 30px;">
 								<script src="{% static 'javascript/profil/win_rate.js' %}" ></script>
-	
+
 							</div>
 						</div>
 					</div>

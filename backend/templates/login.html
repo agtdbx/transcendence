@@ -1,0 +1,46 @@
+<div id="Page">
+
+	<h1 class="title">ROCK AND PONG</h1>
+
+	<div class ="popupLogin" id = "popupLogin">
+
+		<form id="form_log" method="post">
+			{% csrf_token %}
+			<div class ="rectLogin" id = "rectLogin">
+				<div class ="textRectLogin" id = "textRectLogin">
+					<p id="textLogin">LOG-IN</p>
+				</div>
+				<input type="text" id="login" name="login" required><br>
+				<div class ="speratorLogin" id = "speratorlog"></div>
+			</div>
+
+			<div class ="rectPassword" id = "rectPassword">
+				<div class ="textRectPassword" id = "textRectPassword">
+					<p id="textPassword">PASSWORD</p>
+				</div>
+				<input type="password" id="password" name="password" required><br>
+				<div class ="speratorPassword" id = "speratorPassword"></div>
+			</div>
+
+			<button data-section="1" type="submit" class ="btn-drg" id = "btn-pop-login">LOG IN</button>
+			<script>
+
+				const form = document.getElementById('form_log');
+
+				form.addEventListener('submit', async event => {
+					event.preventDefault();
+
+					const data = new FormData(form);
+					checkLogin(data)
+				});
+			</script>
+		</form>
+
+		<p id="text42">STUDENT AT 42 ?</p>
+		<button type="button" class ="btn-drg" id = "btn-pop-link-42">LINK 42</button>
+		<p id="textPopSignIn">NEW ?</p>
+		<button data-section="1" type="button" class ="btn-drg" id = "btn-popLog-sign" onclick="changePage(this.dataset.section)">SIGN IN</button>
+
+	</div>
+
+</div>
