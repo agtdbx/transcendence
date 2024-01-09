@@ -6,7 +6,7 @@
 #    By: auguste <auguste@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/08 14:00:09 by lflandri          #+#    #+#              #
-#    Updated: 2024/01/09 13:08:08 by auguste          ###   ########.fr        #
+#    Updated: 2024/01/09 15:29:56 by auguste          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,9 +17,8 @@ from django.views.decorators.csrf import csrf_exempt
 from django.http import Http404, HttpResponse, JsonResponse
 from django.shortcuts import render
 
-from db_test.models import User
-from db_test.models import Status
-from db_test.models import connectionPassword
+from db_test.models import User, Status, connectionPassword, Message
+import datetime
 
 # **************************************************************************** #
 #                                Check Functions                               #
@@ -235,3 +234,35 @@ def section(request, num):
             return render(request, "index.html")
         else:
             return render(request, "index_spa.html")
+
+
+# **************************************************************************** #
+#                            DB connexion Functions                            #
+# **************************************************************************** #
+@csrf_exempt
+def sendMessage(request):
+    if request.method != 'POST':
+        return JsonResponse({"success" : False, "error" : "Only post accepted"})
+
+     # Check token
+    check = checkToken(request)
+    if check["success"] == False:
+        return JsonResponse(check)
+
+    # Get the user
+    userId = check["userId"]
+    user = User.objects.all().filter(idUser=userId)[0]
+    idMsg = len(Message.objects.all())
+    data = request.POST.get("message")
+    date = datetime.datetime.now()
+    try:
+        msg = Message.objects.create(id=idMsg, idUser=user, date=date, data=data)
+        msg.save()
+    except Exception as error:
+        return JsonResponse({"success" : False, "error" : "Can't create the message : " + str(error)})
+
+    return JsonResponse({"success" : True})
+
+
+def getMessages(request):
+    pass

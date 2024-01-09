@@ -5,11 +5,23 @@
 		<button data-section="7" type="button" class ="changePage btn-drg" id = "main-btn-join" onclick="changePage(this.dataset.section)">JOIN</button>
 	</div>
 
-	<div class ="main-page-chat" id = "main-page-chat">
+	<form class ="main-page-chat" id = "main-page-chat">
+		{% csrf_token %}
 		<div class ="main-page-chat-write" id = "main-page-chat-write">
 		</div>
-		<input type="text" id="main-chat" name="main-chat"><br><br>
-	</div>
+		<input type="message" id="main-chat" name="message"><br><br>
+
+		<script>
+			const form = document.getElementById('main-page-chat');
+			messageInput = document.getElementById('main-chat');
+			form.addEventListener('submit', async event => {
+				event.preventDefault();
+
+				const data = new FormData(form);
+				sendMessage(data, messageInput);
+			});
+		</script>
+	</form>
 
 	<div class ="main-page-chat-switch" id = "main-page-chat-switch">
 		<button type="button" class ="btn-drg" id ="global">GLOBAL</button>

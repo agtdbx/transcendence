@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <title>test</title>
+        <meta charset="utf-8"/>
+    </head>
+    <body>
+        <p>Hello there</p>
+
+		<div id="" style="background-color: black; height: 800px; overflow-y:scroll;"">
+			<table id="chat" style="padding-top: 2%; padding-bottom: 2%; width: 100%;"> </table>
+		</div>
+
+
+			
+    </body>
+</html>
+
+<script type="text/javascript">
+
+	//let graphe = document.getElementById("graphe");
+
+	const messagelist =
+					[
+							{
+								"name" : "Enginer",
+								"pp" : "https://static.wikia.nocookie.net/deeprockgalactic_gamepedia_en/images/4/46/Engineer_portrait.png/revision/latest/scale-to-width-down/35?cb=20180519150041",
+								"message": "Rock and stone !",
+								"time": "12h05"
+							},
+							{
+								"name" : "Gunner",
+								"pp" : "https://static.wikia.nocookie.net/deeprockgalactic_gamepedia_en/images/c/c2/Gunner_portrait.png/revision/latest/scale-to-width-down/35?cb=20180519150058",
+								"message": "Did I heard a rock and stone ?!",
+								"time": "12h05"
+							},
+							{
+								"name" : "Enginer",
+								"pp" : "https://static.wikia.nocookie.net/deeprockgalactic_gamepedia_en/images/4/46/Engineer_portrait.png/revision/latest/scale-to-width-down/35?cb=20180519150041",
+								"message": "Rock ! And  ! Stone !",
+								"time": "12h06"
+							},
+							{
+								"name" : "Gunner",
+								"pp" : "https://static.wikia.nocookie.net/deeprockgalactic_gamepedia_en/images/c/c2/Gunner_portrait.png/revision/latest/scale-to-width-down/35?cb=20180519150058",
+								"message": "Rock and stone forever !",
+								"time": "12h07"
+							},
+							{
+								"name" : "Enginer",
+								"pp" : "https://static.wikia.nocookie.net/deeprockgalactic_gamepedia_en/images/4/46/Engineer_portrait.png/revision/latest/scale-to-width-down/35?cb=20180519150041",
+								"message": "Rock and stone like there no tomorow !",
+								"time": "12h08"
+							},
+							{
+								"name" : "Gunner",
+								"pp" : "https://static.wikia.nocookie.net/deeprockgalactic_gamepedia_en/images/c/c2/Gunner_portrait.png/revision/latest/scale-to-width-down/35?cb=20180519150058",
+								"message": "Stone and rock ! oh wait ...",
+								"time": "12h09"
+							},
+							{
+								"name" : "Enginer",
+								"pp" : "https://static.wikia.nocookie.net/deeprockgalactic_gamepedia_en/images/4/46/Engineer_portrait.png/revision/latest/scale-to-width-down/35?cb=20180519150041",
+								"message": "For karl !",
+								"time": "12h10"
+							},
+							{
+								"name" : "Gunner",
+								"pp" : "https://static.wikia.nocookie.net/deeprockgalactic_gamepedia_en/images/c/c2/Gunner_portrait.png/revision/latest/scale-to-width-down/35?cb=20180519150058",
+								"message": "Introduced in Update 25: Endgame - Part 1 Weapon Overclocks are special mods that can be equipped to further increase the capabilities of class weapons. There are three types of Overclocks: Clean, gives a small boost with no penalty; Balanced, a decent boost with a decent penalty; and Unstable, a big boost with a big penalty. Weapon Overclocks can be obtained from weekly Deep Dives, with one being rewarded per variant, per week. They can also be unlocked from the Weekly Core Hunts, Machine Events,Promoting a dwarf from bronze 2 onward and Forge Mastery rewards. The Overclocks must then be brought to the Forge to be crafted, at a cost of Credit credits and crafting resources. Only one Overclock can be equipped per weapon and only after at least one modification has been purchased in each of its tiers.",
+								"time": "12h15"
+							}
+					];
+	
+	function addMessage(chat, message)
+	{
+		let messageDiv = document.createElement('tr');
+		let nameCase = document.createElement('td');
+		let nameTXT = document.createElement('h5');
+		let dateTXT = document.createElement('p');
+		let imgCase = document.createElement('td');
+		let img = document.createElement('img');
+		let messageCase = document.createElement('td');
+		let messageTXT = document.createElement('p');
+
+		nameCase.style.width = "10%";
+		nameCase.style.textAlign = "center";
+		nameCase.style.verticalAlign = "top";
+		nameTXT.style.marginTop = "5px";
+		nameTXT.style.marginBottom = "2px";
+		nameTXT.style.color = "white";
+		nameTXT.textContent = message["name"];
+		nameTXT.style.fontSize = "2vw";
+		dateTXT.style.marginTop = "0px";
+		dateTXT.style.marginBottom = "0px";
+		dateTXT.style.color = "white";
+		dateTXT.textContent = message["time"];
+		dateTXT.style.fontSize = "1.3vw";
+		imgCase.style.verticalAlign = "top";
+		imgCase.style.width = "5%";
+		img.style.width = "100%";
+		img.src = message["pp"]
+		messageCase.style.width = "85%";
+		messageCase.style.paddingLeft = "5%";
+		messageCase.style.verticalAlign = "top";
+		messageTXT.style.marginTop = "5px";
+		messageTXT.style.color = "white";
+		messageTXT.style.fontSize = "1.75vw";
+		messageTXT.textContent = message["message"];
+
+
+
+		messageDiv.insertBefore(nameCase, null);
+		messageDiv.insertBefore(imgCase, null);
+		messageDiv.insertBefore(messageCase, null);
+		nameCase.insertBefore(nameTXT, null);
+		nameCase.insertBefore(dateTXT, null);
+		imgCase.insertBefore(img, null);
+		messageCase.insertBefore(messageTXT, null);
+		//chat.after(messageDiv);
+		chat.insertBefore(messageDiv, null);
+		
+	}
+	
+
+	function  initChat(chat, listMessage)
+	{
+		for (let index = 0; index < listMessage.length; index++) {
+			addMessage(chat, listMessage[index]);
+		}
+
+	}
+	let chat = document.getElementById("chat");
+	initChat(chat, messagelist);
+	addMessage(	chat,	{
+								"name" : "Gunner",
+								"pp" : "https://static.wikia.nocookie.net/deeprockgalactic_gamepedia_en/images/c/c2/Gunner_portrait.png/revision/latest/scale-to-width-down/35?cb=20180519150058",
+								"message": "test",
+								"time": "12h20"
+						})
+	
+	
+	
+	</script>
