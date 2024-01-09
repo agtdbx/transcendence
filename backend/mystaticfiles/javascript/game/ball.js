@@ -18,7 +18,7 @@ export function getPointOfCircle(radius, precision, beginDegree = 0)
 		let radian = degree * (Math.PI / 180)
 		let x = radius * Math.cos(radian)
 		let y = radius * Math.sin(radian)
-		points.push((x, y))
+		points.push([x, y])
 	}
 	return points
 }
@@ -36,6 +36,8 @@ export class Ball {
 		this.htmlObject = document.createElementNS('http://www.w3.org/2000/svg', 'image')
 		this.htmlObject.setAttributeNS('http://www.w3.org/1999/xlink','href', "/static/image/game/ball.png");
 		this.htmlObject.setAttribute('transform-origin', "center");
+		console.log("create ball at : " + x + "," + y)
+
 
 
 		// Graphique
@@ -47,13 +49,15 @@ export class Ball {
 		this.hitbox = new hitbox.Hitbox(this.pos.x, this.pos.y, d.HITBOX_BALL_COLOR)
 		this.hitbox.setPos(this.pos)
 		let points = getPointOfCircle(this.radius, d.BALL_HITBOX_PRECISION, 360 / (d.BALL_HITBOX_PRECISION * 2))
-
+		console.log("test points :")
+		console.log(points)
 		for (let index = 0; index < points.length; index++)
 		{
-			const p = new Array(index)
+			let p = points[index]
 			this.hitbox.addPoint(p[0], p[1]);
 		}
-
+		console.log("test fifi :")
+		console.log(this.hitbox.points)
 		// Modifier
 		this.modifierSpeed = 1
 		this.modifierSize = 1
@@ -222,7 +226,6 @@ export class Ball {
 		// console.log("before :")
 		// this.pos.print()
 
-		console.log("ball status : " + this.state)
 
 
 		if (this.state != d.STATE_RUN || this.modifierStopBallTimer > 0)
@@ -240,7 +243,12 @@ export class Ball {
 		// Check position along direction and speed
 		let deltaSpeed = this.speed * delta * this.modifierSpeed
 
-		let nbCheckCollisionStep = deltaSpeed / d.BALL_MOVE_STEP
+		let nbCheckCollisionStep = Math.floor(deltaSpeed / d.BALL_MOVE_STEP)
+		console.log("==========")
+		console.log("deltaSpeed : " + deltaSpeed)
+		console.log("nb step : " + nbCheckCollisionStep)
+		console.log("==========")
+
 		let lastStepMove = deltaSpeed - (nbCheckCollisionStep * d.BALL_MOVE_STEP)
 		for (let i = 0; i < nbCheckCollisionStep + 1; i++)
 		{
@@ -318,7 +326,7 @@ export class Ball {
 			{
 				this.state = d.STATE_IN_GOAL_LEFT
 				this.resetModifier()
-				this.powerUpEffects.clear()
+				this.powerUpEffects = []
 				return
 			}
 
@@ -333,7 +341,7 @@ export class Ball {
 			// Teleport from up to down
 			if (newpos.y + this.radius < dc.AREA_RECT[1])
 			{
-				newpos.y += AREA_RECT[3]
+				newpos.y += dc.AREA_RECT[3]
 				this.resetHitbox()
 			}
 			// Teleport from down to up
@@ -460,14 +468,22 @@ export class Ball {
 
 	makeCollisionWithPaddle( paddlee)
 	{
-		// console.log("debut test")
+		console.log(" ")
+		console.log(" ")
+		console.log(" ")
+		console.log("test colision")
+		console.log("ball : " + this.state)
+		this.hitbox.print()
+		console.log(" ")
+		console.log(" paddle : " )
+		paddlee.hitbox.print()
 
 		if (!(paddlee.hitbox.isCollide(this.hitbox)))
 		{
-			//  console.log("echec")
+			console.log("echec colision")
 			return false
 		}
-		// console.log("continue test")
+		console.log("colition")
 		// Speed stat
 		let realSpeed = this.speed * this.modifierSpeed
 		if (realSpeed > paddlee.maxSpeedBallTouch)

@@ -270,6 +270,18 @@ export class GameClient {
 
 	tick()
 	{
+		if (this.balls[0].state === 0)
+{		console.log(" ")
+		console.log(" ")
+		console.log(" ")
+		console.log("ball : " + this.balls[0].state)
+		this.balls[0].hitbox.print()
+		console.log(" ")
+		console.log("teamLeft paddle : " )
+		this.teamLeft.paddles[0].hitbox.print()
+		console.log(" ")
+		console.log("teamRight paddle : " )
+		this.teamRight.paddles[0].hitbox.print()}
 		/*
 		This is the method where all calculations will be done
 		*/
@@ -328,6 +340,7 @@ export class GameClient {
 		// pg.draw.rect(this.win, AREA_TEAM_COLOR, AREA_RIGTH_TEAM_RECT)
 
 		// Draw walls
+
 		for (const w of this.walls)
 		{
 			w.drawFill(this.win)

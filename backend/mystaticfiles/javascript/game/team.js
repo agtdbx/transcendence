@@ -24,7 +24,7 @@ export class Team {
 		if (numberOfPlayers == 1)
 		{
 			console.log("team create paddle at : [ " + xPos + " ] [ " + dc.AREA_RECT[1] + " + " + dc.AREA_RECT[3] + " / 2  = " + dc.AREA_RECT[1] + dc.AREA_RECT[3] / 2 + " ]")
-			this.paddles.push( new paddle.Paddle(xPos, dc.AREA_RECT[1] + dc.AREA_RECT[3] / 2, 0, this.team))
+			this.paddles.push( new paddle.Paddle(xPos, dc.AREA_RECT[1] + Math.floor(dc.AREA_RECT[3] / 2), 0, this.team))
 		}
 		else
 		{

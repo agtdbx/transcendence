@@ -74,13 +74,13 @@ export class Vec2 {
 
 	asTupple()
 	{
-		return (this.x, this.y)
+		return [this.x, this.y]
 	}
 
 
 	asTuppleCenter( x, y)
 	{
-		return (this.x - x, this.y - y)
+		return [this.x - x, this.y - y]
 	}
 
 
