@@ -1,4 +1,4 @@
-import {Vec2} from "./vec2.js"
+import {Vec2, vec2Sub} from "./vec2.js"
 import * as dc from "./client_define.js"
 import * as d from "./define.js"
 
@@ -8,28 +8,31 @@ import * as d from "./define.js"
 
 function collideBetweenSegments(p1, p2, p3, p4)
 {
-	divisor = (p1.x - p2.x) * (p3.y - p4.y) - (p1.y - p2.y) * (p3.x - p4.x)
+	console.log("start collideBetweenSegments")
+	let divisor = (p1.x - p2.x) * (p3.y - p4.y) - (p1.y - p2.y) * (p3.x - p4.x)
 	if (divisor == 0)
 		return false, None
-
-	t = (p1.x - p3.x) * (p3.y - p4.y) - (p1.y - p3.y) * (p3.x - p4.x)
+	console.log("next 1")
+	let t = (p1.x - p3.x) * (p3.y - p4.y) - (p1.y - p3.y) * (p3.x - p4.x)
 	t /= divisor
 
 	if (t < 0 || 1 < t)
 		return false, None
+		console.log("next 2")
 
-	u = (p1.x - p3.x) * (p1.y - p2.y) - (p1.y - p3.y) * (p1.x - p2.x)
+	let u = (p1.x - p3.x) * (p1.y - p2.y) - (p1.y - p3.y) * (p1.x - p2.x)
 	u /= divisor
 
 	if (u < 0 || 1 < u)
 		return false, None
+		console.log("next 3")
 
 	// Point of intersection
-	s1Dir = vec2Sub(p2, p1)
-	p = p1.dup()
+	let s1Dir = vec2Sub(p2, p1)
+	let p = p1.dup()
 	p.translateAlong(s1Dir, t)
-
-	return true, p1, p2, p
+	console.log("end collideBetweenSegments")
+	return [true, p1, p2, p]
 }
 
 
@@ -51,7 +54,7 @@ export class Hitbox {
 
 	print()
 	{
-		return "<hitbox:" + str(this.pos.x) + ", " + str(this.pos.y) + "| " + str(len(this.points)) + " points >"
+		console.log("<hitbox:" + this.pos.x + ", " + this.pos.y + "| " + this.points.length + " points >")
 	}
 
 
@@ -96,7 +99,10 @@ export class Hitbox {
 		for (let i = 1; i < this.points.length; i++)
 		{
 			pos = this.points[i].asTuppleCenter(this.pos.x, this.pos.y)
-
+			xLeft = 0
+			xRight = 0
+			yUp = 0
+			yDown = 0
 			if (pos[0] < xLeft)
 				xLeft = pos[0]
 			else if (pos[0] > xRight)
@@ -199,28 +205,42 @@ export class Hitbox {
 
 	isCollide( hitbox)
 	{
+		// console.log("hitbox :")
+		// hitbox.print()
+		// console.log("self :")
+		// this.print()
 		let pointsSize = this.points.length
 		if (pointsSize <= 1)
 			return false
-
 		let hitboxPointsSize = hitbox.points.length
 		if (hitboxPointsSize <= 1)
 			return false
 
+		// console.log("" + this.rect[0] + " + " + this.rect[2] + " >= " + hitbox.rect[0])
+		// console.log(this.rect[0] + this.rect[2] >= hitbox.rect[0])
+
+		// console.log("" + this.rect[0] + " <=  " + hitbox.rect[0] + " + " + hitbox.rect[2])
+		// console.log(this.rect[0] <= hitbox.rect[0] + hitbox.rect[2])
+
+		// console.log("" + this.rect[1] + " + " + this.rect[3] + " >= " + hitbox.rect[1])
+		// console.log(this.rect[1] + this.rect[3] >= hitbox.rect[1])
+
+		// console.log("" + this.rect[1] + " + " + hitbox.rect[1] + " >= " + hitbox.rect[3])
+		// console.log(this.rect[1] <= hitbox.rect[1] + hitbox.rect[3])
+
 		if (this.rect[0] + this.rect[2] >= hitbox.rect[0] && this.rect[0] <= hitbox.rect[0] + hitbox.rect[2] &&
 			this.rect[1] + this.rect[3] >= hitbox.rect[1] && this.rect[1] <= hitbox.rect[1] + hitbox.rect[3])
 		{
-
-		for (let i = 1; i < pointsSize; i++)
+			for (let i = 1; i < pointsSize; i++)
 			{
 				let p0 = this.points[i - 1]
 				let p1 = this.points[i]
-
-				for (let j = 1; j < hitboxPointsSize; i++)
+				// console.log("i : " + i + " max :  " + pointsSize)
+				for (let j = 1; j < hitboxPointsSize; j++)
 				{
 					let p2 = hitbox.points[j - 1]
 					let p3 = hitbox.points[j]
-
+					// console.log("j : " + j + " max :  " + hitboxPointsSize)
 					if (collideBetweenSegments(p0, p1, p2, p3)[0])
 						return true
 				}

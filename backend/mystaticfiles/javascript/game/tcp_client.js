@@ -39,7 +39,7 @@ export async function runGameClient(
 				if (runTcpClient && gameClient.runMainLoop)
 				{
 					gameClient.step()
-					console.log("game step")
+					//console.log("game step")
 				}
 				else
 				{

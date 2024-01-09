@@ -222,6 +222,9 @@ export class Ball {
 		// console.log("before :")
 		// this.pos.print()
 
+		console.log("ball status : " + this.state)
+
+
 		if (this.state != d.STATE_RUN || this.modifierStopBallTimer > 0)
 			return
 		// Store last positions
@@ -261,8 +264,11 @@ export class Ball {
 				powerUp[2] = this.lastPaddleHitId
 			}
 			// Collision with paddle
+			// console.log("colistion paddle")
 			for (const p of paddlesLeft)
 			{
+				// console.log("test left")
+
 				if (collision)
 				{
 					realDirection = this.getRealDirection()
@@ -274,6 +280,8 @@ export class Ball {
 			}
 			for (const p of paddlesRight)
 			{
+				// console.log("test right")
+
 				if (collision){
 					realDirection = this.getRealDirection()
 					newpos = this.pos.dup()
@@ -282,6 +290,8 @@ export class Ball {
 				}
 				collision = this.makeCollisionWithPaddle(p)
 			}
+			// console.log(" end colistion paddle")
+
 
 			// Collision with wall
 			for (const w of walls)
@@ -335,13 +345,13 @@ export class Ball {
 
 			// Affect position along direction and
 			this.pos = newpos.dup()
-			this.htmlObject.setAttribute('x', "" + this.pos.x);
-			this.htmlObject.setAttribute('y', "" + this.pos.y);
+			this.htmlObject.setAttribute('x', "" + (this.pos.x - (this.radius / 2)));
+			this.htmlObject.setAttribute('y', "" + (this.pos.y - (this.radius / 2)));
 			this.hitbox.setPos(this.pos)
 		}
 		// console.log("after :")
 		// this.pos.print()
-		this.direction.print()
+		// this.direction.print()
 		let green_gradient = 0
 		let blue_gradient = 0
 		if (this.speed < d.BALL_MAX_SPEED / 2)
@@ -450,11 +460,16 @@ export class Ball {
 
 	makeCollisionWithPaddle( paddlee)
 	{
-		if (! (paddlee.hitbox.isCollide(this.hitbox)))
-			return false
+		// console.log("debut test")
 
+		if (!(paddlee.hitbox.isCollide(this.hitbox)))
+		{
+			//  console.log("echec")
+			return false
+		}
+		// console.log("continue test")
 		// Speed stat
-		realSpeed = this.speed * this.modifierSpeed
+		let realSpeed = this.speed * this.modifierSpeed
 		if (realSpeed > paddlee.maxSpeedBallTouch)
 			paddlee.maxSpeedBallTouch = realSpeed
 
@@ -462,21 +477,21 @@ export class Ball {
 		this.numberOfBounce = 0
 
 		// New dir of ball
-		diffY = this.pos.y - paddlee.pos.y
+		let diffY = this.pos.y - paddlee.pos.y
 		diffY /= (paddlee.h * paddlee.modifierSize) / 2
-
+		let newDir = null
 		if (paddlee.pos.x < this.pos.x)
-			newDir = Vec2(1, diffY)
+			newDir = new Vec2(1, diffY)
 		else
-			newDir = Vec2(-1, diffY)
+			newDir = new Vec2(-1, diffY)
 
 		newDir.normalize()
 		this.direction = newDir
 
 		// Accelerate ball after hit paddle
-		this.speed += BALL_PADDLE_ACCELERATION
-		if (this.speed > BALL_MAX_SPEED)
-			this.speed = BALL_MAX_SPEED
+		this.speed += d.BALL_PADDLE_ACCELERATION
+		if (this.speed > d.BALL_MAX_SPEED)
+			this.speed = d.BALL_MAX_SPEED
 
 		this.lastPaddleHitId = paddlee.id
 		this.lastPaddleTeam = paddlee.team
@@ -493,7 +508,7 @@ export class Ball {
 			this.modifierSpeed = 1
 
 		// If the paddle have power up in charge, apply them to the ball
-		if (paddle.powerUpInCharge.length > 0)
+		if (paddlee.powerUpInCharge.length > 0)
 		{
 			for (const powerUp of paddlee.powerUpInCharge)
 			{

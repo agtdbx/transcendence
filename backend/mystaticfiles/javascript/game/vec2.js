@@ -86,13 +86,13 @@ export class Vec2 {
 
 	norm()
 	{
-		return math.sqrt(this.x**2 + this.y**2)
+		return Math.sqrt(this.x**2 + this.y**2)
 	}
 
 
 	normalize()
 	{
-		norm = this.norm()
+		let norm = this.norm()
 		if (norm != 0){
 			this.x /= norm
 			this.y /= norm
@@ -107,9 +107,9 @@ export class Vec2 {
 		while (angle > 359)
 			angle -= 360
 
-		rad = angle * (math.pi / 180)
-		cosRad = math.cos(rad)
-		sinRad = math.sin(rad)
+		let rad = angle * (Math.pi / 180)
+		let cosRad = Math.cos(rad)
+		let sinRad = Math.sin(rad)
 
 		this.x = this.x * cosRad - this.y * sinRad
 		this.y = this.x * sinRad + this.y * cosRad
@@ -125,31 +125,31 @@ export class Vec2 {
 
 }
 
-function vec2Add(vec1, vec2)
+export function vec2Add(vec1, vec2)
 {
 	return new Vec2(vec1.x + vec2.x, vec1.y + vec2.y)
 }
 
 
-function vec2Sub(vec1, vec2)
+export function vec2Sub(vec1, vec2)
 {
 	return new Vec2(vec1.x - vec2.x, vec1.y - vec2.y)
 }
 
 
-function vec2Dot(vec1, vec2)
+export function vec2Dot(vec1, vec2)
 {
 	return (vec1.x * vec2.x) + (vec1.y * vec2.y)
 }
 
 
-function vec2Cross(vec1, vec2)
+export function vec2Cross(vec1, vec2)
 {
 	return (vec1.x * vec2.y) - (vec1.y * vec2.x)
 }
 
 
-function getNormalOfSegment(vec1, vec2)
+export function getNormalOfSegment(vec1, vec2)
 {
 	dx = vec2.x - vec1.x
 	dy = vec2.y - vec1.y
@@ -158,7 +158,7 @@ function getNormalOfSegment(vec1, vec2)
 	return vec
 }
 
-function reflectionAlongVec2(normal, vec)
+export function reflectionAlongVec2(normal, vec)
 {
 	if (vec2Dot(normal, vec) >= 0)
 		normal.multiply(-1)

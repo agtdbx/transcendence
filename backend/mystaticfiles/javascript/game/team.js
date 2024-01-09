@@ -2,6 +2,7 @@ import * as dc from "./client_define.js"
 import * as d from "./define.js"
 import * as paddle from "./paddle.js"
 import * as utils from "./pg_utils.js"
+// import * as Math from 'math.js'
 
 
 export class Team {
@@ -14,7 +15,7 @@ export class Team {
 		this.team = team
 
 		let xPos = 0
-		if (this.team == dc.TEAM_LEFT)
+		if (this.team == d.TEAM_LEFT)
 			xPos = dc.AREA_RECT[0] + d.AREA_BORDER_SIZE * 2
 		else
 			xPos = dc.AREA_RECT[0] + dc.AREA_RECT[2] - d.AREA_BORDER_SIZE * 2
@@ -27,8 +28,8 @@ export class Team {
 		}
 		else
 		{
-			this.paddles.push( new paddle.Paddle(xPos, dc.AREA_RECT[1] + dc.AREA_RECT[3] / 3, 0, this.team))
-			this.paddles.push( new paddle.Paddle(xPos, dc.AREA_RECT[1] + dc.AREA_RECT[3] / 3 * 2, 1, this.team))
+			this.paddles.push( new paddle.Paddle(xPos, dc.AREA_RECT[1] + Math.floor(dc.AREA_RECT[3] / 3), 0, this.team))
+			this.paddles.push( new paddle.Paddle(xPos, dc.AREA_RECT[1] + Math.floor(dc.AREA_RECT[3] / 3) * 2, 1, this.team))
 		}
 
 		this.score = 0

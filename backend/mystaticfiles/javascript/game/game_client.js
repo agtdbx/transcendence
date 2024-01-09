@@ -42,6 +42,11 @@ function createObstacle(x, y, listPoint, color)
 export class GameClient {
 	constructor()
 	{
+		console.log("area rect")
+		console.log(dc.AREA_RECT[0])
+		console.log(dc.AREA_RECT[1])
+		console.log(dc.AREA_RECT[2])
+		console.log(dc.AREA_RECT[3])
 		/*
 		This method define all variables needed by the program
 		*/
@@ -75,6 +80,11 @@ export class GameClient {
 		let nbPlayerOfTeam = 1;
 		for (let nbplayer = 0; nbplayer < nbPlayerOfTeam; nbplayer++) {
 			this.win.insertBefore(this.teamLeft.paddles[nbplayer].htmlObject, null);
+
+			
+		}
+		for (let nbplayer = 0; nbplayer < nbPlayerOfTeam; nbplayer++) {
+			this.win.insertBefore(this.teamRight.paddles[nbplayer].htmlObject, null);
 
 			
 		}
