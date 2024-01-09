@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    views.py                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: aderouba <aderouba@student.42.fr>          +#+  +:+       +#+         #
+#    By: auguste <auguste@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/08 14:00:09 by lflandri          #+#    #+#              #
-#    Updated: 2024/01/08 17:49:34 by aderouba         ###   ########.fr        #
+#    Updated: 2024/01/09 13:08:08 by auguste          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -150,48 +150,88 @@ def section(request, num):
         The login page is the token is invalid
         The main page if the num page doesn't exist
     """
+    fullPage = (request.method != 'POST')
 
     if num == 0:
-        return render(request, "index_spa.html")
+        if fullPage:
+            return render(request, "index.html")
+        else:
+            return render(request, "index_spa.html")
 
     elif num == 1:
-        return render(request, "signin.html")
+        if fullPage:
+            return render(request, "signin_full.html")
+        else:
+            return render(request, "signin.html")
 
     elif num == 2:
-        return render(request, "login.html")
+        if fullPage:
+            return render(request, "login_full.html")
+        else:
+            return render(request, "login.html")
 
     # Check token
     check = checkToken(request)
     if check["success"] == False:
-        return render(request, "login.html")
+        if fullPage:
+            return render(request, "login_full.html")
+        else:
+            return render(request, "login.html")
 
     # Get the user
     userId = check["userId"]
     user = User.objects.all().filter(idUser=userId)[0]
 
     if num == 3:
-        return render(request, "mainpage.html")
+        if fullPage:
+            return render(request, "mainpage_full.html")
+        else:
+            return render(request, "mainpage.html")
 
     elif num == 4:
-        return render(request,"waitpage.html")
+        if fullPage:
+            return render(request, "mainpage_full.html")
+        else:
+            return render(request,"waitpage.html")
 
     elif num == 5:
-        return render(request,"createGameRoom.html")
+        if fullPage:
+            return render(request, "createGameRoom_full.html")
+        else:
+            return render(request,"createGameRoom.html")
 
     elif num == 6:
-        return render(request,"game.html")
+        if fullPage:
+            return render(request, "mainpage_full.html")
+        else:
+            return render(request,"game.html")
 
     elif num == 7:
-        return render(request,"tournament.html")
+        if fullPage:
+            return render(request, "tournament_full.html")
+        else:
+            return render(request,"tournament.html")
 
     elif num == 8:
-        return render(request,"tournamentcreate.html")
+        if fullPage:
+            return render(request, "tournamentcreate_full.html")
+        else:
+            return render(request,"tournamentcreate.html")
 
     elif num == 9:
-        return render(request,"profil_content.html")
+        if fullPage:
+            return render(request, "profil_content_full.html")
+        else:
+            return render(request,"profil_content.html")
 
     elif num == 10:
-        return render(request,"ladder.html")
+        if fullPage:
+            return render(request, "ladder_full.html")
+        else:
+            return render(request,"ladder.html")
 
     else:
-        return render(request, "index_spa.html")
+        if fullPage:
+            return render(request, "index.html")
+        else:
+            return render(request, "index_spa.html")

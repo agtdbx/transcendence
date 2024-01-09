@@ -89,6 +89,7 @@ function changePage(num, byArrow=false)
 {
 	fetch(`${num}`,
 	{
+		method: 'POST',
 		cache: "default"
 	})
 	.then(response => response.text())

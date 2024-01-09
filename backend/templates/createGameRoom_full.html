@@ -1,0 +1,75 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en-US">
+
+
+	<head>
+		<meta charset="utf-8" />
+		<link rel="stylesheet" href="{% static 'myglobal.css' %}">
+		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+		<script src="{% static 'javascript/profil/achievement_and_stat.js' %}" ></script>
+		<script src="{% static 'javascript/profil/contact.js' %}" ></script>
+		<script src="{% static 'javascript/spa.js' %}" ></script>
+		<link rel="shortcut icon" type="image/png" href="{% static 'image/favicon.png' %}" >
+
+		<title>PONG</title>
+	</head>
+
+
+<body id="body">
+	<div id="Header"></div>
+
+	<div id="content">
+
+		<div id = "Page">
+
+			<button data-section="6" type="button" class ="btn-drg" id = "btn-create-game-start" onclick="changePage(this.dataset.section)">start</button>
+			<button data-section="3" type="button" class ="changePage btn-drg" id = "btn-create-game-quit" onclick="changePage(this.dataset.section)">quit</button>
+
+			<div class ="createGameTopLeft" id = "createGameTopLeft">
+				<button type="button" class ="btn-drg" id ="global-create-game">GLOBAL</button>
+			</div>
+
+			<div class ="createGameBotLeft" id = "createGameBotLeft">
+				<div class ="createGameChat" id = "createGameChat">
+				</div>
+				<input type="text" id="createGameChatInput" name="createGameChatInput"><br><br>
+
+			</div>
+
+			<div class ="createGameMiddle" id = "createGameMiddle">
+				<div class ="tournamentCreatePowerUp" id = "tournamentCreatePowerUp">
+					<p id="tournament-create-text1">Power up</p>
+					<p id="tournament-create-text2">on</p>
+					<button type="button" class ="btn-drg" id = "btn-create-game-desac">Desactivate</button>
+				</div>
+
+
+				<div class ="tournamentCreateMap" id = "tournamentCreateMap">
+					<p id="tournament-create-text3">Map</p>
+					<button type="button" class ="btn-drg" id = "btn-create-game-map1">Classic  Easy</button>
+					<button type="button" class ="btn-drg" id = "btn-create-game-map2">Dwarf cave  medium</button>
+					<button type="button" class ="btn-drg" id = "btn-create-game-map3">Around the sun  HARD</button>
+				</div>
+			</div>
+
+			<div class ="createGameBotRight" id = "createGameBotRight">
+				<p id="create-game-team1">team 1</p>
+			</div>
+
+			<div class ="createGameTopRight" id = "createGameTopRight">
+				<p id="create-game-team2">team 2</p>
+			</div>
+		</div>
+
+	</div>
+
+</body>
+
+<script>
+	changeBackground("5");
+	manageHeader("5");
+</script>
+
+</html>

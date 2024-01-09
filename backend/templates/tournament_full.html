@@ -1,0 +1,85 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en-US">
+
+
+	<head>
+		<meta charset="utf-8" />
+		<link rel="stylesheet" href="{% static 'myglobal.css' %}">
+		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+		<script src="{% static 'javascript/profil/achievement_and_stat.js' %}" ></script>
+		<script src="{% static 'javascript/profil/contact.js' %}" ></script>
+		<script src="{% static 'javascript/spa.js' %}" ></script>
+		<link rel="shortcut icon" type="image/png" href="{% static 'image/favicon.png' %}" >
+
+		<title>PONG</title>
+	</head>
+
+
+<body id="body">
+	<div id="Header"></div>
+
+	<div id="content">
+
+		<div id = "Page">
+			<div class ="tournamentChangeChat" id = "tournamentChangeChat">
+				<button type="button" class ="btn-drg" id = "btn-sign">Global</button>
+			</div>
+
+			<div class ="tournamentChat" id = "tournamentChat">
+				<div class ="tournamentrect1" id = "tournamentrect1">
+				</div>
+				<input type="text" id="tournament-chat" name="tournament-chat"><br><br>
+			</div>
+
+			<div class ="tournamentStatus" id = "tournamentStatus">
+				<div class ="tournamentrect2" id = "tournamentrect2">
+					<p id="tournament-name-text1">Tournament</p>
+					<p id="tournament-name-text2">name</p>
+					<input type="text" id="tournament-name" name="tournament-name"><br><br>
+					<p id="tournament-status-text">Status</p>
+					<p id="tournament-wait-text">Wait</p>
+					<button type="button" class ="btn-drg" id = "btn-set">Set as ready</button>
+				</div>
+			</div>
+
+			<div class ="tournamentNextMatch" id = "tournamentNextMatch">
+				<div class ="tournamentrect2" id = "tournamentrect2">
+					<p id="tournament-next-match-text">NEXT MATCH</p>
+					<p id="tournament-VS-text">VS</p>
+
+					<div class ="tournamentmapTextRect" id = "tournamentmapTextRect">
+						<p id="tournament-map-text">MAP : DWARF CAVE</p>
+					</div>
+
+
+					<div class ="tournamentPowerTextRect" id = "tournamentPowerTextRect">
+						<p class ="tournament-power-text" id="tournament-power-text">Power up:On</p>
+					</div>
+				</div>
+			</div>
+
+			<div class ="tournamentProgress" id = "tournamentProgress">
+				<div class ="tournamentrect3" id = "tournamentrect3">
+					<svg  viewBox="0, 0, 800, 300" style="width:100%; height:100%;" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+						<g id="graphe" style="fill:none;stroke-width:4px;">
+
+
+						</g>
+					</svg>
+					<script src="{% static 'javascript/tournament/tournament_tree.js' %}" ></script>\
+				</div>
+			</div>
+		</div>
+
+	</div>
+
+</body>
+
+<script>
+	changeBackground("7");
+	manageHeader("7");
+</script>
+
+</html>

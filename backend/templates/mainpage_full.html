@@ -1,0 +1,55 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en-US">
+
+
+	<head>
+		<meta charset="utf-8" />
+		<link rel="stylesheet" href="{% static 'myglobal.css' %}">
+		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+		<script src="{% static 'javascript/profil/achievement_and_stat.js' %}" ></script>
+		<script src="{% static 'javascript/profil/contact.js' %}" ></script>
+		<script src="{% static 'javascript/spa.js' %}" ></script>
+		<link rel="shortcut icon" type="image/png" href="{% static 'image/favicon.png' %}" >
+
+		<title>PONG</title>
+	</head>
+
+
+<body id="body">
+	<div id="Header"></div>
+
+	<div id="content">
+
+		<div id="Page">
+
+			<div class ="main-page-tournament" id = "main-page-tournament">
+				<p id="main-page-txt-tournament">TOURNAMENT</p>
+				<button data-section="7" type="button" class ="changePage btn-drg" id = "main-btn-join" onclick="changePage(this.dataset.section)">JOIN</button>
+			</div>
+
+			<div class ="main-page-chat" id = "main-page-chat">
+				<div class ="main-page-chat-write" id = "main-page-chat-write">
+				</div>
+				<input type="text" id="main-chat" name="main-chat"><br><br>
+			</div>
+
+			<div class ="main-page-chat-switch" id = "main-page-chat-switch">
+				<button type="button" class ="btn-drg" id ="global">GLOBAL</button>
+			</div>
+
+			<button data-section="4" type="button" class ="changePage btn-drg" id = "main-btn-quick" onclick="changePage(this.dataset.section)">QUICK GAME</button>
+			<button data-section="5" type="button" class ="changePage btn-drg" id = "main-btn-custom" onclick="changePage(this.dataset.section)">CUSTOM GAME</button>
+		</div>
+
+	</div>
+
+</body>
+
+<script>
+	changeBackground("3");
+	manageHeader("3");
+</script>
+
+</html>
