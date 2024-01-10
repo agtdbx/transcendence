@@ -1,6 +1,6 @@
 import * as dc from "./client_define.js"
 import * as d from "./define.js"
-import {Vec2} from "./vec2.js"
+import {Vec2, getNormalOfSegment, reflectionAlongVec2} from "./vec2.js"
 import "./hitbox.js"
 import * as hitbox from "./hitbox.js"
 import * as paddle from "./paddle.js"
@@ -35,7 +35,7 @@ export class Ball {
 		this.direction = new Vec2(1, 0)
 		this.htmlObject = document.createElementNS('http://www.w3.org/2000/svg', 'image')
 		this.htmlObject.setAttributeNS('http://www.w3.org/1999/xlink','href', "/static/image/game/ball.png");
-		this.htmlObject.setAttribute('transform-origin', "center");
+		// this.htmlObject.setAttribute('transform-origin', "center");
 		console.log("create ball at : " + x + "," + y)
 
 
@@ -49,15 +49,13 @@ export class Ball {
 		this.hitbox = new hitbox.Hitbox(this.pos.x, this.pos.y, d.HITBOX_BALL_COLOR)
 		this.hitbox.setPos(this.pos)
 		let points = getPointOfCircle(this.radius, d.BALL_HITBOX_PRECISION, 360 / (d.BALL_HITBOX_PRECISION * 2))
-		console.log("test points :")
-		console.log(points)
+
 		for (let index = 0; index < points.length; index++)
 		{
 			let p = points[index]
 			this.hitbox.addPoint(p[0], p[1]);
 		}
-		console.log("test fifi :")
-		console.log(this.hitbox.points)
+
 		// Modifier
 		this.modifierSpeed = 1
 		this.modifierSize = 1
@@ -244,10 +242,10 @@ export class Ball {
 		let deltaSpeed = this.speed * delta * this.modifierSpeed
 
 		let nbCheckCollisionStep = Math.floor(deltaSpeed / d.BALL_MOVE_STEP)
-		console.log("==========")
-		console.log("deltaSpeed : " + deltaSpeed)
-		console.log("nb step : " + nbCheckCollisionStep)
-		console.log("==========")
+		// console.log("==========")
+		// console.log("deltaSpeed : " + deltaSpeed)
+		// console.log("nb step : " + nbCheckCollisionStep)
+		// console.log("==========")
 
 		let lastStepMove = deltaSpeed - (nbCheckCollisionStep * d.BALL_MOVE_STEP)
 		for (let i = 0; i < nbCheckCollisionStep + 1; i++)
@@ -426,40 +424,40 @@ export class Ball {
 		if (! (hitboxe.isCollide(this.hitbox)))
 			return false
 
-		collideInfos = hitboxe.getCollideInfo(this.hitbox)
+		let collideInfos = hitboxe.getCollideInfo(this.hitbox)
 
-		collide = false
+		let collide = false
 
-		hitPos = []
-		newDirections = []
+		let hitPos = []
+		let newDirections = []
 
-		nbCollide = 0
+		let nbCollide = 0
 		for (const collideInfo of collideInfos)
 		{
 			if (collideInfo[0])
 			{
-				hitPos.append(collideInfo[3])
+				hitPos.push(collideInfo[3])
 				nbCollide += 1
-				p0 = collideInfo[1]
-				p1 = collideInfo[2]
-				normal = getNormalOfSegment(p0, p1)
-				direction = reflectionAlongVec2(normal, this.direction)
-				newDirections.append(direction.dup())
-				this.speed += BALL_WALL_ACCELERATION
-				if (this.speed > BALL_MAX_SPEED)
-					this.speed = BALL_MAX_SPEED
+				let p0 = collideInfo[1]
+				let p1 = collideInfo[2]
+				let normal = getNormalOfSegment(p0, p1)
+				let direction = reflectionAlongVec2(normal, this.direction)
+				newDirections.push(direction.dup())
+				this.speed += d.BALL_WALL_ACCELERATION
+				if (this.speed > d.BALL_MAX_SPEED)
+					this.speed = d.BALL_MAX_SPEED
 				// Bounce stat
 				this.numberOfBounce += 1
 				collide = true
 			}
 		}
-		if (len(newDirections) == 1)
+		if (newDirections.length == 1)
 			this.direction = newDirections[0].dup()
-		else if (len(newDirections) > 1)
+		else if (newDirections.length > 1)
 		{
-			p1 = hitPos[0]
-			p2 = hitPos[1]
-			normal = getNormalOfSegment(p1, p2)
+			let p1 = hitPos[0]
+			let p2 = hitPos[1]
+			let normal = getNormalOfSegment(p1, p2)
 			this.direction = reflectionAlongVec2(normal, this.direction)
 		}
 		return collide
@@ -468,22 +466,22 @@ export class Ball {
 
 	makeCollisionWithPaddle( paddlee)
 	{
-		console.log(" ")
-		console.log(" ")
-		console.log(" ")
-		console.log("test colision")
-		console.log("ball : " + this.state)
-		this.hitbox.print()
-		console.log(" ")
-		console.log(" paddle : " )
-		paddlee.hitbox.print()
+		// console.log(" ")
+		// console.log(" ")
+		// console.log(" ")
+		// console.log("test colision")
+		// console.log("ball : " + this.state)
+		// this.hitbox.print()
+		// console.log(" ")
+		// console.log(" paddle : " )
+		// paddlee.hitbox.print()
 
 		if (!(paddlee.hitbox.isCollide(this.hitbox)))
 		{
-			console.log("echec colision")
+			// console.log("echec colision")
 			return false
 		}
-		console.log("colition")
+		// console.log("colition")
 		// Speed stat
 		let realSpeed = this.speed * this.modifierSpeed
 		if (realSpeed > paddlee.maxSpeedBallTouch)

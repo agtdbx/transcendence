@@ -151,9 +151,9 @@ export function vec2Cross(vec1, vec2)
 
 export function getNormalOfSegment(vec1, vec2)
 {
-	dx = vec2.x - vec1.x
-	dy = vec2.y - vec1.y
-	vec = Vec2(-dy, dx)
+	let dx = vec2.x - vec1.x
+	let dy = vec2.y - vec1.y
+	let vec = new Vec2(-dy, dx)
 	vec.normalize()
 	return vec
 }
@@ -163,14 +163,14 @@ export function reflectionAlongVec2(normal, vec)
 	if (vec2Dot(normal, vec) >= 0)
 		normal.multiply(-1)
 
-	divider = vec2Dot(vec, vec)
+	let divider = vec2Dot(vec, vec)
 	if (divider == 0)
 		return (vec)
-	vecProjOnNormal = normal.dup()
+	let vecProjOnNormal = normal.dup()
 	vecProjOnNormal.multiply(vec2Dot(normal, vec) / divider)
 
 	vecProjOnNormal.multiply(2)
-	reflectedVec = vec2Sub(vec, vecProjOnNormal)
+	let reflectedVec = vec2Sub(vec, vecProjOnNormal)
 
 	reflectedVec.normalize()
 

@@ -28,6 +28,17 @@ export async function runGameClient(
     // Start game client
     let gameClient = new GameClient()
 
+	document.addEventListener("keypress", function(event)
+			{
+				console.log("event detected : " + event.code)
+				gameClient.input(event)
+				// const paddle = document.getElementById("paddle");
+   				// if (event.code === 'KeyV')
+				// {
+				// 	playsound()
+				// }
+			});
+
     // Clients loop
 
 	if (runTcpClient && gameClient.runMainLoop)

@@ -6,6 +6,7 @@ import * as hitbox from "./hitbox.js"
 export class Paddle {
 	constructor ( x, y, id, team)
 	{
+		y+=1
 		this.id = id
 		this.pos = new Vec2(x, y)
 		this.w = d.PADDLE_WIDTH
@@ -18,7 +19,7 @@ export class Paddle {
 		this.htmlObject.setAttribute('y',  y - this.halfH);
 		this.htmlObject.setAttribute('width', this.w);
 		this.htmlObject.setAttribute('height',  this.h);
-		this.htmlObject.setAttribute('transform-origin', "center");
+		// this.htmlObject.setAttribute('transform-origin', "center");
 
 
 		this.hitbox = new hitbox.Hitbox(x, y, dc.HITBOX_PADDLE_COLOR, dc.PADDLE_COLOR)
@@ -109,17 +110,17 @@ export class Paddle {
 	{
 		if (dir == "up")
 		{
-			this.pos.y -= PADDLE_SPEED * this.modifierSpeed * delta
-			if (this.pos.y - (this.halfH * this.modifierSize) < AREA_RECT[1] + PERFECT_SHOOT_SIZE)
-				this.pos.y = AREA_RECT[1] + PERFECT_SHOOT_SIZE + (this.halfH * this.modifierSize)
+			this.pos.y -= d.PADDLE_SPEED * this.modifierSpeed * delta
+			if (this.pos.y - (this.halfH * this.modifierSize) < dc.AREA_RECT[1] + d.PERFECT_SHOOT_SIZE)
+				this.pos.y = dc.AREA_RECT[1] + d.PERFECT_SHOOT_SIZE + (this.halfH * this.modifierSize)
 			this.hitbox.setPos(this.pos.dup())
 		}
 
 		else if (dir == "down")
 		{
-			this.pos.y += PADDLE_SPEED * this.modifierSpeed * delta
-			if (this.pos.y + (this.halfH * this.modifierSize) > AREA_RECT[1] + AREA_RECT[3] - PERFECT_SHOOT_SIZE)
-				this.pos.y = AREA_RECT[1] + AREA_RECT[3] - PERFECT_SHOOT_SIZE - (this.halfH * this.modifierSize)
+			this.pos.y += d.PADDLE_SPEED * this.modifierSpeed * delta
+			if (this.pos.y + (this.halfH * this.modifierSize) > dc.AREA_RECT[1] + dc.AREA_RECT[3] - d.PERFECT_SHOOT_SIZE)
+				this.pos.y = dc.AREA_RECT[1] + dc.AREA_RECT[3] - d.PERFECT_SHOOT_SIZE - (this.halfH * this.modifierSize)
 			this.hitbox.setPos(this.pos.dup())
 		}
 		this.htmlObject.setAttribute('y', "" + this.pos.y);
@@ -135,14 +136,14 @@ export class Paddle {
 		this.hitbox.addPoint(this.halfW, this.halfH * this.modifierSize)
 		this.hitbox.addPoint(-this.halfW, this.halfH * this.modifierSize)
 
-		if (this.pos.y - (this.halfH * this.modifierSize) < AREA_RECT[1] + PERFECT_SHOOT_SIZE)
+		if (this.pos.y - (this.halfH * this.modifierSize) < dc.AREA_RECT[1] + d.PERFECT_SHOOT_SIZE)
 		{
-			this.pos.y = AREA_RECT[1] + PERFECT_SHOOT_SIZE + (this.halfH * this.modifierSize)
+			this.pos.y = dc.AREA_RECT[1] + d.PERFECT_SHOOT_SIZE + (this.halfH * this.modifierSize)
 			this.hitbox.setPos(this.pos.dup())
 		}
-		if (this.pos.y + (this.halfH * this.modifierSize) > AREA_RECT[1] + AREA_RECT[3] - PERFECT_SHOOT_SIZE)
+		if (this.pos.y + (this.halfH * this.modifierSize) > AREA_RECT[1] + AREA_RECT[3] - d.PERFECT_SHOOT_SIZE)
 		{
-			this.pos.y = AREA_RECT[1] + AREA_RECT[3] - PERFECT_SHOOT_SIZE - (this.halfH * this.modifierSize)
+			this.pos.y = dc.AREA_RECT[1] + dc.AREA_RECT[3] - d.PERFECT_SHOOT_SIZE - (this.halfH * this.modifierSize)
 			this.hitbox.setPos(this.pos.dup())
 		}
 

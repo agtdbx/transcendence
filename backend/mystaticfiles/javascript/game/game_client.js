@@ -14,10 +14,10 @@ import * as ball from "./ball.js"
 
 function createWall(x, y, w, h, color)
 {
-	halfW = w / 2
-	halfH = h / 2
+	let halfW = w / 2
+	let halfH = h / 2
 
-	hit = hitbox.Hitbox(x, y, HITBOX_WALL_COLOR, color)
+	let hit = new hitbox.Hitbox(x, y, dc.HITBOX_WALL_COLOR, color)
 	hit.addPoint(-halfW, -halfH)
 	hit.addPoint(halfW, -halfH)
 	hit.addPoint(halfW, halfH)
@@ -29,12 +29,41 @@ function createWall(x, y, w, h, color)
 
 function createObstacle(x, y, listPoint, color)
 {
-	hit = hitbox.Hitbox(x, y, HITBOX_WALL_COLOR, color)
+	let hit = new hitbox.Hitbox(x, y, dc.HITBOX_WALL_COLOR, color)
 
 	for (const p of listPoint)
 		hit.addPoint(p[0], p[1])
 
 	return hit
+}
+
+function addPolygon(content,x , y, pointList, color)
+{
+    let d = "M" + (pointList[0][0] + x) + " " + (pointList[0][1] + y);
+    for (let index = 1; index < pointList.length ; index++)
+    {
+            d +=  " L " + (pointList[index][0] + x) + " " + (pointList[index][1] + y) +" ";
+    }
+    d +=  " Z";
+    let newPath = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+    //newPath.style.stroke = color;
+	newPath.setAttribute('x', x)
+	newPath.setAttribute('y', y)
+    newPath.setAttribute('d', d);
+    newPath.setAttribute('fill', color);
+    content.insertBefore(newPath, null);
+	return newPath
+}
+
+function changePolygon(path, pointList)
+{
+	let d = "M" + (pointList[0][0]) + " " + pointList[0][1];
+    for (let index = 1; index < pointList.length ; index++)
+    {
+            d +=  " L " + pointList[index][0] + " " + pointList[index][1] +" ";
+    }
+    d +=  " Z";
+    path.setAttribute('d', d);
 }
 
 
@@ -112,8 +141,18 @@ export class GameClient {
 			this.powerUp[1].addPoint(p[0], p[1])
 
 		// Walls creation
+		//addPolygon(game, [[50,50], [90,50], [90,90], [50, 90]], "#FF00FF");
+		
 		this.walls = []
+		this.wallsHtmlObjects = []
 
+		//test tempo :
+		let cubePointListe = [[0,0], [90,0], [90,90], [0, 90]]
+		this.walls.push(createObstacle(400, 400, cubePointListe))
+		this.wallsHtmlObjects.push(addPolygon(this.win, 400, 400, cubePointListe, "#FF00FF"))
+		let testobj = [[-300, 0], [300, 0], [275, 50], [75, 75], [0, 125], [-75, 75], [-275, 50]]
+		this.walls.push(createObstacle(d.AREA_SIZE[0] / 2, 0, testobj))
+		this.wallsHtmlObjects.push(addPolygon(this.win, d.AREA_SIZE[0] / 2, 0, testobj, "#FF00FF"))
 		// idPaddle, paddleTeam, Ball speed, Number of bounce, CC, Perfect shoot, time of goal
 		this.goals = []
 
@@ -124,6 +163,22 @@ export class GameClient {
 		this.messageForServer = []
 		// (Message type, message content)
 		this.messageFromServer = []
+		this.inputCooldown = 0
+
+		this.inputEventListener = null
+	}
+
+
+	inputCoolDownChange()
+	{
+		if (this.inputCooldown != 0)
+		{
+			this.inputCooldown--;
+		}
+		else
+		{
+			this.input("lol")
+		}
 	}
 
 	run()
@@ -136,9 +191,7 @@ export class GameClient {
 		// Game loop
 		while (this.runMainLoop)
 		{
-			this.input()
 			this.tick()
-			this.render()
 			this.clock.tick(this.fps)
 		}
 	}
@@ -157,7 +210,8 @@ export class GameClient {
 		// Game loop
 		if (this.runMainLoop)
 		{
-			this.input()
+			this.inputCoolDownChange()
+
 			this.tick()
 			//this.render()
 		}
@@ -168,7 +222,7 @@ export class GameClient {
 	}
 
 
-	input()
+	input(event)
 	{
 		//TODO change to accept our input
 
@@ -196,92 +250,109 @@ export class GameClient {
 		{
 			// {id_paddle, id_key, key_action [true = press, false = release]}
 			let templateContent = {"paddleId" : i, "keyId" : 0, "keyAction" : true}
+			console.log(" ")
 
-			// if (this.keyboardState[PLAYER_KEYS[i][KEY_UP]] && ! this.paddlesKeyState[i * 4 + KEY_UP])
-			// {
-			// 	this.paddlesKeyState[i * 4 + KEY_UP] = true
-			// 	let content = templateContent.copy()
-			// 	content["keyId"] = KEY_UP
-			// 	content["keyAction"] = true
-			// 	this.messageForServer.append((CLIENT_MSG_TYPE_USER_EVENT, content))
-			// }
-			// else if (! this.keyboardState[PLAYER_KEYS[i][KEY_UP]] && this.paddlesKeyState[i * 4 + KEY_UP])
-			// {
-			// 	this.paddlesKeyState[i * 4 + KEY_UP] = false
-			// 	let content = templateContent.copy()
-			// 	content["keyId"] = KEY_UP
-			// 	content["keyAction"] = false
-			// 	this.messageForServer.append((CLIENT_MSG_TYPE_USER_EVENT, content))
-			// }
+			// console.log("test for : " + dc.PLAYER_KEYS[i][d.KEY_UP])
+			// console.log("test condition : " + (! (event.code == dc.PLAYER_KEYS[i][d.KEY_UP])))
+			// console.log("test condition : " + this.paddlesKeyState[i * 4 + d.KEY_UP])
+			// console.log("test condition : " + (! event.code == dc.PLAYER_KEYS[i][d.KEY_UP] && this.paddlesKeyState[i * 4 + d.KEY_UP]))
 
-			// if (this.keyboardState[PLAYER_KEYS[i][KEY_DOWN]] && ! this.paddlesKeyState[i * 4 + KEY_DOWN])
-			// {
-			// 	this.paddlesKeyState[i * 4 + KEY_DOWN] = true
-			// 	let content = templateContent.copy()
-			// 	content["keyId"] = KEY_DOWN
-			// 	content["keyAction"] = true
-			// 	this.messageForServer.append((CLIENT_MSG_TYPE_USER_EVENT, content))
-			// }
-			// else if (! this.keyboardState[PLAYER_KEYS[i][KEY_DOWN]] && this.paddlesKeyState[i * 4 + KEY_DOWN])
-			// {
-			// 	this.paddlesKeyState[i * 4 + KEY_DOWN] = false
-			// 	let content = templateContent.copy()
-			// 	content["keyId"] = KEY_DOWN
-			// 	content["keyAction"] = false
-			// 	this.messageForServer.append((CLIENT_MSG_TYPE_USER_EVENT, content))
-			// }
+			if (event.code == dc.PLAYER_KEYS[i][d.KEY_UP] && ! this.paddlesKeyState[i * 4 + d.KEY_UP])
+			{
+				this.paddlesKeyState[i * 4 + d.KEY_UP] = true
+				// let content = templateContent.copy()
+				// content["keyId"] = KEY_UP
+				// content["keyAction"] = true
+				// this.messageForServer.append((CLIENT_MSG_TYPE_USER_EVENT, content))
+			}
+			else if ((! (event.code == dc.PLAYER_KEYS[i][d.KEY_UP])) && this.paddlesKeyState[i * 4 + d.KEY_UP])
+			{
+				this.paddlesKeyState[i * 4 + d.KEY_UP] = false
+				// let content = templateContent.copy()
+				// content["keyId"] = KEY_UP
+				// content["keyAction"] = false
+				// this.messageForServer.append((CLIENT_MSG_TYPE_USER_EVENT, content))
+			}
 
-			// if (this.keyboardState[PLAYER_KEYS[i][KEY_POWER_UP]] && ! this.paddlesKeyState[i * 4 + KEY_POWER_UP])
-			// {
-			// 	this.paddlesKeyState[i * 4 + KEY_POWER_UP] = true
-			// 	let content = templateContent.copy()
-			// 	content["keyId"] = KEY_POWER_UP
-			// 	content["keyAction"] = true
-			// 	this.messageForServer.append((CLIENT_MSG_TYPE_USER_EVENT, content))
-			// }
-			// else if (! this.keyboardState[PLAYER_KEYS[i][KEY_POWER_UP]] && this.paddlesKeyState[i * 4 + KEY_POWER_UP])
-			// {
-			// 	this.paddlesKeyState[i * 4 + KEY_POWER_UP] = false
-			// 	let content = templateContent.copy()
-			// 	content["keyId"] = KEY_POWER_UP
-			// 	content["keyAction"] = false
-			// 	this.messageForServer.append((CLIENT_MSG_TYPE_USER_EVENT, content))
-			// }
+			// console.log("test for : " + dc.PLAYER_KEYS[i][d.KEY_DOWN])
 
-			// if (this.keyboardState[PLAYER_KEYS[i][KEY_LAUNCH_BALL]] && ! this.paddlesKeyState[i * 4 + KEY_LAUNCH_BALL])
-			// {
-			// 	this.paddlesKeyState[i * 4 + KEY_LAUNCH_BALL] = true
-			// 	let content = templateContent.copy()
-			// 	content["keyId"] = KEY_LAUNCH_BALL
-			// 	content["keyAction"] = true
-			// 	this.messageForServer.append((CLIENT_MSG_TYPE_USER_EVENT, content))
-			// }
-			// else if (! this.keyboardState[PLAYER_KEYS[i][KEY_LAUNCH_BALL]] && this.paddlesKeyState[i * 4 + KEY_LAUNCH_BALL])
-			// {
-			// 	this.paddlesKeyState[i * 4 + KEY_LAUNCH_BALL] = false
-			// 	let content = templateContent.copy()
-			// 	content["keyId"] = KEY_LAUNCH_BALL
-			// 	content["keyAction"] = false
-			// 	this.messageForServer.append((CLIENT_MSG_TYPE_USER_EVENT, content))
-			// }
+
+			if (event.code == dc.PLAYER_KEYS[i][d.KEY_DOWN] && ! this.paddlesKeyState[i * 4 + d.KEY_DOWN])
+			{
+				this.paddlesKeyState[i * 4 + d.KEY_DOWN] = true
+				// let content = templateContent.copy()
+				// content["keyId"] = KEY_DOWN
+				// content["keyAction"] = true
+				// this.messageForServer.append((CLIENT_MSG_TYPE_USER_EVENT, content))
+			}
+			else if ((! (event.code == dc.PLAYER_KEYS[i][d.KEY_DOWN])) && this.paddlesKeyState[i * 4 + d.KEY_DOWN])
+			{
+				this.paddlesKeyState[i * 4 + d.KEY_DOWN] = false
+				// let content = templateContent.copy()
+				// content["keyId"] = KEY_DOWN
+				// content["keyAction"] = false
+				// this.messageForServer.append((CLIENT_MSG_TYPE_USER_EVENT, content))
+			}
+
+			// console.log("test for : " + dc.PLAYER_KEYS[i][d.KEY_POWER_UP])
+
+
+			if (event.code == dc.PLAYER_KEYS[i][d.KEY_POWER_UP] && ! this.paddlesKeyState[i * 4 + d.KEY_POWER_UP])
+			{
+				this.paddlesKeyState[i * 4 + d.KEY_POWER_UP] = true
+				// let content = templateContent.copy()
+				// content["keyId"] = KEY_POWER_UP
+				// content["keyAction"] = true
+				// this.messageForServer.append((CLIENT_MSG_TYPE_USER_EVENT, content))
+			}
+			else if ((! (event.code == dc.PLAYER_KEYS[i][d.KEY_POWER_UP])) && this.paddlesKeyState[i * 4 + d.KEY_POWER_UP])
+			{
+				this.paddlesKeyState[i * 4 + d.KEY_POWER_UP] = false
+				// let content = templateContent.copy()
+				// content["keyId"] = KEY_POWER_UP
+				// content["keyAction"] = false
+				// this.messageForServer.append((CLIENT_MSG_TYPE_USER_EVENT, content))
+			}
+
+			// console.log("test for : " + dc.PLAYER_KEYS[i][d.KEY_LAUNCH_BALL])
+
+
+			if (event.code == dc.PLAYER_KEYS[i][d.KEY_LAUNCH_BALL] && ! this.paddlesKeyState[i * 4 + d.KEY_LAUNCH_BALL])
+			{
+				this.paddlesKeyState[i * 4 + d.KEY_LAUNCH_BALL] = true
+				// let content = templateContent.copy()
+				// content["keyId"] = KEY_LAUNCH_BALL
+				// content["keyAction"] = true
+				// this.messageForServer.append((CLIENT_MSG_TYPE_USER_EVENT, content))
+			}
+			else if ((! (event.code == dc.PLAYER_KEYS[i][d.KEY_LAUNCH_BALL])) && this.paddlesKeyState[i * 4 + d.KEY_LAUNCH_BALL])
+			{
+				this.paddlesKeyState[i * 4 + d.KEY_LAUNCH_BALL] = false
+				// let content = templateContent.copy()
+				// content["keyId"] = KEY_LAUNCH_BALL
+				// content["keyAction"] = false
+				// this.messageForServer.append((CLIENT_MSG_TYPE_USER_EVENT, content))
+			}
 		}
+		console.log(this.paddlesKeyState)
+		this.inputCooldown = 2
 	}
 
 
 	tick()
 	{
-		if (this.balls[0].state === 0)
-{		console.log(" ")
-		console.log(" ")
-		console.log(" ")
-		console.log("ball : " + this.balls[0].state)
-		this.balls[0].hitbox.print()
-		console.log(" ")
-		console.log("teamLeft paddle : " )
-		this.teamLeft.paddles[0].hitbox.print()
-		console.log(" ")
-		console.log("teamRight paddle : " )
-		this.teamRight.paddles[0].hitbox.print()}
+// 		if (this.balls[0].state === 0)
+// {		console.log(" ")
+// 		console.log(" ")
+// 		console.log(" ")
+// 		console.log("ball : " + this.balls[0].state)
+// 		this.balls[0].hitbox.print()
+// 		console.log(" ")
+// 		console.log("teamLeft paddle : " )
+// 		this.teamLeft.paddles[0].hitbox.print()
+// 		console.log(" ")
+// 		console.log("teamRight paddle : " )
+// 		this.teamRight.paddles[0].hitbox.print()}
 		/*
 		This is the method where all calculations will be done
 		*/

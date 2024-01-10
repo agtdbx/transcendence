@@ -8,30 +8,30 @@ import * as d from "./define.js"
 
 function collideBetweenSegments(p1, p2, p3, p4)
 {
-	console.log("start collideBetweenSegments")
+	// console.log("start collideBetweenSegments")
 	let divisor = (p1.x - p2.x) * (p3.y - p4.y) - (p1.y - p2.y) * (p3.x - p4.x)
 	if (divisor == 0)
 		return [false, null]
-	console.log("next 1")
+	// console.log("next 1")
 	let t = (p1.x - p3.x) * (p3.y - p4.y) - (p1.y - p3.y) * (p3.x - p4.x)
 	t /= divisor
 
 	if (t < 0 || 1 < t)
 		return [false, null]
-		console.log("next 2")
+		// console.log("next 2")
 
 	let u = (p1.x - p3.x) * (p1.y - p2.y) - (p1.y - p3.y) * (p1.x - p2.x)
 	u /= divisor
 
 	if (u < 0 || 1 < u)
 		return [false, null]
-		console.log("next 3")
+		// console.log("next 3")
 
 	// Point of intersection
 	let s1Dir = vec2Sub(p2, p1)
 	let p = p1.dup()
 	p.translateAlong(s1Dir, t)
-	console.log("end collideBetweenSegments")
+	// console.log("end collideBetweenSegments")
 	return [true, p1, p2, p]
 }
 
@@ -90,8 +90,8 @@ export class Hitbox {
 
 		let pos = this.points[0].asTuppleCenter(this.pos.x, this.pos.y)
 
-		console.log("pos ball : ")
-		console.log(pos)
+		// console.log("pos ball : ")
+		// console.log(pos)
 
 		let xLeft = pos[0]
 		let xRight = pos[0]
@@ -125,14 +125,8 @@ export class Hitbox {
 		let dx = vec.x - this.pos.x
 		let dy = vec.y - this.pos.y
 		this.pos = vec
-		console.log("vec :")
-		vec.print()
-		console.log("test :")
-		console.log(this.points)
 		for (let i = 0; i < this.points.length; i++)
 			this.points[i].translate(dx, dy)
-		console.log("test :")
-		console.log(this.points)
 		this.computeSurroundingRect()
 	}
 
@@ -210,10 +204,10 @@ export class Hitbox {
 
 	isCollide( hitbox)
 	{
-		console.log("ball :")
-		console.log(hitbox.rect)
-		console.log("paddle :")
-		console.log(this.rect)
+		// console.log("ball :")
+		// console.log(hitbox.rect)
+		// console.log("paddle :")
+		// console.log(this.rect)
 
 		let pointsSize = this.points.length
 		if (pointsSize <= 1)
@@ -222,17 +216,17 @@ export class Hitbox {
 		if (hitboxPointsSize <= 1)
 			return false
 
-		console.log("" + this.rect[0] + " + " + this.rect[2] + " >= " + hitbox.rect[0])
-		console.log(this.rect[0] + this.rect[2] >= hitbox.rect[0])
+		// console.log("" + this.rect[0] + " + " + this.rect[2] + " >= " + hitbox.rect[0])
+		// console.log(this.rect[0] + this.rect[2] >= hitbox.rect[0])
 
-		console.log("" + this.rect[0] + " <=  " + hitbox.rect[0] + " + " + hitbox.rect[2])
-		console.log(this.rect[0] <= hitbox.rect[0] + hitbox.rect[2])
+		// console.log("" + this.rect[0] + " <=  " + hitbox.rect[0] + " + " + hitbox.rect[2])
+		// console.log(this.rect[0] <= hitbox.rect[0] + hitbox.rect[2])
 
-		console.log("" + this.rect[1] + " + " + this.rect[3] + " >= " + hitbox.rect[1])
-		console.log(this.rect[1] + this.rect[3] >= hitbox.rect[1])
+		// console.log("" + this.rect[1] + " + " + this.rect[3] + " >= " + hitbox.rect[1])
+		// console.log(this.rect[1] + this.rect[3] >= hitbox.rect[1])
 
-		console.log("" + this.rect[1] + " + " + hitbox.rect[1] + " >= " + hitbox.rect[3])
-		console.log(this.rect[1] <= hitbox.rect[1] + hitbox.rect[3])
+		// console.log("" + this.rect[1] + " + " + hitbox.rect[1] + " >= " + hitbox.rect[3])
+		// console.log(this.rect[1] <= hitbox.rect[1] + hitbox.rect[3])
 
 		if (this.rect[0] + this.rect[2] >= hitbox.rect[0] && this.rect[0] <= hitbox.rect[0] + hitbox.rect[2] &&
 			this.rect[1] + this.rect[3] >= hitbox.rect[1] && this.rect[1] <= hitbox.rect[1] + hitbox.rect[3])
@@ -318,18 +312,18 @@ export class Hitbox {
 
 	getCollideInfo( hitbox)
 	{
-		collideInfos = []
+		let collideInfos = []
 		for (let i = 1; i < this.points.length; i++)
 		{
-			p0 = this.points[i - 1]
-			p1 = this.points[i]
+			let p0 = this.points[i - 1]
+			let p1 = this.points[i]
 
-			for (let j = 1; j < hitbox.points.length; i++)
+			for (let j = 1; j < hitbox.points.length; j++)
 			{
-				p2 = hitbox.points[j - 1]
-				p3 = hitbox.points[j]
+				let p2 = hitbox.points[j - 1]
+				let p3 = hitbox.points[j]
 
-				collideInfos.append(collideBetweenSegments(p0, p1, p2, p3))
+				collideInfos.push(collideBetweenSegments(p0, p1, p2, p3))
 			}
 		}
 		return collideInfos
