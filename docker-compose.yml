@@ -45,6 +45,7 @@ services:
    - .env
   ports:
    - "4200:8000"
+   - "8765:8765"
 
  adminer:
   container_name: adminer

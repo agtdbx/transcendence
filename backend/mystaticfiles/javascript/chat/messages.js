@@ -20,7 +20,7 @@ function sendMessage(data, input)
 	// 	.catch(error => console.log("Fetch send message error :", error))
 
 	console.log("Create ChatSocket");
-	const chatSocket = new WebSocket("ws://" + window.location.host + "/ws/chat/");
+	const chatSocket = new WebSocket("ws://" + window.location.hostname + ":8765");
 
 	chatSocket.onmessage = function(e) {
 		const data = JSON.parse(e.data);
