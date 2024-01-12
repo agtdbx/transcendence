@@ -16,9 +16,7 @@
 			messageInput = document.getElementById('main-chat');
 			form.addEventListener('submit', async event => {
 				event.preventDefault();
-
-				const data = new FormData(form);
-				sendMessage(data, messageInput);
+				sendMessage(messageInput);
 			});
 		</script>
 	</form>
