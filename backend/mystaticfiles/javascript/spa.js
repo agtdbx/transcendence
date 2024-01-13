@@ -22,7 +22,6 @@ function changeBackground(num)
 		body.style.backgroundImage = 'url(/static/image/background/index.png)';
 }
 
-
 function addHeader(){
 	let header = document.getElementById("header");
 	if (header === null)
@@ -131,15 +130,17 @@ function checkLogin(data)
 			document.cookie = "token=" + jsonData['token'];
 			data.set("token", jsonData['token']);
 
+			enableChatConnection();
+
 			changePage("3");
 		})
 		.catch(error => console.log("checkLogin error :", error))
-}
+	}
 
 
-function checkSignin(data)
-{
-	fetch("checkSignin",
+	function checkSignin(data)
+	{
+		fetch("checkSignin",
 		{
 			method: 'POST',
 			body: data,
@@ -157,10 +158,12 @@ function checkSignin(data)
 			document.cookie = "token=" + jsonData['token'];
 			data.set("token", jsonData['token']);
 
+			enableChatConnection();
+
 			changePage("3");
 		})
 		.catch(error => console.log("checkSignin error :", error))
-}
+	}
 
 
 function disconnection()
