@@ -122,6 +122,10 @@ export class GameClient {
 		// Ball creation
 		this.balls = [ new ball.Ball(dc.WIN_WIDTH / 2, dc.WIN_HEIGHT / 2)]
 		this.win.insertBefore(this.balls[0].htmlObject, null);
+		for (let index = 0; index < this.balls[0].shadowBalls.length; index++) {
+			this.win.insertBefore(this.balls[0].shadowBalls[index][0], null);
+		}
+		console.log("nb shadow ball : " + this.balls[0].shadowBalls.length)
 
 		// // Ball begin left side
 		// if (random.random() > 0.5)

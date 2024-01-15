@@ -7,7 +7,7 @@ import * as paddle from "./paddle.js"
 
 // import pygame as pg
 
-
+const NB_SHADOW_BALL = 10
 
 export function getPointOfCircle(radius, precision, beginDegree = 0)
 {
@@ -38,6 +38,21 @@ export class Ball {
 		this.htmlObject.setAttributeNS('http://www.w3.org/1999/xlink','href', "/static/image/game/ball.png");
 		// this.htmlObject.setAttribute('transform-origin', "center");
 		console.log("create ball at : " + x + "," + y)
+		this.shadowBalls = []
+		for (let index = 0; index < NB_SHADOW_BALL; index++)
+		{
+			let array = []
+			let newShadowBall = document.createElementNS('http://www.w3.org/2000/svg', 'image')
+			newShadowBall.setAttributeNS('http://www.w3.org/1999/xlink','href', "/static/image/game/ball.png");
+			newShadowBall.style.opacity = "" + (1 / NB_SHADOW_BALL)
+			newShadowBall.setAttribute('x',  x - (this.radius / 2));
+			newShadowBall.setAttribute('y',  y - (this.radius / 2));
+			array.push(newShadowBall)
+			array.push([x - (this.radius / 2), y - (this.radius / 2)])
+			this.shadowBalls.push(array)
+			
+			
+		}
 
 
 
@@ -350,6 +365,15 @@ export class Ball {
 
 			// Affect position along direction and
 			//TODO add change trainer ici
+			for (let index = 0; index < NB_SHADOW_BALL - 1; index++)
+			{
+				this.shadowBalls[index][1] = this.shadowBalls[index + 1][1]
+				console.log(this.shadowBalls[index])
+				this.shadowBalls[index][0].setAttribute('x', "" +  this.shadowBalls[index + 1][1][0]);
+				this.shadowBalls[index][0].setAttribute('y', "" +  this.shadowBalls[index + 1][1][1]);
+			}
+			this.shadowBalls[NB_SHADOW_BALL - 1][1] = [(this.pos.x - (this.radius / 2)), (this.pos.y - (this.radius / 2))]
+			
 			this.pos = newpos.dup()
 			this.htmlObject.setAttribute('x', "" + (this.pos.x - (this.radius / 2)));
 			this.htmlObject.setAttribute('y', "" + (this.pos.y - (this.radius / 2)));
