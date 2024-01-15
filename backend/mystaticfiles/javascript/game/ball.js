@@ -28,6 +28,7 @@ export function getPointOfCircle(radius, precision, beginDegree = 0)
 export class Ball {
 	constructor ( x, y)
 	{
+		this.maxXtest = 0;
 		// Geometry
 		this.pos = new Vec2(x, y)
 		this.radius = d.BALL_RADIUS
@@ -72,7 +73,7 @@ export class Ball {
 		this.lastPositions = [];
 		this.lastColors = [];
 		for (let index = 0; index < d.BALL_TRAIL_LENGTH; index++) {
-			this.lastPositions.push((x, y));
+			this.lastPositions.push([x, y]);
 			this.lastColors.push(BALL_COLOR);
 		}
 		this.state = d.STATE_RUN
@@ -93,7 +94,7 @@ export class Ball {
 		let points = getPointOfCircle(this.radius * this.modifierSize, d.BALL_HITBOX_PRECISION, 360 / (d.BALL_HITBOX_PRECISION * 2))
 		for (let index = 0; index < points.length; index++)
 		{
-			const p = new Array(index);
+			const p = points[index];
 			this.hitbox.addPoint(p[0], p[1]);
 		}
 	}
@@ -169,7 +170,6 @@ export class Ball {
 
 		for (let i = 0; i < this.powerUpEffects.length; i++)
 		{
-			//TODO : reprrdnre trad ici
 			powerUpEffect = this.powerUpEffects[i]
 			if (powerUpEffect[1] > 0)
 			{
@@ -211,9 +211,8 @@ export class Ball {
 	{
 		if (! (this.modifierWaveBall))
 			return this.direction
-
 		realDirection = this.direction.dup()
-		realDirection.rotate(POWER_UP_BALL_WAVE_DEGREES * math.sin(this.modifierWaveBallTimer * POWER_UP_BALL_WAVE_SPEED_FACTOR))
+		realDirection.rotate(d.POWER_UP_BALL_WAVE_DEGREES * Math.sin(this.modifierWaveBallTimer * d.POWER_UP_BALL_WAVE_SPEED_FACTOR))
 
 		return realDirection;
 	}
@@ -350,6 +349,7 @@ export class Ball {
 			}
 
 			// Affect position along direction and
+			//TODO add change trainer ici
 			this.pos = newpos.dup()
 			this.htmlObject.setAttribute('x', "" + (this.pos.x - (this.radius / 2)));
 			this.htmlObject.setAttribute('y', "" + (this.pos.y - (this.radius / 2)));
@@ -420,9 +420,11 @@ export class Ball {
 	{
 		if (this.modifierSkipCollision)
 			return false
-
+		
 		if (! (hitboxe.isCollide(this.hitbox)))
 			return false
+
+		// console.log("colision detected")
 
 		let collideInfos = hitboxe.getCollideInfo(this.hitbox)
 
@@ -460,6 +462,7 @@ export class Ball {
 			let normal = getNormalOfSegment(p1, p2)
 			this.direction = reflectionAlongVec2(normal, this.direction)
 		}
+		// console.log("colide : " + collide)
 		return collide
 	}
 
@@ -526,7 +529,7 @@ export class Ball {
 		{
 			for (const powerUp of paddlee.powerUpInCharge)
 			{
-				if (powerUp == POWER_UP_BALL_FAST)
+				if (powerUp == d.POWER_UP_BALL_FAST)
 				{
 					this.modifierSpeed *= d.POWER_UP_BALL_FAST_FACTOR
 					this.modifierStopBallTimer = d.POWER_UP_BALL_FAST_TIME_STOP
@@ -536,10 +539,10 @@ export class Ball {
 						
 					}
 				}
-				else if (powerUp == POWER_UP_BALL_WAVE)
+				else if (powerUp == d.POWER_UP_BALL_WAVE)
 					this.modifierWaveBall = true
 
-				else if (powerUp == POWER_UP_BALL_INVISIBLE)
+				else if (powerUp == d.POWER_UP_BALL_INVISIBLE)
 					this.modifierInvisibleBall = true
 			}
 

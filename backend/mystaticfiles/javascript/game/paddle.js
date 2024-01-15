@@ -6,7 +6,6 @@ import * as hitbox from "./hitbox.js"
 export class Paddle {
 	constructor ( x, y, id, team)
 	{
-		y+=1
 		this.id = id
 		this.pos = new Vec2(x, y)
 		this.w = d.PADDLE_WIDTH
@@ -123,7 +122,7 @@ export class Paddle {
 				this.pos.y = dc.AREA_RECT[1] + dc.AREA_RECT[3] - d.PERFECT_SHOOT_SIZE - (this.halfH * this.modifierSize)
 			this.hitbox.setPos(this.pos.dup())
 		}
-		this.htmlObject.setAttribute('y', "" + this.pos.y);
+		this.htmlObject.setAttribute('y', "" + this.pos.y - this.halfH);
 	}
 
 

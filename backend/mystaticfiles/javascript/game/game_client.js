@@ -147,9 +147,42 @@ export class GameClient {
 		this.wallsHtmlObjects = []
 
 		//test tempo :
-		let cubePointListe = [[0,0], [90,0], [90,90], [0, 90]]
-		this.walls.push(createObstacle(400, 400, cubePointListe))
-		this.wallsHtmlObjects.push(addPolygon(this.win, 400, 400, cubePointListe, "#FF00FF"))
+
+
+		let cubePointListe = [[-45,-45], [45,-45], [45,45], [-45, 45]]
+		// this.walls.push(createObstacle(400, 399, cubePointListe))
+		// this.wallsHtmlObjects.push(addPolygon(this.win, 400, 399, cubePointListe, "#FF00FF"))
+
+		let ys = 420
+
+		this.walls.push(createObstacle(1400, ys, cubePointListe))
+		this.wallsHtmlObjects.push(addPolygon(this.win, 1400, ys, cubePointListe, "#FF00FF"))
+
+		// this.walls.push(createObstacle(800, 300, cubePointListe))
+		// this.wallsHtmlObjects.push(addPolygon(this.win, 800, 300, cubePointListe, "#FF00FF"))
+
+		// this.walls.push(createObstacle(1000, 300, cubePointListe))
+		// this.wallsHtmlObjects.push(addPolygon(this.win, 1000, 300, cubePointListe, "#FF00FF"))
+
+		// this.walls.push(createObstacle(1710, 0, cubePointListe))
+		// this.wallsHtmlObjects.push(addPolygon(this.win, 1710, 0, cubePointListe, "#FF00FF"))
+
+		// this.walls.push(createObstacle(0, 0, cubePointListe))
+		// this.wallsHtmlObjects.push(addPolygon(this.win, 0, 0, cubePointListe, "#FF00FF"))
+
+
+		// let wallPointListe = [[0,0], [90,0], [90,900], [0, 900]]
+		
+
+		// this.walls.push(createObstacle(400, 0, wallPointListe))
+		// this.wallsHtmlObjects.push(addPolygon(this.win, 400, 0, wallPointListe, "#FF00FF"))
+
+		let borderListe = [[-900,-2], [900,-2], [900,2], [-900, 2]]
+		this.walls.push(createObstacle(900, 2, borderListe))
+		this.wallsHtmlObjects.push(addPolygon(this.win, 900, 2, borderListe, "#FF00FF"))
+		this.walls.push(createObstacle(900, 897, borderListe))
+		this.wallsHtmlObjects.push(addPolygon(this.win, 900, 897, borderListe, "#FF00FF"))
+
 		let testobj = [[-300, 0], [300, 0], [275, 50], [75, 75], [0, 125], [-75, 75], [-275, 50]]
 		this.walls.push(createObstacle(d.AREA_SIZE[0] / 2, 0, testobj))
 		this.wallsHtmlObjects.push(addPolygon(this.win, d.AREA_SIZE[0] / 2, 0, testobj, "#FF00FF"))
@@ -157,6 +190,12 @@ export class GameClient {
 		this.goals = []
 
 		this.ballNumber = 0
+
+
+		for (let index = 0; index < this.walls.length; index++) {
+			const element = this.walls[index];
+			console.log(element)
+		}
 
 		// For communications
 		// (Message type, message content)
@@ -174,10 +213,6 @@ export class GameClient {
 		if (this.inputCooldown != 0)
 		{
 			this.inputCooldown--;
-		}
-		else
-		{
-			this.input("lol")
 		}
 	}
 
@@ -222,8 +257,9 @@ export class GameClient {
 	}
 
 
-	input(event)
+	input(event, type)
 	{
+		console.log("event : " + event.code + " : type : " + type)
 		//TODO change to accept our input
 
 		/*
@@ -250,14 +286,13 @@ export class GameClient {
 		{
 			// {id_paddle, id_key, key_action [true = press, false = release]}
 			let templateContent = {"paddleId" : i, "keyId" : 0, "keyAction" : true}
-			console.log(" ")
 
 			// console.log("test for : " + dc.PLAYER_KEYS[i][d.KEY_UP])
 			// console.log("test condition : " + (! (event.code == dc.PLAYER_KEYS[i][d.KEY_UP])))
 			// console.log("test condition : " + this.paddlesKeyState[i * 4 + d.KEY_UP])
 			// console.log("test condition : " + (! event.code == dc.PLAYER_KEYS[i][d.KEY_UP] && this.paddlesKeyState[i * 4 + d.KEY_UP]))
 
-			if (event.code == dc.PLAYER_KEYS[i][d.KEY_UP] && ! this.paddlesKeyState[i * 4 + d.KEY_UP])
+			if (type == "down" && event.code == dc.PLAYER_KEYS[i][d.KEY_UP] && ! this.paddlesKeyState[i * 4 + d.KEY_UP])
 			{
 				this.paddlesKeyState[i * 4 + d.KEY_UP] = true
 				// let content = templateContent.copy()
@@ -265,7 +300,7 @@ export class GameClient {
 				// content["keyAction"] = true
 				// this.messageForServer.append((CLIENT_MSG_TYPE_USER_EVENT, content))
 			}
-			else if ((! (event.code == dc.PLAYER_KEYS[i][d.KEY_UP])) && this.paddlesKeyState[i * 4 + d.KEY_UP])
+			else if (type == "up" && ( (event.code == dc.PLAYER_KEYS[i][d.KEY_UP])) && this.paddlesKeyState[i * 4 + d.KEY_UP])
 			{
 				this.paddlesKeyState[i * 4 + d.KEY_UP] = false
 				// let content = templateContent.copy()
@@ -277,7 +312,7 @@ export class GameClient {
 			// console.log("test for : " + dc.PLAYER_KEYS[i][d.KEY_DOWN])
 
 
-			if (event.code == dc.PLAYER_KEYS[i][d.KEY_DOWN] && ! this.paddlesKeyState[i * 4 + d.KEY_DOWN])
+			if (type == "down" && event.code == dc.PLAYER_KEYS[i][d.KEY_DOWN] && ! this.paddlesKeyState[i * 4 + d.KEY_DOWN])
 			{
 				this.paddlesKeyState[i * 4 + d.KEY_DOWN] = true
 				// let content = templateContent.copy()
@@ -285,7 +320,7 @@ export class GameClient {
 				// content["keyAction"] = true
 				// this.messageForServer.append((CLIENT_MSG_TYPE_USER_EVENT, content))
 			}
-			else if ((! (event.code == dc.PLAYER_KEYS[i][d.KEY_DOWN])) && this.paddlesKeyState[i * 4 + d.KEY_DOWN])
+			else if (type == "up" && ( (event.code == dc.PLAYER_KEYS[i][d.KEY_DOWN])) && this.paddlesKeyState[i * 4 + d.KEY_DOWN])
 			{
 				this.paddlesKeyState[i * 4 + d.KEY_DOWN] = false
 				// let content = templateContent.copy()
@@ -297,7 +332,7 @@ export class GameClient {
 			// console.log("test for : " + dc.PLAYER_KEYS[i][d.KEY_POWER_UP])
 
 
-			if (event.code == dc.PLAYER_KEYS[i][d.KEY_POWER_UP] && ! this.paddlesKeyState[i * 4 + d.KEY_POWER_UP])
+			if (type == "down" && event.code == dc.PLAYER_KEYS[i][d.KEY_POWER_UP] && ! this.paddlesKeyState[i * 4 + d.KEY_POWER_UP])
 			{
 				this.paddlesKeyState[i * 4 + d.KEY_POWER_UP] = true
 				// let content = templateContent.copy()
@@ -305,7 +340,7 @@ export class GameClient {
 				// content["keyAction"] = true
 				// this.messageForServer.append((CLIENT_MSG_TYPE_USER_EVENT, content))
 			}
-			else if ((! (event.code == dc.PLAYER_KEYS[i][d.KEY_POWER_UP])) && this.paddlesKeyState[i * 4 + d.KEY_POWER_UP])
+			else if (type == "up" && ( (event.code == dc.PLAYER_KEYS[i][d.KEY_POWER_UP])) && this.paddlesKeyState[i * 4 + d.KEY_POWER_UP])
 			{
 				this.paddlesKeyState[i * 4 + d.KEY_POWER_UP] = false
 				// let content = templateContent.copy()
@@ -317,7 +352,7 @@ export class GameClient {
 			// console.log("test for : " + dc.PLAYER_KEYS[i][d.KEY_LAUNCH_BALL])
 
 
-			if (event.code == dc.PLAYER_KEYS[i][d.KEY_LAUNCH_BALL] && ! this.paddlesKeyState[i * 4 + d.KEY_LAUNCH_BALL])
+			if (type == "down" && event.code == dc.PLAYER_KEYS[i][d.KEY_LAUNCH_BALL] && ! this.paddlesKeyState[i * 4 + d.KEY_LAUNCH_BALL])
 			{
 				this.paddlesKeyState[i * 4 + d.KEY_LAUNCH_BALL] = true
 				// let content = templateContent.copy()
@@ -325,7 +360,7 @@ export class GameClient {
 				// content["keyAction"] = true
 				// this.messageForServer.append((CLIENT_MSG_TYPE_USER_EVENT, content))
 			}
-			else if ((! (event.code == dc.PLAYER_KEYS[i][d.KEY_LAUNCH_BALL])) && this.paddlesKeyState[i * 4 + d.KEY_LAUNCH_BALL])
+			else if (type == "up" && ( (event.code == dc.PLAYER_KEYS[i][d.KEY_LAUNCH_BALL])) && this.paddlesKeyState[i * 4 + d.KEY_LAUNCH_BALL])
 			{
 				this.paddlesKeyState[i * 4 + d.KEY_LAUNCH_BALL] = false
 				// let content = templateContent.copy()
@@ -334,7 +369,7 @@ export class GameClient {
 				// this.messageForServer.append((CLIENT_MSG_TYPE_USER_EVENT, content))
 			}
 		}
-		console.log(this.paddlesKeyState)
+		// console.log(this.paddlesKeyState)
 		this.inputCooldown = 2
 	}
 
@@ -356,6 +391,13 @@ export class GameClient {
 		/*
 		This is the method where all calculations will be done
 		*/
+
+	if (this.balls[0].state != 0)
+	{
+		console.log("ball status : " + this.balls[0].state)
+	}
+
+
 		let tmp = new Date().getTime()
 		let delta = (tmp - this.last) / 1000
 		this.last = tmp

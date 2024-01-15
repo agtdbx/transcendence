@@ -2,14 +2,17 @@ import {Vec2, vec2Sub} from "./vec2.js"
 import * as dc from "./client_define.js"
 import * as d from "./define.js"
 
+// import pygame as pg
+// import math
+
 
 function collideBetweenSegments(p1, p2, p3, p4)
 {
-	// console.log("start collideBetweenSegments beteen : ( [" + p1.x + "; " + p1.y  + "] |  [" + p2.x + "; " + p2.y  + "]) and ([" + p3.x + "; " + p3.y  + "] |  [" + p4.x + "; " + p4.y  + "])")
+	console.log("start collideBetweenSegments beteen : ( [" + p1.x + "; " + p1.y  + "] |  [" + p2.x + "; " + p2.y  + "]) and ([" + p3.x + "; " + p3.y  + "] |  [" + p4.x + "; " + p4.y  + "])")
 	let divisor = ((p1.x - p2.x) * (p3.y - p4.y)) - ((p1.y - p2.y) * (p3.x - p4.x))
 	if (divisor == 0)
 	{
-		// console.log("ret 1")
+		console.log("ret 1")
 		return [false, null]
 	}
 	
@@ -18,7 +21,7 @@ function collideBetweenSegments(p1, p2, p3, p4)
 
 	if (t < 0 || 1 < t)
 	{
-		// console.log("ret 2")
+		console.log("ret 2")
 		return [false, null]
 	}
 
@@ -27,7 +30,7 @@ function collideBetweenSegments(p1, p2, p3, p4)
 
 	if (u < 0 || 1 < u)
 	{
-		// console.log("ret 3")
+		console.log("ret 3")
 		return [false, null]
 	}
 
@@ -37,17 +40,18 @@ function collideBetweenSegments(p1, p2, p3, p4)
 	let p = p1.dup()
 	p.translateAlong(s1Dir, t)
 	// console.log("end collideBetweenSegments")
-	// console.log("ret 4")
+	console.log("ret 4")
 	return [true, p1, p2, p]
 }
 
 
 export class Hitbox {
-	constructor ( x, y, color)
+	constructor ( x, y, color, fillColor = (255, 255, 255))
 	{
 		this.pos = new Vec2(x, y)
 
 		this.color = color
+		this.fillColor = fillColor
 
 		this.rect = [0, 0, 0, 0]
 
@@ -62,6 +66,7 @@ export class Hitbox {
 		console.log("<hitbox:" + this.pos.x + ", " + this.pos.y + "| " + this.points.length + " points >")
 	}
 
+
 	addPoint( x, y)
 	{
 		this.points.push( new Vec2(this.pos.x + x, this.pos.y + y))
@@ -73,8 +78,8 @@ export class Hitbox {
 	{
 		for (const pair of lst)
 		{
-			let x = pair[0];
-			let y = pair[1];
+			const x = pair[0];
+			const y = pair[1];
 			this.points.push( new Vec2(this.pos.x + x, this.pos.y + y))
 			this.computeSurroundingRect()
 		}
@@ -87,94 +92,66 @@ export class Hitbox {
 	}
 
 
-	getPoints()
+	computeSurroundingRect()
 	{
-		points = []
+		if (this.points.length == 0)
+			return
 
-		for (const p in self.points)
+		let pos = this.points[0].asTuppleCenter(this.pos.x, this.pos.y)
+
+		// console.log("pos ball : ")
+		// console.log(pos)
+
+		let xLeft = pos[0]
+		let xRight = pos[0]
+		let yUp = pos[1]
+		let yDown = pos[1]
+		
+
+		for (let i = 1; i < this.points.length; i++)
 		{
-			points.push(p.asTupple())
+			pos = this.points[i].asTuppleCenter(this.pos.x, this.pos.y)
+			if (pos[0] < xLeft)
+				xLeft = pos[0]
+			else if (pos[0] > xRight)
+				xRight = pos[0]
+
+			if (pos[1] < yUp)
+				yUp = pos[1]
+			else if (pos[1] > yDown)
+				yDown = pos[1]
 		}
-		return points
+
+		this.rect[0] = xLeft + this.pos.x
+		this.rect[2] = xRight - xLeft + 1
+		this.rect[1] = yUp + this.pos.y
+		this.rect[3] = yDown - yUp + 1
 	}
 
 
-	getPointsCenter(self)
+	setPos( vec)
 	{
-		points = []
-
-		for (const p in self.points)
-		{
-			points.push(p.asTuppleCenter(self.pos.x, self.pos.y))
-		}
-
-		return points
+		let dx = vec.x - this.pos.x
+		let dy = vec.y - this.pos.y
+		this.pos = vec
+		for (let i = 0; i < this.points.length; i++)
+			this.points[i].translate(dx, dy)
+		this.computeSurroundingRect()
 	}
 
 
-		computeSurroundingRect()
-		{
-			if (this.points.length == 0)
-				return
-	
-			let pos = this.points[0].asTuppleCenter(this.pos.x, this.pos.y)
-	
-			// console.log("pos ball : ")
-			// console.log(pos)
-	
-			let xLeft = pos[0]
-			let xRight = pos[0]
-			let yUp = pos[1]
-			let yDown = pos[1]
-			
-	
-			for (let i = 1; i < this.points.length; i++)
-			{
-				pos = this.points[i].asTuppleCenter(this.pos.x, this.pos.y)
-				if (pos[0] < xLeft)
-					xLeft = pos[0]
-				else if (pos[0] > xRight)
-					xRight = pos[0]
-	
-				if (pos[1] < yUp)
-					yUp = pos[1]
-				else if (pos[1] > yDown)
-					yDown = pos[1]
-			}
-	
-			this.rect[0] = xLeft + this.pos.x
-			this.rect[2] = xRight - xLeft + 1
-			this.rect[1] = yUp + this.pos.y
-			this.rect[3] = yDown - yUp + 1
-		}
-
-
-		setPos( vec)
-		{
-			let dx = vec.x - this.pos.x
-			let dy = vec.y - this.pos.y
-			this.pos = vec
-			for (let i = 0; i < this.points.length; i++)
-				this.points[i].translate(dx, dy)
-			this.computeSurroundingRect()
-		}
-	
-	
-		move( x, y)
-		{
-			this.pos.add(Vec2(x, y))
-			for (let i = 0; i < this.points.length; i++)
-				this.points[i].translate(x, y)
-			this.computeSurroundingRect()
-		}
+	move( x, y)
+	{
+		this.pos.add(Vec2(x, y))
+		for (let i = 0; i < this.points.length; i++)
+			this.points[i].translate(x, y)
+		this.computeSurroundingRect()
+	}
 
 
 	rotate( degrees)
 	{
-		if (degrees === 0)
-			return
-
-			this.rotation += degrees
+		this.rotation += degrees
 
 		let radiant = degrees * (math.pi / 180)
 		let sinTmp = math.sin(radiant)
@@ -184,6 +161,55 @@ export class Hitbox {
 			this.points[i].rotateAround(this.pos.x, this.pos.y, sinTmp, cosTmp)
 		this.computeSurroundingRect()
 	}
+
+
+	drawNormals( win)
+	{
+		for (let i = 1; i < this.points.length; i++)
+		{
+			segDir = vec2Sub(this.points[i], this.points[i - 1])
+			segNorm = segDir.norm()
+			segDir.divide(segNorm)
+			segNormal = getNormalOfSegment(this.points[i], this.points[i - 1])
+
+			startPoint = this.points[i - 1].dup()
+			startPoint.translateAlong(segDir, segNorm / 2)
+
+			endPoint = startPoint.dup()
+			endPoint.translateAlong(segNormal, 20)
+
+			pg.draw.line(win, this.color, startPoint.asTupple(), endPoint.asTupple(), 1)
+		}
+	}
+
+
+	draw( win)
+	{
+		//TODO change to correct transition
+
+		if (d.DRAW_HITBOX)
+		{
+			let points = []
+			for (const p of this.points)
+				points.push(p.asTupple())
+			// pg.draw.polygon(win, this.color, points, 1)
+		}
+		if (d.DRAW_HITBOX_NORMALS)
+			this.drawNormals(win)
+	}
+
+
+	drawFill( win)
+	{
+		//TODO change to correct transition
+
+		let points = []
+		for (const p of this.points)
+			points.push(p.asTupple())
+
+		// pg.draw.polygon(win, this.fillColor, points)
+	}
+
 
 	isCollide( hitbox)
 	{
@@ -221,7 +247,7 @@ export class Hitbox {
 				{
 					let p2 = hitbox.points[j - 1]
 					let p3 = hitbox.points[j]
-					// console.log("new test seg")
+					console.log("new test seg")
 					if (collideBetweenSegments(p0, p1, p2, p3)[0])
 						return true
 				}
@@ -310,18 +336,3 @@ export class Hitbox {
 		return collideInfos
 	}
 }
-
-
-	function copy(self)
-	{
-		let copy = new Hitbox(self.pos.x, self.pos.y, self.color)
-
-		let points = []
-		for (const p in self.points)
-			points.push(p.dup())
-		copy.addPoints(points)
-
-		copy.rotation = self.rotation
-
-		return copy
-	}
