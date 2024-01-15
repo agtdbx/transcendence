@@ -1,4 +1,5 @@
 let chatSocket = null;
+let channelTarget = null;
 
 function getToken()
 {
@@ -26,6 +27,12 @@ function enableChatConnection()
 		return ;
 	}
 
+	if (chatSocket != null)
+	{
+		console.log("Close last co bro");
+		endChatConnection();
+	}
+
 	console.log("Create ChatSocket");
 	chatSocket = new WebSocket("ws://" + window.location.hostname + ":8765");
 
@@ -41,14 +48,39 @@ function enableChatConnection()
 		console.log("Data recieved :", e.data);
 		const data = JSON.parse(e.data);
 		console.log("Data parse :", data);
+		const channel = data['channel'];
 		const message = data['message'];
-
 		console.log("Message recieved :", message);
+		console.log("Channel target :", channelTarget);
+		if (channel == channelTarget)
+		{
+			console.log("displayMessage");
+		}
+		else
+			console.log("Not message display");
 	};
 
 	chatSocket.onclose = function(e) {
 		console.error('Chat socket closed unexpectedly');
 	};
+}
+
+
+function endChatConnection()
+{
+	if (chatSocket != null)
+	{
+		chatSocket.onclose = {};
+		chatSocket.close();
+		chatSocket = null;
+		console.log("Close chat socket");
+	}
+}
+
+
+function setChannelTarget(channel)
+{
+	channelTarget = channel;
 }
 
 
@@ -60,6 +92,7 @@ function sendMessageToServer(message, channel) {
 		'message': message
 	}));
 }
+
 
 function sendMessage(input)
 {

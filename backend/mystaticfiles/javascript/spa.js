@@ -56,6 +56,15 @@ function manageHeader(num)
 }
 
 
+function manageChat(num)
+{
+	if (num == 3 || num == 4 || num == 5 || num == 7)
+		setChannelTarget("general");
+	else
+		setChannelTarget(null);
+}
+
+
 function runScript()
 {
 	/* this is an advertissement : don't try to understand, i know, you don't*/
@@ -98,6 +107,7 @@ function changePage(num, byArrow=false)
 
 		changeBackground(num);
 		manageHeader(num);
+		manageChat(num);
 
 		// Run the script tag if they is one in the html load
 		runScript();
@@ -170,6 +180,7 @@ function disconnection()
 {
 	document.cookie = "token=";
 	changePage("0");
+	endChatConnection();
 }
 
 

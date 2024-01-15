@@ -1,6 +1,5 @@
 #!/bin/sh
 
-
 # Config django server
 sleep 5
 python3 manage.py makemigrations db_test
