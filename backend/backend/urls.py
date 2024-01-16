@@ -29,10 +29,13 @@ urlpatterns = [
     path("checkLogin", views.checkLogin, name="checkLogin"),
     path("checkSignin", views.checkSignin, name="checkSignin"),
 	path('gamePage/', views.gamePage, name='gamePage'),				#to remove at the end of project
+	
 	path('addfriends', views.addfriends, name='addfriends'),
 	path('removefriends', views.removefriends, name='removefriends'),
 	path('block', views.block, name='block'),
 	path('unblock', views.unblock, name='unblock'),
+	path('acceptfriends', views.acceptfriends, name='acceptfriends'),
+	path('getrelation', views.getrelation, name='getrelation'),
 ]
 
 if settings.DEBUG:
