@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    views.py                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: hde-min <hde-min@student.42.fr>            +#+  +:+       +#+         #
+#    By: lflandri <lflandri@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/08 14:00:09 by lflandri          #+#    #+#              #
-#    Updated: 2024/01/16 14:52:55 by hde-min          ###   ########.fr        #
+#    Updated: 2024/01/16 15:25:57 by lflandri         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -255,10 +255,23 @@ def section(request, num):
 
 def UserProfilPic(request):
     if request.method == 'POST':
-        form = UserForm(request.POST, request.FILES)
- 
-        if form.is_valid():
-            form.save()
-        else:
-            form = UserForm()
-    return render(request,"changeProfilePicture.html", {"form":UserForm(request.POST, request.FILES)})
+        username = request.POST.get('login')
+        idUser = request.POST.get('password')
+        idType = idUser
+
+        # Create a new patient entry in the database using the Patient model
+
+        status= Status(idStatus='0', name="Online")
+        status.save()
+
+        user = User(idUser=idUser, idType=idType, username=username, profilPicture="wrgsd", tokenJWT="wgdsv", money=1, idStatus=Status(idStatus='0', name="Online"))
+        user.save()
+
+
+
+        return render(request,"mainpage.html")
+    else:
+        return HttpResponse("Invalid request method.")
+
+def gamePage(request):
+	return render(request,"game.html")

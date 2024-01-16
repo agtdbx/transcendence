@@ -1,6 +1,6 @@
 // import math
 
-class Vec2 {
+export class Vec2 {
 	constructor ( x, y)
 	{
 		this.x = x
@@ -8,8 +8,9 @@ class Vec2 {
 	}
 
 
-	__str__(this){
-		return "<{x:+.2f},{y:+.2f}>".format(x=this.x, y=this.y)
+	print()
+	{
+		console.log("<{" + this.x + ":+.2f},{" + this.y + ":+.2f}>");
 	}
 
 
@@ -73,25 +74,25 @@ class Vec2 {
 
 	asTupple()
 	{
-		return (this.x, this.y)
+		return [this.x, this.y]
 	}
 
 
 	asTuppleCenter( x, y)
 	{
-		return (this.x - x, this.y - y)
+		return [this.x - x, this.y - y]
 	}
 
 
 	norm()
 	{
-		return math.sqrt(this.x**2 + this.y**2)
+		return Math.sqrt(this.x**2 + this.y**2)
 	}
 
 
 	normalize()
 	{
-		norm = this.norm()
+		let norm = this.norm()
 		if (norm != 0){
 			this.x /= norm
 			this.y /= norm
@@ -106,9 +107,9 @@ class Vec2 {
 		while (angle > 359)
 			angle -= 360
 
-		rad = angle * (math.pi / 180)
-		cosRad = math.cos(rad)
-		sinRad = math.sin(rad)
+		let rad = angle * (Math.pi / 180)
+		let cosRad = Math.cos(rad)
+		let sinRad = Math.sin(rad)
 
 		this.x = this.x * cosRad - this.y * sinRad
 		this.y = this.x * sinRad + this.y * cosRad
@@ -119,57 +120,57 @@ class Vec2 {
 
 	dup()
 	{
-		return Vec2(this.x, this.y)
+		return new Vec2(this.x, this.y)
 	}
 
 }
 
-function vec2Add(vec1, vec2)
+export function vec2Add(vec1, vec2)
 {
-	return Vec2(vec1.x + vec2.x, vec1.y + vec2.y)
+	return new Vec2(vec1.x + vec2.x, vec1.y + vec2.y)
 }
 
 
-function vec2Sub(vec1, vec2)
+export function vec2Sub(vec1, vec2)
 {
-	return Vec2(vec1.x - vec2.x, vec1.y - vec2.y)
+	return new Vec2(vec1.x - vec2.x, vec1.y - vec2.y)
 }
 
 
-function vec2Dot(vec1, vec2)
+export function vec2Dot(vec1, vec2)
 {
 	return (vec1.x * vec2.x) + (vec1.y * vec2.y)
 }
 
 
-function vec2Cross(vec1, vec2)
+export function vec2Cross(vec1, vec2)
 {
 	return (vec1.x * vec2.y) - (vec1.y * vec2.x)
 }
 
 
-function getNormalOfSegment(vec1, vec2)
+export function getNormalOfSegment(vec1, vec2)
 {
-	dx = vec2.x - vec1.x
-	dy = vec2.y - vec1.y
-	vec = Vec2(-dy, dx)
+	let dx = vec2.x - vec1.x
+	let dy = vec2.y - vec1.y
+	let vec = new Vec2(-dy, dx)
 	vec.normalize()
 	return vec
 }
 
-function reflectionAlongVec2(normal, vec)
+export function reflectionAlongVec2(normal, vec)
 {
 	if (vec2Dot(normal, vec) >= 0)
 		normal.multiply(-1)
 
-	divider = vec2Dot(vec, vec)
+	let divider = vec2Dot(vec, vec)
 	if (divider == 0)
 		return (vec)
-	vecProjOnNormal = normal.dup()
+	let vecProjOnNormal = normal.dup()
 	vecProjOnNormal.multiply(vec2Dot(normal, vec) / divider)
 
 	vecProjOnNormal.multiply(2)
-	reflectedVec = vec2Sub(vec, vecProjOnNormal)
+	let reflectedVec = vec2Sub(vec, vecProjOnNormal)
 
 	reflectedVec.normalize()
 

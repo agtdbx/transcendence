@@ -1,7 +1,17 @@
-<div id="Page">
+<!DOCTYPE html>
+<!-- TODO when the game work correctly, remove the link (CSS) and script (JS) balise at line 4 and 5 -->
+{% load static %}
+<link rel="stylesheet" href="{% static 'myglobal.css' %}">
 
-	<h1 class="title">GAME</h1>
 
-	<button data-section="3" type="button" class ="changePage btn-drg" id = "btn-create-game-quit" onclick="changePage(this.dataset.section)">quit</button>
+<div id="Page" > 
+
+	<svg id="svgGameBox" style="border:solid black 6px; width:1920; height:1080;"  viewBox="0, 0, 1800, 900" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+		<g id="GameBox" >
+
+
+		</g>
+	</svg>
+	<script type="module" src="{% static 'javascript/game/main_client.js' %}" ></script>
 
 </div>

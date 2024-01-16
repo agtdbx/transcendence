@@ -28,6 +28,7 @@ urlpatterns = [
     path("checkLogin", views.checkLogin, name="checkLogin"),
     path("checkSignin", views.checkSignin, name="checkSignin"),
     path("UserProfilPic", views.UserProfilPic, name="UserProfilPic"),
+	path('gamePage/', views.gamePage, name='gamePage'),
 ]
 
 if settings.DEBUG:
