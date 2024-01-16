@@ -1,2 +1,4 @@
 .env
 __pycache__
+media/images/*
+!media/images/default
