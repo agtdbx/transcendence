@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    views.py                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: lflandri <lflandri@student.42.fr>          +#+  +:+       +#+         #
+#    By: hde-min <hde-min@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/08 14:00:09 by lflandri          #+#    #+#              #
-#    Updated: 2024/01/16 15:25:57 by lflandri         ###   ########.fr        #
+#    Updated: 2024/01/16 15:31:20 by hde-min          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -82,7 +82,7 @@ def checkSignin(request):
     try:
         #the image are in /backend/media/...
         #add random for profile picture
-        user = User(idUser=id, idType=idType, username=username, profilPicture="images/Scout.png", tokenJWT=token, money=0, idStatus=Status.objects.get(idStatus=0))
+        user = User(idUser=id, idType=idType, username=username, profilPicture="images/default/Scout.png", tokenJWT=token, money=0, idStatus=Status.objects.get(idStatus=0))
         user.save()
     except:
         return JsonResponse({"success" : False, "error" : "Error on user creation"})
@@ -240,7 +240,9 @@ def section(request, num):
             data= form.cleaned_data.get("profilPicture")
             user.profilPicture = data
             user.save()
-            return render(request, "profil_content_full.html")
+            #return (section(request, 9))
+            #num should be = to 9 but its not, need to fix it
+            #return render(request, "profil_content_full.html")
         if fullPage:
             return render(request, "changeProfilePicture.html", {"form":UserForm(request.POST, request.FILES)})
         else:
