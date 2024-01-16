@@ -6,7 +6,7 @@
 #    By: lflandri <lflandri@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/08 14:00:09 by lflandri          #+#    #+#              #
-#    Updated: 2024/01/16 21:09:55 by lflandri         ###   ########.fr        #
+#    Updated: 2024/01/16 23:14:01 by lflandri         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -353,7 +353,7 @@ def addfriends(request):
             return JsonResponse({"success": False, "content" : "Error : creation of user relation." })
     try :
         link = Link.objects.all().filter(idUser=user.idUser, idTarget=target.idUser)[0]
-        if link.link != 0 and link.link != 1:
+        if link.link == 2:
             return JsonResponse({"success": False, "content" : "You can't send a friend request to " + request.POST.get('friend') +"." })
         link.link = 1
         link.save()
@@ -362,7 +362,7 @@ def addfriends(request):
 
     return JsonResponse({"success": True, "content" : "request send to " + request.POST.get('friend') +"." })
 
-@csrf_exempt
+
 def removefriends(request):
     check = checkToken(request)
     if check["success"] == False:
@@ -387,7 +387,7 @@ def removefriends(request):
 
     return JsonResponse({"success": True, "content" : "request send to " + request.POST.get('friend') +"." })
 
-@csrf_exempt
+
 def acceptfriends(request):
     check = checkToken(request)
     if check["success"] == False:
@@ -405,7 +405,7 @@ def acceptfriends(request):
             return JsonResponse({"success": False, "content" : "Error : creation of user relation." })
     try :
         link1 = Link.objects.all().filter(idUser=user.idUser, idTarget=target.idUser)[0]
-        link2 = Link.objects.all().filter(idUser=user.idUser, idTarget=target.idUser)[0]
+        link2 = Link.objects.all().filter(idUser=target.idUser, idTarget=user.idUser)[0]
         link1.link = 2
         link2.link = 2
         link1.save()
@@ -413,9 +413,32 @@ def acceptfriends(request):
     except :
          return JsonResponse({"success": False, "content" : "Error : modification of user relation." })
 
-    return JsonResponse({"success": True, "content" : "request send to " + request.POST.get('friend') +"." })
+    return JsonResponse({"success": True, "content" : "request of " + request.POST.get('friend') +" accepted." })
 
-@csrf_exempt
+	
+def refusefriends(request):
+    check = checkToken(request)
+    if check["success"] == False:
+        return JsonResponse(check)
+
+    userId = check["userId"]
+    user = User.objects.all().filter(idUser=userId)[0]
+    target = getTarget(request.POST.get('friend'))
+    if target == None:
+        return JsonResponse({"success": False, "content" : "Inexistant user." })
+    if not haveRelation(target, user) or Link.objects.all().filter(idUser=target.idUser, idTarget=user.idUser)[0].link != 1:
+        return JsonResponse({"success": False, "content" : "Error : You haven't received a friend request." })
+
+    try :
+        link = Link.objects.all().filter(idUser=target.idUser, idTarget=user.idUser)[0]
+        link.link = 0
+        link.save()
+    except :
+         return JsonResponse({"success": False, "content" : "Error : modification of user relation." })
+
+    return JsonResponse({"success": True, "content" : "request of " + request.POST.get('friend') +" refused." })
+
+
 def block(request):
     check = checkToken(request)
     if check["success"] == False:
@@ -442,7 +465,7 @@ def block(request):
 
     return JsonResponse({"success": True, "content" : "request send to " + request.POST.get('friend') +"." })
 
-@csrf_exempt
+
 def unblock(request):
     check = checkToken(request)
     if check["success"] == False:
@@ -466,7 +489,7 @@ def unblock(request):
 
     return JsonResponse({"success": True, "content" : "unblocked : " + request.POST.get('friend') })
 
-@csrf_exempt
+
 def getrelation(request):
     check = checkToken(request)
     if check["success"] == False:
@@ -481,3 +504,22 @@ def getrelation(request):
         return JsonResponse({"success": True, "content" : "", "value" : 0 })
     linkType = Link.objects.all().filter(idUser=user.idUser, idTarget=target.idUser)[0].link
     return JsonResponse({"success": True, "content" : "", "value" : linkType })
+
+def getlistefriendrequest(request):
+    check = checkToken(request)
+    if check["success"] == False:
+        return JsonResponse(check)
+
+    userId = check["userId"]
+    user = User.objects.all().filter(idUser=userId)[0]
+    linkFriendRequestList = Link.objects.all().filter(idTarget=user.idUser, link=1)
+    listeRequest = []
+    errortxt = ""
+    for link in linkFriendRequestList :
+        try:
+            user = User.objects.all().filter(link=link)[0]
+            listeRequest.append(user.username)
+        except:
+            continue;
+    return JsonResponse({"success": True, "content" : "", "listRequest" : listeRequest })
+

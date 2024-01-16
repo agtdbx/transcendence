@@ -37,11 +37,15 @@
 					<div style="margin:auto; margin-top:5px; text-align:center; width:76%; font-size:200%;">
 						<form id="data-request-relation">
 							{% csrf_token %}
-							
 							<input type="hidden" name="friend" value="{{ user.username }}">
 						</form>
-						<button class ="btn-drg" style=" display:inline-block; width:80%; font-size:63%; text-align:center;" id="successbutton" onclick=addFriend()>Send Friend Request</button>
-						<button class ="btn-drg" style=" display:inline-block; width:80%; font-size:63%; text-align:center;" id="successbutton" onclick=ContactList('blocked')>Block</button>
+						<button class ="btn-drg" style=" display:none; width:80%; font-size:63%; text-align:center;" id="btn-send-friend-request" onclick=addFriend()>Send Friend Request</button>
+						<p style="display:none; width:80%; font-size:63%; text-align:center; color:white; margin-bottom:0%; margin-top:0%;" id="p-friend-request">Friend request send.</p>
+						<button class ="btn-drg" style=" display:none; width:80%; font-size:63%; text-align:center;" id="btn-remove-friend" onclick=removedFriend()>Remove Friend</button>
+
+						<button class ="btn-drg" style=" display:none; width:80%; font-size:63%; text-align:center;" id="btn-block-user" onclick=blockUser()>Block</button>
+						<button class ="btn-drg" style=" display:none; width:80%; font-size:63%; text-align:center;" id="btn-unblock-user" onclick=unBlockUser()>Unblock</button>
+						<script src="{% static 'javascript/user_relation/adapte_button.js' %}" ></script>
 					</div>
 				</div>
 

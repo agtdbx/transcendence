@@ -6,29 +6,52 @@
 /*   By: lflandri <lflandri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 18:53:21 by lflandri          #+#    #+#             */
-/*   Updated: 2024/01/16 19:32:49 by lflandri         ###   ########.fr       */
+/*   Updated: 2024/01/16 22:03:01 by lflandri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+function changeRelationButton(value)
+{
+	btnSendFriendRequest = document.getElementById("btn-send-friend-request");
+	btnRemoveFriend = document.getElementById("btn-remove-friend");
+	btnBlockUser = document.getElementById("btn-block-user");
+	btnUnBlockUser = document.getElementById("btn-unblock-user");
+	pFriendRequestSend = document.getElementById("p-friend-request");
+	switch (value) {
+		case 1:
+			pFriendRequestSend.style.display = "inline-block";
+			btnBlockUser.style.display = "inline-block";
+			btnSendFriendRequest.style.display = "none";
+			btnRemoveFriend.style.display = "none";
+			btnUnBlockUser.style.display = "none";
+			break;
+		case 2:
+			btnRemoveFriend.style.display = "inline-block";
+			btnBlockUser.style.display = "inline-block";
+			btnUnBlockUser.style.display = "none";
+			pFriendRequestSend.style.display = "none";
+			btnSendFriendRequest.style.display = "none";
+			break;
+		case 3:
+			btnSendFriendRequest.style.display = "inline-block";
+			btnUnBlockUser.style.display = "inline-block";
+			btnBlockUser.style.display = "none";
+			btnRemoveFriend.style.display = "none";
+			pFriendRequestSend.style.display = "none";
+			break;
+	
+		default:
+			btnSendFriendRequest.style.display = "inline-block";
+			btnBlockUser.style.display = "inline-block";
+			btnUnBlockUser.style.display = "none";
+			btnRemoveFriend.style.display = "none";
+			pFriendRequestSend.style.display = "none";
+			break;
+	}
+}
+
 function addFriend()
 {
-	var requete = new XMLHttpRequest();
-	// requete.open("POST", ("https://" + window.location.hostname + ":4200/addfriends"));
-	// requete.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-
-	
-	// toSend = JSON.stringify(toSend)
-	// console.log("test send : ")
-	// console.log(toSend)
-	// requete.send(toSend);
-	// requete.onload = function() {
-	// //La variable à passer est alors contenue dans l'objet response et l'attribut responseText.
-	// var variableARecuperee = this.responseText;
-	// console.log("received : ")
-	// console.log(variableARecuperee)
-	// /*continue here the script when reponse received*/
-	// };
-	// /let toSend = {"friend": document.getElementById("pseudo_profil_page").textContent}
 	const form = document.getElementById('data-request-relation');
 	const data = new FormData(form);
 
@@ -40,8 +63,13 @@ function addFriend()
 	})
 			.then(response => response.json())
 			.then (jsonData => {
-				console.log("received : ")
-				console.log(jsonData)
+				if (! jsonData["success"])
+				{
+					console.error(jsonData["content"])
+					alert(jsonData["content"])
+					return ;
+				}
+				changeRelationButton(1);
 			})
 			.catch(error => {
 				console.log("erreur adding friend : ")
@@ -52,15 +80,81 @@ function addFriend()
 
 function removedFriend()
 {
-	
+	const form = document.getElementById('data-request-relation');
+	const data = new FormData(form);
+
+	fetch("https://" + window.location.hostname + ":4200/removefriends",
+	{
+		method: 'POST',
+		body: data,
+		cache: "default"
+	})
+			.then(response => response.json())
+			.then (jsonData => {
+				if (! jsonData["success"])
+				{
+					console.error(jsonData["content"])
+					alert(jsonData["content"])
+					return ;
+				}
+				changeRelationButton(0);
+			})
+			.catch(error => {
+				console.log("erreur removing friend : ")
+				console.error(error)
+			})
 }
 
 function blockUser()
 {
-	
+	const form = document.getElementById('data-request-relation');
+	const data = new FormData(form);
+
+	fetch("https://" + window.location.hostname + ":4200/block",
+	{
+		method: 'POST',
+		body: data,
+		cache: "default"
+	})
+			.then(response => response.json())
+			.then (jsonData => {
+				if (! jsonData["success"])
+				{
+					console.error(jsonData["content"])
+					alert(jsonData["content"])
+					return ;
+				}
+				changeRelationButton(3);
+			})
+			.catch(error => {
+				console.log("erreur adding friend : ")
+				console.error(error)
+			})
 }
 
 function unBlockUser()
 {
-	
+	const form = document.getElementById('data-request-relation');
+	const data = new FormData(form);
+
+	fetch("https://" + window.location.hostname + ":4200/unblock",
+	{
+		method: 'POST',
+		body: data,
+		cache: "default"
+	})
+			.then(response => response.json())
+			.then (jsonData => {
+				if (! jsonData["success"])
+				{
+					console.error(jsonData["content"])
+					alert(jsonData["content"])
+					return ;
+				}
+				changeRelationButton(0);
+			})
+			.catch(error => {
+				console.log("erreur adding friend : ")
+				console.error(error)
+			})
 }

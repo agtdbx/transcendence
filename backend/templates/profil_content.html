@@ -13,7 +13,12 @@
 					<button data-section="10" style="font-size:200%; background: transparent; color:white; border:none;" class="btn-drg" id="rank_profil_page" onclick="changePage(this.dataset.section)">Rank : None</button>
 					<p style="font-size:200%;" id="pseudo_profil_page">Your pseudo</p>
 					<button class ="btn-drg" style="clear:both; display:block; margin:auto; margin-top:5px; width:50%; font-size:150%;">Change password</button>
+					<form id="data-request-relation">
+						{% csrf_token %}
+						<input type="hidden" name="friend" value="" id="data-request-relation-input">
+					</form>
 					<script src="{% static 'javascript/profil/profil.js' %}" ></script>
+					<script src="{% static 'javascript/user_relation/friend_request.js' %}" ></script>
 				</div>
 
 
