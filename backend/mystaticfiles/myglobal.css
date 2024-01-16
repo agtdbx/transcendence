@@ -7,7 +7,7 @@ html{
 	cursor: url("./image/cursor/cursor1.png"), auto;
 	background-image:url(./image/background/index.png);
 	background-attachment: fixed;
-  background-repeat:   no-repeat;
+	background-repeat:   no-repeat;
 	background-size: cover;
 	max-width: 100%;
 	height: auto;
@@ -516,29 +516,30 @@ p {
 }
 
 #main-page-chat{
-  position: absolute;
-  top: 60%;
-  left: 22%;
-  width:56%;
-  height:40%;
-  background: rgba(40, 35, 23, 0.75);
+	position: absolute;
+	top: 60%;
+	left: 22%;
+	width:56%;
+	height:40%;
+	background: rgba(40, 35, 23, 0.75);
 }
 
 #main-page-chat-write{
-  position: absolute;
-  -ms-transform: translate(-50%, -50%);
-  transform: translate(-50%, -50%);
-  top: 44%;
-  left: 50%;
-  width:98%;
-  height:82%;
-  background: 	rgba(18, 16, 11, 0.8);
+	position: absolute;
+	-ms-transform: translate(-50%, -50%);
+	transform: translate(-50%, -50%);
+	top: 44%;
+	left: 50%;
+	width:98%;
+	height:82%;
+	background: 	rgba(18, 16, 11, 0.8);
+	overflow-y: scroll;
 }
 
 #main-chat{
-  position: absolute;
-  -ms-transform: translate(-50%, -50%);
-  transform: translate(-50%, -50%);
+	position: absolute;
+	-ms-transform: translate(-50%, -50%);
+	transform: translate(-50%, -50%);
 	top: 92%;
 	left: 50%;
 	width: 98%;
@@ -651,6 +652,7 @@ p {
   width:98%;
   height:93%;
   background: rgba(40, 35, 23, 0.75);
+  overflow-y: scroll;
 }
 
 #wait-chat{
@@ -1457,6 +1459,7 @@ left: 2%;
 width: 96%;
 height: 80%;
 background-color: rgba(40,35,23, 0.75);
+overflow-y: scroll;
 }
 
 #createGameChatInput{

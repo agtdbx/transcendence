@@ -23,12 +23,14 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path("",views.index, name=""),
-    path("<int:num>", views.section, name="section"),
     path("getHeader", views.getHeader, name="getHeader"),
+    path("<int:num>", views.section, name="section"),
+
     path("checkLogin", views.checkLogin, name="checkLogin"),
     path("checkSignin", views.checkSignin, name="checkSignin"),
-    path("UserProfilPic", views.UserProfilPic, name="UserProfilPic"),
-	path('gamePage/', views.gamePage, name='gamePage'),
+    path('gamePage/', views.gamePage, name='gamePage'),
+
+    path("sendMessage", views.sendMessage, name="sendMessage"),
 ]
 
 if settings.DEBUG:

@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    views.py                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: hde-min <hde-min@student.42.fr>            +#+  +:+       +#+         #
+#    By: aderouba <aderouba@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/08 14:00:09 by lflandri          #+#    #+#              #
-#    Updated: 2024/01/16 15:31:20 by hde-min          ###   ########.fr        #
+#    Updated: 2024/01/16 15:52:52 by aderouba         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,9 +17,8 @@ from django.views.decorators.csrf import csrf_exempt
 from django.http import Http404, HttpResponse, JsonResponse
 from django.shortcuts import render
 
-from db_test.models import User
-from db_test.models import Status
-from db_test.models import connectionPassword
+from db_test.models import User, Status, connectionPassword, Message
+import datetime
 
 from .forms import UserForm
 
@@ -233,7 +232,7 @@ def section(request, num):
             return render(request, "ladder_full.html")
         else:
             return render(request,"ladder.html")
-        
+
     elif num == 11:
         form = UserForm(request.POST, request.FILES)
         if form.is_valid():
@@ -255,25 +254,37 @@ def section(request, num):
             return render(request, "index_spa.html")
 
 
-def UserProfilPic(request):
-    if request.method == 'POST':
-        username = request.POST.get('login')
-        idUser = request.POST.get('password')
-        idType = idUser
-
-        # Create a new patient entry in the database using the Patient model
-
-        status= Status(idStatus='0', name="Online")
-        status.save()
-
-        user = User(idUser=idUser, idType=idType, username=username, profilPicture="wrgsd", tokenJWT="wgdsv", money=1, idStatus=Status(idStatus='0', name="Online"))
-        user.save()
-
-
-
-        return render(request,"mainpage.html")
-    else:
-        return HttpResponse("Invalid request method.")
-
 def gamePage(request):
-	return render(request,"game.html")
+    return render(request,"game.html")
+
+
+# **************************************************************************** #
+#                            DB connexion Functions                            #
+# **************************************************************************** #
+@csrf_exempt
+def sendMessage(request):
+    if request.method != 'POST':
+        return JsonResponse({"success" : False, "error" : "Only post accepted"})
+
+     # Check token
+    check = checkToken(request)
+    if check["success"] == False:
+        return JsonResponse(check)
+
+    # Get the user
+    userId = check["userId"]
+    user = User.objects.all().filter(idUser=userId)[0]
+    idMsg = len(Message.objects.all())
+    data = request.POST.get("message")
+    date = datetime.datetime.now()
+    try:
+        msg = Message.objects.create(id=idMsg, idUser=user, date=date, data=data)
+        msg.save()
+    except Exception as error:
+        return JsonResponse({"success" : False, "error" : "Can't create the message : " + str(error)})
+
+    return JsonResponse({"success" : True})
+
+
+def getMessages(request):
+    pass

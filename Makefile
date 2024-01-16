@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: aderouba <aderouba@student.42.fr>          +#+  +:+       +#+         #
+#    By: auguste <auguste@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/19 17:13:10 by aderouba          #+#    #+#              #
-#    Updated: 2023/12/14 10:45:46 by aderouba         ###   ########.fr        #
+#    Updated: 2024/01/11 15:35:14 by auguste          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -36,6 +36,7 @@ stop:
 fclean: stop
 	@echo "$(BLUE)Remove own image$(NOC)"
 	@docker image rm transcendence-backend 2>/dev/null || echo "$(RED)Backend image not exist$(NOC)"
+	@docker image rm transcendence_backend 2>/dev/null || echo "$(RED)Backend image not exist$(NOC)"
 	@docker volume rm $$(docker volume ls -q) 2>/dev/null || echo "$(RED)No volume to delete$(NOC)"
 
 prune:

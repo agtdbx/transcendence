@@ -22,7 +22,6 @@ function changeBackground(num)
 		body.style.backgroundImage = 'url(/static/image/background/index.png)';
 }
 
-
 function addHeader(){
 	let header = document.getElementById("header");
 	if (header === null)
@@ -54,6 +53,15 @@ function manageHeader(num)
 		addHeader();
 	else
 		removeHeader();
+}
+
+
+function manageChat(num)
+{
+	if (num == 3 || num == 4 || num == 5 || num == 7)
+		setChannelTarget("general");
+	else
+		setChannelTarget(null);
 }
 
 
@@ -99,6 +107,7 @@ function changePage(num, byArrow=false)
 
 		changeBackground(num);
 		manageHeader(num);
+		manageChat(num);
 
 		// Run the script tag if they is one in the html load
 		runScript();
@@ -131,15 +140,17 @@ function checkLogin(data)
 			document.cookie = "token=" + jsonData['token'];
 			data.set("token", jsonData['token']);
 
+			enableChatConnection();
+
 			changePage("3");
 		})
 		.catch(error => console.log("checkLogin error :", error))
-}
+	}
 
 
-function checkSignin(data)
-{
-	fetch("checkSignin",
+	function checkSignin(data)
+	{
+		fetch("checkSignin",
 		{
 			method: 'POST',
 			body: data,
@@ -157,16 +168,19 @@ function checkSignin(data)
 			document.cookie = "token=" + jsonData['token'];
 			data.set("token", jsonData['token']);
 
+			enableChatConnection();
+
 			changePage("3");
 		})
 		.catch(error => console.log("checkSignin error :", error))
-}
+	}
 
 
 function disconnection()
 {
 	document.cookie = "token=";
 	changePage("0");
+	endChatConnection();
 }
 
 

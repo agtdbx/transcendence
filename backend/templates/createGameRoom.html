@@ -7,12 +7,20 @@
 		<button type="button" class ="btn-drg" id ="global-create-game">GLOBAL</button>
 	</div>
 
-	<div class ="createGameBotLeft" id = "createGameBotLeft">
+	<form class ="createGameBotLeft" id = "createGameBotLeft">
 		<div class ="createGameChat" id = "createGameChat">
 		</div>
 		<input type="text" id="createGameChatInput" name="createGameChatInput"><br><br>
 
-	</div>
+		<script>
+			const form = document.getElementById('createGameBotLeft');
+			messageInput = document.getElementById('createGameChatInput');
+			form.addEventListener('submit', async event => {
+				event.preventDefault();
+				sendMessage(messageInput);
+			});
+		</script>
+	</form>
 
 	<div class ="createGameMiddle" id = "createGameMiddle">
 		<div class ="tournamentCreatePowerUp" id = "tournamentCreatePowerUp">
