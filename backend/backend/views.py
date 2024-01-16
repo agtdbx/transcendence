@@ -6,7 +6,7 @@
 #    By: lflandri <lflandri@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/08 14:00:09 by lflandri          #+#    #+#              #
-#    Updated: 2024/01/16 21:03:16 by lflandri         ###   ########.fr        #
+#    Updated: 2024/01/16 21:09:55 by lflandri         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -474,3 +474,10 @@ def getrelation(request):
 
     userId = check["userId"]
     user = User.objects.all().filter(idUser=userId)[0]
+    target = getTarget(request.POST.get('friend'))
+    if target == None:
+        return JsonResponse({"success": False, "content" : "Inexistant user.", "value" : None })
+    if not haveRelation(user, target):
+        return JsonResponse({"success": True, "content" : "", "value" : 0 })
+    linkType = Link.objects.all().filter(idUser=user.idUser, idTarget=target.idUser)[0].link
+    return JsonResponse({"success": True, "content" : "", "value" : linkType })
