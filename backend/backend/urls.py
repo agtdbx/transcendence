@@ -30,7 +30,7 @@ urlpatterns = [
     path("checkSignin", views.checkSignin, name="checkSignin"),
     path('gamePage/', views.gamePage, name='gamePage'),
 
-    path("sendMessage", views.sendMessage, name="sendMessage"),
+    path("getMessages", views.getMessages, name="getMessages"),
 ]
 
 if settings.DEBUG:

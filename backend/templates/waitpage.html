@@ -11,13 +11,22 @@
 
 	<button data-section="3" type="button" class ="changePage btn-drg" id = "wait-btn-cancel" onclick="changePage(this.dataset.section)">CANCEL</button>
 
-	  <div class ="wait-page-chat" id = "wait-page-chat">
-	 	<div class ="wait-page-chat-write" id = "wait-page-chat-write">
+	<form class ="wait-page-chat" id = "wait-page-chat">
+		<div class ="wait-page-chat-write" id = "wait-page-chat-write">
 		</div>
 		<input type="text" id="wait-chat" name="wait-chat"><br><br>
-	  </div>
 
-	  <div class ="wait-page-global" id = "wait-page-global">
+		<script>
+			const form = document.getElementById('wait-page-chat');
+			messageInput = document.getElementById('wait-chat');
+			form.addEventListener('submit', async event => {
+				event.preventDefault();
+				sendMessage(messageInput);
+			});
+		</script>
+	</form>
+
+	<div class ="wait-page-global" id = "wait-page-global">
 		<button type="button" class ="btn-drg" id ="wait-global">GLOBAL</button>
-	 </div>
+	</div>
 </div>

@@ -1,5 +1,6 @@
 let chatSocket = null;
 let channelTarget = null;
+let lastMessagesLoad = -1;
 
 function getToken()
 {
@@ -55,7 +56,6 @@ function enableChatConnection()
 		const pp = "https://static.wikia.nocookie.net/deeprockgalactic_gamepedia_en/images/c/c2/Gunner_portrait.png/revision/latest/scale-to-width-down/35?cb=20180519150058";
 		let date = data['date'];
 		date = date.substring(11, 19);
-		console.log("DATE :", date);
 		if (channel == channelTarget)
 		{
 			console.log("displayMessage");
@@ -83,6 +83,13 @@ function endChatConnection()
 
 function setChannelTarget(channel)
 {
+	if (channel == null)
+		messagesLoad = null;
+	else
+	{
+		messagesLoad = -1;
+		getMessageInDB();
+	}
 	channelTarget = channel;
 }
 
@@ -99,7 +106,8 @@ function sendMessageToServer(message, channel) {
 
 function sendMessage(input)
 {
-	console.log("Try to send the message");
+	if (input.value == "")
+		return ;
 	sendMessageToServer(input.value, "general");
 	input.value = "";
 }
@@ -162,9 +170,11 @@ function addOldMessage(message, username, pp, date)
 	if (chat == null)
 		chat = document.getElementById("tournamentrect1");
 	if (chat == null)
+		chat = document.getElementById("wait-page-chat-write");
+	if (chat == null)
 		return ;
 
-	chat.after(createMessage(message, username, pp, date));
+	chat.appendChild(createMessage(message, username, pp, date));
 }
 
 
@@ -177,7 +187,46 @@ function addNewMessage(message, username, pp, date)
 	if (chat == null)
 		chat = document.getElementById("tournamentrect1");
 	if (chat == null)
+		chat = document.getElementById("wait-page-chat-write");
+	if (chat == null)
 		return ;
 
 	chat.insertBefore(createMessage(message, username, pp, date), null);
+}
+
+
+function getMessageInDB()
+{
+	let data = new FormData();
+	data['lastMessagesLoad'] = lastMessagesLoad;
+
+	fetch('getMessages',
+		{
+			method: 'POST',
+			body: data,
+			cache: "default"
+		})
+		.then(response => response.json())
+		.then(data => {
+			if (data["success"] == false)
+			{
+				console.log("Error on load messages :", data['error']);
+				return ;
+			}
+			const messages = data['messages'];
+			if (messages.length == 0)
+				return
+			lastMessagesLoad = messages[0][0];
+
+			for (let i = 0; i < messages.length; i++)
+			{
+				const data = messages[i][4];
+				const username = messages[i][1];
+				// const pp = messages[i][2];
+				const pp = "https://static.wikia.nocookie.net/deeprockgalactic_gamepedia_en/images/c/c2/Gunner_portrait.png/revision/latest/scale-to-width-down/35?cb=20180519150058";
+				const date = messages[i][3].substring(0, 8);
+
+				addOldMessage(data, username, pp, date);
+			}
+		})
 }

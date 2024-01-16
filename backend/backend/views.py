@@ -6,7 +6,7 @@
 #    By: aderouba <aderouba@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/08 14:00:09 by lflandri          #+#    #+#              #
-#    Updated: 2024/01/16 15:52:52 by aderouba         ###   ########.fr        #
+#    Updated: 2024/01/16 17:24:08 by aderouba         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -262,29 +262,33 @@ def gamePage(request):
 #                            DB connexion Functions                            #
 # **************************************************************************** #
 @csrf_exempt
-def sendMessage(request):
+def getMessages(request):
     if request.method != 'POST':
-        return JsonResponse({"success" : False, "error" : "Only post accepted"})
+        return JsonResponse({"success" : False, "error" : "Need to pass by post"})
 
-     # Check token
+    # Check token
     check = checkToken(request)
     if check["success"] == False:
-        return JsonResponse(check)
+        return JsonResponse({"success" : False, "error" : "Token invalid"})
 
-    # Get the user
-    userId = check["userId"]
-    user = User.objects.all().filter(idUser=userId)[0]
-    idMsg = len(Message.objects.all())
-    data = request.POST.get("message")
-    date = datetime.datetime.now()
-    try:
-        msg = Message.objects.create(id=idMsg, idUser=user, date=date, data=data)
-        msg.save()
-    except Exception as error:
-        return JsonResponse({"success" : False, "error" : "Can't create the message : " + str(error)})
+    lastMessagesLoad = request.POST.get("lastMessagesLoad")
 
-    return JsonResponse({"success" : True})
+    msgs = Message.objects.all().order_by("date")
 
+    # if lastMessagesLoad == -1:
+    #     lastMessagesLoad = len(msgs) + 1
 
-def getMessages(request):
-    pass
+    # start = max(0, lastMessagesLoad - 50)
+    start = 0
+    # end = lastMessagesLoad
+    end = len(msgs)
+
+    messages = []
+    for i in range(start, end):
+        msg = msgs[i]
+        idUser = int(msg.idUser.idUser)
+        users = User.objects.all().filter(idUser=idUser)
+        user = users[0]
+        message = [msg.id, user.username, "pp", msg.date, msg.data]
+        messages.append(message)
+    return JsonResponse({"success" : True, "messages" : messages})
