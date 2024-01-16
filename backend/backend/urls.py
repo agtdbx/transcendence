@@ -18,6 +18,7 @@ from django.contrib import admin
 from django.urls import path
 from . import views
 from .views import *
+from django.conf.urls.static import static
 
 
 urlpatterns = [
@@ -26,4 +27,9 @@ urlpatterns = [
     path("getHeader", views.getHeader, name="getHeader"),
     path("checkLogin", views.checkLogin, name="checkLogin"),
     path("checkSignin", views.checkSignin, name="checkSignin"),
+    path("UserProfilPic", views.UserProfilPic, name="UserProfilPic"),
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL,
+                          document_root=settings.MEDIA_ROOT)
