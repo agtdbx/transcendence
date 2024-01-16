@@ -26,14 +26,26 @@ function addHeader(){
 	let header = document.getElementById("header");
 	if (header === null)
 	{
-		fetch("getHeader", {method: 'POST', cache: "default"})
-		.then(response => response.json())
-		.then (jsonData => {
-			if (jsonData['success'])
-				document.querySelector('#Header').innerHTML = jsonData['html'];
-			else
-				console.log("Header error :", jsonData["error"])
-		})
+		try
+		{
+			fetch("https://" + window.location.hostname + ":4200/getHeader", {method: 'POST', cache: "default"})
+			.then(response => response.json())
+			.then (jsonData => {
+				if (jsonData['success'])
+					document.querySelector('#Header').innerHTML = jsonData['html'];
+				else
+					console.log("Header error :", jsonData["error"])
+			})
+			.catch(error => {
+				console.log("erreur addHeader fetch : ")
+				console.error(error)
+			})
+		}
+		catch (error) {
+			console.log("erreur addHeader : ")
+			console.error(error)
+		}
+
 	}
 }
 

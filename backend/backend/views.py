@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    views.py                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: aderouba <aderouba@student.42.fr>          +#+  +:+       +#+         #
+#    By: lflandri <lflandri@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/08 14:00:09 by lflandri          #+#    #+#              #
-#    Updated: 2024/01/16 15:52:52 by aderouba         ###   ########.fr        #
+#    Updated: 2024/01/16 18:10:38 by lflandri         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,7 +17,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.http import Http404, HttpResponse, JsonResponse
 from django.shortcuts import render
 
-from db_test.models import User, Status, connectionPassword, Message
+from db_test.models import User, connectionPassword, Message
 import datetime
 
 from .forms import UserForm
@@ -71,17 +71,11 @@ def checkSignin(request):
     id = User.objects.all().count() + 1
     idType = 1
 
-    try:
-        status= Status(idStatus='0', name="On")
-        status.save()
-    except:
-        return JsonResponse({"success" : False, "error" : "Error on status creation"})
-
     token = jwt.encode({"userId": id}, settings.SECRET_KEY, algorithm="HS256")
     try:
         #the image are in /backend/media/...
         #add random for profile picture
-        user = User(idUser=id, idType=idType, username=username, profilPicture="images/default/Scout.png", tokenJWT=token, money=0, idStatus=Status.objects.get(idStatus=0))
+        user = User(idUser=id, idType=idType, username=username, profilPicture="images/default/Scout.png", tokenJWT=token, money=0, idStatus=0)
         user.save()
     except:
         return JsonResponse({"success" : False, "error" : "Error on user creation"})
@@ -139,6 +133,21 @@ def getHeader(request):
 
     htmlText = render(request,"navbar.html", {'user': user}).getvalue().decode()
     return JsonResponse({"success" : True, "html" : htmlText})
+
+@csrf_exempt
+def otherProfilPage(request, pseudo):
+    check = checkToken(request)
+    if check["success"] == False:
+        return render(request, "index.html")
+    try :
+        user = User.objects.all().filter(username=pseudo)[0]
+        fullPage = (request.method != 'POST')
+        if fullPage:
+            return render(request, "other_profil_content_full.html", {'user': user})
+        else:
+            return render(request,"other_profil_content.html", {'user': user})
+    except :
+        return render(request, "index.html")
 
 
 @csrf_exempt
@@ -288,3 +297,45 @@ def sendMessage(request):
 
 def getMessages(request):
     pass
+
+
+# **************************************************************************** #
+#                            Users Relations Functions                            #
+# **************************************************************************** #
+
+#TODO end this :
+
+def addfriends(request):
+    check = checkToken(request)
+    if check["success"] == False:
+        return JsonResponse(check)
+
+    userId = check["userId"]
+    user = User.objects.all().filter(idUser=userId)[0]
+
+
+def removefriends(request):
+    check = checkToken(request)
+    if check["success"] == False:
+        return JsonResponse(check)
+
+    userId = check["userId"]
+    user = User.objects.all().filter(idUser=userId)[0]
+
+
+def block(request):
+    check = checkToken(request)
+    if check["success"] == False:
+        return JsonResponse(check)
+
+    userId = check["userId"]
+    user = User.objects.all().filter(idUser=userId)[0]
+
+	
+def unblock(request):
+    check = checkToken(request)
+    if check["success"] == False:
+        return JsonResponse(check)
+
+    userId = check["userId"]
+    user = User.objects.all().filter(idUser=userId)[0]
