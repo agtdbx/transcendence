@@ -8,18 +8,16 @@
     <body>
         <p>Hello there</p>
 
-		<div id="" style="background-color: black; height: 800px; overflow-y:scroll;"">
+		<div id="" style="background-color: black; height: 800px; overflow-y:scroll;">
 			<table id="chat" style="padding-top: 2%; padding-bottom: 2%; width: 100%;"> </table>
 		</div>
 
 
-			
+
     </body>
 </html>
 
 <script type="text/javascript">
-
-	//let graphe = document.getElementById("graphe");
 
 	const messagelist =
 					[
@@ -72,74 +70,9 @@
 								"time": "12h15"
 							}
 					];
-	
-	function addMessage(chat, message)
-	{
-		let messageDiv = document.createElement('tr');
-		let nameCase = document.createElement('td');
-		let nameTXT = document.createElement('h5');
-		let dateTXT = document.createElement('p');
-		let imgCase = document.createElement('td');
-		let img = document.createElement('img');
-		let messageCase = document.createElement('td');
-		let messageTXT = document.createElement('p');
-
-		nameCase.style.width = "10%";
-		nameCase.style.textAlign = "center";
-		nameCase.style.verticalAlign = "top";
-		nameTXT.style.marginTop = "5px";
-		nameTXT.style.marginBottom = "2px";
-		nameTXT.style.color = "white";
-		nameTXT.textContent = message["name"];
-		nameTXT.style.fontSize = "2vw";
-		dateTXT.style.marginTop = "0px";
-		dateTXT.style.marginBottom = "0px";
-		dateTXT.style.color = "white";
-		dateTXT.textContent = message["time"];
-		dateTXT.style.fontSize = "1.3vw";
-		imgCase.style.verticalAlign = "top";
-		imgCase.style.width = "5%";
-		img.style.width = "100%";
-		img.src = message["pp"]
-		messageCase.style.width = "85%";
-		messageCase.style.paddingLeft = "5%";
-		messageCase.style.verticalAlign = "top";
-		messageTXT.style.marginTop = "5px";
-		messageTXT.style.color = "white";
-		messageTXT.style.fontSize = "1.75vw";
-		messageTXT.textContent = message["message"];
 
 
 
-		messageDiv.insertBefore(nameCase, null);
-		messageDiv.insertBefore(imgCase, null);
-		messageDiv.insertBefore(messageCase, null);
-		nameCase.insertBefore(nameTXT, null);
-		nameCase.insertBefore(dateTXT, null);
-		imgCase.insertBefore(img, null);
-		messageCase.insertBefore(messageTXT, null);
-		//chat.after(messageDiv);
-		chat.insertBefore(messageDiv, null);
-		
-	}
-	
 
-	function  initChat(chat, listMessage)
-	{
-		for (let index = 0; index < listMessage.length; index++) {
-			addMessage(chat, listMessage[index]);
-		}
 
-	}
-	let chat = document.getElementById("chat");
-	initChat(chat, messagelist);
-	addMessage(	chat,	{
-								"name" : "Gunner",
-								"pp" : "https://static.wikia.nocookie.net/deeprockgalactic_gamepedia_en/images/c/c2/Gunner_portrait.png/revision/latest/scale-to-width-down/35?cb=20180519150058",
-								"message": "test",
-								"time": "12h20"
-						})
-	
-	
-	
 	</script>

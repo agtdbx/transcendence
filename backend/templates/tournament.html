@@ -4,11 +4,20 @@
 		<button type="button" class ="btn-drg" id = "btn-sign">Global</button>
 	</div>
 
-	<div class ="tournamentChat" id = "tournamentChat">
+	<form class ="tournamentChat" id = "tournamentChat">
 		<div class ="tournamentrect1" id = "tournamentrect1">
 		</div>
 		<input type="text" id="tournament-chat" name="tournament-chat"><br><br>
-	</div>
+
+		<script>
+			const form = document.getElementById('tournamentChat');
+			messageInput = document.getElementById('tournament-chat');
+			form.addEventListener('submit', async event => {
+				event.preventDefault();
+				sendMessage(messageInput);
+			});
+		</script>
+	</form>
 
 	<div class ="tournamentStatus" id = "tournamentStatus">
 		<div class ="tournamentrect2" id = "tournamentrect2">
