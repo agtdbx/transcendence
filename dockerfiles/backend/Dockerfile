@@ -8,6 +8,7 @@ RUN pip install django django.db psycopg2 django-sslserver pyjwt django-filter t
 
 RUN pip install pytz --upgrade
 RUN pip install tzdata --upgrade
+RUN pip install Pillow --upgrade
 
 WORKDIR /backend
 

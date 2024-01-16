@@ -1,4 +1,5 @@
 from django.db import models
+from .validators import validate_file_size
 
 # stock :
 #	on_delete=models.CASCADE
@@ -14,7 +15,7 @@ class User(models.Model):
     idUser        = models.IntegerField(primary_key=True) 			#[primary key]
     idType        = models.IntegerField()
     username      = models.CharField(max_length=10, unique=True)	#[unique]
-    profilPicture = models.TextField()
+    profilPicture = models.ImageField(upload_to='images/', verbose_name="", validators=[validate_file_size])
     tokenJWT      = models.TextField()
     money         = models.IntegerField()
     idStatus      = models.ForeignKey(Status, on_delete=models.PROTECT) 

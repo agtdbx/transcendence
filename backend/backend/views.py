@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    views.py                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: auguste <auguste@student.42.fr>            +#+  +:+       +#+         #
+#    By: hde-min <hde-min@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/08 14:00:09 by lflandri          #+#    #+#              #
-#    Updated: 2024/01/09 13:08:08 by auguste          ###   ########.fr        #
+#    Updated: 2024/01/16 14:43:27 by hde-min          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,6 +20,8 @@ from django.shortcuts import render
 from db_test.models import User
 from db_test.models import Status
 from db_test.models import connectionPassword
+
+from .forms import UserForm
 
 # **************************************************************************** #
 #                                Check Functions                               #
@@ -78,7 +80,8 @@ def checkSignin(request):
 
     token = jwt.encode({"userId": id}, settings.SECRET_KEY, algorithm="HS256")
     try:
-        user = User(idUser=id, idType=idType, username=username, profilPicture="NULL", tokenJWT=token, money=0, idStatus=Status.objects.get(idStatus=0))
+        #add random for profile picture
+        user = User(idUser=id, idType=idType, username=username, profilPicture="./mystaticfiles/image/defaultProfilePicture/Scout.png", tokenJWT=token, money=0, idStatus=Status.objects.get(idStatus=0))
         user.save()
     except:
         return JsonResponse({"success" : False, "error" : "Error on user creation"})
@@ -229,9 +232,32 @@ def section(request, num):
             return render(request, "ladder_full.html")
         else:
             return render(request,"ladder.html")
+        
+    elif num == 11:
+        form = UserForm(request.POST, request.FILES)
+        if form.is_valid():
+            data= form.cleaned_data.get("profilPicture")
+            user.profilPicture = data
+            user.save()
+            return render(request, "profil_content_full.html")
+        if fullPage:
+            return render(request, "changeProfilePicture.html", {"form":UserForm(request.POST, request.FILES)})
+        else:
+            return render(request,"changeProfilePicture.html", {"form":UserForm(request.POST, request.FILES)})
 
     else:
         if fullPage:
             return render(request, "index.html")
         else:
             return render(request, "index_spa.html")
+
+
+def UserProfilPic(request):
+    if request.method == 'POST':
+        form = UserForm(request.POST, request.FILES)
+ 
+        if form.is_valid():
+            form.save()
+        else:
+            form = UserForm()
+    return render(request,"changeProfilePicture.html", {"form":UserForm(request.POST, request.FILES)})
