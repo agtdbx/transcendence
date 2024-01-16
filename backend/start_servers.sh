@@ -6,7 +6,7 @@ python3 manage.py makemigrations db_test
 python3 manage.py migrate
 
 # Start websocket server
-python3 manage.py shell < websocket_server.py &
+python3 manage.py shell < chat_server/chat_server.py &
 
 # Start django server
 python3 manage.py runsslserver 0.0.0.0:8000

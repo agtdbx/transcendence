@@ -39,16 +39,16 @@ function enableChatConnection()
 
 	chatSocket.onopen = function(e)
 	{
-		console.log("Send who I am to server");
+		// console.log("Send who I am to server");
 		chatSocket.send(JSON.stringify({
 			'whoiam': token
 		}));
 	}
 
 	chatSocket.onmessage = function(e) {
-		console.log("Data recieved :", e.data);
+		// console.log("Data recieved :", e.data);
 		const data = JSON.parse(e.data);
-		console.log("Data parse :", data);
+		// console.log("Data parse :", data);
 		const channel = data['channel'];
 		const message = data['message'];
 		const username = data['username'];
@@ -58,7 +58,7 @@ function enableChatConnection()
 		date = date.substring(11, 19);
 		if (channel == channelTarget)
 		{
-			console.log("displayMessage");
+			// console.log("displayMessage");
 			addNewMessage(message, username, pp, date);
 		}
 	};
