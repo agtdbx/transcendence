@@ -140,9 +140,16 @@ export class GameClient {
 
 		// Power up creation
 		this.powerUpEnable = false
-		this.powerUp = [d.POWER_UP_SPAWN_COOLDOWN, new hitbox.Hitbox(0, 0, (0, 0, 200), d.POWER_UP_HITBOX_COLOR), -1]
+		this.powerUp = [d.POWER_UP_SPAWN_COOLDOWN, new hitbox.Hitbox(0, 0, (0, 0, 200), d.POWER_UP_HITBOX_COLOR), -1, null]
+		let temp_list = []
 		for ( const p of ball.getPointOfCircle(d.POWER_UP_HITBOX_RADIUS, d.POWER_UP_HITBOX_PRECISION, 0))
+		{
+			temp_list.push([p[0], p[1]])
 			this.powerUp[1].addPoint(p[0], p[1])
+		}
+		this.powerUp[4] = addPolygon(this.win, 500,500, temp_list, "#FFFFFF")
+		this.powerUp[4].style.opacity = "0"
+
 
 		// Walls creation
 		//addPolygon(game, [[50,50], [90,50], [90,90], [50, 90]], "#FF00FF");
@@ -380,18 +387,6 @@ export class GameClient {
 
 	tick()
 	{
-// 		if (this.balls[0].state === 0)
-// {		console.log(" ")
-// 		console.log(" ")
-// 		console.log(" ")
-// 		console.log("ball : " + this.balls[0].state)
-// 		this.balls[0].hitbox.print()
-// 		console.log(" ")
-// 		console.log("teamLeft paddle : " )
-// 		this.teamLeft.paddles[0].hitbox.print()
-// 		console.log(" ")
-// 		console.log("teamRight paddle : " )
-// 		this.teamRight.paddles[0].hitbox.print()}
 		/*
 		This is the method where all calculations will be done
 		*/

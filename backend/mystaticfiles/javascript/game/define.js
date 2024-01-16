@@ -2,7 +2,7 @@
 //                                       BALL DEFINE                                        //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 export const BALL_RADIUS = 10 // in pixel
-export const BALL_START_SPEED = 480 // pixel per seconds
+export const BALL_START_SPEED = 480 // pixel per seconds 
 export const BALL_MIN_SPEED = 240 // pixel per seconds
 export const BALL_MAX_SPEED = 1920 // pixel per seconds
 export const BALL_PADDLE_ACCELERATION = 100 // pixel per seconds

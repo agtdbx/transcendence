@@ -7,7 +7,7 @@ import * as paddle from "./paddle.js"
 
 // import pygame as pg
 
-const NB_SHADOW_BALL = 10
+const NB_SHADOW_BALL = dc.BALL_TRAIL_LENGTH
 
 export function getPointOfCircle(radius, precision, beginDegree = 0)
 {
@@ -44,7 +44,7 @@ export class Ball {
 			let array = []
 			let newShadowBall = document.createElementNS('http://www.w3.org/2000/svg', 'image')
 			newShadowBall.setAttributeNS('http://www.w3.org/1999/xlink','href', "/static/image/game/ball.png");
-			newShadowBall.style.opacity = "" + (1 / NB_SHADOW_BALL)
+			newShadowBall.style.opacity = "" + (1 / (NB_SHADOW_BALL - index))
 			newShadowBall.setAttribute('x',  x - (this.radius / 2));
 			newShadowBall.setAttribute('y',  y - (this.radius / 2));
 			array.push(newShadowBall)
@@ -53,6 +53,7 @@ export class Ball {
 			
 			
 		}
+		console.log(this.shadowBalls)
 
 
 
@@ -242,6 +243,19 @@ export class Ball {
 
 		if (this.state != d.STATE_RUN || this.modifierStopBallTimer > 0)
 			return
+
+		//TODO add change trainer ici
+		for (let index = 0; index < NB_SHADOW_BALL - 1; index++)
+		{
+			this.shadowBalls[index][1] = this.shadowBalls[index + 1][1]
+			// console.log(this.shadowBalls[index])
+			this.shadowBalls[index][0].setAttribute('x', "" +  this.shadowBalls[index + 1][1][0]);
+			this.shadowBalls[index][0].setAttribute('y', "" +  this.shadowBalls[index + 1][1][1]);
+		}
+		this.shadowBalls[NB_SHADOW_BALL - 1][1] = [(this.pos.x - (this.radius / 2)), (this.pos.y - (this.radius / 2))]
+		this.shadowBalls[NB_SHADOW_BALL - 1][0].setAttribute('x', "" +  (this.pos.x - (this.radius / 2)));
+		this.shadowBalls[NB_SHADOW_BALL - 1][0].setAttribute('y', "" +  (this.pos.y - (this.radius / 2)));
+
 		// Store last positions
 		// Store last colors
 		for (let i = 1; i < dc.BALL_TRAIL_LENGTH; i++)
@@ -274,6 +288,8 @@ export class Ball {
 			// console.log("temp pos vect :")
 			// newpos.print()
 			this.hitbox.setPos(newpos)
+
+
 
 			let collision = false
 
@@ -364,16 +380,8 @@ export class Ball {
 			}
 
 			// Affect position along direction and
-			//TODO add change trainer ici
-			for (let index = 0; index < NB_SHADOW_BALL - 1; index++)
-			{
-				this.shadowBalls[index][1] = this.shadowBalls[index + 1][1]
-				console.log(this.shadowBalls[index])
-				this.shadowBalls[index][0].setAttribute('x', "" +  this.shadowBalls[index + 1][1][0]);
-				this.shadowBalls[index][0].setAttribute('y', "" +  this.shadowBalls[index + 1][1][1]);
-			}
-			this.shadowBalls[NB_SHADOW_BALL - 1][1] = [(this.pos.x - (this.radius / 2)), (this.pos.y - (this.radius / 2))]
-			
+
+
 			this.pos = newpos.dup()
 			this.htmlObject.setAttribute('x', "" + (this.pos.x - (this.radius / 2)));
 			this.htmlObject.setAttribute('y', "" + (this.pos.y - (this.radius / 2)));
