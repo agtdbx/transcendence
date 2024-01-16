@@ -2,6 +2,9 @@
 	<span class="navbar-text" id = "header_title" onclick="changePage(`3`)">Rock and Pong</span>
 	{% block content %}
 		<button data-section="9" type="button" class ="changePage btn-drg" id = "main-user-name" onclick="changePage(this.dataset.section)"> {{ user.username }} </button>
+		<button data-section="9" type="button" class ="changePage btn-drg" id = "main-profile-user" onclick="changePage(this.dataset.section)">
+			<img src="./media/{{ user.profilPicture }}" width="100%"/>
+
+		</button>
 	{% endblock content %}
-	<button data-section="9" type="button" class ="changePage btn-drg" id = "main-profile-user" onclick="changePage(this.dataset.section)"></button>
 </nav>

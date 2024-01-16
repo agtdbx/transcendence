@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    views.py                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: aderouba <aderouba@student.42.fr>          +#+  +:+       +#+         #
+#    By: hde-min <hde-min@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/08 14:00:09 by lflandri          #+#    #+#              #
-#    Updated: 2024/01/16 15:52:52 by aderouba         ###   ########.fr        #
+#    Updated: 2024/01/16 16:43:05 by hde-min          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -223,9 +223,9 @@ def section(request, num):
 
     elif num == 9:
         if fullPage:
-            return render(request, "profil_content_full.html")
+            return render(request, "profil_content_full.html", {'user': user})
         else:
-            return render(request,"profil_content.html")
+            return render(request,"profil_content.html", {'user': user})
 
     elif num == 10:
         if fullPage:
@@ -239,11 +239,9 @@ def section(request, num):
             data= form.cleaned_data.get("profilPicture")
             user.profilPicture = data
             user.save()
-            #return (section(request, 9))
-            #num should be = to 9 but its not, need to fix it
-            #return render(request, "profil_content_full.html")
+            return render(request, "toProfile.html")
         if fullPage:
-            return render(request, "changeProfilePicture.html", {"form":UserForm(request.POST, request.FILES)})
+            return render(request, "changeProfilePicture_full.html", {"form":UserForm(request.POST, request.FILES)})
         else:
             return render(request,"changeProfilePicture.html", {"form":UserForm(request.POST, request.FILES)})
 
