@@ -50,7 +50,7 @@ urlpatterns = [
 	#User achievement
 	path('getselfachievement', views_achievement.getselfachievement, name='getselfachievement'),
 	path('getotherachievement', views_achievement.getotherachievement, name='getotherachievement'),
-	path('getachievement', views_achievement.getachievement, name='getachievement'),
+	path('setachievement', views_achievement.setachievement, name='setachievement'),
 ]
 
 if settings.DEBUG:

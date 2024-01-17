@@ -16,7 +16,7 @@ function playsound()
 	if (sound_counter != 0)
 		return ;
 	let audio;
-	switch (getRandomInt(12))
+	switch (getRandomInt(12)) // normal value : getRandomInt(12)
 	{
 		case 0:
 			audio = new Audio("https://deeprockgalactic.wiki.gg/images/e/e3/Saluting2_6.ogg");
@@ -38,7 +38,31 @@ function playsound()
 			break;
 		case 6:
 			audio = new Audio("https://deeprockgalactic.wiki.gg/images/9/91/BarCheering_when_drinking_15.ogg");
-			// insert here sucess pray for the fallen
+			document.getElementById("input-form-head-achievement").value = "fallen";
+			const form = document.getElementById('data-request-achievement');
+			const data = new FormData(form);
+
+			fetch("https://" + window.location.hostname + ":4200/setachievement",
+			{
+				method: 'POST',
+				body: data,
+				cache: "default"
+			})
+					.then(response => response.json())
+					.then (jsonData => {
+						console.log("received from setachievement : ")
+						console.log(jsonData)
+						if (! jsonData["success"])
+						{
+							console.error(jsonData["content"])
+							return ;
+						}
+
+					})
+					.catch(error => {
+						console.log("erreur from setachievement : ")
+						console.error(error)
+					})
 			break;
 		case 7:
 			audio = new Audio("https://deeprockgalactic.wiki.gg/images/e/eb/RockAndStoneSalute3rdPickup_13.ogg");

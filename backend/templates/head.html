@@ -9,7 +9,14 @@
 	<script src="{% static 'javascript/user_relation/relation_request.js' %}" ></script>
 	<script src="{% static 'javascript/spa.js' %}" ></script>
 	<script src="{% static 'javascript/chat/messages.js' %}" ></script>
+	<script src="{% static 'javascript/other/rock_and_stone_sound.js' %}" ></script>
 	<link rel="shortcut icon" type="image/png" href="{% static 'image/favicon.png' %}" >
+	<!--This form is necessary o achievement, don't touch it-->
+	<form id="data-request-achievement">
+		{% csrf_token %}
+		<input type="hidden" name="target" value="" id="input-form-head-target">
+		<input type="hidden" name="achievement" value="" id="input-form-head-achievement">
+	</form>
 
 	<title>PONG</title>
 </head>
