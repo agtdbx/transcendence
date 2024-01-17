@@ -6,7 +6,7 @@
 #    By: hde-min <hde-min@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/08 14:00:09 by lflandri          #+#    #+#              #
-#    Updated: 2024/01/17 15:41:18 by hde-min          ###   ########.fr        #
+#    Updated: 2024/01/17 15:56:29 by hde-min          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -259,11 +259,11 @@ def section(request, num):
             password_check = connectionPassword.objects.all().filter(idUser=user.idUser)[0]
             hash = hashlib.sha512(oldPassword.encode(), usedforsecurity=True)
             if hash.hexdigest() != password_check.password:
-                #messages.info(request, "Wrong account password please type your current password")
-                return render(request, "toProfile.html")
+                messages.info(request, "Wrong account password, please try again !")
+                return render(request, "toChangePassword.html")
             if newPassword != confirmNewPassword:
-                #messages.info(request, "Your new password dasn't match confirm new password ")
-                return render(request, "toProfile.html")
+                messages.info(request, "New password is different from new password confirmation, please try again !")
+                return render(request, "toChangePassword.html")
             else:
                 hashPwd = hashlib.sha512(newPassword.encode(), usedforsecurity=True)
                 try:
@@ -272,8 +272,8 @@ def section(request, num):
                     password_check.save()
                 except:
                     messages.info(request, "Somethink very wrong appened, please try again !")
-                    return render(request, "changePassword_full.html", {"form":PasswordForm(request.POST, request.FILES)})
-                return render(request, "toProfile.html")
+                    return render(request, "toChangePassword.html")
+            return render(request, "toProfile.html")
         if fullPage:
             return render(request, "changePassword_full.html", {"form":PasswordForm(request.POST, request.FILES)})
         else:
