@@ -7,3 +7,7 @@ class UserForm(forms.ModelForm):
         model = User
         fields = ['profilPicture']
         
+class PasswordForm(forms.Form):
+    currentPassword = forms.CharField()
+    newPassword = forms.CharField()
+    confirmNewPassword = forms.CharField()

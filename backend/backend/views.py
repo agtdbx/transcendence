@@ -6,7 +6,7 @@
 #    By: hde-min <hde-min@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/08 14:00:09 by lflandri          #+#    #+#              #
-#    Updated: 2024/01/17 12:35:07 by hde-min          ###   ########.fr        #
+#    Updated: 2024/01/17 15:41:18 by hde-min          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,9 @@ from django.shortcuts import render
 from db_test.models import User, Status, connectionPassword, Message
 import datetime
 
-from .forms import UserForm
+from .forms import UserForm, PasswordForm
+
+from django.contrib import messages
 
 # **************************************************************************** #
 #                                Check Functions                               #
@@ -41,7 +43,6 @@ def checkLogin(request):
     hash = hashlib.sha512(password.encode(), usedforsecurity=True)
     if hash.hexdigest() != password_check[0].password:
         return JsonResponse({"success" : False, "error" : "Password incorrect"})
-
     token = jwt.encode({"userId": username_check[0].idUser}, settings.SECRET_KEY, algorithm="HS256")
 
     #username_check[0].tokenJWT = token
@@ -246,6 +247,37 @@ def section(request, num):
             return render(request, "changeProfilePicture_full.html", {"form":UserForm(request.POST, request.FILES)})
         else:
             return render(request,"changeProfilePicture.html", {"form":UserForm(request.POST, request.FILES)})
+
+    elif num == 12:
+        form = PasswordForm(request.POST, request.FILES)
+        if form.is_valid():
+            oldPassword = form.cleaned_data.get("currentPassword")
+            newPassword = form.cleaned_data.get("newPassword")
+            confirmNewPassword = form.cleaned_data.get("confirmNewPassword")
+            
+            
+            password_check = connectionPassword.objects.all().filter(idUser=user.idUser)[0]
+            hash = hashlib.sha512(oldPassword.encode(), usedforsecurity=True)
+            if hash.hexdigest() != password_check.password:
+                #messages.info(request, "Wrong account password please type your current password")
+                return render(request, "toProfile.html")
+            if newPassword != confirmNewPassword:
+                #messages.info(request, "Your new password dasn't match confirm new password ")
+                return render(request, "toProfile.html")
+            else:
+                hashPwd = hashlib.sha512(newPassword.encode(), usedforsecurity=True)
+                try:
+                    hashPwd = hashlib.sha512(newPassword.encode(), usedforsecurity=True)
+                    password_check.password = hashPwd.hexdigest()
+                    password_check.save()
+                except:
+                    messages.info(request, "Somethink very wrong appened, please try again !")
+                    return render(request, "changePassword_full.html", {"form":PasswordForm(request.POST, request.FILES)})
+                return render(request, "toProfile.html")
+        if fullPage:
+            return render(request, "changePassword_full.html", {"form":PasswordForm(request.POST, request.FILES)})
+        else:
+            return render(request,"changePassword.html", {"form":PasswordForm(request.POST, request.FILES)})
 
     else:
         if fullPage:
