@@ -8,10 +8,14 @@
 			<div class="col-md-4 col-lg-4 col-xl-4 grey_div" id="profil_pannel_utils" style="min-height:800px;">
 				<div class="black_grey_div" id="user_info_container" style="color:white; padding:2%; margin-bottom: 10px; margin-Top: 10px; height:22%;">
 					<div id="pp_profil_page_div" style="float:left; width:20%; margin-right :2%; border-radius: 600px; border: 3px solid #59351B;">
-						<img id="pp_profil_page_img" style="width:100%; border-radius: 600px;" onclick="changePage(`11`)">
+						{% block contentImg %}
+						<img src="./media/{{ user.profilPicture }}" id="pp_profil_page_img" style="width:100%; border-radius: 600px;" onclick="changePage(`11`)">
+						{% endblock contentImg %}
 					</div>
 					<button data-section="10" style="font-size:200%; background: transparent; color:white; border:none;" class="btn-drg" id="rank_profil_page" onclick="changePage(this.dataset.section)">Rank : None</button>
-					<p style="font-size:200%;" id="pseudo_profil_page">Your pseudo</p>
+					{% block content %}
+					<p style="font-size:200%;" id="pseudo_profil_page">{{ user.username }}</p>
+					{% endblock content %}
 					<button class ="btn-drg" style="clear:both; display:block; margin:auto; margin-top:5px; width:50%; font-size:150%;">Change password</button>
 					<script src="{% static 'javascript/profil/profil.js' %}" ></script>
 				</div>

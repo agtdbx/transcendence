@@ -6,11 +6,11 @@
 #    By: hde-min <hde-min@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/08 14:00:09 by lflandri          #+#    #+#              #
-#    Updated: 2024/01/16 16:43:05 by hde-min          ###   ########.fr        #
+#    Updated: 2024/01/17 12:03:02 by hde-min          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-import hashlib, jwt, sys
+import hashlib, jwt, sys, random
 import backend.settings as settings
 
 from django.views.decorators.csrf import csrf_exempt
@@ -79,9 +79,8 @@ def checkSignin(request):
 
     token = jwt.encode({"userId": id}, settings.SECRET_KEY, algorithm="HS256")
     try:
-        #the image are in /backend/media/...
-        #add random for profile picture
-        user = User(idUser=id, idType=idType, username=username, profilPicture="images/default/Scout.png", tokenJWT=token, money=0, idStatus=Status.objects.get(idStatus=0))
+        str = ["images/default/Scout.png", "images/default/Driller.png", "images/default/Engineer.png", "images/default/Soldier.png"]
+        user = User(idUser=id, idType=idType, username=username, profilPicture=str[random.randint(0,3)], tokenJWT=token, money=0, idStatus=Status.objects.get(idStatus=0))
         user.save()
     except:
         return JsonResponse({"success" : False, "error" : "Error on user creation"})
