@@ -6,7 +6,7 @@
 #    By: lflandri <lflandri@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/08 14:00:09 by lflandri          #+#    #+#              #
-#    Updated: 2024/01/17 13:33:28 by lflandri         ###   ########.fr        #
+#    Updated: 2024/01/17 14:08:02 by lflandri         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -514,7 +514,6 @@ def getlistefriendrequest(request):
     user = User.objects.all().filter(idUser=userId)[0]
     linkFriendRequestList = Link.objects.all().filter(idTarget=user.idUser, link=1)
     listeRequest = []
-    errortxt = ""
     for link in linkFriendRequestList :
         try:
             sender = User.objects.all().filter(link=link)[0]
@@ -525,3 +524,36 @@ def getlistefriendrequest(request):
             continue
     return JsonResponse({"success": True, "content" : "", "listRequest" : listeRequest })
 
+def getlistefriend(request):
+    check = checkToken(request)
+    if check["success"] == False:
+        return JsonResponse(check)
+
+    userId = check["userId"]
+    user = User.objects.all().filter(idUser=userId)[0]
+    linkFriendRequestList = Link.objects.all().filter(idUser=user.idUser, link=2)
+    listeRequest = []
+    for link in linkFriendRequestList :
+        try:
+            friend = User.objects.all().filter(link=link)[0] 
+            listeRequest.append({"name": friend.username, "pp" : "./media/" + friend.profilPicture.name, "status" : friend.idStatus })
+        except:
+            continue
+    return JsonResponse({"success": True, "content" : "", "listcontact" : listeRequest })
+
+def getlisteblocked(request):
+    check = checkToken(request)
+    if check["success"] == False:
+        return JsonResponse(check)
+
+    userId = check["userId"]
+    user = User.objects.all().filter(idUser=userId)[0]
+    linkFriendRequestList = Link.objects.all().filter(idUser=user.idUser, link=3)
+    listeRequest = []
+    for link in linkFriendRequestList :
+        try:
+            friend = User.objects.all().filter(link=link)[0] 
+            listeRequest.append({"name": friend.username, "pp" : "./media/" + friend.profilPicture.name, "status" : friend.idStatus })
+        except:
+            continue
+    return JsonResponse({"success": True, "content" : "", "listcontact" : listeRequest })

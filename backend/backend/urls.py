@@ -38,6 +38,8 @@ urlpatterns = [
 	path('refusefriends', views.refusefriends, name='refusefriends'),
 	path('getrelation', views.getrelation, name='getrelation'),
 	path('getlistefriendrequest', views.getlistefriendrequest, name='getlistefriendrequest'),
+	path('getlistefriend', views.getlistefriend, name='getlistefriend'),
+	path('getlisteblocked', views.getlisteblocked, name='getlisteblocked'),
 ]
 
 if settings.DEBUG:
