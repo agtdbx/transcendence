@@ -6,7 +6,7 @@
 #    By: lflandri <lflandri@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/08 14:00:09 by lflandri          #+#    #+#              #
-#    Updated: 2024/01/16 23:14:01 by lflandri         ###   ########.fr        #
+#    Updated: 2024/01/17 13:33:28 by lflandri         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -517,9 +517,11 @@ def getlistefriendrequest(request):
     errortxt = ""
     for link in linkFriendRequestList :
         try:
-            user = User.objects.all().filter(link=link)[0]
-            listeRequest.append(user.username)
+            sender = User.objects.all().filter(link=link)[0]
+            if haveRelation(user, sender) and len(Link.objects.all().filter(idUser=user.idUser, idTarget=sender.idUser, link=3)) > 0:
+                continue      
+            listeRequest.append(sender.username)
         except:
-            continue;
+            continue
     return JsonResponse({"success": True, "content" : "", "listRequest" : listeRequest })
 
