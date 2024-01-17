@@ -6,7 +6,7 @@
 #    By: lflandri <lflandri@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/08 14:00:09 by lflandri          #+#    #+#              #
-#    Updated: 2024/01/17 14:12:00 by lflandri         ###   ########.fr        #
+#    Updated: 2024/01/17 14:16:51 by lflandri         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -533,7 +533,7 @@ def getlistefriend(request):
     listeRequest = []
     for link in linkFriendRequestList :
         try:
-            friend = User.objects.all().filter(link=link)[0] 
+            friend = User.objects.all().filter(idUser=link.idTarget)[0] 
             listeRequest.append({"name": friend.username, "pp" : "./media/" + friend.profilPicture.name, "status" : friend.idStatus })
         except:
             continue
@@ -550,7 +550,7 @@ def getlisteblocked(request):
     listeRequest = []
     for link in linkFriendRequestList :
         try:
-            friend = User.objects.all().filter(link=link)[0] 
+            friend = User.objects.all().filter(idUser=link.idTarget)[0] 
             listeRequest.append({"name": friend.username, "pp" : "./media/" + friend.profilPicture.name, "status" : friend.idStatus })
         except:
             continue
