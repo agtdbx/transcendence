@@ -6,11 +6,11 @@
 #    By: hde-min <hde-min@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/08 14:00:09 by lflandri          #+#    #+#              #
-#    Updated: 2024/01/17 12:03:02 by hde-min          ###   ########.fr        #
+#    Updated: 2024/01/17 12:35:07 by hde-min          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-import hashlib, jwt, sys, random
+import hashlib, jwt, sys, random, os
 import backend.settings as settings
 
 from django.views.decorators.csrf import csrf_exempt
@@ -235,6 +235,9 @@ def section(request, num):
     elif num == 11:
         form = UserForm(request.POST, request.FILES)
         if form.is_valid():
+            if not "/default/" in user.profilPicture.name:
+                file = "./media/" + user.profilPicture.name
+                os.remove(file)
             data= form.cleaned_data.get("profilPicture")
             user.profilPicture = data
             user.save()
