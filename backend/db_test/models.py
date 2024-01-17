@@ -6,10 +6,6 @@ from .validators import validate_file_size
 #
 #
 
-class Status(models.Model):
-    idStatus  = models.IntegerField(primary_key=True)								#[primary key]
-    name      = models.CharField(max_length=10)
-
 
 class User(models.Model):
     idUser        = models.IntegerField(primary_key=True) 			#[primary key]
@@ -18,7 +14,7 @@ class User(models.Model):
     profilPicture = models.ImageField(upload_to='images/', verbose_name="", validators=[validate_file_size])
     tokenJWT      = models.TextField()
     money         = models.IntegerField()
-    idStatus      = models.ForeignKey(Status, on_delete=models.PROTECT) 
+    idStatus      = models.IntegerField() 
 
 
 class connectionPassword(models.Model):
@@ -32,9 +28,6 @@ class connection42(models.Model):
     idUser = models.OneToOneField(User, on_delete=models.PROTECT)
 
 
-class UserType(models.Model):
-    idType = models.IntegerField(primary_key=True)									#[primary key]
-    name   = models.CharField(max_length=10, unique=True)
 
 
 class Achivement(models.Model):
@@ -42,9 +35,6 @@ class Achivement(models.Model):
     forKarl = models.BooleanField()
 
 
-class LinkType(models.Model):
-    id    = models.IntegerField(primary_key=True)									#[primary key]
-    type  = models.CharField(max_length=50)
 
 
 class Link(models.Model):
@@ -52,7 +42,7 @@ class Link(models.Model):
     idUser   = models.ForeignKey(User, on_delete=models.PROTECT)					#[primary key]
     #idTarget = models.ForeignKey(User, on_delete=models.PROTECT)					#[primary key]
     idTarget = models.IntegerField()
-    link     = models.ForeignKey(LinkType, on_delete=models.PROTECT) 
+    link     = models.IntegerField() 
 
 
 class PrivMessage(models.Model):

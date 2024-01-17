@@ -23,14 +23,23 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path("",views.index, name=""),
-    path("getHeader", views.getHeader, name="getHeader"),
+	path("profil/<str:pseudo>", views.otherProfilPage, name="otherProfilPage"),
     path("<int:num>", views.section, name="section"),
-
+    path("getHeader", views.getHeader, name="getHeader"),
     path("checkLogin", views.checkLogin, name="checkLogin"),
     path("checkSignin", views.checkSignin, name="checkSignin"),
-    path('gamePage/', views.gamePage, name='gamePage'),
+	path('gamePage/', views.gamePage, name='gamePage'),				#to remove at the end of project
 
-    path("sendMessage", views.sendMessage, name="sendMessage"),
+	path('addfriends', views.addfriends, name='addfriends'),
+	path('removefriends', views.removefriends, name='removefriends'),
+	path('block', views.block, name='block'),
+	path('unblock', views.unblock, name='unblock'),
+	path('acceptfriends', views.acceptfriends, name='acceptfriends'),
+	path('refusefriends', views.refusefriends, name='refusefriends'),
+	path('getrelation', views.getrelation, name='getrelation'),
+	path('getlistefriendrequest', views.getlistefriendrequest, name='getlistefriendrequest'),
+	path('getlistefriend', views.getlistefriend, name='getlistefriend'),
+	path('getlisteblocked', views.getlisteblocked, name='getlisteblocked'),
 ]
 
 if settings.DEBUG:
