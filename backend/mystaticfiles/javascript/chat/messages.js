@@ -93,20 +93,21 @@ function setChannelTarget(channel)
 {
 	if (channel == null)
 	{
-		messagesLoad = null;
+		lastMessagesLoad = null;
 		chatElement = null;
 	}
 	else
 	{
-		messagesLoad = -1;
+		lastMessagesLoad = -1;
 		chatElement = getChatElement();
 		chatScrollAtBottom = true;
 		getMessageInDB();
 		chatElement.onscroll = function() {
+			chatScrollAtBottom = false;
 			if (chatElement.offsetHeight + chatElement.scrollTop >= chatElement.scrollHeight)
 				chatScrollAtBottom = true;
-			else
-				chatScrollAtBottom = false;
+			else if (chatElement.scrollTop == 0)
+				getMessageInDB();
 		};
 	}
 	channelTarget = channel;
@@ -198,7 +199,7 @@ function getChatElement()
 
 function addOldMessage(message, username, pp, date)
 {
-	chatElement.appendChild(createMessage(message, username, pp, date));
+	chatElement.insertBefore(createMessage(message, username, pp, date), chatElement.firstChild)
 }
 
 
@@ -211,7 +212,7 @@ function addNewMessage(message, username, pp, date)
 function getMessageInDB()
 {
 	let data = new FormData();
-	data['lastMessagesLoad'] = lastMessagesLoad;
+	data.append('lastMessagesLoad', lastMessagesLoad);
 
 	fetch('getMessages',
 		{
@@ -229,9 +230,9 @@ function getMessageInDB()
 			const messages = data['messages'];
 			if (messages.length == 0)
 				return
-			lastMessagesLoad = messages[0][0];
 
-			for (let i = 0; i < messages.length; i++)
+			lastMessagesLoad = data["lastMessagesLoad"];
+			for (let i = messages.length - 1; i >= 0; i--)
 			{
 				const data = messages[i][4];
 				const username = messages[i][1];
@@ -239,10 +240,10 @@ function getMessageInDB()
 				const pp = "https://static.wikia.nocookie.net/deeprockgalactic_gamepedia_en/images/c/c2/Gunner_portrait.png/revision/latest/scale-to-width-down/35?cb=20180519150058";
 				const date = messages[i][3].substring(0, 8);
 
-
 				addOldMessage(data, username, pp, date);
 			}
+
 			if (chatScrollAtBottom)
 				chatElement.scrollTop = chatElement.scrollHeight;
-		})
+		});
 }

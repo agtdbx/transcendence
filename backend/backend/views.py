@@ -6,7 +6,7 @@
 #    By: aderouba <aderouba@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/08 14:00:09 by lflandri          #+#    #+#              #
-#    Updated: 2024/01/16 17:24:08 by aderouba         ###   ########.fr        #
+#    Updated: 2024/01/18 16:51:18 by aderouba         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -271,17 +271,29 @@ def getMessages(request):
     if check["success"] == False:
         return JsonResponse({"success" : False, "error" : "Token invalid"})
 
-    lastMessagesLoad = request.POST.get("lastMessagesLoad")
+    lastMessagesLoad = 0
+
+    try:
+        lastMessagesLoad = request.POST.get("lastMessagesLoad")
+        if lastMessagesLoad == "null" or lastMessagesLoad == None:
+            return JsonResponse({"success" : False, "error" : "Bad lastMessagesLoad : " + str(lastMessagesLoad)})
+
+        lastMessagesLoad = int(lastMessagesLoad)
+
+        # lastMessagesLoad = request.POST.get("lastMessagesLoad")
+    except Exception as error:
+        return JsonResponse({"success" : False, "error" : "Get lastMessagesLoad don't work : " + str(error)})
 
     msgs = Message.objects.all().order_by("date")
 
-    # if lastMessagesLoad == -1:
-    #     lastMessagesLoad = len(msgs) + 1
+    if lastMessagesLoad == -1:
+        lastMessagesLoad = len(msgs)
 
-    # start = max(0, lastMessagesLoad - 50)
-    start = 0
-    # end = lastMessagesLoad
-    end = len(msgs)
+    if lastMessagesLoad == 0:
+        return JsonResponse({"success" : False, "error" : "No more message to load"})
+
+    start = max(0, lastMessagesLoad - 10)
+    end = lastMessagesLoad
 
     messages = []
     for i in range(start, end):
@@ -291,4 +303,4 @@ def getMessages(request):
         user = users[0]
         message = [msg.id, user.username, "pp", msg.date, msg.data]
         messages.append(message)
-    return JsonResponse({"success" : True, "messages" : messages})
+    return JsonResponse({"success" : True, "messages" : messages, "lastMessagesLoad" : start})
