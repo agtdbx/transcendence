@@ -32,7 +32,10 @@ function addHeader(){
 			.then(response => response.json())
 			.then (jsonData => {
 				if (jsonData['success'])
+				{
 					document.querySelector('#Header').innerHTML = jsonData['html'];
+					addBosco();
+				}
 				else
 					console.log("Header error :", jsonData["error"])
 			})

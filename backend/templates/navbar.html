@@ -1,5 +1,6 @@
 <nav class=class="navbar navbar-light" id="header">
 	<span class="navbar-text" id = "header_title" onclick="changePage(`3`)">Rock and Pong</span>
+	<span id="bosco-pop-balise"></span> <!-- This is needed for bosco success : don't delete it-->
 	{% block content %}
 		<button data-section="9" type="button" class ="changePage btn-drg" id = "main-user-name" onclick="changePage(this.dataset.section)"> {{ user.username }} </button>
 		<button data-section="9" type="button" class ="changePage btn-drg" id = "main-profile-user" onclick="changePage(this.dataset.section)">

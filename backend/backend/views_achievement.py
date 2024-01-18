@@ -6,7 +6,7 @@
 #    By: lflandri <lflandri@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/17 15:33:50 by lflandri          #+#    #+#              #
-#    Updated: 2024/01/18 16:37:03 by lflandri         ###   ########.fr        #
+#    Updated: 2024/01/18 17:31:52 by lflandri         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -133,6 +133,8 @@ def setachievement(request):
     achievement = Achivement.objects.all().filter(idUser=user.idUser)[0]
     if request.POST.get('achievement') == "fallen":
         achievement.fallen = 4
+    if request.POST.get('achievement') == "boscoFriend":
+        achievement.boscoFriend = 4
 
     try :
         achievement.save()
