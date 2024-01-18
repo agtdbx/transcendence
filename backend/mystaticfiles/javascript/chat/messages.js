@@ -1,6 +1,8 @@
 let chatSocket = null;
 let channelTarget = null;
 let lastMessagesLoad = -1;
+let chatElement;
+let chatScrollAtBottom = true;
 
 function getToken()
 {
@@ -54,12 +56,18 @@ function enableChatConnection()
 		const username = data['username'];
 		// const pp = data['pp'];
 		const pp = "https://static.wikia.nocookie.net/deeprockgalactic_gamepedia_en/images/c/c2/Gunner_portrait.png/revision/latest/scale-to-width-down/35?cb=20180519150058";
-		let date = data['date'];
-		date = date.substring(11, 19);
+		const date = data['date'].substring(11, 19);
 		if (channel == channelTarget)
 		{
-			// console.log("displayMessage");
+			// let atBottomScroll = false;
+			// if (chat.scrollTop == chat.scrollHeight)
+			// 	atBottomScroll = true;
+			// console.log(chat.scrollTop, chat.scrollHeight, chat.ontouchend)
+
 			addNewMessage(message, username, pp, date);
+
+			if (chatScrollAtBottom)
+				chatElement.scrollTop = chatElement.scrollHeight;
 		}
 	};
 
@@ -84,11 +92,22 @@ function endChatConnection()
 function setChannelTarget(channel)
 {
 	if (channel == null)
+	{
 		messagesLoad = null;
+		chatElement = null;
+	}
 	else
 	{
 		messagesLoad = -1;
+		chatElement = getChatElement();
+		chatScrollAtBottom = true;
 		getMessageInDB();
+		chatElement.onscroll = function() {
+			if (chatElement.offsetHeight + chatElement.scrollTop >= chatElement.scrollHeight)
+				chatScrollAtBottom = true;
+			else
+				chatScrollAtBottom = false;
+		};
 	}
 	channelTarget = channel;
 }
@@ -161,7 +180,7 @@ function createMessage(message, username, pp, date)
 }
 
 
-function addOldMessage(message, username, pp, date)
+function getChatElement()
 {
 	let chat = document.getElementById("main-page-chat-write");
 
@@ -173,25 +192,19 @@ function addOldMessage(message, username, pp, date)
 		chat = document.getElementById("wait-page-chat-write");
 	if (chat == null)
 		return ;
+	return chat;
+}
 
-	chat.appendChild(createMessage(message, username, pp, date));
+
+function addOldMessage(message, username, pp, date)
+{
+	chatElement.appendChild(createMessage(message, username, pp, date));
 }
 
 
 function addNewMessage(message, username, pp, date)
 {
-	let chat = document.getElementById("main-page-chat-write");
-
-	if (chat == null)
-		chat = document.getElementById("createGameChat");
-	if (chat == null)
-		chat = document.getElementById("tournamentrect1");
-	if (chat == null)
-		chat = document.getElementById("wait-page-chat-write");
-	if (chat == null)
-		return ;
-
-	chat.insertBefore(createMessage(message, username, pp, date), null);
+	chatElement.insertBefore(createMessage(message, username, pp, date), null);
 }
 
 
@@ -226,7 +239,10 @@ function getMessageInDB()
 				const pp = "https://static.wikia.nocookie.net/deeprockgalactic_gamepedia_en/images/c/c2/Gunner_portrait.png/revision/latest/scale-to-width-down/35?cb=20180519150058";
 				const date = messages[i][3].substring(0, 8);
 
+
 				addOldMessage(data, username, pp, date);
 			}
+			if (chatScrollAtBottom)
+				chatElement.scrollTop = chatElement.scrollHeight;
 		})
 }

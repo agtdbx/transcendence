@@ -145,35 +145,35 @@ function checkLogin(data)
 			changePage("3");
 		})
 		.catch(error => console.log("checkLogin error :", error))
-	}
+}
 
 
-	function checkSignin(data)
+function checkSignin(data)
+{
+	fetch("checkSignin",
 	{
-		fetch("checkSignin",
+		method: 'POST',
+		body: data,
+		cache: "default"
+	})
+	.then(response => response.json())
+	.then(jsonData => {
+
+		if (jsonData["success"] != true)
 		{
-			method: 'POST',
-			body: data,
-			cache: "default"
-		})
-		.then(response => response.json())
-		.then(jsonData => {
+			alert(jsonData["error"]);
+			return ;
+		}
 
-			if (jsonData["success"] != true)
-			{
-				alert(jsonData["error"]);
-				return ;
-			}
+		document.cookie = "token=" + jsonData['token'];
+		data.set("token", jsonData['token']);
 
-			document.cookie = "token=" + jsonData['token'];
-			data.set("token", jsonData['token']);
+		enableChatConnection();
 
-			enableChatConnection();
-
-			changePage("3");
-		})
-		.catch(error => console.log("checkSignin error :", error))
-	}
+		changePage("3");
+	})
+	.catch(error => console.log("checkSignin error :", error))
+}
 
 
 function disconnection()
