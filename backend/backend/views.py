@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    views.py                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: lflandri <lflandri@student.42.fr>          +#+  +:+       +#+         #
+#    By: aderouba <aderouba@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/08 14:00:09 by lflandri          #+#    #+#              #
-#    Updated: 2024/01/17 14:16:51 by lflandri         ###   ########.fr        #
+#    Updated: 2024/01/18 17:34:21 by aderouba         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -269,32 +269,45 @@ def gamePage(request):
 #                            DB connexion Functions                            #
 # **************************************************************************** #
 @csrf_exempt
-def sendMessage(request):
+def getMessages(request):
     if request.method != 'POST':
-        return JsonResponse({"success" : False, "error" : "Only post accepted"})
+        return JsonResponse({"success" : False, "error" : "Need to pass by post"})
 
-     # Check token
+    # Check token
     check = checkToken(request)
     if check["success"] == False:
-        return JsonResponse(check)
+        return JsonResponse({"success" : False, "error" : "Token invalid"})
 
-    # Get the user
-    userId = check["userId"]
-    user = User.objects.all().filter(idUser=userId)[0]
-    idMsg = len(Message.objects.all())
-    data = request.POST.get("message")
-    date = datetime.datetime.now()
+    lastMessagesLoad = 0
+
     try:
-        msg = Message.objects.create(id=idMsg, idUser=user, date=date, data=data)
-        msg.save()
+        lastMessagesLoad = request.POST.get("lastMessagesLoad")
+        if lastMessagesLoad == "null" or lastMessagesLoad == None:
+            return JsonResponse({"success" : False, "error" : "Bad lastMessagesLoad : " + str(lastMessagesLoad)})
+
+        lastMessagesLoad = int(lastMessagesLoad)
+
+        # lastMessagesLoad = request.POST.get("lastMessagesLoad")
     except Exception as error:
-        return JsonResponse({"success" : False, "error" : "Can't create the message : " + str(error)})
+        return JsonResponse({"success" : False, "error" : "Get lastMessagesLoad don't work : " + str(error)})
 
-    return JsonResponse({"success" : True})
+    msgs = Message.objects.all().order_by("date")
 
+    if lastMessagesLoad == -1:
+        lastMessagesLoad = len(msgs)
 
-def getMessages(request):
-    pass
+    start = max(0, lastMessagesLoad - 10)
+    end = lastMessagesLoad
+
+    messages = []
+    for i in range(start, end):
+        msg = msgs[i]
+        idUser = int(msg.idUser.idUser)
+        users = User.objects.all().filter(idUser=idUser)
+        user = users[0]
+        message = [msg.id, user.username, "pp", msg.date, msg.data]
+        messages.append(message)
+    return JsonResponse({"success" : True, "messages" : messages, "lastMessagesLoad" : start})
 
 
 # **************************************************************************** #
@@ -379,7 +392,7 @@ def removefriends(request):
         link1.link = 0
         link2.link = 0
         link1.save()
-        link2.save()		
+        link2.save()
     except :
          return JsonResponse({"success": False, "content" : "Error : modification of user relation." })
 
@@ -413,7 +426,7 @@ def acceptfriends(request):
 
     return JsonResponse({"success": True, "content" : "request of " + request.POST.get('friend') +" accepted." })
 
-	
+
 def refusefriends(request):
     check = checkToken(request)
     if check["success"] == False:
@@ -457,7 +470,7 @@ def block(request):
         if haveRelation(target, user) and Link.objects.all().filter(idUser=target.idUser, idTarget=user.idUser)[0].link == 2:
             link2 = Link.objects.all().filter(idUser=target.idUser, idTarget=user.idUser)[0]
             link2.link = 0
-            link2.save()		
+            link2.save()
     except :
          return JsonResponse({"success": False, "content" : "Error : modification of user relation." })
 
@@ -516,7 +529,7 @@ def getlistefriendrequest(request):
         try:
             sender = User.objects.all().filter(link=link)[0]
             if haveRelation(user, sender) and len(Link.objects.all().filter(idUser=user.idUser, idTarget=sender.idUser, link=3)) > 0:
-                continue      
+                continue
             listeRequest.append(sender.username)
         except:
             continue
@@ -533,7 +546,7 @@ def getlistefriend(request):
     listeRequest = []
     for link in linkFriendRequestList :
         try:
-            friend = User.objects.all().filter(idUser=link.idTarget)[0] 
+            friend = User.objects.all().filter(idUser=link.idTarget)[0]
             listeRequest.append({"name": friend.username, "pp" : "./media/" + friend.profilPicture.name, "status" : friend.idStatus })
         except:
             continue
@@ -550,7 +563,7 @@ def getlisteblocked(request):
     listeRequest = []
     for link in linkFriendRequestList :
         try:
-            friend = User.objects.all().filter(idUser=link.idTarget)[0] 
+            friend = User.objects.all().filter(idUser=link.idTarget)[0]
             listeRequest.append({"name": friend.username, "pp" : "./media/" + friend.profilPicture.name, "status" : friend.idStatus })
         except:
             continue
