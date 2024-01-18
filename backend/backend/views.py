@@ -6,7 +6,7 @@
 #    By: aderouba <aderouba@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/08 14:00:09 by lflandri          #+#    #+#              #
-#    Updated: 2024/01/18 18:09:07 by aderouba         ###   ########.fr        #
+#    Updated: 2024/01/18 23:43:52 by aderouba         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,7 +17,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.http import Http404, HttpResponse, JsonResponse
 from django.shortcuts import render
 
-from db_test.models import User, connectionPassword, Message, Link
+from db_test.models import User, connectionPassword, Message, PrivMessage, Link
 import datetime
 
 from .forms import UserForm
@@ -129,10 +129,16 @@ def getHeader(request):
         return JsonResponse(check)
 
     userId = check["userId"]
-    user = User.objects.all().filter(idUser=userId)[0]
+    test = User.objects.all().filter(idUser=userId)
+
+    if len(test) != 1:
+        return JsonResponse({"success" : False, "error" : "User not found"})
+
+    user = test[0]
 
     htmlText = render(request,"navbar.html", {'user': user}).getvalue().decode()
     return JsonResponse({"success" : True, "html" : htmlText})
+
 
 @csrf_exempt
 def otherProfilPage(request, pseudo):
@@ -140,14 +146,30 @@ def otherProfilPage(request, pseudo):
     if check["success"] == False:
         return render(request, "index.html")
     try :
-        user = User.objects.all().filter(username=pseudo)[0]
         fullPage = (request.method != 'POST')
+
+        test = User.objects.all().filter(username=pseudo)
+        if len(test) == 0:
+            if fullPage:
+                return render(request, "mainpage_full.html")
+            else:
+                return render(request,"mainpage.html")
+
+        userToVisit = test[0]
+        user = User.objects.all().filter(idUser=check["userId"])[0]
+
+        if user == userToVisit:
+            if fullPage:
+                return render(request, "profil_content_full.html", {'user': user})
+            else:
+                return render(request,"profil_content.html", {'user': user})
+
         if fullPage:
-            return render(request, "other_profil_content_full.html", {'user': user})
+            return render(request, "other_profil_content_full.html", {'user': userToVisit})
         else:
-            return render(request,"other_profil_content.html", {'user': user})
+            return render(request,"other_profil_content.html", {'user': userToVisit})
     except :
-        return render(request, "gamePage.html")
+        return render(request, "mainpage.html")
 
 
 @csrf_exempt
@@ -268,6 +290,9 @@ def gamePage(request):
 # **************************************************************************** #
 #                            DB connexion Functions                            #
 # **************************************************************************** #
+def key_sort_per_date(obj):
+    return obj.date
+
 @csrf_exempt
 def getMessages(request):
     if request.method != 'POST':
@@ -278,7 +303,14 @@ def getMessages(request):
     if check["success"] == False:
         return JsonResponse({"success" : False, "error" : "Token invalid"})
 
+    test = User.objects.all().filter(idUser=check["userId"])
+    if len(test) != 1:
+        return JsonResponse({"success" : False, "error" : "Missing user"})
+
+    myUser = test[0]
+
     lastMessagesLoad = 0
+    channel = ""
 
     try:
         lastMessagesLoad = request.POST.get("lastMessagesLoad")
@@ -287,27 +319,54 @@ def getMessages(request):
 
         lastMessagesLoad = int(lastMessagesLoad)
 
-        # lastMessagesLoad = request.POST.get("lastMessagesLoad")
+        channel = request.POST.get("channel")
+
+        if channel != "general":
+            channel = int(channel)
+
     except Exception as error:
-        return JsonResponse({"success" : False, "error" : "Get lastMessagesLoad don't work : " + str(error)})
+        return JsonResponse({"success" : False, "error" : "Get lastMessagesLoad or channel don't work : " + str(error)})
 
-    msgs = Message.objects.all().order_by("date")
+    if channel == "general":
+        msgs = Message.objects.all().order_by("date")
 
-    if lastMessagesLoad == -1:
-        lastMessagesLoad = len(msgs)
+        if lastMessagesLoad == -1:
+            lastMessagesLoad = len(msgs)
 
-    start = max(0, lastMessagesLoad - 10)
-    end = lastMessagesLoad
+        start = max(0, lastMessagesLoad - 10)
+        end = lastMessagesLoad
 
-    messages = []
-    for i in range(start, end):
-        msg = msgs[i]
-        idUser = int(msg.idUser.idUser)
-        users = User.objects.all().filter(idUser=idUser)
-        user = users[0]
-        message = [msg.id, user.username, "./media/" + str(user.profilPicture), msg.date, msg.data]
-        messages.append(message)
-    return JsonResponse({"success" : True, "messages" : messages, "lastMessagesLoad" : start})
+        messages = []
+        for i in range(start, end):
+            msg = msgs[i]
+            idUser = int(msg.idUser.idUser)
+            users = User.objects.all().filter(idUser=idUser)
+            user = users[0]
+            message = [msg.id, user.username, "/media/" + str(user.profilPicture), msg.date, msg.data]
+            messages.append(message)
+        return JsonResponse({"success" : True, "messages" : messages, "lastMessagesLoad" : start})
+    else:
+        msgs = list(PrivMessage.objects.all().filter(idUser=myUser.idUser).filter(idTarget=channel))
+        msgs.extend(list(PrivMessage.objects.all().filter(idUser=channel).filter(idTarget=myUser.idUser)))
+        # msgs = msgs.order_by("date")
+
+        msgs.sort(key=key_sort_per_date)
+
+        if lastMessagesLoad == -1:
+            lastMessagesLoad = len(msgs)
+
+        start = max(0, lastMessagesLoad - 10)
+        end = lastMessagesLoad
+
+        messages = []
+        for i in range(start, end):
+            msg = msgs[i]
+            idUser = int(msg.idUser.idUser)
+            users = User.objects.all().filter(idUser=idUser)
+            user = users[0]
+            message = [msg.id, user.username, "/media/" + str(user.profilPicture), msg.date, msg.data]
+            messages.append(message)
+        return JsonResponse({"success" : True, "messages" : messages, "lastMessagesLoad" : start})
 
 
 # **************************************************************************** #
@@ -535,6 +594,7 @@ def getlistefriendrequest(request):
             continue
     return JsonResponse({"success": True, "content" : "", "listRequest" : listeRequest })
 
+@csrf_exempt
 def getlistefriend(request):
     check = checkToken(request)
     if check["success"] == False:
@@ -547,7 +607,7 @@ def getlistefriend(request):
     for link in linkFriendRequestList :
         try:
             friend = User.objects.all().filter(idUser=link.idTarget)[0]
-            listeRequest.append({"name": friend.username, "pp" : "./media/" + friend.profilPicture.name, "status" : friend.idStatus })
+            listeRequest.append({"name": friend.username, "pp" : "/media/" + friend.profilPicture.name, "status" : friend.idStatus, "id" : friend.idUser})
         except:
             continue
     return JsonResponse({"success": True, "content" : "", "listcontact" : listeRequest })
@@ -564,7 +624,7 @@ def getlisteblocked(request):
     for link in linkFriendRequestList :
         try:
             friend = User.objects.all().filter(idUser=link.idTarget)[0]
-            listeRequest.append({"name": friend.username, "pp" : "./media/" + friend.profilPicture.name, "status" : friend.idStatus })
+            listeRequest.append({"name": friend.username, "pp" : "/media/" + friend.profilPicture.name, "status" : friend.idStatus })
         except:
             continue
     return JsonResponse({"success": True, "content" : "", "listcontact" : listeRequest })

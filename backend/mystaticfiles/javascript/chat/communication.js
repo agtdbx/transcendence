@@ -41,6 +41,6 @@ function sendMessage(input)
 	if (input.value == "")
 		return ;
 	chatScrollAtBottom = true;
-	sendMessageToServer(input.value, "general");
+	sendMessageToServer(input.value, channelTarget);
 	input.value = "";
 }

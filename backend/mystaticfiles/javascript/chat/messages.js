@@ -12,6 +12,9 @@ function createMessage(message, username, pp, date)
 	nameCase.style.width = "10%";
 	nameCase.style.textAlign = "center";
 	nameCase.style.verticalAlign = "top";
+	nameCase.onclick = function (){
+		changePage("profil/" + username);
+	}
 	nameTXT.style.marginTop = "5px";
 	nameTXT.style.marginBottom = "2px";
 	nameTXT.style.color = "white";
@@ -24,6 +27,9 @@ function createMessage(message, username, pp, date)
 	dateTXT.style.fontSize = "0.7em";
 	imgCase.style.verticalAlign = "top";
 	imgCase.style.width = "10%";
+	imgCase.onclick = function (){
+		changePage("profil/" + username);
+	}
 	// img.style.width = "100%";
 	img.style.width = "50px";
 	img.src = pp
@@ -65,8 +71,11 @@ function getMessageInDB()
 {
 	let data = new FormData();
 	data.append('lastMessagesLoad', lastMessagesLoad);
+	data.append('channel', channelTarget);
 
-	fetch('getMessages',
+	console.log("Load message form db of channel", channelTarget);
+
+	fetch('/getMessages',
 		{
 			method: 'POST',
 			body: data,
@@ -79,9 +88,11 @@ function getMessageInDB()
 				console.log("Error on load messages :", data['error']);
 				return ;
 			}
+			chatElement.innerHTML = "";
+
 			const messages = data['messages'];
 			if (messages.length == 0)
-				return
+				return ;
 
 			lastMessagesLoad = data["lastMessagesLoad"];
 			let size = 0;

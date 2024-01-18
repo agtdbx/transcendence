@@ -14,7 +14,7 @@ class User(models.Model):
     profilPicture = models.ImageField(upload_to='images/', verbose_name="", validators=[validate_file_size])
     tokenJWT      = models.TextField()
     money         = models.IntegerField()
-    idStatus      = models.IntegerField() 
+    idStatus      = models.IntegerField()
 
 
 class connectionPassword(models.Model):
@@ -38,19 +38,19 @@ class Achivement(models.Model):
 
 
 class Link(models.Model):
-    id    	 = models.IntegerField(primary_key=True)								# TRUE [primary key]
+    id       = models.IntegerField(primary_key=True)								# TRUE [primary key]
     idUser   = models.ForeignKey(User, on_delete=models.PROTECT)					#[primary key]
     #idTarget = models.ForeignKey(User, on_delete=models.PROTECT)					#[primary key]
     idTarget = models.IntegerField()
-    link     = models.IntegerField() 
+    link     = models.IntegerField()
 
 
 class PrivMessage(models.Model):
-    id    	 = models.IntegerField(primary_key=True)				# TRUE [primary key]
+    id        = models.IntegerField(primary_key=True)				# TRUE [primary key]
     idUser    = models.ForeignKey(User, on_delete=models.PROTECT)								#[primary key]
     date      = models.TimeField()									#[primary key]
     data      = models.TextField()
-    idTarget  = models.IntegerField()  
+    idTarget  = models.IntegerField()
 
 
 class Message(models.Model):
@@ -71,7 +71,7 @@ class Match(models.Model):
     idMatch        = models.IntegerField(primary_key=True)							#[primary key]
     matchDate      = models.TimeField()
     matchDuration  = models.TimeField()
-    idMap          = models.ForeignKey(Map, on_delete=models.PROTECT)  
+    idMap          = models.ForeignKey(Map, on_delete=models.PROTECT)
     powerUp        = models.BooleanField()
     cursed         = models.BooleanField()
     tournament     = models.BooleanField()
@@ -81,8 +81,8 @@ class MatchUser(models.Model):
     id    	 = models.IntegerField(primary_key=True)								# TRUE [primary key]
     idMatch = models.ForeignKey(Match, on_delete=models.PROTECT)								#[primary key]
     idUser  = models.ForeignKey(User, on_delete=models.PROTECT)									#[primary key]
-    score   = models.IntegerField()  
-    powerUp = models.IntegerField()  
+    score   = models.IntegerField()
+    powerUp = models.IntegerField()
 
 
 class Goal(models.Model):
@@ -90,9 +90,9 @@ class Goal(models.Model):
     idUser        = models.ForeignKey(User, on_delete=models.PROTECT)							#[primary key]
     goalTimer     = models.TimeField()								#[primary key]
     idMatch       = models.ForeignKey(Match, on_delete=models.PROTECT)							#[primary key]
-    nbBounce      = models.IntegerField()  
+    nbBounce      = models.IntegerField()
     perfectedShot = models.BooleanField()
-    ballSpeed     = models.IntegerField()  
+    ballSpeed     = models.IntegerField()
     ownGoal       = models.BooleanField()
 
 
@@ -100,8 +100,8 @@ class Tournament(models.Model):
     idTournament    = models.IntegerField(primary_key=True)							#[primary key]
     startDate       = models.TimeField()
     nameTournament  = models.CharField(max_length=20)
-    nbMaxUser       = models.IntegerField()  
-    idMap           = models.ForeignKey(Map, on_delete=models.PROTECT)  
+    nbMaxUser       = models.IntegerField()
+    idMap           = models.ForeignKey(Map, on_delete=models.PROTECT)
     powerUp         = models.BooleanField()
     cursed          = models.BooleanField()
 
@@ -111,7 +111,7 @@ class UserTournament(models.Model):
     idTournament  = models.ForeignKey(Tournament, on_delete=models.PROTECT)							#[primary key]
     idUser        = models.ForeignKey(User, on_delete=models.PROTECT)							#[primary key]
     nickname      = models.CharField(max_length=20, unique=True) 	#[unique]
-    rank          = models.IntegerField()  
+    rank          = models.IntegerField()
 
 
 class MatchTournament(models.Model):

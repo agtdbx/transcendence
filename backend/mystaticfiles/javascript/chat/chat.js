@@ -80,6 +80,8 @@ function getChatElement()
 
 function setChannelTarget(channel)
 {
+	console.log("switch to", channel, "channel");
+	channelTarget = channel;
 	if (channel == null)
 	{
 		lastMessagesLoad = null;
@@ -99,5 +101,4 @@ function setChannelTarget(channel)
 				getMessageInDB();
 		};
 	}
-	channelTarget = channel;
 }

@@ -79,7 +79,7 @@ async def handle_client(websocket, path):
 
                 message = message.replace("'", " ")
                 message = message.replace('"', '')
-                strMessage = str({"message" : message, "username" : user.username, "pp" : "./media/" + str(user.profilPicture),
+                strMessage = str({"message" : message, "username" : user.username, "pp" : "/media/" + str(user.profilPicture),
                                 "date" : str(date), "channel" : "general"})
                 strMessage = strMessage.replace("'", '"')
 
@@ -110,7 +110,7 @@ async def handle_client(websocket, path):
                 msg = PrivMessage.objects.create(id=idMsg, idUser=user, date=date, data=message, idTarget=idTarget)
                 msg.save()
 
-                pp = "./media/" + str(user.profilPicture)
+                pp = "/media/" + str(user.profilPicture)
 
                 message = message.replace("'", " ")
                 message = message.replace('"', '')

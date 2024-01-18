@@ -28,7 +28,7 @@ function addHeader(){
 	{
 		try
 		{
-			fetch("https://" + window.location.hostname + ":4200/getHeader", {method: 'POST', cache: "default"})
+			fetch("/getHeader", {method: 'POST', cache: "default"})
 			.then(response => response.json())
 			.then (jsonData => {
 				if (jsonData['success'])
@@ -61,17 +61,20 @@ function removeHeader()
 
 function manageHeader(num)
 {
-	if (num >= 3 && num != 6)
-		addHeader();
-	else
+	if (num < 3 || num == 6)
 		removeHeader();
+	else
+		addHeader();
 }
 
 
 function manageChat(num)
 {
 	if (num == 3 || num == 4 || num == 5 || num == 7)
+	{
 		setChannelTarget("general");
+		displayFiends();
+	}
 	else
 		setChannelTarget(null);
 }
@@ -107,7 +110,7 @@ function getCookieValue(name)
 
 function changePage(num, byArrow=false)
 {
-	fetch(`${num}`,
+	fetch("/" + `${num}`,
 	{
 		method: 'POST',
 		cache: "default"
@@ -126,7 +129,7 @@ function changePage(num, byArrow=false)
 
 		// Set the new page in the browser history if the page isn't load by arrow, or not the wait and game page.
 		if (!byArrow && num != 4 && num != 6)
-			history.pushState({section: num}, '', num);
+			history.pushState({section: num}, document.location.hostname, num);
 	})
 	.catch(error => console.log("CHANGE PAGE ERROR FETCH :", error, '\n'))
 }
@@ -134,7 +137,7 @@ function changePage(num, byArrow=false)
 
 function checkLogin(data)
 {
-	fetch("checkLogin",
+	fetch("/checkLogin",
 		{
 			method: 'POST',
 			body: data,
@@ -162,7 +165,7 @@ function checkLogin(data)
 
 function checkSignin(data)
 {
-	fetch("checkSignin",
+	fetch("/checkSignin",
 	{
 		method: 'POST',
 		body: data,
@@ -191,8 +194,9 @@ function checkSignin(data)
 function disconnection()
 {
 	document.cookie = "token=";
-	changePage("0");
+	console.log("test");
 	endChatConnection();
+	changePage("0");
 }
 
 
