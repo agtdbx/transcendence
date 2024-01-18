@@ -88,11 +88,14 @@ function getMessageInDB()
 				console.log("Error on load messages :", data['error']);
 				return ;
 			}
+			if (lastMessagesLoad == -1)
 			chatElement.innerHTML = "";
 
 			const messages = data['messages'];
 			if (messages.length == 0)
 				return ;
+
+			chatElement.innerHTML = "";
 
 			lastMessagesLoad = data["lastMessagesLoad"];
 			let size = 0;
