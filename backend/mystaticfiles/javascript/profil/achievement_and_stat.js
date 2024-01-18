@@ -6,7 +6,7 @@
 /*   By: lflandri <lflandri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/23 15:24:40 by lflandri          #+#    #+#             */
-/*   Updated: 2023/12/07 14:48:20 by lflandri         ###   ########.fr       */
+/*   Updated: 2024/01/18 16:36:52 by lflandri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,11 +35,13 @@ function casePup(content, before, title, img, description, grade)
 	image.style.width = "30%";
 	image.style.display = "inline-block";
 	image.src = img;
+	// container.style.width = "100%";
 	container.classList.add("col-sm-12");
 	container.classList.add("col-md-6");
 	container.classList.add("col-lg-6");
 	container.classList.add("col-xl-4");
-	box.style.display = "inline-block";
+	// box.style.display = "inline-block";
+	box.style.height = "90px"
 	box.style.backgroundColor = "#000000";
 	box.style.border = "1px solid #FF9C00";
 	box.style.marginBottom = "15px";
@@ -67,7 +69,7 @@ function casePup(content, before, title, img, description, grade)
 	divText.insertBefore(titleText, null);
 	divText.insertBefore(text, null);
 
-	if (grade > 0 )
+	if (grade > 0 && grade < 4 )
 	{
 		const gradeContainer = document.createElement("div");
 		const gradeImage = document.createElement("img");
@@ -80,62 +82,26 @@ function casePup(content, before, title, img, description, grade)
 		gradeImage.style.width = "25%"
 		gradeContainer.style.height = "30px";
 		gradeContainer.style.marginBottom = "-30px";
-		switch (grade)
-		{
-			case 1:
-				gradeImage.src = "https://static.wikia.nocookie.net/deeprockgalactic_gamepedia_en/images/5/5e/Icons_complexity_1.png/revision/latest/scale-to-width-down/60?cb=20190210235110";
-				break;
+		gradeImage.src = "/static/image/achievement/Achievement_level_" + grade + ".webp";
+		// switch (grade)
+		// {
+		// 	case 1:
+		// 		gradeImage.src = "https://static.wikia.nocookie.net/deeprockgalactic_gamepedia_en/images/5/5e/Icons_complexity_1.png/revision/latest/scale-to-width-down/60?cb=20190210235110";
+		// 		break;
 		
-			case 2:
-				gradeImage.src = "https://static.wikia.nocookie.net/deeprockgalactic_gamepedia_en/images/e/e3/Icons_complexity_2.png/revision/latest/scale-to-width-down/60?cb=20190210235125";
-				break;
-			case 3:
-				gradeImage.src = "https://static.wikia.nocookie.net/deeprockgalactic_gamepedia_en/images/1/1f/Icons_complexity_3.png/revision/latest/scale-to-width-down/60?cb=20190210235136";
-				break;
-		}
+		// 	case 2:
+		// 		gradeImage.src = "https://static.wikia.nocookie.net/deeprockgalactic_gamepedia_en/images/e/e3/Icons_complexity_2.png/revision/latest/scale-to-width-down/60?cb=20190210235125";
+		// 		break;
+		// 	case 3:
+		// 		gradeImage.src = "https://static.wikia.nocookie.net/deeprockgalactic_gamepedia_en/images/1/1f/Icons_complexity_3.png/revision/latest/scale-to-width-down/60?cb=20190210235136";
+		// 		break;
+		// }
 		container.insertBefore(gradeContainer, null);
 		gradeContainer.insertBefore(gradeImage, null);
 	}
 }
 
-
-function titlePup(content, before, title)
-{
-	const container = document.createElement("div");
-	const boscoLeft = document.createElement("img");
-	const titleImg = document.createElement("img");
-	const boscoRight = document.createElement("img");
-	const titlePop = document.createElement("div");
-	const separator = document.createElement("div");
-	titleImg.style.width = "100%";
-	if (title === "Success")
-		titleImg.src = "/static/image/other/Icon_Forge_Mastery_achievement.webp";
-	titlePop.style.display = "inline-block";
-	titlePop.style.width = "50%";
-	titlePop.style.marginLeft = "1%";
-	titlePop.style.marginRight = "1%";
-	boscoLeft.style.display = "inline-block";
-	boscoLeft.src = "https://cdn.discordapp.com/attachments/1166317817595969697/1166332408874946620/bosco_taunt.gif?ex=65535533&is=6540e033&hm=e7e769432fbbe26b8a7630b0e1a49b48d90b56b4df3b5721f4208cf9f3e8b0b4&";
-	boscoLeft.style.width = "24%";
-	boscoRight.style.display = "inline-block";
-	boscoRight.style.width = "24%";
-	boscoRight.src = "https://cdn.discordapp.com/attachments/1166317817595969697/1166332408874946620/bosco_taunt.gif?ex=65535533&is=6540e033&hm=e7e769432fbbe26b8a7630b0e1a49b48d90b56b4df3b5721f4208cf9f3e8b0b4&";
-	separator.style.marginBottom = "20px";
-	container.classList.add("col-md-8");
-	container.classList.add("col-lg-6");
-	container.classList.add("col-xl-4");
-	container.style.margin = "auto";
-	content.insertBefore(container, before);
-	container.insertBefore(boscoLeft, before);
-	titlePop.insertBefore(titleImg, null);
-	container.insertBefore(titlePop, before);
-	container.insertBefore(boscoRight, before);
-	content.insertBefore(separator, before);
-	
-}
-
-
-function createSuccess()
+function createSuccess(listeAchievement)
 {
 	console.log("create success panel");
 	const body = document.getElementById("body");
@@ -163,28 +129,28 @@ function createSuccess()
 	succesBlock.style.width = "70%";
 	containerContentSuccesBlock.style.zIndex = "1000";
 	titlePup(succesBlock, null, "Success");
-
-	for (let index = 0; index < 9; index++) {
-
-
-		if (index === 4)
-		{
-			casePup(succesBlock,
-				null,
-				"ERR://23¤Y%/ ",
-				"https://static.wikia.nocookie.net/deeprockgalactic_gamepedia_en/images/1/14/Unknown_artifact_icon.png/revision/latest/scale-to-width-down/250?cb=20180519140040",
-				"You don't have the achievement",
-				2);
-		}
-		else 
-		{
-			casePup(succesBlock,
-				null,
-				"ERR://23¤Y%/ ",
-				"https://static.wikia.nocookie.net/deeprockgalactic_gamepedia_en/images/1/14/Unknown_artifact_icon.png/revision/latest/scale-to-width-down/250?cb=20180519140040",
-				"You don't have the achievement",
-				-1);
-		}
+	console.log(listeAchievement)
+	for (const achievement of listeAchievement) {
+		console.log("create case : " + achievement["title"])
+		casePup(succesBlock, null, achievement["title"], achievement["img"], achievement["description"], achievement["grade"])
+		// if (index === 4)
+		// {
+		// 	casePup(succesBlock,
+		// 		null,
+		// 		"ERR://23¤Y%/ ",
+		// 		"https://static.wikia.nocookie.net/deeprockgalactic_gamepedia_en/images/1/14/Unknown_artifact_icon.png/revision/latest/scale-to-width-down/250?cb=20180519140040",
+		// 		"You don't have the achievement",
+		// 		2);
+		// }
+		// else 
+		// {
+		// 	casePup(succesBlock,
+		// 		null,
+		// 		"ERR://23¤Y%/ ",
+		// 		"https://static.wikia.nocookie.net/deeprockgalactic_gamepedia_en/images/1/14/Unknown_artifact_icon.png/revision/latest/scale-to-width-down/250?cb=20180519140040",
+		// 		"You don't have the achievement",
+		// 		-1);
+		// }
 
 	}
 }
@@ -207,11 +173,11 @@ function titlePup(content, before, title)
 	titlePop.style.marginLeft = "1%";
 	titlePop.style.marginRight = "1%";
 	boscoLeft.style.display = "inline-block";
-	boscoLeft.src = "https://cdn.discordapp.com/attachments/1166317817595969697/1166332408874946620/bosco_taunt.gif?ex=65535533&is=6540e033&hm=e7e769432fbbe26b8a7630b0e1a49b48d90b56b4df3b5721f4208cf9f3e8b0b4&";
+	boscoLeft.src = "/static/image/other/bosco_taunt.gif";
 	boscoLeft.style.width = "24%";
 	boscoRight.style.display = "inline-block";
 	boscoRight.style.width = "24%";
-	boscoRight.src = "https://cdn.discordapp.com/attachments/1166317817595969697/1166332408874946620/bosco_taunt.gif?ex=65535533&is=6540e033&hm=e7e769432fbbe26b8a7630b0e1a49b48d90b56b4df3b5721f4208cf9f3e8b0b4&";
+	boscoRight.src = "/static/image/other/bosco_taunt.gif";
 	separator.style.marginBottom = "20px";
 	container.classList.add("col-md-8");
 	container.classList.add("col-lg-6");
@@ -267,12 +233,74 @@ function createStats()
 	}
 }
 
+function createpupself(type)
+{
+	//remove_pop();
+	if (type === "sucess")
+	{
+		const form = document.getElementById('data-request-achievement');
+		const data = new FormData(form);
+		fetch("https://" + window.location.hostname + ":4200/getselfachievement",
+		{
+			method: 'POST',
+			body: data,
+			cache: "default"
+		})
+				.then(response => response.json())
+				.then (jsonData => {
+					console.log("received from getselfachievement : ")
+					console.log(jsonData)
+					if (! jsonData["success"])
+					{
+						console.error(jsonData["content"])
+						return ;
+					}
+					createSuccess(jsonData["listeAchievement"])
+				})
+				.catch(error => {
+					console.log("erreur from getselfachievement : ")
+					console.error(error)
+				})
+	}
+	if (type === "stats")
+	{
+		createStats()
+	}
+	setTimeout(function(){
+		const body = document.getElementById("body");
+		body.onclick = remove_pop;
+	}, 500);
+}
+
 function createpup(type)
 {
 	//remove_pop();
 	if (type === "sucess")
 	{
-		createSuccess()
+		const form = document.getElementById('data-request-relation');
+		const data = new FormData(form);
+	
+		fetch("https://" + window.location.hostname + ":4200/getotherachievement",
+		{
+			method: 'POST',
+			body: data,
+			cache: "default"
+		})
+				.then(response => response.json())
+				.then (jsonData => {
+					console.log("received from getotherachievement : ")
+					console.log(jsonData)
+					if (! jsonData["success"])
+					{
+						console.error(jsonData["content"])
+						return ;
+					}
+					createSuccess(jsonData["listeAchievement"])
+				})
+				.catch(error => {
+					console.log("erreur from getotherachievement : ")
+					console.error(error)
+				})
 	}
 	if (type === "stats")
 	{
