@@ -65,18 +65,21 @@ async def handle_client(websocket, path):
             channel = data.get("channel", None)
             message = data.get("message", None)
 
+
             if user == None or channel == None or message == None:
                 print("BAD DATA RECIEVED", file=sys.stderr)
                 continue
 
-            print("MSG -", user.username, " :", data["message"], file=sys.stderr)
+            print(user.username, user.profilPicture, ":", data["message"], file=sys.stderr)
             if channel == "general":
                 idMsg = len(Message.objects.all())
                 date = datetime.datetime.now()
                 msg = Message.objects.create(id=idMsg, idUser=user, date=date, data=message)
                 msg.save()
 
-                strMessage = str({"message" : message, "username" : user.username, "pp" : "",
+                message = message.replace("'", " ")
+                message = message.replace('"', '')
+                strMessage = str({"message" : message, "username" : user.username, "pp" : "./media/" + str(user.profilPicture),
                                 "date" : str(date), "channel" : "general"})
                 strMessage = strMessage.replace("'", '"')
 
@@ -107,9 +110,13 @@ async def handle_client(websocket, path):
                 msg = PrivMessage.objects.create(id=idMsg, idUser=user, date=date, data=message, idTarget=idTarget)
                 msg.save()
 
-                strMessage = str({"message" : message, "username" : user.username, "pp" : "",
+                pp = "./media/" + str(user.profilPicture)
+
+                message = message.replace("'", " ")
+                message = message.replace('"', '')
+                strMessage = str({"message" : message, "username" : user.username, "pp" : pp,
                                 "date" : str(date), "channel" : str(idTarget)})
-                strMessageTarget = str({"message" : message, "username" : user.username, "pp" : "",
+                strMessageTarget = str({"message" : message, "username" : user.username, "pp" : pp,
                                 "date" : str(date), "channel" : str(myid)})
                 strMessage = strMessage.replace("'", '"')
                 strMessageTarget = strMessageTarget.replace("'", '"')

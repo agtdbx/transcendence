@@ -1,0 +1,103 @@
+let chatSocket = null;
+let channelTarget = null;
+let lastMessagesLoad = -1;
+let chatElement;
+let chatScrollAtBottom = true;
+
+function getToken()
+{
+	let cookies = document.cookie.split("; ");
+
+	let i = 0;
+	while (i < cookies.length)
+	{
+		let key = cookies[i].substring(0, 5);
+		if (key == "token")
+			return cookies[i].substring(6);
+		i++;
+	}
+	return null;
+}
+
+
+function enableChatConnection()
+{
+	const token = getToken();
+
+	if (token == null)
+	{
+		console.log("Nope bro");
+		return ;
+	}
+
+	if (chatSocket != null)
+	{
+		console.log("Close last co bro");
+		endChatConnection();
+	}
+
+	console.log("Create ChatSocket");
+	chatSocket = new WebSocket("ws://" + window.location.hostname + ":8765");
+
+	chatSocket.onopen = function(e)
+	{
+		chatSocket.send(JSON.stringify({
+			'whoiam': token
+		}));
+	}
+
+	chatSocket.onmessage = onRecieveMessage;
+}
+
+
+function endChatConnection()
+{
+	if (chatSocket != null)
+	{
+		chatSocket.onclose = {};
+		chatSocket.close();
+		chatSocket = null;
+		console.log("Close chat socket");
+	}
+}
+
+
+function getChatElement()
+{
+	let chat = document.getElementById("main-page-chat-write");
+
+	if (chat == null)
+		chat = document.getElementById("createGameChat");
+	if (chat == null)
+		chat = document.getElementById("tournamentrect1");
+	if (chat == null)
+		chat = document.getElementById("wait-page-chat-write");
+	if (chat == null)
+		return ;
+	return chat;
+}
+
+
+function setChannelTarget(channel)
+{
+	if (channel == null)
+	{
+		lastMessagesLoad = null;
+		chatElement = null;
+	}
+	else
+	{
+		lastMessagesLoad = -1;
+		chatElement = getChatElement();
+		chatScrollAtBottom = true;
+		getMessageInDB();
+		chatElement.onscroll = function() {
+			chatScrollAtBottom = false;
+			if (chatElement.offsetHeight + chatElement.scrollTop >= chatElement.scrollHeight)
+				chatScrollAtBottom = true;
+			else if (chatElement.scrollTop == 0)
+				getMessageInDB();
+		};
+	}
+	channelTarget = channel;
+}

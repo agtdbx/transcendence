@@ -6,7 +6,7 @@
 #    By: aderouba <aderouba@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/08 14:00:09 by lflandri          #+#    #+#              #
-#    Updated: 2024/01/18 17:34:21 by aderouba         ###   ########.fr        #
+#    Updated: 2024/01/18 18:09:07 by aderouba         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -305,7 +305,7 @@ def getMessages(request):
         idUser = int(msg.idUser.idUser)
         users = User.objects.all().filter(idUser=idUser)
         user = users[0]
-        message = [msg.id, user.username, "pp", msg.date, msg.data]
+        message = [msg.id, user.username, "./media/" + str(user.profilPicture), msg.date, msg.data]
         messages.append(message)
     return JsonResponse({"success" : True, "messages" : messages, "lastMessagesLoad" : start})
 
