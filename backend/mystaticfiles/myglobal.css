@@ -1668,3 +1668,26 @@ background-color: rgba(207,188,188,0.5);
 	to {opacity:1 ;}
 	}
 
+#passPopCurrent {
+	color: #ff9c00;
+	-webkit-text-stroke: 1px #fd4c00;
+}
+
+#passPopNew {
+	color: #ff9c00;
+	-webkit-text-stroke: 1px #fd4c00;
+}
+
+#passPopConfirm {
+	color: #ff9c00;
+	-webkit-text-stroke: 1px #fd4c00;
+}
+
+.blur   {
+    filter: blur(5px);
+    -webkit-filter: blur(5px);
+    -moz-filter: blur(5px);
+    -o-filter: blur(5px);
+    -ms-filter: blur(5px);
+}
+

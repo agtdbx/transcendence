@@ -3,14 +3,14 @@
 #                                                         :::      ::::::::    #
 #    views.py                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: aderouba <aderouba@student.42.fr>          +#+  +:+       +#+         #
+#    By: hde-min <hde-min@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/08 14:00:09 by lflandri          #+#    #+#              #
-#    Updated: 2024/01/18 23:43:52 by aderouba         ###   ########.fr        #
+#    Updated: 2024/01/19 17:27:43 by hde-min          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-import hashlib, jwt, sys
+import hashlib, jwt, sys, random, os
 import backend.settings as settings
 
 from django.views.decorators.csrf import csrf_exempt
@@ -41,7 +41,6 @@ def checkLogin(request):
     hash = hashlib.sha512(password.encode(), usedforsecurity=True)
     if hash.hexdigest() != password_check[0].password:
         return JsonResponse({"success" : False, "error" : "Password incorrect"})
-
     token = jwt.encode({"userId": username_check[0].idUser}, settings.SECRET_KEY, algorithm="HS256")
 
     #username_check[0].tokenJWT = token
@@ -73,9 +72,8 @@ def checkSignin(request):
 
     token = jwt.encode({"userId": id}, settings.SECRET_KEY, algorithm="HS256")
     try:
-        #the image are in /backend/media/...
-        #add random for profile picture
-        user = User(idUser=id, idType=idType, username=username, profilPicture="images/default/Scout.png", tokenJWT=token, money=0, idStatus=0)
+        str = ["images/default/Scout.png", "images/default/Driller.png", "images/default/Engineer.png", "images/default/Soldier.png"]
+        user = User(idUser=id, idType=idType, username=username, profilPicture=str[random.randint(0,3)], tokenJWT=token, money=0, idStatus=0)
         user.save()
     except:
         return JsonResponse({"success" : False, "error" : "Error on user creation"})
@@ -88,6 +86,30 @@ def checkSignin(request):
 
     return JsonResponse({"success" : True, "token" : token})
 
+@csrf_exempt
+def changePassword(request):
+    currentPassword = request.POST.get('currentPass')
+    newPassword = request.POST.get('newPass')
+    newPasswordComfirm = request.POST.get('newPassConfirm')
+    check = checkToken(request)
+    userId = check["userId"]
+    user = User.objects.all().filter(idUser=userId)[0]
+        
+    password_check = connectionPassword.objects.all().filter(idUser=user.idUser)[0]
+    hash = hashlib.sha512(currentPassword.encode(), usedforsecurity=True)
+    if hash.hexdigest() != password_check.password:
+        return JsonResponse({"success" : False, "error" : "Wrong account password, please try again !"})
+    if newPassword != newPasswordComfirm:
+        return JsonResponse({"success" : False, "error" : "New password is different from new password confirmation, please try again !"})
+    else:
+        hashPwd = hashlib.sha512(newPassword.encode(), usedforsecurity=True)
+        try:
+            hashPwd = hashlib.sha512(newPassword.encode(), usedforsecurity=True)
+            password_check.password = hashPwd.hexdigest()
+            password_check.save()
+        except:
+            return JsonResponse({"success" : False, "error" : "Somethink very wrong appened, please try again !"})
+    return JsonResponse({"success" : True})
 
 @csrf_exempt
 def checkToken(request):
@@ -267,6 +289,9 @@ def section(request, num):
     elif num == 11:
         form = UserForm(request.POST, request.FILES)
         if form.is_valid():
+            if not "/default/" in user.profilPicture.name:
+                file = "./media/" + user.profilPicture.name
+                os.remove(file)
             data= form.cleaned_data.get("profilPicture")
             user.profilPicture = data
             user.save()
@@ -275,7 +300,7 @@ def section(request, num):
             return render(request, "changeProfilePicture_full.html", {"form":UserForm(request.POST, request.FILES)})
         else:
             return render(request,"changeProfilePicture.html", {"form":UserForm(request.POST, request.FILES)})
-
+        
     else:
         if fullPage:
             return render(request, "index.html")
