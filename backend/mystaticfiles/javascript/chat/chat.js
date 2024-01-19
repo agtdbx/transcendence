@@ -91,6 +91,7 @@ function setChannelTarget(channel)
 	{
 		lastMessagesLoad = -1;
 		chatElement = getChatElement();
+		chatElement.innerHTML = "";
 		chatScrollAtBottom = true;
 		getMessageInDB();
 		chatElement.onscroll = function() {

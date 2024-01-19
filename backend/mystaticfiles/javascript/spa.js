@@ -112,7 +112,7 @@ function getCookieValue(name)
 
 
 function changePage(num, byArrow=false)
-{	
+{
 	try
 	{
 		remove_pop();
@@ -122,7 +122,7 @@ function changePage(num, byArrow=false)
 			document.getElementById("grapheMatch" + id).remove();
 			id++;
 		}
-		
+
 	}
 	catch (error)
 	{
@@ -148,7 +148,7 @@ function changePage(num, byArrow=false)
 
 		// Set the new page in the browser history if the page isn't load by arrow, or not the wait and game page.
 		if (!byArrow && num != 4 && num != 6)
-			history.pushState({section: num}, document.location.hostname, num);
+			history.pushState({section: num}, "", "/" + num);
 	})
 	.catch(error => console.log("CHANGE PAGE ERROR FETCH :", error, '\n'))
 }
