@@ -5,6 +5,7 @@
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
 	<script src="{% static 'javascript/profil/achievement_and_stat.js' %}" ></script>
+	<script src="{% static 'javascript/achievement/request_achievement.js' %}" ></script>
 	<script src="{% static 'javascript/user_relation/contact.js' %}" ></script>
 	<script src="{% static 'javascript/user_relation/relation_request.js' %}" ></script>
 	<script src="{% static 'javascript/spa.js' %}" ></script>
@@ -12,7 +13,14 @@
 	<script src="{% static 'javascript/chat/messages.js' %}" ></script>
 	<script src="{% static 'javascript/chat/communication.js' %}" ></script>
 	<script src="{% static 'javascript/chat/friend.js' %}" ></script>
+	<script src="{% static 'javascript/other/rock_and_stone_sound.js' %}" ></script>
 	<link rel="shortcut icon" type="image/png" href="{% static 'image/favicon.png' %}" >
+	<!--This form is necessary o achievement, don't touch it-->
+	<form id="data-request-achievement">
+		{% csrf_token %}
+		<input type="hidden" name="target" value="" id="input-form-head-target">
+		<input type="hidden" name="achievement" value="" id="input-form-head-achievement">
+	</form>
 
 	<title>PONG</title>
 </head>

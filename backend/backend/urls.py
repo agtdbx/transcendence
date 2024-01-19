@@ -18,6 +18,8 @@ from django.contrib import admin
 from django.urls import path
 from . import views
 from .views import *
+from . import views_achievement
+from .views_achievement import *
 from django.conf.urls.static import static
 
 
@@ -26,10 +28,14 @@ urlpatterns = [
     path("profil/<str:pseudo>", views.otherProfilPage, name="otherProfilPage"),
     path("<int:num>", views.section, name="section"),
     path("getHeader", views.getHeader, name="getHeader"),
-    path("checkLogin", views.checkLogin, name="checkLogin"),
-    path("checkSignin", views.checkSignin, name="checkSignin"),
-    path('gamePage/', views.gamePage, name='gamePage'),                #to remove at the end of project
 
+	path('gamePage/', views.gamePage, name='gamePage'),				#to remove at the end of project
+
+    #User connection
+	path("checkLogin", views.checkLogin, name="checkLogin"),
+    path("checkSignin", views.checkSignin, name="checkSignin"),
+
+	#User relation
     path('addfriends', views.addfriends, name='addfriends'),
     path('removefriends', views.removefriends, name='removefriends'),
     path('block', views.block, name='block'),
@@ -41,6 +47,12 @@ urlpatterns = [
     path('getlistefriend', views.getlistefriend, name='getlistefriend'),
     path('getlisteblocked', views.getlisteblocked, name='getlisteblocked'),
 
+	#User achievement
+	path('getselfachievement', views_achievement.getselfachievement, name='getselfachievement'),
+	path('getotherachievement', views_achievement.getotherachievement, name='getotherachievement'),
+	path('setachievement', views_achievement.setachievement, name='setachievement'),
+
+	#User message
     path("getMessages", views.getMessages, name="getMessages"),
 ]
 

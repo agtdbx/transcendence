@@ -32,7 +32,18 @@ class connection42(models.Model):
 
 class Achivement(models.Model):
     idUser  = models.OneToOneField(User, on_delete=models.PROTECT, primary_key=True)								#[primary key]
-    forKarl = models.BooleanField()
+    winner = models.IntegerField(default=0)    
+    perfectShoot = models.IntegerField(default=0)    
+    boscoFriend = models.IntegerField(default=0)    
+    digGrave = models.IntegerField(default=0)    
+    fallen = models.IntegerField(default=0)    
+    unpredictable = models.IntegerField(default=0)    
+    faster = models.IntegerField(default=0)    
+    waveComming = models.IntegerField(default=0)    
+    notPassed = models.IntegerField(default=0)    
+    friend = models.IntegerField(default=0)    
+    party = models.IntegerField(default=0)    
+    molyBatle = models.IntegerField(default=0)
 
 
 
