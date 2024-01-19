@@ -6,7 +6,7 @@
 /*   By: lflandri <lflandri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/23 15:10:25 by lflandri          #+#    #+#             */
-/*   Updated: 2023/11/29 17:17:10 by lflandri         ###   ########.fr       */
+/*   Updated: 2024/01/19 18:43:59 by lflandri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,6 +109,30 @@ const Match_list =
 		"power_up" : false
 	}
 ];
+
+function hideGraphic(id)
+{
+	if (!popOpened)
+		return ;
+	popOpened = false;
+	document.getElementById("Page").classList.remove("blur");
+	document.getElementById(id).style.display = "none";
+	const body = document.getElementById("body");
+	body.onclick = null;
+	}
+
+function showGraphic(id)
+{
+	if (popOpened)
+		return ;
+	popOpened = true;
+	document.getElementById("Page").classList.add("blur");
+	document.getElementById(id).style.display = "block";
+	setTimeout(function(){
+		const body = document.getElementById("body");
+		body.onclick = function(){ hideGraphic(id) }; //"hideGraphic("+id+")";
+	}, 10);
+}
 
 function createPoints(svgBlock,content, color, list, maxx, maxy)
 {
@@ -238,142 +262,138 @@ createPoints(svgBlock, content, colorj2, list_j2, maxx, maxy);
 
 function  createHistory(listMatch)
 {
-let matchHistory = document.getElementById("match_history");
-for (let index = 0; index < listMatch.length; index++) {
-const match = listMatch[index];
-const scoreP1 = match["player1"]["goalList"].length;
-const scoreP2 = match["player2"]["goalList"].length;
-let matchDiv = document.createElement('tr');
-let playerDiv = document.createElement('td');
-let infoDiv = document.createElement('td');
-let P1content = document.createElement('div');
-let P2content = document.createElement('div');
-let score = document.createElement('h5');
-let result = document.createElement('h4');
-let P1name = document.createElement('h5');
-let P2name = document.createElement('h5');
-let P1img = document.createElement('img');
-let P2img = document.createElement('img');
-let mapType = document.createElement('h5');
-let PowerUpTxt = document.createElement('h5');
-let PowerUpBool = document.createElement('span');
-let graphe = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-let ingraphe = document.createElementNS('http://www.w3.org/2000/svg', 'g');
-matchDiv.style.clear = "both";
-infoDiv.style.width = "18%";
-infoDiv.classList.add("black_grey_div");
-// infoDiv.style.backgroundColor = "rgba(40, 35, 23, 0.75)";
-//infoDiv.style.width = "100%";
-playerDiv.classList.add("black_grey_div");
-// playerDiv.style.backgroundColor = "rgba(40, 35, 23, 0.75)";
-playerDiv.style.textAlign = "center";
-playerDiv.style.width = "80%";
-P1content.style.display = "inline-block";
-P2content.style.display = "inline-block";
-P1content.style.verticalAlign = "middle";
-P2content.style.verticalAlign = "middle";
-P1content.style.width = "38%";
-P2content.style.width = "38%";
-score.textContent = "" + scoreP1 + " VS " + scoreP2;
-score.style.display = "inline-block";
-score.style.width = "20%";
-score.style.color = "white";
-score.style.marginRight = "2%";
-score.style.marginLeft = "2%";
-score.style.textAlign = "center";
-result.style.textAlign = "center";
-if (scoreP1 > scoreP2)
-{
-result.textContent = "WIN";
-result.style.color = "green";
-} 
-else
-{
-result.textContent = "LOSE";
-result.style.color = "red";
-}
-P1name.textContent = match["player1"]["name"];
-P2name.textContent = match["player2"]["name"];
-P1name.style.color = "white";
-P1name.style.width = "75%";
-P1name.style.display = "inline-block";
-P2name.style.display = "inline-block";
-P2name.style.width = "75%";
-P2name.style.color = "white";
-P1name.style.fontSize = "200%";
-P1name.style.marginTop = "0%";
-P1name.style.marginBottom = "0%";
-P1name.style.textAlign = "left"
-P2name.style.fontSize = "200%";
-P2name.style.marginTop = "0%";
-P2name.style.marginBottom = "0%";
-P2name.style.textAlign = "right";
-P1name.style.verticalAlign = "middle";
-P2name.style.verticalAlign = "middle";
-P1img.style.verticalAlign = "middle";
-P2img.style.verticalAlign = "middle";
-P1img.src = match["player1"]["pp"];
-P2img.src = match["player2"]["pp"];
-P1img.style.width = "25%";
-P2img.style.width = "25%";
-P1img.style.display = "inline-block";
-P2img.style.display = "inline-block";
-mapType.textContent = "Map : " + match["map"];
-mapType.style.color = "white";
-mapType.style.padding = "3%";
-PowerUpTxt.style.padding = "3%";
-PowerUpTxt.style.color = "white";
-PowerUpTxt.textContent = "Power Up : ";
-if (match["power_up"])
-{
-PowerUpBool.textContent = "ON";
-PowerUpBool.style.color = "green";
-} 
-else
-{
-PowerUpBool.textContent = "OFF";
-PowerUpBool.style.color = "red";
-}
-matchHistory.insertBefore(matchDiv, null);
-matchDiv.insertBefore(playerDiv, null);
-matchDiv.insertBefore(infoDiv, null);
-playerDiv.insertBefore(result, null);
-playerDiv.insertBefore(P1content, null);
-playerDiv.insertBefore(score, null);
-playerDiv.insertBefore(P2content, null);
-P1content.insertBefore(P1img, null);
-P1content.insertBefore(P1name, null);
-P2content.insertBefore(P2name, null);
-P2content.insertBefore(P2img, null);
-infoDiv.insertBefore(mapType, null);
-infoDiv.insertBefore(PowerUpTxt, null);
-PowerUpTxt.insertBefore(PowerUpBool, null);
+	let matchHistory = document.getElementById("match_history");
+	for (let index = 0; index < listMatch.length; index++) {
+		const match = listMatch[index];
+		const scoreP1 = match["player1"]["goalList"].length;
+		const scoreP2 = match["player2"]["goalList"].length;
+		let matchDiv = document.createElement('tr');
+		let playerDiv = document.createElement('td');
+		let infoDiv = document.createElement('td');
+		let P1content = document.createElement('div');
+		let P2content = document.createElement('div');
+		let score = document.createElement('h5');
+		let result = document.createElement('h4');
+		let P1name = document.createElement('h5');
+		let P2name = document.createElement('h5');
+		let P1img = document.createElement('img');
+		let P2img = document.createElement('img');
+		let mapType = document.createElement('h5');
+		let PowerUpTxt = document.createElement('h5');
+		let PowerUpBool = document.createElement('span');
+		let graphe = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+		let ingraphe = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+		matchDiv.style.clear = "both";
+		infoDiv.style.width = "18%";
+		infoDiv.classList.add("black_grey_div");
+		// infoDiv.style.backgroundColor = "rgba(40, 35, 23, 0.75)";
+		//infoDiv.style.width = "100%";
+		playerDiv.classList.add("black_grey_div");
+		// playerDiv.style.backgroundColor = "rgba(40, 35, 23, 0.75)";
+		playerDiv.style.textAlign = "center";
+		playerDiv.style.width = "80%";
+		P1content.style.display = "inline-block";
+		P2content.style.display = "inline-block";
+		P1content.style.verticalAlign = "middle";
+		P2content.style.verticalAlign = "middle";
+		P1content.style.width = "38%";
+		P2content.style.width = "38%";
+		score.textContent = "" + scoreP1 + " VS " + scoreP2;
+		score.style.display = "inline-block";
+		score.style.width = "20%";
+		score.style.color = "white";
+		score.style.marginRight = "2%";
+		score.style.marginLeft = "2%";
+		score.style.textAlign = "center";
+		result.style.textAlign = "center";
+		if (scoreP1 > scoreP2)
+		{
+			result.textContent = "WIN";
+			result.style.color = "green";
+		} 
+		else
+		{
+			result.textContent = "LOSE";
+			result.style.color = "red";
+		}
+		P1name.textContent = match["player1"]["name"];
+		P2name.textContent = match["player2"]["name"];
+		P1name.style.color = "white";
+		P1name.style.width = "75%";
+		P1name.style.display = "inline-block";
+		P2name.style.display = "inline-block";
+		P2name.style.width = "75%";
+		P2name.style.color = "white";
+		P1name.style.fontSize = "200%";
+		P1name.style.marginTop = "0%";
+		P1name.style.marginBottom = "0%";
+		P1name.style.textAlign = "left"
+		P2name.style.fontSize = "200%";
+		P2name.style.marginTop = "0%";
+		P2name.style.marginBottom = "0%";
+		P2name.style.textAlign = "right";
+		P1name.style.verticalAlign = "middle";
+		P2name.style.verticalAlign = "middle";
+		P1img.style.verticalAlign = "middle";
+		P2img.style.verticalAlign = "middle";
+		P1img.src = match["player1"]["pp"];
+		P2img.src = match["player2"]["pp"];
+		P1img.style.width = "25%";
+		P2img.style.width = "25%";
+		P1img.style.display = "inline-block";
+		P2img.style.display = "inline-block";
+		mapType.textContent = "Map : " + match["map"];
+		mapType.style.color = "white";
+		mapType.style.padding = "3%";
+		PowerUpTxt.style.padding = "3%";
+		PowerUpTxt.style.color = "white";
+		PowerUpTxt.textContent = "Power Up : ";
+		if (match["power_up"])
+		{
+			PowerUpBool.textContent = "ON";
+			PowerUpBool.style.color = "green";
+		} 
+		else
+		{
+			PowerUpBool.textContent = "OFF";
+			PowerUpBool.style.color = "red";
+		}
+		matchHistory.insertBefore(matchDiv, null);
+		matchDiv.insertBefore(playerDiv, null);
+		matchDiv.insertBefore(infoDiv, null);
+		playerDiv.insertBefore(result, null);
+		playerDiv.insertBefore(P1content, null);
+		playerDiv.insertBefore(score, null);
+		playerDiv.insertBefore(P2content, null);
+		P1content.insertBefore(P1img, null);
+		P1content.insertBefore(P1name, null);
+		P2content.insertBefore(P2name, null);
+		P2content.insertBefore(P2img, null);
+		infoDiv.insertBefore(mapType, null);
+		infoDiv.insertBefore(PowerUpTxt, null);
+		PowerUpTxt.insertBefore(PowerUpBool, null);
 
-graphe.setAttribute("viewBox", "0, 0, 800, 300");
-graphe.style.borderLeft = "solid black 1px";
-graphe.style.borderBottom = "solid black 1px";
-graphe.style.position = "absolute";
-graphe.style.left = "25%";
-graphe.style.top = "20px";
-graphe.style.width = "50%";
-graphe.style.backgroundColor = "rgba(40, 35, 23, 0.75)";
-graphe.classList.add("goalGraph")
-matchDiv.insertBefore(graphe, null);
-ingraphe.style.fill = "none";
-ingraphe.strokeWidth = "4px";
-graphe.insertBefore(ingraphe, null);
-createGraphic(graphe, ingraphe, "#FF00FF", "#00FF00", match["player1"]["goalList"], match["player2"]["goalList"]);
-
-
-
-
-
-
-
-
-
-
-}
+		graphe.setAttribute("viewBox", "0, 0, 800, 300");
+		graphe.style.borderLeft = "solid black 1px";
+		graphe.style.borderBottom = "solid black 1px";
+		graphe.style.position = "absolute";
+		graphe.style.left = "25%";
+		graphe.style.top = "200px";
+		graphe.style.width = "50%";
+		graphe.style.backgroundColor = "rgba(40, 35, 23, 0.75)";
+		//graphe.classList.add("goalGraph")
+		graphe.id = "grapheMatch" + index
+		document.getElementById("body").insertBefore(graphe, null);
+		// matchDiv.insertBefore(graphe, null);
+		ingraphe.style.fill = "none";
+		graphe.style.display = "none";
+		ingraphe.strokeWidth = "4px";
+		graphe.insertBefore(ingraphe, null);
+		// graphe.style.filter = "blur(0px)";
+		// graphe.style.webkitFilter = "blur(0px)";
+		matchDiv.onclick = function(){ showGraphic(graphe.id) } ;
+		createGraphic(graphe, ingraphe, "#FF00FF", "#00FF00", match["player1"]["goalList"], match["player2"]["goalList"]);
+	}
 
 }
 createHistory(Match_list);

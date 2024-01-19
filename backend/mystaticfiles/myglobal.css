@@ -1606,15 +1606,15 @@ background-color: rgba(207,188,188,0.5);
 	opacity: 1;
 	}
 
-	tr .goalGraph {
+	/* tr .goalGraph {
 		display: none;
 	}
 	tr:hover .goalGraph {
 		display: block;
 	}
 	tr .goalGraph:hover {
-		display: block;
-	}
+		display: block; 
+	}*/
 /* Popup container */
 .popup {
 	position: relative;
@@ -1685,9 +1685,9 @@ background-color: rgba(207,188,188,0.5);
 
 .blur   {
     filter: blur(5px);
-    -webkit-filter: blur(5px);
+    /* -webkit-filter: blur(5px);
     -moz-filter: blur(5px);
     -o-filter: blur(5px);
-    -ms-filter: blur(5px);
+    -ms-filter: blur(5px); */
 }
 

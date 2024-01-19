@@ -115,7 +115,14 @@ function changePage(num, byArrow=false)
 {	
 	try
 	{
-		remove_pop()
+		remove_pop();
+		let id = 0;
+		while (document.getElementById("grapheMatch" + id))
+		{
+			document.getElementById("grapheMatch" + id).remove();
+			id++;
+		}
+		
 	}
 	catch (error)
 	{
