@@ -28,6 +28,7 @@ urlpatterns = [
 
     path("checkLogin", views.checkLogin, name="checkLogin"),
     path("checkSignin", views.checkSignin, name="checkSignin"),
+    path("changePassword", views.changePassword, name="changePassword"),
     path('gamePage/', views.gamePage, name='gamePage'),
 
     path("sendMessage", views.sendMessage, name="sendMessage"),

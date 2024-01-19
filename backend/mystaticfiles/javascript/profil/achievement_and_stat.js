@@ -3,17 +3,23 @@
 /*                                                        :::      ::::::::   */
 /*   achievement_and_stat.js                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lflandri <lflandri@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hde-min <hde-min@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/23 15:24:40 by lflandri          #+#    #+#             */
-/*   Updated: 2023/12/07 14:48:20 by lflandri         ###   ########.fr       */
+/*   Updated: 2024/01/19 16:11:23 by hde-min          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 //TODO connection to db
 
+var popOpened = false;
+
 function remove_pop()
 {
+	if (!popOpened)
+		return ;
+	popOpened = false;
+	document.getElementById("Page").classList.remove("blur");
 	const popup = document.getElementById("containerContentSuccesBlock");
 	console.log("popup : ");
 	console.log(popup);
@@ -267,9 +273,56 @@ function createStats()
 	}
 }
 
+function createPass()
+{
+	console.log("create success panel");
+	const body = document.getElementById("body");
+	const containerContentSuccesBlock = document.createElement("div");
+	const contentSuccesBlock = document.createElement("div");
+	const succesBlock = document.createElement("div");
+	const gameDiv = document.getElementById("content");
+	body.insertBefore(containerContentSuccesBlock, gameDiv);
+	containerContentSuccesBlock.insertBefore(contentSuccesBlock, null);
+	contentSuccesBlock.insertBefore(succesBlock, null);
+	containerContentSuccesBlock.id = "containerContentSuccesBlock";
+	containerContentSuccesBlock.style.position = "absolute";
+	containerContentSuccesBlock.style.width = window.innerWidth;
+	containerContentSuccesBlock.style.width = "100%";
+	contentSuccesBlock.classList.add("container");
+	contentSuccesBlock.id = "contentSuccessBlock";
+	contentSuccesBlock.style.margin = "auto";
+	succesBlock.id = "successBlock";
+	succesBlock.style.margin = "auto";
+	succesBlock.style.backgroundColor = "rgba(40, 35, 23, 1)" ;
+	succesBlock.classList.add("row");
+	succesBlock.style.borderCollapse = "separate";
+	succesBlock.style.textAlign = "center";
+	succesBlock.style.padding = "4%"
+	succesBlock.style.width = "70%";
+	containerContentSuccesBlock.style.zIndex = "1000";
+	succesBlock.innerHTML = '<form id="form_newPass" method="post">\
+	<p id="passPopCurrent">Current password <input type="password" id="currentPass" name="currentPass" required></p><br>\
+	<p id="passPopNew">New password <input type="password" id="newPass" name="newPass" required></p><br>\
+	<p id="passPopConfirm">Confirm new password <input type="password" id="newPassConfirm" name="newPassConfirm" required></p><br>\
+	<button type="submit" class ="btn-drg" id="btnNewPass">Change Password</button>\
+	</form><br><br><br><br><br><br><br><br><br><br><br>\
+	<button class ="btn-drg" style="width:15%; margin:auto;" id="btnQuitPop" onclick="remove_pop()">Go Back</button>';
+	const form = document.getElementById('form_newPass');
+					form.addEventListener('submit', async event => {
+					event.preventDefault();
+
+					const data = new FormData(form);
+					changePassword(data)
+				});
+}
+
 function createpup(type)
 {
 	//remove_pop();
+	if (popOpened)
+		return ;
+	popOpened = true;
+	document.getElementById("Page").classList.add("blur");
 	if (type === "sucess")
 	{
 		createSuccess()
@@ -278,9 +331,14 @@ function createpup(type)
 	{
 		createStats()
 	}
+	if (type === "pass")
+	{
+		createPass()
+		return
+	}
 	setTimeout(function(){
 		const body = document.getElementById("body");
 		body.onclick = remove_pop;
-	}, 500);
+	}, 10);
 }
   

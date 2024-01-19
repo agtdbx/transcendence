@@ -94,7 +94,16 @@ function getCookieValue(name)
 
 
 function changePage(num, byArrow=false)
-{
+{	
+	try
+	{
+		remove_pop()
+	}
+	catch (error)
+	{
+		console.error(error)
+	}
+
 	fetch(`${num}`,
 	{
 		method: 'POST',
@@ -171,6 +180,28 @@ function checkLogin(data)
 			enableChatConnection();
 
 			changePage("3");
+		})
+		.catch(error => console.log("checkSignin error :", error))
+	}
+
+	function changePassword(data)
+	{
+		fetch("changePassword",
+		{
+			method: 'POST',
+			body: data,
+			cache: "default"
+		})
+		.then(response => response.json())
+		.then(jsonData => {
+
+			if (jsonData["success"] != true)
+			{
+				alert(jsonData["error"]);
+				return ;
+			}
+			alert("Success in changing your password")
+			remove_pop()
 		})
 		.catch(error => console.log("checkSignin error :", error))
 	}

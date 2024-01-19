@@ -6,7 +6,7 @@
 #    By: hde-min <hde-min@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/08 14:00:09 by lflandri          #+#    #+#              #
-#    Updated: 2024/01/17 15:56:29 by hde-min          ###   ########.fr        #
+#    Updated: 2024/01/19 16:12:36 by hde-min          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,9 +20,7 @@ from django.shortcuts import render
 from db_test.models import User, Status, connectionPassword, Message
 import datetime
 
-from .forms import UserForm, PasswordForm
-
-from django.contrib import messages
+from .forms import UserForm
 
 # **************************************************************************** #
 #                                Check Functions                               #
@@ -94,6 +92,30 @@ def checkSignin(request):
 
     return JsonResponse({"success" : True, "token" : token})
 
+@csrf_exempt
+def changePassword(request):
+    currentPassword = request.POST.get('currentPass')
+    newPassword = request.POST.get('newPass')
+    newPasswordComfirm = request.POST.get('newPassConfirm')
+    check = checkToken(request)
+    userId = check["userId"]
+    user = User.objects.all().filter(idUser=userId)[0]
+        
+    password_check = connectionPassword.objects.all().filter(idUser=user.idUser)[0]
+    hash = hashlib.sha512(currentPassword.encode(), usedforsecurity=True)
+    if hash.hexdigest() != password_check.password:
+        return JsonResponse({"success" : False, "error" : "Wrong account password, please try again !"})
+    if newPassword != newPasswordComfirm:
+        return JsonResponse({"success" : False, "error" : "New password is different from new password confirmation, please try again !"})
+    else:
+        hashPwd = hashlib.sha512(newPassword.encode(), usedforsecurity=True)
+        try:
+            hashPwd = hashlib.sha512(newPassword.encode(), usedforsecurity=True)
+            password_check.password = hashPwd.hexdigest()
+            password_check.save()
+        except:
+            return JsonResponse({"success" : False, "error" : "Somethink very wrong appened, please try again !"})
+    return JsonResponse({"success" : True})
 
 @csrf_exempt
 def checkToken(request):
@@ -237,7 +259,7 @@ def section(request, num):
         form = UserForm(request.POST, request.FILES)
         if form.is_valid():
             if not "/default/" in user.profilPicture.name:
-                file = "./media/" + user.profilPicture.name
+                file = "/media/" + user.profilPicture.name
                 os.remove(file)
             data= form.cleaned_data.get("profilPicture")
             user.profilPicture = data
@@ -247,38 +269,7 @@ def section(request, num):
             return render(request, "changeProfilePicture_full.html", {"form":UserForm(request.POST, request.FILES)})
         else:
             return render(request,"changeProfilePicture.html", {"form":UserForm(request.POST, request.FILES)})
-
-    elif num == 12:
-        form = PasswordForm(request.POST, request.FILES)
-        if form.is_valid():
-            oldPassword = form.cleaned_data.get("currentPassword")
-            newPassword = form.cleaned_data.get("newPassword")
-            confirmNewPassword = form.cleaned_data.get("confirmNewPassword")
-            
-            
-            password_check = connectionPassword.objects.all().filter(idUser=user.idUser)[0]
-            hash = hashlib.sha512(oldPassword.encode(), usedforsecurity=True)
-            if hash.hexdigest() != password_check.password:
-                messages.info(request, "Wrong account password, please try again !")
-                return render(request, "toChangePassword.html")
-            if newPassword != confirmNewPassword:
-                messages.info(request, "New password is different from new password confirmation, please try again !")
-                return render(request, "toChangePassword.html")
-            else:
-                hashPwd = hashlib.sha512(newPassword.encode(), usedforsecurity=True)
-                try:
-                    hashPwd = hashlib.sha512(newPassword.encode(), usedforsecurity=True)
-                    password_check.password = hashPwd.hexdigest()
-                    password_check.save()
-                except:
-                    messages.info(request, "Somethink very wrong appened, please try again !")
-                    return render(request, "toChangePassword.html")
-            return render(request, "toProfile.html")
-        if fullPage:
-            return render(request, "changePassword_full.html", {"form":PasswordForm(request.POST, request.FILES)})
-        else:
-            return render(request,"changePassword.html", {"form":PasswordForm(request.POST, request.FILES)})
-
+        
     else:
         if fullPage:
             return render(request, "index.html")
