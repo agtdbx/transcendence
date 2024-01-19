@@ -6,7 +6,7 @@
 /*   By: lflandri <lflandri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/23 15:27:08 by lflandri          #+#    #+#             */
-/*   Updated: 2024/01/17 14:05:08 by lflandri         ###   ########.fr       */
+/*   Updated: 2024/01/19 17:48:58 by lflandri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,39 +128,44 @@ function contactPop(type, listContact)
 
 function ContactList(type)
 {
-		const form = document.getElementById('data-request-relation');
-		const data = new FormData(form);
-		url = "https://" + window.location.hostname + ":4200/getlisteblocked"
-		if (type === "friends")
-		{
-			url = "https://" + window.location.hostname + ":4200/getlistefriend"	
-		}
-		
-		fetch(url,
-		{
-			method: 'POST',
-			body: data,
-			cache: "default"
-		})
-				.then(response => response.json())
-				.then (jsonData => {
-					console.log("received from getlistecontact : ")
-					console.log(jsonData)
-					if (! jsonData["success"])
-					{
-						console.error(jsonData["content"])
-						return ;
-					}
-					contactPop(type, jsonData["listcontact"])
-					setTimeout(function(){
-						const body = document.getElementById("body");
-						body.onclick = removeContactPop;
-					}, 500);
-				})
-				.catch(error => {
-					console.log("erreur from getlistecontact : ")
-					console.error(error)
-				})
+	if (popOpened)
+		return ;
+	const form = document.getElementById('data-request-relation');
+	const data = new FormData(form);
+	url = "https://" + window.location.hostname + ":4200/getlisteblocked"
+	if (type === "friends")
+	{
+		url = "https://" + window.location.hostname + ":4200/getlistefriend"	
+	}
+	
+	fetch(url,
+	{
+		method: 'POST',
+		body: data,
+		cache: "default"
+	})
+			.then(response => response.json())
+			.then (jsonData => {
+				console.log("received from getlistecontact : ")
+				console.log(jsonData)
+				if (! jsonData["success"])
+				{
+					console.error(jsonData["content"])
+					return ;
+				}
+
+				popOpened = true;
+				document.getElementById("Page").classList.add("blur");
+				contactPop(type, jsonData["listcontact"])
+				setTimeout(function(){
+					const body = document.getElementById("body");
+					body.onclick = remove_pop; //removeContactPop
+				}, 10);
+			})
+			.catch(error => {
+				console.log("erreur from getlistecontact : ")
+				console.error(error)
+			})
 
 }
 

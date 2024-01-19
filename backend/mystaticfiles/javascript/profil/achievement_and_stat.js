@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   achievement_and_stat.js                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hde-min <hde-min@student.42.fr>            +#+  +:+       +#+        */
+/*   By: lflandri <lflandri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/23 15:24:40 by lflandri          #+#    #+#             */
-/*   Updated: 2024/01/19 17:21:58 by hde-min          ###   ########.fr       */
+/*   Updated: 2024/01/19 17:40:06 by lflandri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -241,6 +241,10 @@ function createStats()
 
 function createpupself(type)
 {
+	if (popOpened)
+		return ;
+	popOpened = true;
+	document.getElementById("Page").classList.add("blur");
 	//remove_pop();
 	if (type === "sucess")
 	{
@@ -275,7 +279,7 @@ function createpupself(type)
 	setTimeout(function(){
 		const body = document.getElementById("body");
 		body.onclick = remove_pop;
-	}, 500);
+	}, 10);
 }
 
 function createPass()
