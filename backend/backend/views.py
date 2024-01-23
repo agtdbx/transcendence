@@ -3,21 +3,23 @@
 #                                                         :::      ::::::::    #
 #    views.py                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: hde-min <hde-min@student.42.fr>            +#+  +:+       +#+         #
+#    By: lflandri <lflandri@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/08 14:00:09 by lflandri          #+#    #+#              #
-#    Updated: 2024/01/19 17:27:43 by hde-min          ###   ########.fr        #
+#    Updated: 2024/01/23 19:50:11 by lflandri         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 import hashlib, jwt, sys, random, os
 import backend.settings as settings
 
+import requests
+
 from django.views.decorators.csrf import csrf_exempt
 from django.http import Http404, HttpResponse, JsonResponse
 from django.shortcuts import render
 
-from db_test.models import User, connectionPassword, Message, PrivMessage, Link
+from db_test.models import User, connectionPassword, Message, PrivMessage, Link, connection42
 import datetime
 
 from .forms import UserForm
@@ -25,6 +27,65 @@ from .forms import UserForm
 # **************************************************************************** #
 #                                Check Functions                               #
 # **************************************************************************** #
+
+
+def checkApi42Request(request):
+    code = request.GET.get('code')
+	# First request : get an users tocken
+    params = \
+    {
+        "grant_type": "authorization_code",
+		"client_id": "u-s4t2ud-1b900294f4f0042d646cdbafdf98a5fe9216f3efd76b592e56b7ae3a18a43bd1",
+		"client_secret": "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",
+		"code": code,
+		"redirect_uri": "https://localhost:4200/3",
+		
+    }
+    response = requests.post("https://api.intra.42.fr/oauth/token", params=params)
+    if response.status_code != 200:
+        return render(request, "login_full.html")
+    response = response.json()
+    tocken = response["access_token"]
+    headers= {'Authorization': 'Bearer {}'.format(tocken)}
+    response = requests.get("https://api.intra.42.fr/v2/me", headers=headers)
+    if response.status_code != 200:
+        return render(request, "signin_full.html")
+    response = response.json()
+    test = connection42.objects.all().filter(login=response["id"])
+	#not already log
+    if len(test) == 0:
+        id = User.objects.all().count() + 1
+        idType = 1
+
+        token = jwt.encode({"userId": id}, settings.SECRET_KEY, algorithm="HS256")
+        username = response["login"]
+        number = 0
+        while User.objects.all().filter(username=username):
+            username = response["login"] + str(number)
+            number+=1
+            if number > 99 :
+                response["login"] = ""
+        try:
+            str = ["images/default/Scout.png", "images/default/Driller.png", "images/default/Engineer.png", "images/default/Soldier.png"]
+            user = User(idUser=id, idType=idType, username=username, profilPicture=str[random.randint(0,3)], tokenJWT=token, money=0, idStatus=0)
+            user.save()
+            password42 = connection42(login=response["id"], idUser=user)
+            password42.save()
+        except:
+            return render(request, "login_full.html")
+        return render(request, "mainpage_full_tocken42.html", {'user': user})
+	#not already log
+    else :
+        # try:
+        user = User.objects.all().filter(connection42=test[0])[0]
+        # except:
+            # return render(request, "login_full.html")
+        return render(request, "mainpage_full_tocken42.html", {'user': user})
+
+
+    return JsonResponse({"request": response.text, "tocken": tocken, "header": headers})
+    #render(request, "mainpage_full.html")
+
 @csrf_exempt
 def checkLogin(request):
     username = request.POST.get('login')
@@ -225,6 +286,11 @@ def section(request, num):
             return render(request, "login_full.html")
         else:
             return render(request, "login.html")
+
+    #conecting with 42 api
+    elif num == 3 and fullPage and request.GET.get('code', None) != None:
+        return checkApi42Request(request)
+
 
     # Check token
     check = checkToken(request)

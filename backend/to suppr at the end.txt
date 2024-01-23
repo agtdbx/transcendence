@@ -1,0 +1,23 @@
+step 1
+got to : 
+https://api.intra.42.fr/oauth/authorize?client_id=u-s4t2ud-1b900294f4f0042d646cdbafdf98a5fe9216f3efd76b592e56b7ae3a18a43bd1&redirect_uri=https%3A%2F%2Flocalhost%3A4200%2F3&response_type=code
+
+step 2
+curl -F grant_type="authorization_code" \
+-F client_id=u-s4t2ud-1b900294f4f0042d646cdbafdf98a5fe9216f3efd76b592e56b7ae3a18a43bd1 \
+-F client_secret=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 \
+-F code= CODE received at step 1 \
+-F redirect_uri=https://localhost:4200/3 \
+-X POST https://api.intra.42.fr/oauth/token
+
+receive something like :
+
+{"access_token":"2c1371f817c9800fc5d1dd4b9e9be26f2498d47b18c13de064f14f05f926537b","token_type":"bearer","expires_in":6329,"refresh_token":"dee187e71bac13c4e93826145bf35e1e3c785c718a16c27bb0fc42e53dfed18d","scope":"public","created_at":1706018283,"secret_valid_until":1708436951}
+
+
+step 3
+
+curl -H "Authorization: Bearer YOUR_ACCESS_TOKEN" https://api.intra.42.fr/v2/me
+
+curl -H "Authorization: Bearer 2c1371f817c9800fc5d1dd4b9e9be26f2498d47b18c13de064f14f05f926537b" https://api.intra.42.fr/v2/me
+
