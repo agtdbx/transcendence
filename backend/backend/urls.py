@@ -21,6 +21,7 @@ from . import views_connection
 from . import views_message
 from . import views_user_relation
 from . import views_achievement
+from . import api
 from .views_achievement import *
 from django.conf.urls.static import static
 
@@ -57,6 +58,9 @@ urlpatterns = [
 
 	#User message
     path("getMessages", views_message.getMessages, name="getMessages"),
+
+    # API
+    path('gameAPI', api.gameAPI, name="gameAPI"),
 ]
 
 if settings.DEBUG:
