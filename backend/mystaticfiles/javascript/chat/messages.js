@@ -2,7 +2,7 @@ function createMessage(message, username, pp, date)
 {
 	let messageDiv = document.createElement('tr');
 	let nameCase = document.createElement('td');
-	let nameTXT = document.createElement('h5');
+	let nameTXT = document.createElement('p');
 	let dateTXT = document.createElement('p');
 	let imgCase = document.createElement('td');
 	let img = document.createElement('img');

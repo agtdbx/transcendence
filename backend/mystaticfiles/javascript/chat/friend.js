@@ -26,26 +26,36 @@ function selectChannel(channel)
 	{
 		let elem = friendElement.children[i];
 
-		elem.classList = "channel-unactive";
+		elem.classList = "channel channel-unactive";
 	}
 
-	document.getElementById("channel-" + channel).classList = "channel-active";
+	document.getElementById("channel-" + channel).classList = "channel channel-active";
 	setChannelTarget(channel);
 }
 
 
 function addChannelFriend(friendElement, friend)
 {
-	let button = document.createElement("button");
+	let status = document.createElement("span");
+	if (friend["status"] == 0)
+		status.className = "status status-offline";
+	else if (friend["status"] == 1)
+		status.className = "status status-online";
 
-	button.textContent = friend["name"];
-	button.classList = "channel-unactive";
-	button.id = "channel-" + friend["id"];
-	button.onclick = function () {
+	let username = document.createElement("p");
+	username.textContent = friend["name"];
+
+	let friendDiv = document.createElement("div");
+	friendDiv.classList = "channel channel-unactive";
+	friendDiv.id = "channel-" + friend["id"];
+	friendDiv.onclick = function () {
 		selectChannel(friend["id"]);
 	};
 
-	friendElement.appendChild(button);
+	friendDiv.appendChild(status);
+	friendDiv.appendChild(username);
+
+	friendElement.appendChild(friendDiv);
 }
 
 
