@@ -17,7 +17,9 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from . import views
-from .views import *
+from . import views_connection
+from . import views_message
+from . import views_user_relation
 from . import views_achievement
 from .views_achievement import *
 from django.conf.urls.static import static
@@ -32,21 +34,21 @@ urlpatterns = [
 	path('gamePage/', views.gamePage, name='gamePage'),				#to remove at the end of project
 
     #User connection
-	path("checkLogin", views.checkLogin, name="checkLogin"),
-    path("checkSignin", views.checkSignin, name="checkSignin"),
-    path("changePassword", views.changePassword, name="changePassword"),
+	path("checkLogin", views_connection.checkLogin, name="checkLogin"),
+    path("checkSignin", views_connection.checkSignin, name="checkSignin"),
+    path("changePassword", views_connection.changePassword, name="changePassword"),
 
 	#User relation
-    path('addfriends', views.addfriends, name='addfriends'),
-    path('removefriends', views.removefriends, name='removefriends'),
-    path('block', views.block, name='block'),
-    path('unblock', views.unblock, name='unblock'),
-    path('acceptfriends', views.acceptfriends, name='acceptfriends'),
-    path('refusefriends', views.refusefriends, name='refusefriends'),
-    path('getrelation', views.getrelation, name='getrelation'),
-    path('getlistefriendrequest', views.getlistefriendrequest, name='getlistefriendrequest'),
-    path('getlistefriend', views.getlistefriend, name='getlistefriend'),
-    path('getlisteblocked', views.getlisteblocked, name='getlisteblocked'),
+    path('addfriends', views_user_relation.addfriends, name='addfriends'),
+    path('removefriends', views_user_relation.removefriends, name='removefriends'),
+    path('block', views_user_relation.block, name='block'),
+    path('unblock', views_user_relation.unblock, name='unblock'),
+    path('acceptfriends', views_user_relation.acceptfriends, name='acceptfriends'),
+    path('refusefriends', views_user_relation.refusefriends, name='refusefriends'),
+    path('getrelation', views_user_relation.getrelation, name='getrelation'),
+    path('getlistefriendrequest', views_user_relation.getlistefriendrequest, name='getlistefriendrequest'),
+    path('getlistefriend', views_user_relation.getlistefriend, name='getlistefriend'),
+    path('getlisteblocked', views_user_relation.getlisteblocked, name='getlisteblocked'),
 
 	#User achievement
 	path('getselfachievement', views_achievement.getselfachievement, name='getselfachievement'),
@@ -54,7 +56,7 @@ urlpatterns = [
 	path('setachievement', views_achievement.setachievement, name='setachievement'),
 
 	#User message
-    path("getMessages", views.getMessages, name="getMessages"),
+    path("getMessages", views_message.getMessages, name="getMessages"),
 ]
 
 if settings.DEBUG:
