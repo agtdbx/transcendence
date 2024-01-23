@@ -55,6 +55,10 @@ urlpatterns = [
 
 	#User message
     path("getMessages", views.getMessages, name="getMessages"),
+    
+    #User 42 connection
+	path('checkislinked', views_achievement.checkislinked, name='checkislinked'),
+	path('removelink', views_achievement.removelink, name='removelink'),    
 ]
 
 if settings.DEBUG:

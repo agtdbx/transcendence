@@ -6,7 +6,7 @@
 #    By: lflandri <lflandri@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/08 14:00:09 by lflandri          #+#    #+#              #
-#    Updated: 2024/01/23 19:50:11 by lflandri         ###   ########.fr        #
+#    Updated: 2024/01/23 19:58:31 by lflandri         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -36,7 +36,7 @@ def checkApi42Request(request):
     {
         "grant_type": "authorization_code",
 		"client_id": "u-s4t2ud-1b900294f4f0042d646cdbafdf98a5fe9216f3efd76b592e56b7ae3a18a43bd1",
-		"client_secret": "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",
+		"client_secret": os.getenv('API_KEY'),
 		"code": code,
 		"redirect_uri": "https://localhost:4200/3",
 		
@@ -75,16 +75,12 @@ def checkApi42Request(request):
             return render(request, "login_full.html")
         return render(request, "mainpage_full_tocken42.html", {'user': user})
 	#not already log
-    else :
-        # try:
-        user = User.objects.all().filter(connection42=test[0])[0]
-        # except:
-            # return render(request, "login_full.html")
+    else:
+        try:
+            user = User.objects.all().filter(connection42=test[0])[0]
+        except:
+            return render(request, "login_full.html")
         return render(request, "mainpage_full_tocken42.html", {'user': user})
-
-
-    return JsonResponse({"request": response.text, "tocken": tocken, "header": headers})
-    #render(request, "mainpage_full.html")
 
 @csrf_exempt
 def checkLogin(request):
