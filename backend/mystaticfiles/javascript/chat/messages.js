@@ -30,8 +30,9 @@ function createMessage(message, username, pp, date)
 	imgCase.onclick = function (){
 		changePage("profil/" + username);
 	}
-	// img.style.width = "100%";
-	img.style.width = "50px";
+	img.style.width = "3em";
+	img.style.height = "3em";
+	img.style.borderRadius = "50%";
 	img.src = pp
 	messageCase.style.width = "85%";
 	messageCase.style.paddingLeft = "5%";

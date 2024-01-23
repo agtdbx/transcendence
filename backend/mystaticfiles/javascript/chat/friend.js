@@ -36,11 +36,12 @@ function selectChannel(channel)
 
 function addChannelFriend(friendElement, friend)
 {
-	let status = document.createElement("span");
+	let pp = document.createElement("img");
+	pp.src = friend["pp"];
 	if (friend["status"] == 0)
-		status.className = "status status-offline";
+		pp.className = "friendPP status-offline";
 	else if (friend["status"] == 1)
-		status.className = "status status-online";
+		pp.className = "friendPP status-online";
 
 	let username = document.createElement("p");
 	username.textContent = friend["name"];
@@ -52,7 +53,7 @@ function addChannelFriend(friendElement, friend)
 		selectChannel(friend["id"]);
 	};
 
-	friendDiv.appendChild(status);
+	friendDiv.appendChild(pp);
 	friendDiv.appendChild(username);
 
 	friendElement.appendChild(friendDiv);

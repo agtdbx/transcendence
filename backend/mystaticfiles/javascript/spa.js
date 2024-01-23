@@ -19,7 +19,12 @@ function changeBackground(num)
 	else if (num == "10")
 		body.style.backgroundImage = 'url(/static/image/background/ladder.png)';
 	else
-		body.style.backgroundImage = 'url(/static/image/background/index.png)';
+	{
+		if (num.length >= 6 && String(num).substring(0, 6) == "profil")
+			body.style.backgroundImage = 'url(/static/image/background/profile.jpg)';
+		else
+			body.style.backgroundImage = 'url(/static/image/background/index.png)';
+	}
 }
 
 function addHeader(){

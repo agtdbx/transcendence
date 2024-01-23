@@ -3,14 +3,12 @@
 /*                                                        :::      ::::::::   */
 /*   contact.js                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lflandri <lflandri@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aderouba <aderouba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/23 15:27:08 by lflandri          #+#    #+#             */
-/*   Updated: 2024/01/19 17:48:58 by lflandri         ###   ########.fr       */
+/*   Updated: 2024/01/23 17:45:46 by aderouba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-//TODO all
 
 function removeContactPop()
 {
@@ -67,11 +65,16 @@ function contactCreate(content, before, name, img,status)
 	titleText.style.marginTop = "0%";
 	titleText.style.marginBottom = "2%";
 	titleText.style.fontSize = "30px";
+	container.onclick = function (){
+		changePage("profil/" + name);
+	}
 	content.insertBefore(container, before);
 	container.insertBefore(box, before);
 	box.insertBefore(divText, null);
 	box.insertBefore(image, null);
 	divText.insertBefore(titleText, null);
+
+
 }
 
 
@@ -135,9 +138,9 @@ function ContactList(type)
 	url = "https://" + window.location.hostname + ":4200/getlisteblocked"
 	if (type === "friends")
 	{
-		url = "https://" + window.location.hostname + ":4200/getlistefriend"	
+		url = "https://" + window.location.hostname + ":4200/getlistefriend"
 	}
-	
+
 	fetch(url,
 	{
 		method: 'POST',
@@ -168,122 +171,3 @@ function ContactList(type)
 			})
 
 }
-
-/*
-exemple liste contact
-
-	listContact =
-		[
-
-			{
-				"name" : "Enginer",
-				"pp" : "https://static.wikia.nocookie.net/deeprockgalactic_gamepedia_en/images/4/46/Engineer_portrait.png/revision/latest/scale-to-width-down/35?cb=20180519150041",
-				"status" : 0
-			},
-			{
-				"name" : "Gunner",
-				"pp" : "https://static.wikia.nocookie.net/deeprockgalactic_gamepedia_en/images/c/c2/Gunner_portrait.png/revision/latest/scale-to-width-down/35?cb=20180519150058",
-				"status" : 1
-			},
-			{
-				"name" : "Gunner",
-				"pp" : "https://static.wikia.nocookie.net/deeprockgalactic_gamepedia_en/images/c/c2/Gunner_portrait.png/revision/latest/scale-to-width-down/35?cb=20180519150058",
-				"status" : 1
-			},
-			{
-				"name" : "Gunner",
-				"pp" : "https://static.wikia.nocookie.net/deeprockgalactic_gamepedia_en/images/c/c2/Gunner_portrait.png/revision/latest/scale-to-width-down/35?cb=20180519150058",
-				"status" : 1
-			},
-			{
-				"name" : "Gunner",
-				"pp" : "https://static.wikia.nocookie.net/deeprockgalactic_gamepedia_en/images/c/c2/Gunner_portrait.png/revision/latest/scale-to-width-down/35?cb=20180519150058",
-				"status" : 1
-			},
-			{
-				"name" : "Gunner",
-				"pp" : "https://static.wikia.nocookie.net/deeprockgalactic_gamepedia_en/images/c/c2/Gunner_portrait.png/revision/latest/scale-to-width-down/35?cb=20180519150058",
-				"status" : 1
-			},
-			{
-				"name" : "Gunner",
-				"pp" : "https://static.wikia.nocookie.net/deeprockgalactic_gamepedia_en/images/c/c2/Gunner_portrait.png/revision/latest/scale-to-width-down/35?cb=20180519150058",
-				"status" : 1
-			},
-			{
-				"name" : "Gunner",
-				"pp" : "https://static.wikia.nocookie.net/deeprockgalactic_gamepedia_en/images/c/c2/Gunner_portrait.png/revision/latest/scale-to-width-down/35?cb=20180519150058",
-				"status" : 1
-			},
-			{
-				"name" : "Gunner",
-				"pp" : "https://static.wikia.nocookie.net/deeprockgalactic_gamepedia_en/images/c/c2/Gunner_portrait.png/revision/latest/scale-to-width-down/35?cb=20180519150058",
-				"status" : 1
-			},
-			{
-				"name" : "Gunner",
-				"pp" : "https://static.wikia.nocookie.net/deeprockgalactic_gamepedia_en/images/c/c2/Gunner_portrait.png/revision/latest/scale-to-width-down/35?cb=20180519150058",
-				"status" : 1
-			},
-			{
-				"name" : "Gunner",
-				"pp" : "https://static.wikia.nocookie.net/deeprockgalactic_gamepedia_en/images/c/c2/Gunner_portrait.png/revision/latest/scale-to-width-down/35?cb=20180519150058",
-				"status" : 1
-			},
-			{
-				"name" : "Gunner",
-				"pp" : "https://static.wikia.nocookie.net/deeprockgalactic_gamepedia_en/images/c/c2/Gunner_portrait.png/revision/latest/scale-to-width-down/35?cb=20180519150058",
-				"status" : 1
-			},
-			{
-				"name" : "Gunner",
-				"pp" : "https://static.wikia.nocookie.net/deeprockgalactic_gamepedia_en/images/c/c2/Gunner_portrait.png/revision/latest/scale-to-width-down/35?cb=20180519150058",
-				"status" : 1
-			},
-			{
-				"name" : "Gunner",
-				"pp" : "https://static.wikia.nocookie.net/deeprockgalactic_gamepedia_en/images/c/c2/Gunner_portrait.png/revision/latest/scale-to-width-down/35?cb=20180519150058",
-				"status" : 1
-			},
-			{
-				"name" : "Gunner",
-				"pp" : "https://static.wikia.nocookie.net/deeprockgalactic_gamepedia_en/images/c/c2/Gunner_portrait.png/revision/latest/scale-to-width-down/35?cb=20180519150058",
-				"status" : 1
-			},
-			{
-				"name" : "Gunner",
-				"pp" : "https://static.wikia.nocookie.net/deeprockgalactic_gamepedia_en/images/c/c2/Gunner_portrait.png/revision/latest/scale-to-width-down/35?cb=20180519150058",
-				"status" : 1
-			},
-			{
-				"name" : "Gunner",
-				"pp" : "https://static.wikia.nocookie.net/deeprockgalactic_gamepedia_en/images/c/c2/Gunner_portrait.png/revision/latest/scale-to-width-down/35?cb=20180519150058",
-				"status" : 1
-			},
-			{
-				"name" : "Gunner",
-				"pp" : "https://static.wikia.nocookie.net/deeprockgalactic_gamepedia_en/images/c/c2/Gunner_portrait.png/revision/latest/scale-to-width-down/35?cb=20180519150058",
-				"status" : 1
-			},
-			{
-				"name" : "Gunner",
-				"pp" : "https://static.wikia.nocookie.net/deeprockgalactic_gamepedia_en/images/c/c2/Gunner_portrait.png/revision/latest/scale-to-width-down/35?cb=20180519150058",
-				"status" : 1
-			},
-			{
-				"name" : "Gunner",
-				"pp" : "https://static.wikia.nocookie.net/deeprockgalactic_gamepedia_en/images/c/c2/Gunner_portrait.png/revision/latest/scale-to-width-down/35?cb=20180519150058",
-				"status" : 1
-			},
-			{
-				"name" : "Gunner",
-				"pp" : "https://static.wikia.nocookie.net/deeprockgalactic_gamepedia_en/images/c/c2/Gunner_portrait.png/revision/latest/scale-to-width-down/35?cb=20180519150058",
-				"status" : 1
-			},
-			{
-				"name" : "Gunner",
-				"pp" : "https://static.wikia.nocookie.net/deeprockgalactic_gamepedia_en/images/c/c2/Gunner_portrait.png/revision/latest/scale-to-width-down/35?cb=20180519150058",
-				"status" : 1
-			}
-		]
-*/
