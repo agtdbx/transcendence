@@ -96,6 +96,30 @@ def changePassword(request):
             return JsonResponse({"success" : False, "error" : "Somethink very wrong appened, please try again !"})
     return JsonResponse({"success" : True})
 
+@csrf_exempt
+def changeUsername(request):
+    newName = request.POST.get('newName')
+    check = checkToken(request)
+    userId = check["userId"]
+    user = User.objects.all().filter(idUser=userId)[0]
+    user1 = User.objects.all()
+
+    i = 0
+    while i < len(user1):
+        if user1[i].username == newName:
+            if user1[i].idUser != userId:
+                return JsonResponse({"success" : False, "error" : "This Username is already taken !"})
+        i = i + 1
+    if newName == user.username:
+        return JsonResponse({"success" : False, "error" : "This is already your Username !"})
+    else:
+        try:
+            user.username = newName
+            user.save()
+        except:
+            return JsonResponse({"success" : False, "error" : "Somethink very wrong appened, please try again !"})
+        return JsonResponse({"success" : True})
+
 
 @csrf_exempt
 def checkToken(request):

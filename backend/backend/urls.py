@@ -37,6 +37,7 @@ urlpatterns = [
 	path("checkLogin", views_connection.checkLogin, name="checkLogin"),
     path("checkSignin", views_connection.checkSignin, name="checkSignin"),
     path("changePassword", views_connection.changePassword, name="changePassword"),
+    path("changeUsername", views_connection.changeUsername, name="changeUsername"),
 
 	#User relation
     path('addfriends', views_user_relation.addfriends, name='addfriends'),

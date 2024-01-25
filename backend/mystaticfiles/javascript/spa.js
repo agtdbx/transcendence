@@ -236,6 +236,30 @@ function checkSignin(data)
 		.catch(error => console.log("checkSignin error :", error))
 	}
 
+	function changeUsername(data)
+    {
+        fetch("changeUsername",
+        {
+            method: 'POST',
+            body: data,
+            cache: "default"
+        })
+        .then(response => response.json())
+        .then(jsonData => {
+
+            if (jsonData["success"] != true)
+            {
+                alert(jsonData["error"]);
+                return ;
+            }
+            alert("Success in changing your Username")
+			let name = document.getElementById("pseudo_profil_page");
+			name.textContent = document.getElementById("newName").value;
+            remove_pop()
+        })
+        .catch(error => console.log("changeUsername error :", error))
+    }
+
 
 function disconnection()
 {

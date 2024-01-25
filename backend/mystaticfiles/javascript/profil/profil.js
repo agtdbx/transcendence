@@ -17,5 +17,5 @@
 //document.getElementById('pp_profil_page_img').src = "https://avatars.githubusercontent.com/u/126075485?v=4";
 
 // document.getElementById('pseudo_profil_page').textContent = "Leka Uila";
-let rank = 42;
-document.getElementById('rank_profil_page').textContent = "Rank : " + rank;
+//let rank = 42;
+//document.getElementById('rank_profil_page').textContent = "Rank : " + rank;

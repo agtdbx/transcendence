@@ -41,6 +41,9 @@ p {
 	font-family: "KhazadDum", sans-serif;
 }
 
+.animation{
+	animation: animate 0.40s infinite;
+}
 
 .btn-drg {
 	color: black;
@@ -785,9 +788,10 @@ p {
 
 #credittext{
 	position: absolute;
+	text-align: right;
 	width:25%;
-	height:25%;
-	top: 4%;
+	height:26%;
+	top: 6%;
 	left: 68.5%;
 	object-fit: cover;
 	background: hidden;
@@ -816,7 +820,7 @@ p {
 	left: 7%;
 	text-align: center;
 	border-radius: 100%;
-	background: green;
+	background: rgba(0,0,0,0);
 }
 
 
@@ -830,209 +834,106 @@ p {
 }
 
 .policeSize{
-	font-size: 400%;
+	font-size: 300%;
 	text-align: left;
 	color: white;
 	/* js*/
 }
 
 
-#ladder1{
+#ladder0{
 	top: 2.5%;
 	left: 4%;
 }
 
-#credits1{
+.credits{
 	font-size: 150%;
 	text-align: right;
-	/* js*/
+}
+
+#ladder1{
+	top: 18.4%;
+	left: 4%;
 }
 
 #ladder2{
-	top: 18.4%;
+	top: 34.3%;
 	left: 4%;
-}
-
-#credits2{
-	font-size: 150%;
-	text-align: right;
-	/* js*/
 }
 
 #ladder3{
-	top: 34.3%;
+	top: 50.2%;
 	left: 4%;
-}
-
-#credits3{
-	font-size: 150%;
-	text-align: right;
-	/* js*/
 }
 
 #ladder4{
-	top: 50.2%;
+	top: 66.1%;
 	left: 4%;
-}
-
-#credits4{
-	font-size: 150%;
-	text-align: right;
-	/* js*/
 }
 
 #ladder5{
-	top: 66.1%;
+	top: 82%;
 	left: 4%;
-}
-
-#credits5{
-	font-size: 150%;
-	text-align: right;
-	/* js*/
 }
 
 #ladder6{
-	top: 82%;
-	left: 4%;
-}
-
-#credits6{
-	font-size: 150%;
-	text-align: right;
-	/* js*/
+	top: 2.5%;
+	left: 35%;
 }
 
 #ladder7{
-	top: 2.5%;
+	top: 18.4%;
 	left: 35%;
-}
-
-#credits7{
-	font-size: 150%;
-	text-align: right;
-	/* js*/
 }
 
 #ladder8{
-	top: 18.4%;
-	left: 35%;
-}
-
-#credits8{
-	font-size: 150%;
-	text-align: right;
-	/* js*/
-}
-
-#ladder9{
 	top: 34.3%;
 	left: 35%;
 }
 
-#credits9{
-	font-size: 150%;
-	text-align: right;
-	/* js*/
-}
-
-#ladder10{
+#ladder9{
 	top: 50.2%;
 	left: 35%;
 }
 
-#credits10{
-	font-size: 150%;
-	text-align: right;
-	/* js*/
-}
-
-#ladder11{
+#ladder10{
 	top: 66.1%;
 	left: 35%;
 }
 
-#credits11{
-	font-size: 150%;
-	text-align: right;
-	/* js*/
-}
-
-#ladder12{
+#ladder11{
 	top: 82%;
 	left: 35%;
 }
 
-#credits12{
-	font-size: 150%;
-	text-align: right;
-	/* js*/
-}
-
-#ladder13{
+#ladder12{
 	top: 2.5%;
 	left: 66%;
 }
 
-#credits13{
-	font-size: 150%;
-	text-align: right;
-	/* js*/
-}
-
-#ladder14{
+#ladder13{
 	top: 18.4%;
 	left: 66%;
 }
 
-#credits14{
-	font-size: 150%;
-	text-align: right;
-	/* js*/
-}
-
-#ladder15{
+#ladder14{
 	top: 34.3%;
 	left: 66%;
 }
 
-#credits15{
-	font-size: 150%;
-	text-align: right;
-	/* js*/
-}
-
-#ladder16{
+#ladder15{
 	top: 50.2%;
 	left: 66%;
 }
 
-#credits16{
-	font-size: 150%;
-	text-align: right;
-	/* js*/
-}
-
-#ladder17{
+#ladder16{
 	top: 66.1%;
 	left: 66%;
 }
 
-#credits17{
-	font-size: 150%;
-	text-align: right;
-	/* js*/
-}
-
-#ladder18{
+#ladder17{
 	top: 82%;
 	left: 66%;
-}
-
-#credits18{
-	font-size: 150%;
-	text-align: right;
-	/* js*/
 }
 
 

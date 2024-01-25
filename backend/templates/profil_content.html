@@ -12,9 +12,9 @@
 						<img src="/media/{{ user.profilPicture }}" width="100%" id="pp_profil_page_img" style="border-radius: 600px;" onclick="changePage(`11`)">
 						{% endblock contentImg %}
 					</div>
-					<button data-section="10" style="font-size:200%; background: transparent; color:white; border:none;" class="btn-drg" id="rank_profil_page" onclick="changePage(this.dataset.section)">Rank : None</button>
+					<button data-section="10" style="font-size:200%; background: transparent; color:white; border:none;" class="btn-drg" id="rank_profil_page" onclick="changePage(this.dataset.section)">Money : {{ user.money }}</button>
 					{% block content %}
-					<p style="font-size:200%;" id="pseudo_profil_page">{{ user.username }}</p>
+					<p style="font-size:200%;" id="pseudo_profil_page" onclick="createpup('name')">{{ user.username }}</p>
 					{% endblock content %}
 					<button data-section="12" class ="btn-drg" style="clear:both; display:block; margin:auto; margin-top:5px; width:50%; font-size:150%;" onclick="createpup('pass')">Change password</button>
 					<form id="data-request-relation">
