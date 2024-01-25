@@ -1,0 +1,264 @@
+API HELP :
+
+REQUEST FORM
+    {'type' : <type>, 'cmd' : <cmd>, ...}
+
+
+ERROR
+    In case of bad request, you will recieved this reply :
+        'type' : 'error'
+        'error' : <error>
+
+
+CONNECTION
+    with token
+        'type' : 'connect'
+        'cmd' : 'by_token'
+        'token' : <token>
+        -> 'type' : 'connectionReply'
+           'success': true | false
+
+    with username
+        'type' : 'connect'
+        'cmd' : 'by_token'
+        'username' : <username>
+        'password' : <password>
+        -> 'type' : 'connectionReply'
+           'success': true | false
+
+MESSAGE
+    send message
+        'type' : 'message'
+        'cmd' : 'sendMessage'
+        'channel' : 'general' | <user id>
+        -> {{message}}
+
+    => Message recieved
+        {{message}}
+
+    => Server message recieved
+        'type' : 'serverMessage'
+        'message' : <message>
+        'date' : <date>
+
+    => Invite recieved
+        'type' : 'invite'
+        'username' : <username>
+        'pp' : <profile picture link>
+        'date' : <date>
+        'roomId' : <room id>
+
+    {{message}} :
+        'type' : 'message'
+        'message' : <message>
+        'username' : <username>
+        'pp' : <profile picture link>
+        'date' : <date>
+        'channel' : 'general' | <user id>
+
+
+QUICK GAME ROOM
+    ask for new game
+        'type' : 'quickRoom'
+        'cmd' : 'askForRoom'
+        -> 'type' : 'quickRoomResponse'
+           'quickRoomId' : <quick room id>
+
+    => Game start
+        'type' : 'gameStart'
+        'gamePort' : <port> # port of the websocket for game
+        'paddleId' : <paddle id>
+        'teamId' : <team id>
+
+
+GAME ROOM
+    create game room
+        'type' : 'gameRoom'
+        'cmd' : 'createRoom'
+        -> <update room info>
+
+    join game room
+        'type' : 'gameRoom'
+        'cmd' : 'joinRoom'
+        'gameRoomId' : <game room id>
+        -> {{update room info}}
+
+    /!\ Only the creator of the room can use it /!\
+    send game room invite
+        'type' : 'gameRoom'
+        'cmd' : inviteGameRoom'
+        'targetId' : <user id> | 'ia'
+        'roomId' : <roomId>
+        -> No more field
+
+    change team
+        'type' : 'gameRoom'
+        'cmd' : 'changeTeam'
+        'team' : 'left' | 'right'
+        -> {{update room info}}
+
+    /!\ Only the creator of the room can use it /!\
+    change power up option
+        'type' : 'gameRoom'
+        'cmd' : 'changePowerUp'
+        -> {{update room info}}
+
+    /!\ Only the creator of the room can use it /!\
+    change map option
+        'type' : 'gameRoom'
+        'cmd' : 'changeMap'
+        'mapId' : <map id>
+        -> {{update room info}}
+
+    change ready state
+        'type' : 'gameRoom'
+        'cmd' : 'changeReady'
+        -> No more field
+
+    /!\ Only the creator of the room can use it /!\
+    start game
+        'type' : 'gameRoom'
+        'cmd' : 'startGame'
+        -> 'type' : 'startGame'
+           'success' : true | false
+
+    => update room info
+        {{update room info}}
+
+    => Game start
+        'type' : 'gameStart'
+        'gamePort' : <port> # port of the websocket for game
+        'paddleId' : <paddle id>
+        'teamId' : <team id>
+
+    {{update room info}} :
+        'type' : 'updateRoomInfo'
+        'teamLeft' : [<paddleInfo>, <paddleInfo>]
+        'teamRight' : [<paddleInfo>, <paddleInfo>]
+        'teamLeftReady' : [<readyInfo>, <readyInfo>]
+        'teamRightReady' : [<readyInfo>, <readyInfo>]
+        'powerUpActivate' : false | true
+        'mapId' : <map id>
+
+    <paddleInfo> :
+        - null = no player
+        - 'ia' = paddle control by ia
+        - 'pending-<user id>' = wait for the response of <user id>
+        - <user id> = player
+
+    <readyInfo> :
+        - null = no player
+        - false = not ready
+        - true = ready
+
+
+TOURNAMENT
+    /!\ Only the administrator can create tournament /!\
+    create tournament
+        'type' : 'tournament'
+        'cmd' : 'create'
+        'start' : <start date>
+        'powerUp' : true | false
+        'mapId' : <map id>
+        -> No more field
+
+    join tournament
+        'type' : 'tournament'
+        'cmd' : 'join'
+        -> 'type' : 'joinReply'
+           'tournamentUserId' : <tournament user id>
+
+    => Game start
+        'type' : 'gameStart'
+        'gamePort' : <port> # port of the websocket for game
+        'paddleId' : <paddle id>
+        'teamId' : <team id>
+
+    => match result
+        'type' : 'matchResult'
+        'winner' : <tournament user id>
+        'loser' : <tournament user id>
+
+    => end tournament
+        'type' : 'endTournament'
+        'onePongMan' : <tournament user id>
+
+
+/!\ All messages for and from game are in it's websocket /!\
+GAME
+    user input
+        'type' : 'userInput'
+        'key' : 'up' | 'down' | 'powerUp' | 'launchBall'
+        'value' : 'press' | 'release'
+        -> No more field
+
+    => start info
+        'type' : 'startInfo'
+        'obstacles' : [<obstacles>, ...]
+        'powerUp' : true | false
+
+    => server info
+        'type' : 'serverInfo'
+        'updateObstacles' : <update obstacles> | null
+        'updatePaddles' : <update paddles>  | null
+        'updateBalls' : <update balls>  | null
+        'deleteBall' : <delete ball>  | null
+        'changeUserPowerUp' : <change user power up>  | null
+        'updatePowerUpInGame' : <update power up in game>  | null
+        'updateScore' : <update score>  | null
+
+    => end game
+        'type' : 'endGame' # Not the movie
+        'leftTeamScore' : <left team score>
+        'rightTeamScore' : <right team score>
+
+    <update obstacles> :
+        'type' : 'updateObstables'
+        'obstacles' : [<obstacles>, ...]
+
+    <update paddles> :
+        'type' : 'updateObstables'
+        'obstacles' : [<paddles>, ...]
+
+    <update balls> :
+        'type' : 'updateBalls'
+        'balls' : [<ball>, ...]
+
+    <delete ball> :
+        'type' : 'deleteBall'
+        'ballIndex' : <ball index>
+
+    <change user power up> :
+        'type' : 'changeUserPowerUp'
+        'powerUpId' : <power up id>
+
+    <update power up in game> :
+        'type' : 'updatePowerUp'
+        'position' : <point>
+        'visible' : true | false
+
+    <update score> :
+        'type' : 'updateScore'
+        'scoreLeft' : <score left>
+        'scoreRight' : <score right>
+
+    <obstacles> :
+        'points' : [<point>, ...]
+
+    <paddles> :
+        'topLeft' : <point>
+        'botLeft' : <point>
+        'topRight' : <point>
+        'botRight' : <point>
+        'teamId' : <team id> # 0 = left, 1 = right
+        'paddleId' : <paddle id>
+
+    <ball> :
+        'position' : <point>
+        'direction' : <point>
+        'radius' : int
+        'speed' : int
+
+    <point> :
+        'x' : float
+        'y' : float
