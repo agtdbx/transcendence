@@ -167,10 +167,39 @@ def section(request, num):
             return render(request,"profil_content.html", {'user': user})
 
     elif num == 10:
+        ListUser = User.objects.all()
+        Ladderlist = [user] * 18
+        test = [user] * len(ListUser)
+        
+        j = 0
+        while j < len(ListUser):
+            test[j] = ListUser[j]           #create a usable list
+            j = j + 1
+        
+        Karl = User(idUser=0, idType=0, username="Karl", profilPicture="images/default/Karl.png", tokenJWT="kekw", money=100000, idStatus=0)
+        Void = User(idUser=0, idType=0, username="", profilPicture="images/default/void.png", tokenJWT="", money=0, idStatus=0)
+        test.insert(1 , Karl)           #adding Karl
+
+        j = 0
+        while j < 18 and len(test) != 0:            #keeping only the 18 best
+            i = 1
+            whoUser = 0
+            user = test[0]
+            while i < len(test):
+                if test[i].money > user.money:
+                    user = test[i]
+                    whoUser = i
+                i = i + 1
+            Ladderlist[j] = user
+            test.pop(whoUser)
+            j = j + 1
+        while j < 18:
+            Ladderlist[j] = Void
+            j = j + 1
         if fullPage:
-            return render(request, "ladder_full.html")
+            return render(request, "ladder_full.html", {'Ladderlist': Ladderlist})
         else:
-            return render(request,"ladder.html")
+            return render(request,"ladder.html", {'Ladderlist': Ladderlist})
 
     elif num == 11:
         form = UserForm(request.POST, request.FILES)

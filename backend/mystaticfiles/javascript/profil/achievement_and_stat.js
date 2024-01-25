@@ -325,6 +325,54 @@ function createPass()
 				});
 }
 
+function createName()
+{
+	console.log("create success panel");
+	const body = document.getElementById("body");
+	const containerContentSuccesBlock = document.createElement("div");
+	const contentSuccesBlock = document.createElement("div");
+	const succesBlock = document.createElement("div");
+	const gameDiv = document.getElementById("content");
+	body.insertBefore(containerContentSuccesBlock, gameDiv);
+	containerContentSuccesBlock.insertBefore(contentSuccesBlock, null);
+	contentSuccesBlock.insertBefore(succesBlock, null);
+	containerContentSuccesBlock.id = "containerContentSuccesBlock";
+	containerContentSuccesBlock.style.position = "absolute";
+	containerContentSuccesBlock.style.width = window.innerWidth;
+	containerContentSuccesBlock.style.width = "100%";
+	contentSuccesBlock.classList.add("container");
+	contentSuccesBlock.id = "contentSuccessBlock";
+	contentSuccesBlock.style.margin = "auto";
+	succesBlock.id = "successBlock";
+	succesBlock.style.margin = "auto";
+	succesBlock.classList.add("row");
+	succesBlock.style.borderCollapse = "separate";
+	succesBlock.style.textAlign = "center";
+	succesBlock.style.padding = "4%"
+	succesBlock.style.width = "70%";
+	containerContentSuccesBlock.style.zIndex = "1000";
+
+
+	succesBlock.style.backgroundImage="url(/static/image/background/ecran.png)";
+	succesBlock.style.backgroundAttachment= "fixed";
+	succesBlock.style.backgroundRepeat="no-repeat";
+	succesBlock.style.backgroundSize="contain";
+
+	succesBlock.innerHTML = '<form id="form_newName" method="post">\
+	<p id="passPopNew">New Username <input type="text" id="newName" name="newName" required></p><br>\
+	<button type="submit" class ="btn-drg" id="btnNewName">Change Username</button>\
+	</form><br><br><br><br><br><br><br><br><br><br><br>\
+	<button class ="btn-drg" style="width:15%; margin:auto;" id="btnQuitPop" onclick="remove_pop()">Go Back</button>';
+	const form = document.getElementById('form_newName');
+					form.addEventListener('submit', async event => {
+					event.preventDefault();
+
+					const data = new FormData(form);
+					changeUsername(data)
+				});
+}
+
+
 function createpup(type)
 {
 	//remove_pop();
@@ -368,6 +416,11 @@ function createpup(type)
 		createPass()
 		return
 	}
+	if (type === "name")
+    {
+        createName()
+        return
+    }
 	setTimeout(function(){
 		const body = document.getElementById("body");
 		body.onclick = remove_pop;

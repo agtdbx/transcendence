@@ -4,9 +4,10 @@
 
 	<div class ="rectladder" id = "rectladder">
 
-		<div class ="ladder" id = "ladder1">
+		{% block content0 %}
+		<div class ="ladder" id = "ladder0">
 			<div class ="credittext" id = "credittext">
-				<p id="credits1">156</p>
+				<p id="credits">{{ Ladderlist.0.money }}</p>
 			</div>
 
 			<div class ="credit" id = "credit">
@@ -19,16 +20,19 @@
 
 
 			<div class ="ppPlayer" id = "ppPlayer1">
+				<img src="./media/{{ Ladderlist.0.profilPicture }}"  width="90%" >
 			</div>
 
 			<div class ="playerName" id = "playerName">
-				<p id="playerName1" class="policeSize">KARL</p>
+				<p id="playerName0" class="policeSize animation" onclick="changePage('profil/{{ Ladderlist.0.username }}')">{{ Ladderlist.0.username }}</p>
 			</div>
 		</div>
+		{% endblock content0 %}
 
-		<div class ="ladder" id = "ladder2">
+		{% block content1 %}
+		<div class ="ladder" id = "ladder1">
 			<div class ="credittext" id = "credittext">
-				<p id="credits2">156</p>
+				<p id="credits">{{ Ladderlist.1.money }}</p>
 			</div>
 
 			<div class ="credit" id = "credit">
@@ -40,16 +44,19 @@
 			</div>
 
 			<div class ="ppPlayer" id = "ppPlayer2">
+				<img src="./media/{{ Ladderlist.1.profilPicture }}"  width="90%" >
 			</div>
 
 			<div class ="playerName" id = "playerName">
-				<p id="playerName2" class="policeSize">KARL</p>
+				<p id="playerName1" class="policeSize animation" onclick="changePage('profil/{{ Ladderlist.1.username }}')">{{ Ladderlist.1.username }}</p>
 			</div>
 		</div>
+		{% endblock content1 %}
 
-		<div class ="ladder" id = "ladder3">
+		{% block content2 %}
+		<div class ="ladder" id = "ladder2">
 			<div class ="credittext" id = "credittext">
-				<p id="credits3">156</p>
+				<p id="credits">{{ Ladderlist.2.money }}</p>
 			</div>
 
 			<div class ="credit" id = "credit">
@@ -61,16 +68,19 @@
 			</div>
 
 			<div class ="ppPlayer" id = "ppPlayer3">
+				<img src="./media/{{ Ladderlist.2.profilPicture }}"  width="90%" >
 			</div>
 
 			<div class ="playerName" id = "playerName">
-				<p id="playerName3" class="policeSize">KARL</p>
+				<p id="playerName2" class="policeSize animation" onclick="changePage('profil/{{ Ladderlist.2.username }}')">{{ Ladderlist.2.username }}</p>
 			</div>
 		</div>
+		{% endblock content2 %}
 
-		<div class ="ladder" id = "ladder4">
+		{% block content3 %}
+		<div class ="ladder" id = "ladder3">
 			<div class ="credittext" id = "credittext">
-				<p id="credits4">156</p>
+				<p id="credits">{{ Ladderlist.3.money }}</p>
 			</div>
 
 			<div class ="credit" id = "credit">
@@ -82,16 +92,19 @@
 			</div>
 
 			<div class ="ppPlayer" id = "ppPlayer4">
+				<img src="./media/{{ Ladderlist.3.profilPicture }}"  width="90%" >
 			</div>
 
 			<div class ="playerName" id = "playerName">
-				<p id="playerName4" class="policeSize">KARL</p>
+				<p id="playerName3" class="policeSize animation" onclick="changePage('profil/{{ Ladderlist.3.username }}')">{{ Ladderlist.3.username }}</p>
 			</div>
 		</div>
+		{% endblock content3 %}
 
-		<div class ="ladder" id = "ladder5">
+		{% block content4 %}
+		<div class ="ladder" id = "ladder4">
 			<div class ="credittext" id = "credittext">
-				<p id="credits5">156</p>
+				<p id="credits">{{ Ladderlist.4.money }}</p>
 			</div>
 
 			<div class ="credit" id = "credit">
@@ -103,16 +116,19 @@
 			</div>
 
 			<div class ="ppPlayer" id = "ppPlayer5">
+				<img src="./media/{{ Ladderlist.4.profilPicture }}"  width="90%" >
 			</div>
 
 			<div class ="playerName" id = "playerName">
-				<p id="playerName5" class="policeSize">KARL</p>
+				<p id="playerName4" class="policeSize animation" onclick="changePage('profil/{{ Ladderlist.4.username }}')">{{ Ladderlist.4.username }}</p>
 			</div>
 		</div>
+		{% endblock content4 %}
 
-		<div class ="ladder" id = "ladder6">
+		{% block content5 %}
+		<div class ="ladder" id = "ladder5">
 			<div class ="credittext" id = "credittext">
-				<p id="credits6">156</p>
+				<p id="credits">{{ Ladderlist.5.money }}</p>
 			</div>
 
 			<div class ="credit" id = "credit">
@@ -120,20 +136,47 @@
 			</div>
 
 			<div class ="ladderpp" id = "ladderpp">
-				<img src="{% static './image/ladder/rock-and-pong-rank05.png' %}" class="sameladderpp" id ="ladderpp6">
+				<img src="{% static './image/ladder/rock-and-pong-rank05.png' %}" class="sameladderpp" id ="ladderpp5">
+			</div>
+
+			<div class ="ppPlayer" id = "ppPlayer5">
+				<img src="./media/{{ Ladderlist.5.profilPicture }}"  width="90%" >
+			</div>
+
+			<div class ="playerName" id = "playerName">
+				<p id="playerName5" class="policeSize animation" onclick="changePage('profil/{{ Ladderlist.5.username }}')">{{ Ladderlist.5.username }}</p>
+			</div>
+		</div>
+		{% endblock content5 %}
+
+		{% block content6 %}
+		<div class ="ladder" id = "ladder6">
+			<div class ="credittext" id = "credittext">
+				<p id="credits">{{ Ladderlist.6.money }}</p>
+			</div>
+
+			<div class ="credit" id = "credit">
+				<img src="{% static './image/ladder/credit.png' %}" id ="imgcredit">
+			</div>
+
+			<div class ="ladderpp" id = "ladderpp">
+				<img src="{% static './image/ladder/rock-and-pong-rank06.png' %}" class="sameladderpp" id ="ladderpp6">
 			</div>
 
 			<div class ="ppPlayer" id = "ppPlayer6">
+				<img src="./media/{{ Ladderlist.6.profilPicture }}"  width="90%" >
 			</div>
 
 			<div class ="playerName" id = "playerName">
-				<p id="playerName6" class="policeSize">KARL</p>
+				<p id="playerName6" class="policeSize animation" onclick="changePage('profil/{{ Ladderlist.6.username }}')">{{ Ladderlist.6.username }}</p>
 			</div>
 		</div>
+		{% endblock content6 %}
 
+		{% block content7 %}
 		<div class ="ladder" id = "ladder7">
 			<div class ="credittext" id = "credittext">
-				<p id="credits7">156</p>
+				<p id="credits">{{ Ladderlist.7.money }}</p>
 			</div>
 
 			<div class ="credit" id = "credit">
@@ -141,20 +184,23 @@
 			</div>
 
 			<div class ="ladderpp" id = "ladderpp">
-				<img src="{% static './image/ladder/rock-and-pong-rank06.png' %}" class="sameladderpp" id ="ladderpp7">
+				<img src="{% static './image/ladder/rock-and-pong-rank07.png' %}" class="sameladderpp" id ="ladderpp7">
 			</div>
 
 			<div class ="ppPlayer" id = "ppPlayer7">
+				<img src="./media/{{ Ladderlist.7.profilPicture }}"  width="90%" >
 			</div>
 
 			<div class ="playerName" id = "playerName">
-				<p id="playerName7" class="policeSize">KARL</p>
+				<p id="playerName7" class="policeSize animation" onclick="changePage('profil/{{ Ladderlist.7.username }}')">{{ Ladderlist.7.username }}</p>
 			</div>
 		</div>
+		{% endblock content7 %}
 
+		{% block content8 %}
 		<div class ="ladder" id = "ladder8">
 			<div class ="credittext" id = "credittext">
-				<p id="credits8">156</p>
+				<p id="credits">{{ Ladderlist.8.money }}</p>
 			</div>
 
 			<div class ="credit" id = "credit">
@@ -162,20 +208,23 @@
 			</div>
 
 			<div class ="ladderpp" id = "ladderpp">
-				<img src="{% static './image/ladder/rock-and-pong-rank07.png' %}" class="sameladderpp" id ="ladderpp8">
+				<img src="{% static './image/ladder/rock-and-pong-rank08.png' %}" class="sameladderpp" id ="ladderpp8">
 			</div>
 
 			<div class ="ppPlayer" id = "ppPlayer8">
+				<img src="./media/{{ Ladderlist.8.profilPicture }}"  width="90%" >
 			</div>
 
 			<div class ="playerName" id = "playerName">
-				<p id="playerName8" class="policeSize">KARL</p>
+				<p id="playerName8" class="policeSize animation" onclick="changePage('profil/{{ Ladderlist.8.username }}')">{{ Ladderlist.8.username }}</p>
 			</div>
 		</div>
+		{% endblock content8 %}
 
+		{% block content9 %}
 		<div class ="ladder" id = "ladder9">
 			<div class ="credittext" id = "credittext">
-				<p id="credits9">156</p>
+				<p id="credits">{{ Ladderlist.9.money }}</p>
 			</div>
 
 			<div class ="credit" id = "credit">
@@ -183,20 +232,23 @@
 			</div>
 
 			<div class ="ladderpp" id = "ladderpp">
-				<img src="{% static './image/ladder/rock-and-pong-rank08.png' %}" class="sameladderpp" id ="ladderpp9">
+				<img src="{% static './image/ladder/rock-and-pong-rank09.png' %}" class="sameladderpp" id ="ladderpp9">
 			</div>
 
 			<div class ="ppPlayer" id = "ppPlayer9">
+				<img src="./media/{{ Ladderlist.9.profilPicture }}"  width="90%" >
 			</div>
 
 			<div class ="playerName" id = "playerName">
-				<p id="playerName9" class="policeSize">KARL</p>
+				<p id="playerName9" class="policeSize animation" onclick="changePage('profil/{{ Ladderlist.9.username }}')">{{ Ladderlist.9.username }}</p>
 			</div>
 		</div>
+		{% endblock content9 %}
 
+		{% block content10 %}
 		<div class ="ladder" id = "ladder10">
 			<div class ="credittext" id = "credittext">
-				<p id="credits10">156</p>
+				<p id="credits">{{ Ladderlist.10.money }}</p>
 			</div>
 
 			<div class ="credit" id = "credit">
@@ -204,20 +256,23 @@
 			</div>
 
 			<div class ="ladderpp" id = "ladderpp">
-				<img src="{% static './image/ladder/rock-and-pong-rank09.png' %}" class="sameladderpp" id ="ladderpp10">
+				<img src="{% static './image/ladder/rock-and-pong-rank10.png' %}" class="sameladderpp" id ="ladderpp10">
 			</div>
 
 			<div class ="ppPlayer" id = "ppPlayer10">
+				<img src="./media/{{ Ladderlist.10.profilPicture }}"  width="90%" >
 			</div>
 
 			<div class ="playerName" id = "playerName">
-				<p id="playerName10" class="policeSize">KARL</p>
+				<p id="playerName10" class="policeSize animation" onclick="changePage('profil/{{ Ladderlist.10.username }}')">{{ Ladderlist.10.username }}</p>
 			</div>
 		</div>
+		{% endblock content10 %}
 
+		{% block content11 %}
 		<div class ="ladder" id = "ladder11">
 			<div class ="credittext" id = "credittext">
-				<p id="credits11">156</p>
+				<p id="credits">{{ Ladderlist.11.money }}</p>
 			</div>
 
 			<div class ="credit" id = "credit">
@@ -225,20 +280,23 @@
 			</div>
 
 			<div class ="ladderpp" id = "ladderpp">
-				<img src="{% static './image/ladder/rock-and-pong-rank10.png' %}" class="sameladderpp" id ="ladderpp11">
+				<img src="{% static './image/ladder/rock-and-pong-rank11.png' %}" class="sameladderpp" id ="ladderpp11">
 			</div>
 
 			<div class ="ppPlayer" id = "ppPlayer11">
+				<img src="./media/{{ Ladderlist.11.profilPicture }}"  width="90%" >
 			</div>
 
 			<div class ="playerName" id = "playerName">
-				<p id="playerName11" class="policeSize">KARL</p>
+				<p id="playerName11" class="policeSize animation" onclick="changePage('profil/{{ Ladderlist.11.username }}')">{{ Ladderlist.11.username }}</p>
 			</div>
 		</div>
+		{% endblock content11 %}
 
+		{% block content12 %}
 		<div class ="ladder" id = "ladder12">
 			<div class ="credittext" id = "credittext">
-				<p id="credits12">156</p>
+				<p id="credits">{{ Ladderlist.12.money }}</p>
 			</div>
 
 			<div class ="credit" id = "credit">
@@ -246,20 +304,23 @@
 			</div>
 
 			<div class ="ladderpp" id = "ladderpp">
-				<img src="{% static './image/ladder/rock-and-pong-rank11.png' %}" class="sameladderpp" id ="ladderpp12">
+				<img src="{% static './image/ladder/rock-and-pong-rank12.png' %}" class="sameladderpp" id ="ladderpp12">
 			</div>
 
 			<div class ="ppPlayer" id = "ppPlayer12">
+				<img src="./media/{{ Ladderlist.12.profilPicture }}"  width="90%" >
 			</div>
 
 			<div class ="playerName" id = "playerName">
-				<p id="playerName12" class="policeSize">KARL</p>
+				<p id="playerName12" class="policeSize animation" onclick="changePage('profil/{{ Ladderlist.12.username }}')">{{ Ladderlist.12.username }}</p>
 			</div>
 		</div>
+		{% endblock content12 %}
 
+		{% block content13 %}
 		<div class ="ladder" id = "ladder13">
 			<div class ="credittext" id = "credittext">
-				<p id="credits13">156</p>
+				<p id="credits">{{ Ladderlist.13.money }}</p>
 			</div>
 
 			<div class ="credit" id = "credit">
@@ -267,20 +328,23 @@
 			</div>
 
 			<div class ="ladderpp" id = "ladderpp">
-				<img src="{% static './image/ladder/rock-and-pong-rank12.png' %}" class="sameladderpp" id ="ladderpp13">
+				<img src="{% static './image/ladder/rock-and-pong-rank13.png' %}" class="sameladderpp" id ="ladderpp13">
 			</div>
 
 			<div class ="ppPlayer" id = "ppPlayer13">
+				<img src="./media/{{ Ladderlist.13.profilPicture }}"  width="90%" >
 			</div>
 
 			<div class ="playerName" id = "playerName">
-				<p id="playerName13" class="policeSize">KARL</p>
+				<p id="playerName13" class="policeSize animation" onclick="changePage('profil/{{ Ladderlist.13.username }}')">{{ Ladderlist.13.username }}</p>
 			</div>
 		</div>
+		{% endblock content13 %}
 
+		{% block content14 %}
 		<div class ="ladder" id = "ladder14">
 			<div class ="credittext" id = "credittext">
-				<p id="credits14">156</p>
+				<p id="credits">{{ Ladderlist.14.money }}</p>
 			</div>
 
 			<div class ="credit" id = "credit">
@@ -288,20 +352,23 @@
 			</div>
 
 			<div class ="ladderpp" id = "ladderpp">
-				<img src="{% static './image/ladder/rock-and-pong-rank13.png' %}" class="sameladderpp" id ="ladderpp14">
+				<img src="{% static './image/ladder/rock-and-pong-rank14.png' %}" class="sameladderpp" id ="ladderpp14">
 			</div>
 
 			<div class ="ppPlayer" id = "ppPlayer14">
+				<img src="./media/{{ Ladderlist.14.profilPicture }}"  width="90%" >
 			</div>
 
 			<div class ="playerName" id = "playerName">
-				<p id="playerName14" class="policeSize">KARL</p>
+				<p id="playerName14" class="policeSize animation" onclick="changePage('profil/{{ Ladderlist.14.username }}')">{{ Ladderlist.14.username }}</p>
 			</div>
 		</div>
+		{% endblock content14 %}
 
+		{% block content15 %}
 		<div class ="ladder" id = "ladder15">
 			<div class ="credittext" id = "credittext">
-				<p id="credits15">156</p>
+				<p id="credits">{{ Ladderlist.15.money }}</p>
 			</div>
 
 			<div class ="credit" id = "credit">
@@ -309,20 +376,23 @@
 			</div>
 
 			<div class ="ladderpp" id = "ladderpp">
-				<img src="{% static './image/ladder/rock-and-pong-rank14.png' %}" class="sameladderpp" id ="ladderpp15">
+				<img src="{% static './image/ladder/rock-and-pong-rank15.png' %}" class="sameladderpp" id ="ladderpp15">
 			</div>
 
 			<div class ="ppPlayer" id = "ppPlayer15">
+				<img src="./media/{{ Ladderlist.15.profilPicture }}"  width="90%" >
 			</div>
 
 			<div class ="playerName" id = "playerName">
-				<p id="playerName15" class="policeSize">KARL</p>
+				<p id="playerName15" class="policeSize animation" onclick="changePage('profil/{{ Ladderlist.15.username }}')">{{ Ladderlist.15.username }}</p>
 			</div>
 		</div>
+		{% endblock content15 %}
 
+		{% block content16 %}
 		<div class ="ladder" id = "ladder16">
 			<div class ="credittext" id = "credittext">
-				<p id="credits16">156</p>
+				<p id="credits">{{ Ladderlist.16.money }}</p>
 			</div>
 
 			<div class ="credit" id = "credit">
@@ -330,20 +400,23 @@
 			</div>
 
 			<div class ="ladderpp" id = "ladderpp">
-				<img src="{% static './image/ladder/rock-and-pong-rank15.png' %}" class="sameladderpp" id ="ladderpp16">
+				<img src="{% static './image/ladder/rock-and-pong-rank16.png' %}" class="sameladderpp" id ="ladderpp16">
 			</div>
 
 			<div class ="ppPlayer" id = "ppPlayer16">
+				<img src="./media/{{ Ladderlist.16.profilPicture }}"  width="90%" >
 			</div>
 
 			<div class ="playerName" id = "playerName">
-				<p id="playerName16" class="policeSize">KARL</p>
+				<p id="playerName16" class="policeSize animation" onclick="changePage('profil/{{ Ladderlist.16.username }}')">{{ Ladderlist.16.username }}</p>
 			</div>
 		</div>
+		{% endblock content16 %}
 
+		{% block content17 %}
 		<div class ="ladder" id = "ladder17">
 			<div class ="credittext" id = "credittext">
-				<p id="credits17">156</p>
+				<p id="credits">{{ Ladderlist.17.money }}</p>
 			</div>
 
 			<div class ="credit" id = "credit">
@@ -351,37 +424,17 @@
 			</div>
 
 			<div class ="ladderpp" id = "ladderpp">
-				<img src="{% static './image/ladder/rock-and-pong-rank16.png' %}" class="sameladderpp" id ="ladderpp17">
+				<img src="{% static './image/ladder/rock-and-pong-rank17.png' %}" class="sameladderpp" id ="ladderpp17">
 			</div>
 
 			<div class ="ppPlayer" id = "ppPlayer17">
+				<img src="./media/{{ Ladderlist.17.profilPicture }}"  width="90%" >
 			</div>
 
 			<div class ="playerName" id = "playerName">
-				<p id="playerName17" class="policeSize">KARL</p>
+				<p id="playerName17" class="policeSize animation" onclick="changePage('profil/{{ Ladderlist.17.username }}')">{{ Ladderlist.17.username }}</p>
 			</div>
 		</div>
-
-		<div class ="ladder" id = "ladder18">
-			<div class ="credittext" id = "credittext">
-				<p id="credits18">156</p>
-			</div>
-
-			<div class ="credit" id = "credit">
-				<img src="{% static './image/ladder/credit.png' %}" id ="imgcredit">
-			</div>
-
-			<div class ="ladderpp" id = "ladderpp">
-				<img src="{% static './image/ladder/rock-and-pong-rank17.png' %}" class="sameladderpp" id ="ladderpp18">
-			</div>
-
-			<div class ="ppPlayer" id = "ppPlayer18">
-			</div>
-
-			<div class ="playerName" id = "playerName">
-				<p id="playerName18" class="policeSize">KARL</p>
-			</div>
-		</div>
-
+		{% endblock content17 %}
 	</div>
 </div>
