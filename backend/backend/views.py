@@ -6,7 +6,7 @@
 #    By: lflandri <lflandri@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/08 14:00:09 by lflandri          #+#    #+#              #
-#    Updated: 2024/01/23 19:58:31 by lflandri         ###   ########.fr        #
+#    Updated: 2024/01/26 17:01:30 by lflandri         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -152,10 +152,14 @@ def changePassword(request):
     userId = check["userId"]
     user = User.objects.all().filter(idUser=userId)[0]
         
-    password_check = connectionPassword.objects.all().filter(idUser=user.idUser)[0]
-    hash = hashlib.sha512(currentPassword.encode(), usedforsecurity=True)
-    if hash.hexdigest() != password_check.password:
-        return JsonResponse({"success" : False, "error" : "Wrong account password, please try again !"})
+    password_check = connectionPassword.objects.all().filter(idUser=user.idUser)
+    if (len(password_check) != 0): #if user has a password
+        password_check = password_check[0]
+        hash = hashlib.sha512(currentPassword.encode(), usedforsecurity=True)
+        if hash.hexdigest() != password_check.password:
+            return JsonResponse({"success" : False, "error" : "Wrong account password, please try again !"})
+    else :			#if user hasn't a password
+        password_check = connectionPassword(idPassword=user.idUser, password="", idUser=user)
     if newPassword != newPasswordComfirm:
         return JsonResponse({"success" : False, "error" : "New password is different from new password confirmation, please try again !"})
     else:

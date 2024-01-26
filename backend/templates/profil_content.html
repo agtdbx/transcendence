@@ -28,8 +28,9 @@
 
 				<div class="black_grey_div" id="42_container" style="margin-bottom: 10px; height:20%;">
 					<p id="42_link_profil_page" style="margin:auto; color:white; text-align:center; font-size:300%;" >42 Link : <span id="42_link_status_profil"></span></p>
-					<button class ="btn-drg" style=" display:block; margin:auto; margin-top:5px; width:50%; font-size:200%;">Unlink</button>
-					<script src="{% static 'javascript/profil/42_link.js' %}" ></script>
+					<a id="link-42-profil" type="button" style="text-align:center;text-decoration:none; width:50%; margin:auto; font-size:200%;" class ="btn-drg" id = "btn-pop-link-42" href="https://api.intra.42.fr/oauth/authorize?client_id=u-s4t2ud-1b900294f4f0042d646cdbafdf98a5fe9216f3efd76b592e56b7ae3a18a43bd1&redirect_uri=https%3A%2F%2Flocalhost%3A4200%2F9&response_type=code">LINK 42</a>
+					<button id="unlink-42-profil" class ="btn-drg" style=" display:block; margin:auto; margin-top:5px; width:50%; font-size:200%;" onclick=removeLink()>Unlink</button>
+					<script>checkislinked();</script>
 				</div>
 
 
