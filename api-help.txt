@@ -2,10 +2,12 @@ API HELP :
 
 REQUEST FORM
     {'type' : <type>, 'cmd' : <cmd>, ...}
+    -> Reply to request
+    => Message recieved without request
 
 
 ERROR
-    In case of bad request, you will recieved this reply :
+    => Error recieved
         'type' : 'error'
         'error' : <error>
 
@@ -25,6 +27,7 @@ CONNECTION
         'password' : <password>
         -> 'type' : 'connectionReply'
            'success': true | false
+
 
 MESSAGE
     send message
@@ -64,6 +67,11 @@ QUICK GAME ROOM
         -> 'type' : 'quickRoomResponse'
            'quickRoomId' : <quick room id>
 
+    quit game wait
+        'type' : 'quickRoom'
+        'cmd' : 'quitRoom'
+        -> No more field
+
     => Game start
         'type' : 'gameStart'
         'gamePort' : <port> # port of the websocket for game
@@ -89,6 +97,11 @@ GAME ROOM
         'cmd' : inviteGameRoom'
         'targetId' : <user id> | 'ia'
         'roomId' : <roomId>
+        -> No more field
+
+    quit game room
+        'type' : 'quickRoom'
+        'cmd' : 'quitGameRoom'
         -> No more field
 
     change team

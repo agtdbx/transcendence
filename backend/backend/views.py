@@ -6,7 +6,7 @@
 #    By: aderouba <aderouba@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/08 14:00:09 by lflandri          #+#    #+#              #
-#    Updated: 2024/01/23 17:30:59 by aderouba         ###   ########.fr        #
+#    Updated: 2024/01/26 16:54:33 by aderouba         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,6 +28,10 @@ from .views_connection import checkToken
 # **************************************************************************** #
 def index(request):
     return render(request, 'index.html')
+
+
+def apiDoc(request):
+    return render(request, 'api_doc.html')
 
 
 @csrf_exempt
