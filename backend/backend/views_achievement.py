@@ -6,7 +6,7 @@
 #    By: lflandri <lflandri@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/17 15:33:50 by lflandri          #+#    #+#              #
-#    Updated: 2024/01/18 17:31:52 by lflandri         ###   ########.fr        #
+#    Updated: 2024/01/26 20:09:51 by lflandri         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,6 +21,7 @@ from db_test.models import User, Achivement
 import datetime
 
 from .forms import UserForm
+from .views_user_relation import getTarget
 
 from . import views
 from .views import *
@@ -162,7 +163,7 @@ def getotherachievement(request):
 
     # userId = check["userId"]
     # user = User.objects.all().filter(idUser=userId)[0]
-    target = views.getTarget(request.POST.get('friend'))
+    target = getTarget(request.POST.get('friend'))
     if target == None:
         return JsonResponse({"success": False, "content" : "Inexistant user." })
     if not createAchievementIfNot(target) :
