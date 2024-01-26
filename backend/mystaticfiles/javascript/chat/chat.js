@@ -36,8 +36,15 @@ function enableChatConnection()
 		endChatConnection();
 	}
 
-	console.log("Create ChatSocket");
-	chatSocket = new WebSocket("ws://" + window.location.hostname + ":8765");
+	console.log("Try create ChatSocket at wss://" + window.location.hostname + ":8765/websocket");
+	try {
+		chatSocket = new WebSocket("wss://" + window.location.hostname + ":8765/websocket/")
+	}
+	catch (error)
+	{
+		console.error("ERROR :", error);
+		return
+	}
 
 	chatSocket.onopen = function(e)
 	{
@@ -47,6 +54,8 @@ function enableChatConnection()
 	}
 
 	chatSocket.onmessage = onRecieveMessage;
+
+	chatSocket.onerror = function(e) {console.error("ERROR :", e)};
 }
 
 
