@@ -138,7 +138,8 @@ STATIC_URL = 'static/'
 
 #Add this in your settings.py file:
 STATICFILES_DIRS = [
-    BASE_DIR / "mystaticfiles"
+    BASE_DIR / "mystaticfiles",
+    BASE_DIR / "media"
 ]
 
 # Default primary key field type
