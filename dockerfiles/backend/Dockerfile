@@ -5,7 +5,7 @@ RUN apk update && apk upgrade && \
 RUN rm -f /var/cache/apk/*
 
 RUN pip install django django.db psycopg2 django-sslserver pyjwt django-filter \
-	tokens websockets
+	tokens websockets requests
 
 RUN pip install pytz --upgrade
 RUN pip install tzdata --upgrade

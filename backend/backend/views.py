@@ -3,24 +3,25 @@
 #                                                         :::      ::::::::    #
 #    views.py                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: aderouba <aderouba@student.42.fr>          +#+  +:+       +#+         #
+#    By: lflandri <lflandri@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/08 14:00:09 by lflandri          #+#    #+#              #
-#    Updated: 2024/01/23 17:30:59 by aderouba         ###   ########.fr        #
+#    Updated: 2024/01/26 17:51:10 by lflandri         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-import os
+import  os
 
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
 from django.shortcuts import render
 
 from db_test.models import User
+import datetime
 
 from .forms import UserForm
-
 from .views_connection import checkToken
+from .views_connection import checkApi42Request
 
 
 # **************************************************************************** #
@@ -112,6 +113,11 @@ def section(request, num):
         else:
             return render(request, "login.html")
 
+    #conecting with 42 api
+    elif num == 3 and fullPage and request.GET.get('code', None) != None:
+        return checkApi42Request(request, True, None)
+
+
     # Check token
     check = checkToken(request)
     if check["success"] == False:
@@ -161,7 +167,9 @@ def section(request, num):
             return render(request,"tournamentcreate.html")
 
     elif num == 9:
-        if fullPage:
+        if fullPage and request.GET.get('code', None) != None:
+            return checkApi42Request(request, False, user)
+        elif fullPage :
             return render(request, "profil_content_full.html", {'user': user})
         else:
             return render(request,"profil_content.html", {'user': user})

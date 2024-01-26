@@ -22,6 +22,8 @@ from . import views_message
 from . import views_user_relation
 from . import views_achievement
 from .views_achievement import *
+from . import views_42link
+from .views_42link import *
 from django.conf.urls.static import static
 
 
@@ -58,6 +60,10 @@ urlpatterns = [
 
 	#User message
     path("getMessages", views_message.getMessages, name="getMessages"),
+    
+    #User 42 connection
+	path('checkislinked', views_42link.checkislinked, name='checkislinked'),
+	path('removelink', views_42link.removelink, name='removelink'),    
 ]
 
 if settings.DEBUG:

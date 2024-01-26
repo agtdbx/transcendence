@@ -1,0 +1,31 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en-US">
+	{% block content %}
+	<input type="hidden" name="achievement" value="{{ user.tokenJWT }}" id="input-token42">
+	{% endblock content %}
+
+
+{% include "head.html" %}
+
+<body id="body">
+	<div id="Header"></div>
+
+	<div id="content">
+
+		{% include "mainpage.html" %}
+
+	</div>
+
+</body>
+
+<script>
+	document.cookie = "token=" + document.getElementById('input-token42').value;
+	changeBackground("3");
+	manageHeader("3");
+	enableChatConnection();
+	manageChat("3");
+	history.pushState({section: 3}, "", "/3");
+</script>
+
+</html>

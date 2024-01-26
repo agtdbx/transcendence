@@ -1,12 +1,15 @@
 # **************************************************************************** #
 #                                Check Functions                               #
 # **************************************************************************** #
-import hashlib, jwt, random
+import hashlib, jwt, random, os
 import backend.settings as settings
+import requests
 
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
-from db_test.models import User, connectionPassword
+from db_test.models import User, connectionPassword, connection42
+from django.shortcuts import render
+
 
 
 @csrf_exempt
@@ -79,11 +82,15 @@ def changePassword(request):
     check = checkToken(request)
     userId = check["userId"]
     user = User.objects.all().filter(idUser=userId)[0]
-
-    password_check = connectionPassword.objects.all().filter(idUser=user.idUser)[0]
-    hash = hashlib.sha512(currentPassword.encode(), usedforsecurity=True)
-    if hash.hexdigest() != password_check.password:
-        return JsonResponse({"success" : False, "error" : "Wrong account password, please try again !"})
+        
+    password_check = connectionPassword.objects.all().filter(idUser=user.idUser)
+    if (len(password_check) != 0): #if user has a password
+        password_check = password_check[0]
+        hash = hashlib.sha512(currentPassword.encode(), usedforsecurity=True)
+        if hash.hexdigest() != password_check.password:
+            return JsonResponse({"success" : False, "error" : "Wrong account password, please try again !"})
+    else :			#if user hasn't a password
+        password_check = connectionPassword(idPassword=user.idUser, password="", idUser=user)
     if newPassword != newPasswordComfirm:
         return JsonResponse({"success" : False, "error" : "New password is different from new password confirmation, please try again !"})
     else:
@@ -145,3 +152,64 @@ def checkToken(request):
         return {"success" : False, "error" : "Invalid token"}
 
     return {"success" : True, "userId" : userId}
+
+def checkApi42Request(request, islogin, user):
+    code = request.GET.get('code')
+	# First request : get an users tocken
+    params = \
+    {
+        "grant_type": "authorization_code",
+		"client_id": "u-s4t2ud-1b900294f4f0042d646cdbafdf98a5fe9216f3efd76b592e56b7ae3a18a43bd1",
+		"client_secret": os.getenv('API_KEY'),
+		"code": code,
+		"redirect_uri": "https://localhost:4200/3" if islogin else "https://localhost:4200/9",
+		
+    }
+    response = requests.post("https://api.intra.42.fr/oauth/token", params=params)
+    if response.status_code != 200:
+        return render(request, "login_full.html")
+    response = response.json()
+    tocken = response["access_token"]
+    headers= {'Authorization': 'Bearer {}'.format(tocken)}
+    response = requests.get("https://api.intra.42.fr/v2/me", headers=headers)
+    if response.status_code != 200:
+        return render(request, "signin_full.html")
+    response = response.json()
+    test = connection42.objects.all().filter(login=response["id"])
+    if (not islogin) :
+        if len(test) == 0:
+            try :
+                password42 = connection42(login=response["id"], idUser=user)
+                password42.save()
+            except:
+                user = user
+        return render(request, "profil_content_full.html", {'user': user})
+	#not already log
+    if len(test) == 0:
+        id = User.objects.all().count() + 1
+        idType = 1
+
+        token = jwt.encode({"userId": id}, settings.SECRET_KEY, algorithm="HS256")
+        username = response["login"]
+        number = 0
+        while User.objects.all().filter(username=username):
+            username = response["login"] + str(number)
+            number+=1
+            if number > 99 :
+                response["login"] = ""
+        try:
+            imgpath = ["images/default/Scout.png", "images/default/Driller.png", "images/default/Engineer.png", "images/default/Soldier.png"]
+            user = User(idUser=id, idType=idType, username=username, profilPicture=imgpath[random.randint(0,3)], tokenJWT=token, money=0, idStatus=0)
+            user.save()
+            password42 = connection42(login=response["id"], idUser=user)
+            password42.save()
+        except:
+            return render(request, "login_full.html")
+        return render(request, "mainpage_full_tocken42.html", {'user': user})
+	#not already log
+    else:
+        try:
+            user = User.objects.all().filter(connection42=test[0])[0]
+        except:
+            return render(request, "login_full.html")
+        return render(request, "mainpage_full_tocken42.html", {'user': user})
