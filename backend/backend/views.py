@@ -6,7 +6,7 @@
 #    By: lflandri <lflandri@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/08 14:00:09 by lflandri          #+#    #+#              #
-#    Updated: 2024/01/26 17:01:30 by lflandri         ###   ########.fr        #
+#    Updated: 2024/01/26 17:31:45 by lflandri         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,7 +29,7 @@ from .forms import UserForm
 # **************************************************************************** #
 
 
-def checkApi42Request(request):
+def checkApi42Request(request, islogin, user):
     code = request.GET.get('code')
 	# First request : get an users tocken
     params = \
@@ -38,7 +38,7 @@ def checkApi42Request(request):
 		"client_id": "u-s4t2ud-1b900294f4f0042d646cdbafdf98a5fe9216f3efd76b592e56b7ae3a18a43bd1",
 		"client_secret": os.getenv('API_KEY'),
 		"code": code,
-		"redirect_uri": "https://localhost:4200/3",
+		"redirect_uri": "https://localhost:4200/3" if islogin else "https://localhost:4200/9",
 		
     }
     response = requests.post("https://api.intra.42.fr/oauth/token", params=params)
@@ -52,6 +52,14 @@ def checkApi42Request(request):
         return render(request, "signin_full.html")
     response = response.json()
     test = connection42.objects.all().filter(login=response["id"])
+    if (not islogin) :
+        if len(test) == 0:
+            try :
+                password42 = connection42(login=response["id"], idUser=user)
+                password42.save()
+            except:
+                user = user
+        return render(request, "profil_content_full.html", {'user': user})
 	#not already log
     if len(test) == 0:
         id = User.objects.all().count() + 1
@@ -66,8 +74,8 @@ def checkApi42Request(request):
             if number > 99 :
                 response["login"] = ""
         try:
-            str = ["images/default/Scout.png", "images/default/Driller.png", "images/default/Engineer.png", "images/default/Soldier.png"]
-            user = User(idUser=id, idType=idType, username=username, profilPicture=str[random.randint(0,3)], tokenJWT=token, money=0, idStatus=0)
+            imgpath = ["images/default/Scout.png", "images/default/Driller.png", "images/default/Engineer.png", "images/default/Soldier.png"]
+            user = User(idUser=id, idType=idType, username=username, profilPicture=imgpath[random.randint(0,3)], tokenJWT=token, money=0, idStatus=0)
             user.save()
             password42 = connection42(login=response["id"], idUser=user)
             password42.save()
@@ -289,7 +297,7 @@ def section(request, num):
 
     #conecting with 42 api
     elif num == 3 and fullPage and request.GET.get('code', None) != None:
-        return checkApi42Request(request)
+        return checkApi42Request(request, True, None)
 
 
     # Check token
@@ -341,7 +349,9 @@ def section(request, num):
             return render(request,"tournamentcreate.html")
 
     elif num == 9:
-        if fullPage:
+        if fullPage and request.GET.get('code', None) != None:
+            return checkApi42Request(request, False, user)
+        elif fullPage :
             return render(request, "profil_content_full.html", {'user': user})
         else:
             return render(request,"profil_content.html", {'user': user})
