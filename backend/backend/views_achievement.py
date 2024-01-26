@@ -6,7 +6,7 @@
 #    By: lflandri <lflandri@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/17 15:33:50 by lflandri          #+#    #+#              #
-#    Updated: 2024/01/26 20:09:51 by lflandri         ###   ########.fr        #
+#    Updated: 2024/01/26 20:12:43 by lflandri         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -40,10 +40,13 @@ def createAchievementIfNot(user):
         return False
 
 
-def listAchievement(user):
+def listAchievement(user, isself):
     achievement = Achivement.objects.all().filter(idUser=user.idUser)[0]
     imgPath = "/static/image/achievement/"
-    errorDescription = "You don't have the achievement"
+    if isself :
+        errorDescription = "You don't have this achievement"
+    else :
+        errorDescription = "This player doesn't have this achievement"
     errorName = "ERR://23¤Y%/ "
     returnListe = [
     {
@@ -153,7 +156,7 @@ def getselfachievement(request):
     user = User.objects.all().filter(idUser=userId)[0]
     if not createAchievementIfNot(user) :
         return JsonResponse({"success": False, "content" : "Can't create achievement entry in db."})
-    returnListe = listAchievement(user)
+    returnListe = listAchievement(user, True)
     return JsonResponse({"success": True, "content" : "", "listeAchievement" : returnListe})
 
 def getotherachievement(request):
@@ -168,5 +171,5 @@ def getotherachievement(request):
         return JsonResponse({"success": False, "content" : "Inexistant user." })
     if not createAchievementIfNot(target) :
         return JsonResponse({"success": False, "content" : "Can't create achievement entry in db."})
-    returnListe = listAchievement(target)
+    returnListe = listAchievement(target, False)
     return JsonResponse({"success": True, "content" : "", "listeAchievement" : returnListe})
