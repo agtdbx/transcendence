@@ -472,8 +472,11 @@ p {
 	position: absolute;
 	-ms-transform: translate(-50%, -50%);
 	transform: translate(-50%, -50%);
-	top: 5%;
+	top: 5.5%;
 	left: 84%;
+	width: 18%;
+	margin-right: 1%;
+	text-align:right;
 	color: black;
 	font-size: 2vw;
 	background: transparent;
