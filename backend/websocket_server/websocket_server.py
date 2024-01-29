@@ -4,19 +4,6 @@ import json, jwt, sys, os
 from backend.settings import SECRET_KEY
 from db_test.models import User
 from websocket_server.chat.message import general_message, private_message
-import ssl
-
-ssl_context = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
-try :
-    # ssl_cert = "/certs/certificate.crt"
-    # ssl_key = "/certs/private.key"
-    ssl_cert = "/certs/server.crt"
-    ssl_key = "/certs/server.pem"
-
-    ssl_context.load_cert_chain(ssl_cert, keyfile=ssl_key)
-except Exception as error:
-    print("ERROR ON LOAD SSH CERT AND KEY :", error, file=sys.stderr)
-    exit()
 
 # Liste pour stocker les connexions actives
 connected_clients = dict()
@@ -106,8 +93,7 @@ async def handle_client(websocket, path):
 
 
 # Démarrer le serveur WebSocket
-start_server = websockets.serve(handle_client, "0.0.0.0", 8765, ssl=ssl_context)
-# start_server = websockets.serve(handle_client, "0.0.0.0", 8765)
+start_server = websockets.serve(handle_client, "0.0.0.0", 8765)
 
 asyncio.get_event_loop().run_until_complete(start_server)
 asyncio.get_event_loop().run_forever()
