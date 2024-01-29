@@ -473,8 +473,35 @@ p {
 	-ms-transform: translate(-50%, -50%);
 	transform: translate(-50%, -50%);
 	top: 5.5%;
-	left: 84%;
-	width: 18%;
+	left: 86%;
+	width: 12%;
+	margin-right: 1%;
+	text-align:right;
+	color: black;
+	font-size: 2vw;
+	background: transparent;
+}
+
+#credit-nav{
+	position: relative;
+	-ms-transform: translate(-50%, -50%);
+	transform: translate(-50%, -50%);
+	top: 48%;
+	left: 78.78%;
+	width: 2%;
+	margin-right: 1%;
+	text-align:right;
+	color: black;
+	font-size: 2vw;
+}
+
+#main-user-money{
+	position: absolute;
+	-ms-transform: translate(-50%, -50%);
+	transform: translate(-50%, -50%);
+	top: 5.5%;
+	left: 76%;
+	width: 4%;
 	margin-right: 1%;
 	text-align:right;
 	color: black;
@@ -705,7 +732,7 @@ p {
 	left: 1%;
 	width:98%;
 	height:93%;
-	background: rgba(40, 35, 23, 0.75);
+	background: transparent;
 	overflow-y: auto;
 }
 
@@ -788,13 +815,25 @@ p {
 	height:100%;
 }
 
+#ranktext{
+	position: absolute;
+	text-align: right;
+	width:17%;
+	height:26%;
+	top: 6%;
+	left: 50%;
+	object-fit: cover;
+	background: hidden;
+	color: white;
+}
+
 #credittext{
 	position: absolute;
 	text-align: right;
-	width:25%;
+	width:10%;
 	height:26%;
 	top: 6%;
-	left: 68.5%;
+	left: 82%;
 	object-fit: cover;
 	background: hidden;
 	color: white;
@@ -828,7 +867,7 @@ p {
 
 .playerName{
 	position: absolute;
-	width:50%;
+	width:40%;
 	height:65%;
 	top: 30%;
 	left: 30%;
