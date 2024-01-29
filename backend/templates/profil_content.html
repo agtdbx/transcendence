@@ -5,18 +5,20 @@
 
 			<!-- Block Profil Right-->
 
-			<div class="col-md-4 col-lg-4 col-xl-4 grey_div" id="profil_pannel_utils" style="min-height:800px;">
+			<div class="col-md-4 col-lg-4 col-xl-4 grey_div" id="profil_pannel_utils" style="min-height:600px; height:750px;">
 				<div class="black_grey_div" id="user_info_container" style="color:white; padding:2%; margin-bottom: 10px; margin-Top: 10px; height:22%;">
 					<div id="pp_profil_page_div" style="float:left; width:20%; margin-right :2%; border-radius: 600px; border: 3px solid #59351B;">
 						{% block contentImg %}
 						<img src="/static/{{ user.profilPicture }}" width="100%" id="pp_profil_page_img" style="border-radius: 600px;" onclick="changePage(`11`)">
 						{% endblock contentImg %}
 					</div>
-					<button data-section="10" style="font-size:200%; background: transparent; color:white; border:none;" class="btn-drg" id="rank_profil_page" onclick="changePage(this.dataset.section)">Money : {{ user.money }}</button>
+					<button data-section="10" style="font-size:200%; background: transparent; color:white; border:none;" class="btn-drg" id="rank_profil_page" onclick="changePage(this.dataset.section)">Rank : {{ pos }}</button>
 					{% block content %}
 					<p style="font-size:200%;" id="pseudo_profil_page" onclick="createpup('name')">{{ user.username }}</p>
 					{% endblock content %}
-					<button data-section="12" class ="btn-drg" style="clear:both; display:block; margin:auto; margin-top:5px; width:50%; font-size:150%;" onclick="createpup('pass')">Change password</button>
+					<button data-section="12" class ="btn-drg" style="clear:both; margin-left:2.5%; width:30%; font-size:75%;" onclick="changePage(`11`)">Change picture</button>
+					<button data-section="12" class ="btn-drg" style="clear:both; margin-left:1%; width:30%; font-size:75%;" onclick="createpup('name')">Change username</button>
+					<button data-section="12" class ="btn-drg" style="clear:both; margin-left:1%; width:30%; font-size:75%;" onclick="createpup('pass')">Change password</button>
 					<form id="data-request-relation">
 						{% csrf_token %}
 						<input type="hidden" name="friend" value="" id="data-request-relation-input">
@@ -48,9 +50,10 @@
 						<button class ="btn-drg" style=" display:inline-block; width:45%;" id="successbutton" onclick=ContactList('blocked')>Blocked</button>
 					</div>
 				</div>
-
+				
 				<button data-section="0" button class ="changePage btn-drg" style=" display:block; margin:auto; margin-top:7%; width:50%; font-size:200%;" id="successbutton" onclick="disconnection()">Diconnect</button>
 
+			
 			</div>
 
 			<!-- Block Win Rate && Match History-->
@@ -80,7 +83,7 @@
 				<!-- Match history-->
 
 				<div id="match_history_content" style="background-color: rgba(40, 35, 23, 0.75); padding-top: 2%; padding-bottom: 2%;">
-					<div style="height: 800px; overflow-y:scroll;">
+					<div style="min-height:600px; height:652px; overflow-y:scroll;">
 						<table id="match_history" style="width: 100%; border-collapse: separate;" cellpadding="0px"cellspacing="6px">
 							<script src="{% static 'javascript/profil/match_history_creator.js' %}" ></script>
 						</table>

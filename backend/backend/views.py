@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    views.py                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: lflandri <lflandri@student.42.fr>          +#+  +:+       +#+         #
+#    By: hde-min <hde-min@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/08 14:00:09 by lflandri          #+#    #+#              #
-#    Updated: 2024/01/26 17:51:10 by lflandri         ###   ########.fr        #
+#    Updated: 2024/01/29 16:10:37 by hde-min          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -167,26 +167,32 @@ def section(request, num):
             return render(request,"tournamentcreate.html")
 
     elif num == 9:
+        ListUser = User.objects.all()
+        i = 1
+        j = 0
+        while j < len(ListUser):
+            if user.money < ListUser[j].money:
+                i = i + 1
+            j = j + 1
         if fullPage and request.GET.get('code', None) != None:
             return checkApi42Request(request, False, user)
         elif fullPage :
-            return render(request, "profil_content_full.html", {'user': user})
+            return render(request, "profil_content_full.html", {'user': user, 'pos': i})
         else:
-            return render(request,"profil_content.html", {'user': user})
+            return render(request,"profil_content.html", {'user': user, 'pos': i})
 
     elif num == 10:
         ListUser = User.objects.all()
         Ladderlist = [user] * 18
         test = [user] * len(ListUser)
+        actUser = user
         
         j = 0
         while j < len(ListUser):
             test[j] = ListUser[j]           #create a usable list
             j = j + 1
         
-        Karl = User(idUser=0, idType=0, username="Karl", profilPicture="images/default/Karl.png", tokenJWT="kekw", money=100000, idStatus=0)
         Void = User(idUser=0, idType=0, username="", profilPicture="images/default/void.png", tokenJWT="", money=0, idStatus=0)
-        test.insert(1 , Karl)           #adding Karl
 
         j = 0
         while j < 18 and len(test) != 0:            #keeping only the 18 best
@@ -204,10 +210,28 @@ def section(request, num):
         while j < 18:
             Ladderlist[j] = Void
             j = j + 1
-        if fullPage:
-            return render(request, "ladder_full.html", {'Ladderlist': Ladderlist})
+            
+        j = 0
+        while j < 18:                                           #check if user is in the list
+            if actUser.username == Ladderlist[j].username:
+                i = -1
+            j = j + 1
+
+        if i != -1:                                             #if user not in list add him in spot 18
+            Ladderlist[17] = actUser
+            ListUser = User.objects.all()
+            i = 1
+            j = 0
+            while j < len(ListUser):                               #if user is in the list we need is rank
+                if actUser.money < ListUser[j].money:
+                    i = i + 1
+                j = j + 1
         else:
-            return render(request,"ladder.html", {'Ladderlist': Ladderlist})
+            i = 18
+        if fullPage:
+            return render(request, "ladder_full.html", {'Ladderlist': Ladderlist, 'pos': i})
+        else:
+            return render(request,"ladder.html", {'Ladderlist': Ladderlist, 'pos': i})
 
     elif num == 11:
         form = UserForm(request.POST, request.FILES)
@@ -223,6 +247,11 @@ def section(request, num):
             return render(request, "changeProfilePicture_full.html", {"form":UserForm(request.POST, request.FILES)})
         else:
             return render(request,"changeProfilePicture.html", {"form":UserForm(request.POST, request.FILES)})
+    elif num == 12:
+        if fullPage:
+            return render(request, "beer_full.html")
+        else:
+            return render(request,"beer.html")
 
     else:
         if fullPage:

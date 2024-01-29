@@ -1,11 +1,13 @@
 {% load static %}
 <div id="Page">
 	<div id="pp">
-					<form method = "post" enctype="multipart/form-data">
-						{% csrf_token %}
-						{{ form.as_p }}
-						<button type="submit">Upload</button>
-					</form>
-					<button data-section="9" type="button" class ="changePage btn-drg" id = "main-btn-custom" onclick="changePage(this.dataset.section)">Return to profile</button>
+		<form method = "post" enctype="multipart/form-data" id="form-profile">
+			{% csrf_token %}
+			{{ form.as_p }}
+			<button type="submit">Upload</button>
+		</form>
+		<button data-section="9" type="button" class ="changePage btn-drg" id = "profilepic-button" onclick="changePage(this.dataset.section)">Return to profile</button>
+	</div>
+	<div id="beer" onclick="changePage('12')">
 	</div>
 </div>

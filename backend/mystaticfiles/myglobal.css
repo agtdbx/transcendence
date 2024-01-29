@@ -472,8 +472,38 @@ p {
 	position: absolute;
 	-ms-transform: translate(-50%, -50%);
 	transform: translate(-50%, -50%);
-	top: 5%;
-	left: 84%;
+	top: 5.5%;
+	left: 86%;
+	width: 12%;
+	margin-right: 1%;
+	text-align:right;
+	color: black;
+	font-size: 2vw;
+	background: transparent;
+}
+
+#credit-nav{
+	position: relative;
+	-ms-transform: translate(-50%, -50%);
+	transform: translate(-50%, -50%);
+	top: 48%;
+	left: 78.78%;
+	width: 2%;
+	margin-right: 1%;
+	text-align:right;
+	color: black;
+	font-size: 2vw;
+}
+
+#main-user-money{
+	position: absolute;
+	-ms-transform: translate(-50%, -50%);
+	transform: translate(-50%, -50%);
+	top: 5.5%;
+	left: 76%;
+	width: 4%;
+	margin-right: 1%;
+	text-align:right;
 	color: black;
 	font-size: 2vw;
 	background: transparent;
@@ -702,7 +732,7 @@ p {
 	left: 1%;
 	width:98%;
 	height:93%;
-	background: rgba(40, 35, 23, 0.75);
+	background: transparent;
 	overflow-y: auto;
 }
 
@@ -785,13 +815,25 @@ p {
 	height:100%;
 }
 
+#ranktext{
+	position: absolute;
+	text-align: right;
+	width:17%;
+	height:26%;
+	top: 6%;
+	left: 50%;
+	object-fit: cover;
+	background: hidden;
+	color: white;
+}
+
 #credittext{
 	position: absolute;
 	text-align: right;
-	width:25%;
+	width:10%;
 	height:26%;
 	top: 6%;
-	left: 68.5%;
+	left: 82%;
 	object-fit: cover;
 	background: hidden;
 	color: white;
@@ -825,7 +867,7 @@ p {
 
 .playerName{
 	position: absolute;
-	width:50%;
+	width:40%;
 	height:65%;
 	top: 30%;
 	left: 30%;
@@ -1611,4 +1653,70 @@ background-color: rgba(207,188,188,0.5);
     -moz-filter: blur(5px);
     -o-filter: blur(5px);
     -ms-filter: blur(5px); */
+}
+
+/* change profile picture page*/
+
+#pp{
+	position: absolute;
+	-ms-transform: translate(-50%, -50%);
+	transform: translate(-50%, -50%);
+	top: 70%;
+	left: 50%;
+	width: 50%;
+	height: 40%;
+	background-color: rgba(18,16,11,0.8);
+
+}
+
+#profilepic-button{
+	position: absolute;
+	-ms-transform: translate(-50%, -50%);
+	transform: translate(-50%, -50%);
+	top: 80%;
+	left: 80%;
+	width: 20%;
+	height: 20%;
+}
+
+#form-profile{
+	position: absolute;
+	top: 10%;
+	left: 10%;
+	color: white;
+}
+
+#beer{
+	position: absolute;
+	top: 11%;
+	left: 10%;
+	width: 15%;
+	height: 50%;
+	background-color: transparent;
+}
+
+#beerPage{
+	position: absolute;
+	-ms-transform: translate(-50%, -50%);
+	transform: translate(-50%, -50%);
+	top: 93%;
+	left: 50%;
+	width: 50%;
+	height: 10%;
+	background-color: rgba(18,16,11,0.8);
+}
+
+#beerText{
+	color: #ff9c00;
+	font-size: 1.5vw;
+	position: absolute;
+	top: 0%;
+	left: 1%;
+	-webkit-text-stroke: 1px #fd4c00;
+}
+
+#beer-button{
+	position: relative;
+	left:90%;
+	top:65%;
 }
