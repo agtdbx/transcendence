@@ -6,7 +6,7 @@
 #    By: hde-min <hde-min@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/08 14:00:09 by lflandri          #+#    #+#              #
-#    Updated: 2024/01/29 14:06:34 by hde-min          ###   ########.fr        #
+#    Updated: 2024/01/29 14:43:42 by hde-min          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -221,6 +221,11 @@ def section(request, num):
             return render(request, "changeProfilePicture_full.html", {"form":UserForm(request.POST, request.FILES)})
         else:
             return render(request,"changeProfilePicture.html", {"form":UserForm(request.POST, request.FILES)})
+    elif num == 12:
+        if fullPage:
+            return render(request, "beer_full.html")
+        else:
+            return render(request,"beer.html")
 
     else:
         if fullPage:

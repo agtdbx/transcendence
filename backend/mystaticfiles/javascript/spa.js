@@ -18,6 +18,10 @@ function changeBackground(num)
 		body.style.backgroundImage = 'url(/static/image/background/profile.jpg)';
 	else if (num == "10")
 		body.style.backgroundImage = 'url(/static/image/background/ladder.png)';
+	else if (num == "11")
+		body.style.backgroundImage = 'url(/static/image/background/abyss.png)';
+	else if (num == "12")
+		body.style.backgroundImage = 'url(/static/image/background/abyss.png)'
 	else
 	{
 		if (num.length >= 6 && String(num).substring(0, 6) == "profil")
