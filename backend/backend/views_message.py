@@ -72,7 +72,7 @@ def getMessages(request):
             idUser = int(msg.idUser.idUser)
             users = User.objects.all().filter(idUser=idUser)
             user = users[0]
-            message = [msg.id, user.username, "/media/" + str(user.profilPicture), msg.date, msg.data]
+            message = [msg.id, user.username, "/static/" + str(user.profilPicture), msg.date, msg.data]
             messages.append(message)
         return JsonResponse({"success" : True, "messages" : messages, "lastMessagesLoad" : start})
     else:

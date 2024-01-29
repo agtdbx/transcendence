@@ -51,7 +51,7 @@ async def general_message(message:str, user:User):
 
     message = message.replace("'", " ")
     message = message.replace('"', '')
-    strMessage = str({"message" : message, "username" : user.username, "pp" : "/media/" + str(user.profilPicture),
+    strMessage = str({"message" : message, "username" : user.username, "pp" : "/static/" + str(user.profilPicture),
                     "date" : str(date), "channel" : "general"})
     strMessage = strMessage.replace("'", '"')
 
@@ -87,7 +87,7 @@ async def private_message(myid:int, channel:str, message:str, user:User):
         msg = PrivMessage.objects.create(id=idMsg, idUser=user, date=date, data=message, idTarget=idTarget)
         msg.save()
 
-        pp = "/media/" + str(user.profilPicture)
+        pp = "/static/" + str(user.profilPicture)
 
         message = message.replace("'", " ")
         message = message.replace('"', '')

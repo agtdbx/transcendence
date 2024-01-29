@@ -6,7 +6,7 @@
 #    By: hde-min <hde-min@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/08 14:00:09 by lflandri          #+#    #+#              #
-#    Updated: 2024/01/29 16:10:37 by hde-min          ###   ########.fr        #
+#    Updated: 2024/01/29 16:39:48 by hde-min          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -182,56 +182,37 @@ def section(request, num):
             return render(request,"profil_content.html", {'user': user, 'pos': i})
 
     elif num == 10:
-        ListUser = User.objects.all()
-        Ladderlist = [user] * 18
-        test = [user] * len(ListUser)
-        actUser = user
-        
-        j = 0
-        while j < len(ListUser):
-            test[j] = ListUser[j]           #create a usable list
-            j = j + 1
+        ListUser = list(User.objects.all().order_by("-money"))
+        ListUser = ListUser[:18]
         
         Void = User(idUser=0, idType=0, username="", profilPicture="images/default/void.png", tokenJWT="", money=0, idStatus=0)
 
-        j = 0
-        while j < 18 and len(test) != 0:            #keeping only the 18 best
-            i = 1
-            whoUser = 0
-            user = test[0]
-            while i < len(test):
-                if test[i].money > user.money:
-                    user = test[i]
-                    whoUser = i
-                i = i + 1
-            Ladderlist[j] = user
-            test.pop(whoUser)
-            j = j + 1
+        j = len(ListUser)
         while j < 18:
-            Ladderlist[j] = Void
-            j = j + 1
+            ListUser.append(Void)
+            j += 1
             
         j = 0
         while j < 18:                                           #check if user is in the list
-            if actUser.username == Ladderlist[j].username:
+            if user.username == ListUser[j].username:
                 i = -1
             j = j + 1
 
         if i != -1:                                             #if user not in list add him in spot 18
-            Ladderlist[17] = actUser
-            ListUser = User.objects.all()
+            ListUser[17] = user
+            ListUser2 = User.objects.all()
             i = 1
             j = 0
-            while j < len(ListUser):                               #if user is in the list we need is rank
-                if actUser.money < ListUser[j].money:
+            while j < len(ListUser2):                               #if user is in the list we need is rank
+                if user.money < ListUser2[j].money:
                     i = i + 1
                 j = j + 1
         else:
             i = 18
         if fullPage:
-            return render(request, "ladder_full.html", {'Ladderlist': Ladderlist, 'pos': i})
+            return render(request, "ladder_full.html", {'Ladderlist': ListUser, 'pos': i})
         else:
-            return render(request,"ladder.html", {'Ladderlist': Ladderlist, 'pos': i})
+            return render(request,"ladder.html", {'Ladderlist': ListUser, 'pos': i})
 
     elif num == 11:
         form = UserForm(request.POST, request.FILES)
