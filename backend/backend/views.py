@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    views.py                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: lflandri <lflandri@student.42.fr>          +#+  +:+       +#+         #
+#    By: hde-min <hde-min@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/08 14:00:09 by lflandri          #+#    #+#              #
-#    Updated: 2024/01/26 17:51:10 by lflandri         ###   ########.fr        #
+#    Updated: 2024/01/29 14:06:34 by hde-min          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -184,9 +184,7 @@ def section(request, num):
             test[j] = ListUser[j]           #create a usable list
             j = j + 1
         
-        Karl = User(idUser=0, idType=0, username="Karl", profilPicture="images/default/Karl.png", tokenJWT="kekw", money=100000, idStatus=0)
         Void = User(idUser=0, idType=0, username="", profilPicture="images/default/void.png", tokenJWT="", money=0, idStatus=0)
-        test.insert(1 , Karl)           #adding Karl
 
         j = 0
         while j < 18 and len(test) != 0:            #keeping only the 18 best
