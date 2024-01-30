@@ -6,7 +6,7 @@
 #    By: hde-min <hde-min@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/08 14:00:09 by lflandri          #+#    #+#              #
-#    Updated: 2024/01/30 14:18:22 by hde-min          ###   ########.fr        #
+#    Updated: 2024/01/30 15:27:04 by hde-min          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -227,7 +227,8 @@ def section(request, num):
         if form.is_valid():
             if not "/default/" in user.profilPicture.name:
                 file = "./media/" + user.profilPicture.name
-                os.remove(file)
+                if os.path.isfile(file):
+                    os.remove(file)
             data= form.cleaned_data.get("profilPicture")
             user.profilPicture = data
             user.save()
