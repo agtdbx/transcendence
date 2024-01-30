@@ -245,7 +245,7 @@ def getlistefriend(request):
     for link in linkFriendRequestList :
         try:
             friend = User.objects.all().filter(idUser=link.idTarget)[0]
-            listeRequest.append({"name": friend.username, "pp" : "/media/" + friend.profilPicture.name, "status" : friend.idStatus, "id" : friend.idUser})
+            listeRequest.append({"name": friend.username, "pp" : "/static/" + friend.profilPicture.name, "status" : friend.idStatus, "id" : friend.idUser})
         except:
             continue
     return JsonResponse({"success": True, "content" : "", "listcontact" : listeRequest })
@@ -263,7 +263,7 @@ def getlisteblocked(request):
     for link in linkFriendRequestList :
         try:
             friend = User.objects.all().filter(idUser=link.idTarget)[0]
-            listeRequest.append({"name": friend.username, "pp" : "/media/" + friend.profilPicture.name, "status" : friend.idStatus })
+            listeRequest.append({"name": friend.username, "pp" : "/static/" + friend.profilPicture.name, "status" : friend.idStatus })
         except:
             continue
     return JsonResponse({"success": True, "content" : "", "listcontact" : listeRequest })
