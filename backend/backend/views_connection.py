@@ -167,13 +167,19 @@ def checkApi42Request(request, islogin, user):
     }
     response = requests.post("https://api.intra.42.fr/oauth/token", params=params)
     if response.status_code != 200:
-        return render(request, "login_full.html")
+        if not islogin :
+            return render(request, "profil_content_full.html", {'user': user})
+        else :
+            return render(request, "signin_full.html")
     response = response.json()
     tocken = response["access_token"]
     headers= {'Authorization': 'Bearer {}'.format(tocken)}
     response = requests.get("https://api.intra.42.fr/v2/me", headers=headers)
     if response.status_code != 200:
-        return render(request, "signin_full.html")
+        if not islogin :
+            return render(request, "profil_content_full.html", {'user': user})
+        else :
+            return render(request, "signin_full.html")
     response = response.json()
     test = connection42.objects.all().filter(login=response["id"])
     if (not islogin) :
