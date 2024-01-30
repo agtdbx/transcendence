@@ -60,7 +60,7 @@ def checkSignin(request):
     token = jwt.encode({"userId": id}, settings.SECRET_KEY, algorithm="HS256")
     try:
         str = ["images/default/Scout.png", "images/default/Driller.png", "images/default/Engineer.png", "images/default/Soldier.png"]
-        user = User(idUser=id, idType=idType, username=username, profilPicture=str[random.randint(0,3)], tokenJWT=token, money=0, idStatus=0)
+        user = User(idUser=id, idType=idType, username=username, profilPicture=str[random.randint(0,3)], tokenJWT=token, money=id, idStatus=0)
         user.save()
     except:
         return JsonResponse({"success" : False, "error" : "Error on user creation"})

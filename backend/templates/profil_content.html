@@ -9,7 +9,7 @@
 				<div class="black_grey_div" id="user_info_container" style="color:white; padding:2%; margin-bottom: 10px; margin-Top: 10px; height:22%;">
 					<div id="pp_profil_page_div" style="float:left; width:20%; margin-right :2%; border-radius: 600px; border: 3px solid #59351B;">
 						{% block contentImg %}
-						<img src="/static/{{ user.profilPicture }}" width="100%" id="pp_profil_page_img" style="border-radius: 600px;" onclick="changePage(`11`)">
+						<img src="/static/{{ user.profilPicture }}" width="100%" id="pp_profil_page_img" style="width: 70px; height: 70px; border-radius: 35px;" onclick="changePage(`11`)">
 						{% endblock contentImg %}
 					</div>
 					<button data-section="10" style="font-size:200%; background: transparent; color:white; border:none;" class="btn-drg" id="rank_profil_page" onclick="changePage(this.dataset.section)">Rank : {{ pos }}</button>

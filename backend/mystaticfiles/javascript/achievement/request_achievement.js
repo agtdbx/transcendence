@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   request_achievement.js                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lflandri <lflandri@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hde-min <hde-min@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 15:42:07 by lflandri          #+#    #+#             */
-/*   Updated: 2024/01/18 17:38:00 by lflandri         ###   ########.fr       */
+/*   Updated: 2024/01/30 14:57:50 by hde-min          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ function addBosco() {
 		let boscocheck = document.getElementById("bosco-pop-balise");
 		let bosco = document.createElement("img");
 		bosco.style.position = "absolute";
-		bosco.style.left = "70%";
+		bosco.style.left = "16.5%";
 		bosco.style.top = "10px";
 		bosco.id = "bosco-achievement-img"
 		bosco.style.display = "block";

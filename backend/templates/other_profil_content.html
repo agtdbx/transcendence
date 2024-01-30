@@ -7,11 +7,11 @@
 
 			<!-- Block Profil Right-->
 
-			<div class="col-md-4 col-lg-4 col-xl-4 grey_div" id="profil_pannel_utils" style="min-height:800px;">
+			<div class="col-md-4 col-lg-4 col-xl-4 grey_div" id="profil_pannel_utils" style="min-height:600px; height:750px;">
 				<div class="black_grey_div" id="user_info_container" style="color:white; padding:2%; margin-bottom: 10px; margin-Top: 10px; height:22%;">
 					
 					<div id="pp_profil_page_div" style="float:left; width:20%; margin-right :2%; border-radius: 600px; border: 3px solid #59351B;">
-						<img  id="pp_profil_page_img" style="width:100%; border-radius: 600px;">
+						<img  id="pp_profil_page_img" style="width: 70px; height: 70px; border-radius: 35px;">
 						<script>
 							document.getElementById('pp_profil_page_img').src = "https://" + window.location.hostname + ":4200/./static/{{ user.profilPicture }}";
 						</script>
@@ -32,7 +32,7 @@
 				</div>
 
 
-				<div class="black_grey_div" id="contact_container" style="margin-bottom: 10px; height:20%;">
+				<div class="black_grey_div" id="contact_container" style="margin-bottom: 10px; height:30%;">
 					<p style="margin:auto; color:white; text-align:center; font-size:300%;">Contact</p>
 					<div style="margin:auto; margin-top:5px; text-align:center; width:76%; font-size:200%;">
 						<form id="data-request-relation">
@@ -78,7 +78,7 @@
 				<!-- Match history-->
 
 				<div id="match_history_content" style="background-color: rgba(40, 35, 23, 0.75); padding-top: 2%; padding-bottom: 2%;">
-					<div style="height: 800px; overflow-y:scroll;">
+					<div style="min-height:600px; height:652px; overflow-y:scroll;">
 						<table id="match_history" style="width: 100%; border-collapse: separate;" cellpadding="0px"cellspacing="6px">
 							<script src="{% static 'javascript/profil/match_history_creator.js' %}" ></script>
 						</table>
