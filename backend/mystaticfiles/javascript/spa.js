@@ -176,7 +176,11 @@ function checkLogin(data)
 
 			if (jsonData["success"] != true)
 			{
-				alert(jsonData["error"]);
+				//alert(jsonData["error"]);
+				error = document.getElementById("error")
+				error.innerHTML=jsonData["error"]
+				toCLear = document.getElementById("password")
+				toCLear.value = ""
 				return ;
 			}
 
@@ -204,7 +208,12 @@ function checkSignin(data)
 
 		if (jsonData["success"] != true)
 		{
-			alert(jsonData["error"]);
+			errorSign = document.getElementById("errorSign")
+			errorSign.innerHTML=jsonData["error"]
+			toCLear = document.getElementById("passwordSign")
+			toCLear.value = ""
+			toCLear = document.getElementById("confirm")
+			toCLear.value = ""
 			return ;
 		}
 

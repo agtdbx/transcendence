@@ -9,6 +9,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
 from db_test.models import User, connectionPassword, connection42
 from django.shortcuts import render
+from django.contrib import messages
 
 
 
@@ -19,7 +20,7 @@ def checkLogin(request):
 
     username_check = User.objects.all().filter(username=username)
     if len(username_check) == 0:
-        return JsonResponse({"success" : False, "error" : "Username not exist"})
+        return JsonResponse({"success" : False, "error" : "Username does not exist"})
 
     password_check = connectionPassword.objects.all().filter(idUser=username_check[0].idUser)
     if len(password_check) == 0:
