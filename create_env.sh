@@ -20,4 +20,8 @@ echo -n "42 api key : "
 read apikey
 echo "API_KEY='$apikey'" >> .env
 
+echo -n "website url : "
+read websiteurl
+echo "WEBSITE_URL='$websiteurl'" >> .env
+
 echo 'Generating .env done !'

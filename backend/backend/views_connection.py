@@ -156,30 +156,39 @@ def checkToken(request):
 def checkApi42Request(request, islogin, user):
     code = request.GET.get('code')
 	# First request : get an users tocken
+    i = 1
+    j = 0
+    if not islogin :
+        ListUser = User.objects.all()
+        while j < len(ListUser):
+            if user.money < ListUser[j].money:
+                i = i + 1
+            j = j + 1
+    websiteUrl = os.getenv('WEBSITE_URL')
     params = \
     {
         "grant_type": "authorization_code",
 		"client_id": "u-s4t2ud-1b900294f4f0042d646cdbafdf98a5fe9216f3efd76b592e56b7ae3a18a43bd1",
 		"client_secret": os.getenv('API_KEY'),
 		"code": code,
-		"redirect_uri": "https://localhost:4200/3" if islogin else "https://localhost:4200/9",
+		"redirect_uri": websiteUrl + "/3" if islogin else websiteUrl + "/9",
 		
     }
     response = requests.post("https://api.intra.42.fr/oauth/token", params=params)
     if response.status_code != 200:
         if not islogin :
-            return render(request, "profil_content_full.html", {'user': user})
+            return render(request, "profil_content_full.html", {'user': user, 'pos': i, '42urllink' : os.getenv('WEBSITE_URL')})
         else :
-            return render(request, "signin_full.html")
+            return render(request, "signin_full.html",{'42urllink' : os.getenv('WEBSITE_URL')})
     response = response.json()
     tocken = response["access_token"]
     headers= {'Authorization': 'Bearer {}'.format(tocken)}
     response = requests.get("https://api.intra.42.fr/v2/me", headers=headers)
     if response.status_code != 200:
         if not islogin :
-            return render(request, "profil_content_full.html", {'user': user})
+            return render(request, "profil_content_full.html", {'user': user, 'pos': i, '42urllink' : os.getenv('WEBSITE_URL')})
         else :
-            return render(request, "signin_full.html")
+            return render(request, "signin_full.html",{'42urllink' : os.getenv('WEBSITE_URL')})
     response = response.json()
     test = connection42.objects.all().filter(login=response["id"])
     if (not islogin) :
@@ -189,7 +198,7 @@ def checkApi42Request(request, islogin, user):
                 password42.save()
             except:
                 user = user
-        return render(request, "profil_content_full.html", {'user': user})
+        return render(request, "profil_content_full.html", {'user': user, 'pos': i, '42urllink' : os.getenv('WEBSITE_URL')})
 	#not already log
     if len(test) == 0:
         id = User.objects.all().count() + 1
@@ -210,12 +219,12 @@ def checkApi42Request(request, islogin, user):
             password42 = connection42(login=response["id"], idUser=user)
             password42.save()
         except:
-            return render(request, "login_full.html")
+            return render(request, "login_full.html",{'42urllink' : os.getenv('WEBSITE_URL')})
         return render(request, "mainpage_full_tocken42.html", {'user': user})
 	#not already log
     else:
         try:
             user = User.objects.all().filter(connection42=test[0])[0]
         except:
-            return render(request, "login_full.html")
+            return render(request, "login_full.html",{'42urllink' : os.getenv('WEBSITE_URL')})
         return render(request, "mainpage_full_tocken42.html", {'user': user})
