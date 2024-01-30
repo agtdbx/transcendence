@@ -1,4 +1,4 @@
-let chatSocket = null;
+let webSocket = null;
 let channelTarget = null;
 let lastMessagesLoad = -1;
 let chatElement;
@@ -30,15 +30,15 @@ function enableChatConnection()
 		return ;
 	}
 
-	if (chatSocket != null)
+	if (webSocket != null)
 	{
 		console.log("Close last co bro");
 		endChatConnection();
 	}
 
-	console.log("Try create ChatSocket at ws://" + window.location.hostname + ":8765");
+	console.log("Try create webSocket at ws://" + window.location.hostname + ":8765");
 	try {
-		chatSocket = new WebSocket("ws://" + window.location.hostname + ":8765/")
+		webSocket = new WebSocket("ws://" + window.location.hostname + ":8765/")
 	}
 	catch (error)
 	{
@@ -46,26 +46,28 @@ function enableChatConnection()
 		return
 	}
 
-	chatSocket.onopen = function(e)
+	webSocket.onopen = function(e)
 	{
-		chatSocket.send(JSON.stringify({
-			'whoiam': token
+		webSocket.send(JSON.stringify({
+			'type' : 'connect',
+			'cmd' : 'by_token',
+			'token': token
 		}));
 	}
 
-	chatSocket.onmessage = onRecieveMessage;
+	webSocket.onmessage = onRecieveData;
 
-	chatSocket.onerror = function(e) {console.error("ERROR :", e)};
+	webSocket.onerror = function(e) {console.error("ERROR :", e)};
 }
 
 
 function endChatConnection()
 {
-	if (chatSocket != null)
+	if (webSocket != null)
 	{
-		chatSocket.onclose = {};
-		chatSocket.close();
-		chatSocket = null;
+		webSocket.onclose = {};
+		webSocket.close();
+		webSocket = null;
 		console.log("Close chat socket");
 	}
 }

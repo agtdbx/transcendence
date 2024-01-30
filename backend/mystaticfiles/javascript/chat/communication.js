@@ -1,15 +1,39 @@
-function onRecieveMessage(event)
+function onRecieveData(event)
 {
 	let data = null;
 	try
 	{
 		data = JSON.parse(event.data);
 	}
-	catch
+	catch (error)
 	{
-		console.log(event.data)
+		console.error("Json parsing error :", event.data, error);
+		return ;
 	}
 
+	const type = data['type'];
+
+	if (type === "error")
+	{
+		console.error("Error :", data['error']);
+	}
+	else if (type == 'connectionReply')
+	{
+		if (data['success'] == false)
+			console.error("Connection failed :", data['error']);
+		else
+			console.log("Connection OK");
+	}
+	else if (type == 'message')
+	{
+		recievedMessage(data);
+	}
+	else
+		console.error("Unkown data recieved :", data);
+}
+
+
+function recievedMessage(data) {
 	const channel = data['channel'];
 	const message = data['message'];
 	const username = data['username'];
@@ -25,13 +49,13 @@ function onRecieveMessage(event)
 }
 
 
-
 // Send message to server
 function sendMessageToServer(message, channel) {
-	chatSocket.send(JSON.stringify({
-		'sender': getToken(),
-		'channel' : channel,
-		'message': message
+	webSocket.send(JSON.stringify({
+		'type' : 'message',
+		'cmd' : 'sendMessage',
+		'message': message,
+		'channel' : channel
 	}));
 }
 

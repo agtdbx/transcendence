@@ -1,38 +1,41 @@
 API HELP :
 
-REQUEST FORM
+REQUEST FORM - TO TEST
     {'type' : <type>, 'cmd' : <cmd>, ...}
     -> Reply to request
     => Message recieved without request
 
 
-ERROR
+ERROR - TO TEST
     => Error recieved
         'type' : 'error'
         'error' : <error>
 
 
 CONNECTION
-    with token
+    with token - TO TEST
         'type' : 'connect'
         'cmd' : 'by_token'
         'token' : <token>
         -> 'type' : 'connectionReply'
-           'success': true | false
+           'success' : true | false
+           'error' : <error> #Empty in case of success = true
 
-    with username
+    with username - TO TEST
         'type' : 'connect'
-        'cmd' : 'by_token'
+        'cmd' : 'by_username'
         'username' : <username>
         'password' : <password>
         -> 'type' : 'connectionReply'
-           'success': true | false
+           'success' : true | false
+           'error' : <error> #Empty in case of success = true
 
 
 MESSAGE
-    send message
+    send message - TO TEST
         'type' : 'message'
         'cmd' : 'sendMessage'
+        'message' : <message>
         'channel' : 'general' | <user id>
         -> {{message}}
 
