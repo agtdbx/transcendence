@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    views.py                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: hde-min <hde-min@student.42.fr>            +#+  +:+       +#+         #
+#    By: lflandri <lflandri@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/08 14:00:09 by lflandri          #+#    #+#              #
-#    Updated: 2024/01/30 15:27:04 by hde-min          ###   ########.fr        #
+#    Updated: 2024/01/30 16:39:42 by lflandri         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -111,15 +111,15 @@ def section(request, num):
 
     elif num == 1:
         if fullPage:
-            return render(request, "signin_full.html")
+            return render(request, "signin_full.html",{'42urllink' : os.getenv('WEBSITE_URL')})
         else:
-            return render(request, "signin.html")
+            return render(request, "signin.html",{'42urllink' : os.getenv('WEBSITE_URL')})
 
     elif num == 2:
         if fullPage:
-            return render(request, "login_full.html")
+            return render(request, "login_full.html",{'42urllink' : os.getenv('WEBSITE_URL')})
         else:
-            return render(request, "login.html")
+            return render(request, "login.html",{'42urllink' : os.getenv('WEBSITE_URL')})
 
     #conecting with 42 api
     elif num == 3 and fullPage and request.GET.get('code', None) != None:
@@ -130,9 +130,9 @@ def section(request, num):
     check = checkToken(request)
     if check["success"] == False:
         if fullPage:
-            return render(request, "login_full.html")
+            return render(request, "login_full.html",{'42urllink' : os.getenv('WEBSITE_URL')})
         else:
-            return render(request, "login.html")
+            return render(request, "login.html",{'42urllink' : os.getenv('WEBSITE_URL')})
 
     # Get the user
     userId = check["userId"]
@@ -185,9 +185,9 @@ def section(request, num):
         if fullPage and request.GET.get('code', None) != None:
             return checkApi42Request(request, False, user)
         elif fullPage :
-            return render(request, "profil_content_full.html", {'user': user, 'pos': i})
+            return render(request, "profil_content_full.html", {'user': user, 'pos': i, '42urllink' : os.getenv('WEBSITE_URL')})
         else:
-            return render(request,"profil_content.html", {'user': user, 'pos': i})
+            return render(request,"profil_content.html", {'user': user, 'pos': i, '42urllink' : os.getenv('WEBSITE_URL')})
 
     elif num == 10:
         ListUser = list(User.objects.all().order_by("-money"))
