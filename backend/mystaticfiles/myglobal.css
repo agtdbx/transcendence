@@ -2,7 +2,7 @@ html{
 	cursor: url("./image/cursor/cursor1.png"), auto;
 }
 
- body {
+body {
 	font-family: KhazadDum;
 	cursor: url("./image/cursor/cursor1.png"), auto;
 	background-image:url(./image/background/index.png);
@@ -18,7 +18,7 @@ html{
 	src: url('./image/fonts/KhazadDum-0WXEr.ttf');
 }
 
-H1{
+h1 {
 	text-align : center;
 	margin-top : 10%;
 	font-size: 900%;
@@ -54,6 +54,52 @@ p {
 	font-family: "KhazadDum", sans-serif;
 }
 
+/* FOR API PAGE */
+.apiDoc {
+	margin-left: 1%;
+}
+
+.apiDoc h1{
+	margin-top: 2em;
+	color: white;
+	font-family: sans-serif;
+	-webkit-text-stroke: 0px;
+}
+
+.apiDoc h2 {
+	margin-top: 1em;
+	color: white;
+	font-family: sans-serif;
+}
+
+.apiDoc h3 {
+	font-size: 1em;
+	color: gray;
+	font-family: sans-serif;
+}
+
+.apiDoc h4 {
+	margin-top: 0.5em;
+	font-size: 1em;
+	color: gray;
+	font-family: sans-serif;
+}
+
+.apiDoc p{
+	color: white;
+	font-family: sans-serif;
+	margin: 0em;
+}
+
+.apiDoc .apiDocWarning {
+	color: red;
+	font-size: 2em;
+}
+
+
+
+
+/* FOR FRIEND GESTION */
 .channel-container
 {
 	padding: 0.5em;
@@ -100,6 +146,16 @@ p {
 	text-align: center;
 	margin-top: 0.8em;
 	width: 80%;
+}
+
+/* BTN GESTION */
+.btn-drg {
+	color: black;
+	background: rgb(187,114,11);
+	background:linear-gradient(90deg,#ff9c00 0% 2%,rgba(0,0,0,0) 0.1%,rgba(0,0,0,0) 2% 4%,#ff9c00 0.1%,#ff9c00 4% 96%,rgba(0,0,0,0) 0.1%,rgba(0,0,0,0) 96% 98%,#ff9c00 0.1%, #ff9c00 98% 100%);
+	border: none;
+	animation: animate 0.40s infinite;
+	font-family: "KhazadDum", sans-serif;
 }
 
 #btn-log {
@@ -1459,43 +1515,43 @@ font-size: 1rem;
 
 #btn-create-game-map2{
 	position: absolute;
--ms-transform: translate(-50%, -50%);
-transform: translate(-50%, -50%);
-top: 50%;
-left: 50%;
-width: 70%;
-height: 20%;
-font-size: 1rem;
+	-ms-transform: translate(-50%, -50%);
+	transform: translate(-50%, -50%);
+	top: 50%;
+	left: 50%;
+	width: 70%;
+	height: 20%;
+	font-size: 1rem;
 }
 
 #btn-create-game-map3{
 	position: absolute;
--ms-transform: translate(-50%, -50%);
-transform: translate(-50%, -50%);
-top: 70%;
-left: 50%;
-width: 70%;
-height: 20%;
-font-size: 1rem;
+	-ms-transform: translate(-50%, -50%);
+	transform: translate(-50%, -50%);
+	top: 70%;
+	left: 50%;
+	width: 70%;
+	height: 20%;
+	font-size: 1rem;
 }
 
 #createGameChat{
- position: absolute;
-top: 2%;
-left: 2%;
-width: 96%;
-height: 80%;
-background-color: rgba(40,35,23, 0.75);
-overflow-y: auto;
+	position: absolute;
+	top: 2%;
+	left: 2%;
+	width: 96%;
+	height: 80%;
+	background-color: rgba(40,35,23, 0.75);
+	overflow-y: auto;
 }
 
 #createGameChatInput{
 	position: absolute;
-top: 87%;
-left: 2%;
-width: 96%;
-height: 10%;
-background-color: rgba(207,188,188,0.5);
+	top: 87%;
+	left: 2%;
+	width: 96%;
+	height: 10%;
+	background-color: rgba(207,188,188,0.5);
 }
 
 #global-create-game{
@@ -1537,7 +1593,7 @@ background-color: rgba(207,188,188,0.5);
 	background : rgba(18, 16, 11, 0.8);
 	border: 3px solid #FF9C00;
 	text-align: center;
-} */
+}
 
 
 
@@ -1581,36 +1637,36 @@ background-color: rgba(207,188,188,0.5);
 }
 
 
-	/*MATCH HISTORY*/
-	.goal_point path {
-		opacity: 0;
-	}
-	.goal_point:hover path {
-	opacity: 1;
-	}
-	.goal_point path:hover {
-	opacity: 1;
-	}
-
-	.goal_point text {
+/*MATCH HISTORY*/
+.goal_point path {
 	opacity: 0;
-	}
-	.goal_point:hover text {
-	opacity: 1;
-	}
-	.goal_point text:hover {
-	opacity: 1;
-	}
+}
+.goal_point:hover path {
+opacity: 1;
+}
+.goal_point path:hover {
+opacity: 1;
+}
 
-	/* tr .goalGraph {
-		display: none;
-	}
-	tr:hover .goalGraph {
-		display: block;
-	}
-	tr .goalGraph:hover {
-		display: block;
-	}*/
+.goal_point text {
+opacity: 0;
+}
+.goal_point:hover text {
+opacity: 1;
+}
+.goal_point text:hover {
+opacity: 1;
+}
+
+/* tr .goalGraph {
+	display: none;
+}
+tr:hover .goalGraph {
+	display: block;
+}
+tr .goalGraph:hover {
+	display: block;
+}*/
 /* Popup container */
 .popup {
 	position: relative;
@@ -1618,8 +1674,8 @@ background-color: rgba(207,188,188,0.5);
 	cursor: pointer;
 	}
 
-	/* The actual popup (appears on top) */
-	.popup .popuptext {
+/* The actual popup (appears on top) */
+.popup .popuptext {
 	visibility: hidden;
 	width: 160px;
 	background-color: #555;
@@ -1632,10 +1688,10 @@ background-color: rgba(207,188,188,0.5);
 	bottom: 125%;
 	left: 50%;
 	margin-left: -80px;
-	}
+}
 
-	/* Popup arrow */
-	.popup .popuptext::after {
+/* Popup arrow */
+.popup .popuptext::after {
 	content: "";
 	position: absolute;
 	top: 100%;
@@ -1644,25 +1700,25 @@ background-color: rgba(207,188,188,0.5);
 	border-width: 5px;
 	border-style: solid;
 	border-color: #555 transparent transparent transparent;
-	}
+}
 
-	/* Toggle this class when clicking on the popup container (hide and show the popup) */
-	.popup .show {
+/* Toggle this class when clicking on the popup container (hide and show the popup) */
+.popup .show {
 	visibility: visible;
 	-webkit-animation: fadeIn 1s;
 	animation: fadeIn 1s
-	}
+}
 
-	/* Add animation (fade in the popup) */
-	@-webkit-keyframes fadeIn {
+/* Add animation (fade in the popup) */
+@-webkit-keyframes fadeIn {
 	from {opacity: 0;}
 	to {opacity: 1;}
-	}
+}
 
-	@keyframes fadeIn {
+@keyframes fadeIn {
 	from {opacity: 0;}
 	to {opacity:1 ;}
-	}
+}
 
 #passPopCurrent {
 	color: #ff9c00;

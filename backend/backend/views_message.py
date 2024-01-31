@@ -1,4 +1,16 @@
 # **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    views_message.py                                   :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: aderouba <aderouba@student.42.fr>          +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2024/01/23 19:48:56 by aderouba          #+#    #+#              #
+#    Updated: 2024/01/31 13:49:41 by aderouba         ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
+
+# **************************************************************************** #
 #                            DB connexion Functions                            #
 # **************************************************************************** #
 from .views_connection import checkToken
@@ -75,6 +87,7 @@ def getMessages(request):
             message = [msg.id, user.username, "/static/" + str(user.profilPicture), msg.date, msg.data]
             messages.append(message)
         return JsonResponse({"success" : True, "messages" : messages, "lastMessagesLoad" : start})
+
     else:
         msgs = list(PrivMessage.objects.all().filter(idUser=myUser.idUser).filter(idTarget=channel))
         msgs.extend(list(PrivMessage.objects.all().filter(idUser=channel).filter(idTarget=myUser.idUser)))
@@ -93,6 +106,6 @@ def getMessages(request):
             idUser = int(msg.idUser.idUser)
             users = User.objects.all().filter(idUser=idUser)
             user = users[0]
-            message = [msg.id, user.username, "/media/" + str(user.profilPicture), msg.date, msg.data]
+            message = [msg.id, user.username, "/static/" + str(user.profilPicture), msg.date, msg.data]
             messages.append(message)
         return JsonResponse({"success" : True, "messages" : messages, "lastMessagesLoad" : start})

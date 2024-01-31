@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: auguste <auguste@student.42.fr>            +#+  +:+       +#+         #
+#    By: aderouba <aderouba@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/19 17:13:10 by aderouba          #+#    #+#              #
-#    Updated: 2024/01/11 15:35:14 by auguste          ###   ########.fr        #
+#    Updated: 2024/01/31 13:50:45 by aderouba         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -47,5 +47,7 @@ fullclean: fclean prune
 	@docker image rm $$(docker image ls -aq) 2>/dev/null || echo "$(RED)Premake image aren't install$(NOC)"
 
 re : fclean all
+
+rerun : stop run
 
 .PHONY: all run stop fclean fullclean re

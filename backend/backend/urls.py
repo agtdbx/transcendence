@@ -14,16 +14,15 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-from django.contrib import admin
+
 from django.urls import path
+from . import settings
 from . import views
 from . import views_connection
 from . import views_message
 from . import views_user_relation
 from . import views_achievement
-from .views_achievement import *
 from . import views_42link
-from .views_42link import *
 from django.conf.urls.static import static
 
 
@@ -33,15 +32,15 @@ urlpatterns = [
     path("<int:num>", views.section, name="section"),
     path("getHeader", views.getHeader, name="getHeader"),
 
-	path('gamePage/', views.gamePage, name='gamePage'),				#to remove at the end of project
+    path('gamePage/', views.gamePage, name='gamePage'),				#to remove at the end of project
 
     #User connection
-	path("checkLogin", views_connection.checkLogin, name="checkLogin"),
+    path("checkLogin", views_connection.checkLogin, name="checkLogin"),
     path("checkSignin", views_connection.checkSignin, name="checkSignin"),
     path("changePassword", views_connection.changePassword, name="changePassword"),
     path("changeUsername", views_connection.changeUsername, name="changeUsername"),
 
-	#User relation
+    #User relation
     path('addfriends', views_user_relation.addfriends, name='addfriends'),
     path('removefriends', views_user_relation.removefriends, name='removefriends'),
     path('block', views_user_relation.block, name='block'),
@@ -53,17 +52,20 @@ urlpatterns = [
     path('getlistefriend', views_user_relation.getlistefriend, name='getlistefriend'),
     path('getlisteblocked', views_user_relation.getlisteblocked, name='getlisteblocked'),
 
-	#User achievement
-	path('getselfachievement', views_achievement.getselfachievement, name='getselfachievement'),
-	path('getotherachievement', views_achievement.getotherachievement, name='getotherachievement'),
-	path('setachievement', views_achievement.setachievement, name='setachievement'),
+    #User achievement
+    path('getselfachievement', views_achievement.getselfachievement, name='getselfachievement'),
+    path('getotherachievement', views_achievement.getotherachievement, name='getotherachievement'),
+    path('setachievement', views_achievement.setachievement, name='setachievement'),
 
-	#User message
+    #User message
     path("getMessages", views_message.getMessages, name="getMessages"),
-    
+
     #User 42 connection
-	path('checkislinked', views_42link.checkislinked, name='checkislinked'),
-	path('removelink', views_42link.removelink, name='removelink'),    
+    path('checkislinked', views_42link.checkislinked, name='checkislinked'),
+    path('removelink', views_42link.removelink, name='removelink'),
+
+    # API
+    path('api', views.apiDoc, name="api"),
 ]
 
 if settings.DEBUG:

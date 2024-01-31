@@ -1,4 +1,16 @@
 # **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    views_user_relation.py                             :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: aderouba <aderouba@student.42.fr>          +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2024/01/23 19:48:59 by aderouba          #+#    #+#              #
+#    Updated: 2024/01/31 13:47:25 by aderouba         ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
+
+# **************************************************************************** #
 #                            Users Relations Functions                         #
 # **************************************************************************** #
 from .views_connection import checkToken
@@ -42,7 +54,6 @@ def createRelation(user, target):
     except:
         return False
 
-#TODO end this :
 
 def addfriends(request):
     check = checkToken(request)

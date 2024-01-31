@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    views.py                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: lflandri <lflandri@student.42.fr>          +#+  +:+       +#+         #
+#    By: aderouba <aderouba@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/08 14:00:09 by lflandri          #+#    #+#              #
-#    Updated: 2024/01/30 16:39:42 by lflandri         ###   ########.fr        #
+#    Updated: 2024/01/31 13:31:30 by aderouba         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,6 +29,10 @@ from .views_connection import checkApi42Request
 # **************************************************************************** #
 def index(request):
     return render(request, 'index.html')
+
+
+def apiDoc(request):
+    return render(request, 'api_doc.html')
 
 
 @csrf_exempt
@@ -192,7 +196,7 @@ def section(request, num):
     elif num == 10:
         ListUser = list(User.objects.all().order_by("-money"))
         ListUser = ListUser[:18]
-        
+
         Void = User(idUser=0, idType=0, username="", profilPicture="images/default/void.png", tokenJWT="", money=0, idStatus=0)
 
         j = len(ListUser)

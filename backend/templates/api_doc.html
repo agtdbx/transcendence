@@ -1,0 +1,303 @@
+
+<!DOCTYPE html>
+<html lang="en-US">
+
+{% load static %}
+<head>
+	<meta charset="utf-8" />
+	<link rel="stylesheet" href="{% static 'myglobal.css' %}">
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+	<link rel="shortcut icon" type="image/png" href="{% static 'image/favicon.png' %}" >
+	<!--This form is necessary o achievement, don't touch it-->
+	<form id="data-request-achievement">
+		{% csrf_token %}
+		<input type="hidden" name="target" value="" id="input-form-head-target">
+		<input type="hidden" name="achievement" value="" id="input-form-head-achievement">
+	</form>
+
+	<title>PONG</title>
+</head>
+
+<body>
+	<div class="apiDoc">
+		<h1>REQUEST FORM</h1>
+		<p>{'type' : <type>, 'cmd' : <cmd>, ...}</p>
+
+		<h2>-> Reply to request</h2>
+		<p>=> Message recieved without request</p>
+
+
+		<h1>ERROR</h1>
+		<h2>=> Error recieved</h2>
+		<p>'type' : 'error'</h2>
+		<p>'error' : <.error.></p>
+
+
+		<h1>CONNECTION</h1>
+		<h2>with token</h2>
+		<p>'type' : 'connect'</p>
+		<p>'cmd' : 'by_token'</p>
+		<p>'token' : <.token.></p>
+		<p>-> 'type' : 'connectionReply'</p>
+		<p>'success': true | false</p>
+
+		<h2>with username</h2>
+		<p>'type' : 'connect'</p>
+		<p>'cmd' : 'by_token'</p>
+		<p>'username' : <.username.></p>
+		<p>'password' : <.password.></p>
+		<h3>-> 'type' : 'connectionReply'</h3>
+		<h3>'success': true | false</h3>
+
+		<h1>MESSAGE</h1>
+		<h2>send message</h2>
+		<p>'type' : 'message'</p>
+		<p>'cmd' : 'sendMessage'</p>
+		<p>'channel' : 'general' | <.user id.></p>
+		<h3>-> {message}</p>
+
+		<h2>=> Message recieved</h2>
+		<p>{message}</p>
+
+		<h2>=> Server message recieved</h2>
+		<p>'type' : 'serverMessage'</p>
+		<p>'message' : <.message.></p>
+		<p>'date' : <.date.></p>
+
+		<h2>=> Invite recieved</h2>
+		<p>'type' : 'invite'</p>
+		<p>'username' : <.username.></p>
+		<p>'pp' : <.profile picture link.></p>
+		<p>'date' : <.date.></p>
+		<p>'roomId' : <.room id.></p>
+
+		<p>{message} :</p>
+		<p>'type' : 'message'</p>
+		<p>'message' : <.message.></p>
+		<p>'username' : <.username.></p>
+		<p>'pp' : <.profile picture link.></p>
+		<p>'date' : <.date.></p>
+		<p>'channel' : 'general' | <.user id.></p>
+
+
+		<h1>QUICK GAME ROOM</h1>
+		<h2>ask for new game</h2>
+		<p>'type' : 'quickRoom'</p>
+		<p>'cmd' : 'askForRoom'</p>
+		<h3>-> 'type' : 'quickRoomResponse'</p>
+		<h3>	'quickRoomId' : <.quick room id.></p>
+
+		<h2>quit game wait</h2>
+		<p>'type' : 'quickRoom'</p>
+		<p>'cmd' : 'quitRoom'</p>
+		<h3>-> No more field</h3>
+
+		<h2>=> Game start</h2>
+		<p>'type' : 'gameStart'</p>
+		<p>'gamePort' : <.port.> # port of the websocket for game</p>
+		<p>'paddleId' : <.paddle id.></p>
+		<p>'teamId' : <.team id.></p>
+
+
+		<h1>GAME ROOM</h1>
+		<h2>create game room</h2>
+		<p>'type' : 'gameRoom'</p>
+		<p>'cmd' : 'createRoom'</p>
+		<h3>-> <.update room info></h3>
+
+		<h2>join game room</h2>
+		<p>'type' : 'gameRoom'</p>
+		<p>'cmd' : 'joinRoom'</p>
+		<p>'gameRoomId' : <.game room id.></p>
+		<h3>-> {update room info}</h3>
+
+		<p class="apiDocWarning">/!\ Only the creator of the room can use it /!\</p>
+		<h2>send game room invite</h2>
+		<p>'type' : 'gameRoom'</p>
+		<p>'cmd' : inviteGameRoom'</p>
+		<p>'targetId' : <.user id.> | 'ia'</p>
+		<p>'roomId' : <.roomId.></p>
+		<h3>-> No more field</ph3>
+
+		<h2>quit game room</h2>
+		<p>'type' : 'quickRoom'</p>
+		<p>'cmd' : 'quitGameRoom'</p>
+		<h3>-> No more field</h3>
+
+		<h2>change team</h2>
+		<p>'type' : 'gameRoom'</p>
+		<p>'cmd' : 'changeTeam'</p>
+		<p>'team' : 'left' | 'right'</p>
+		<h3>-> {update room info}</h3>
+
+		<p class="apiDocWarning">/!\ Only the creator of the room can use it /!\</p>
+		<h2>change power up option</h2>
+		<p>'type' : 'gameRoom'</p>
+		<p>'cmd' : 'changePowerUp'</p>
+		<h3>-> {update room info}</h3>
+
+		<p class="apiDocWarning">/!\ Only the creator of the room can use it /!\</p>
+		<h2>change map option</h2>
+		<p>'type' : 'gameRoom'</p>
+		<p>'cmd' : 'changeMap'</p>
+		<p>'mapId' : <.map id.></p>
+		<h3>-> {update room info}</h3>
+
+		<h2>change ready state</h2>
+		<p>'type' : 'gameRoom'</p>
+		<p>'cmd' : 'changeReady'</p>
+		<h3>-> No more field</h3>
+
+		<p class="apiDocWarning">/!\ Only the creator of the room can use it /!\</p>
+		<h2>start game</h2>
+		<p>'type' : 'gameRoom'</p>
+		<p>'cmd' : 'startGame'</p>
+		<h3>-> 'type' : 'startGame'</h3>
+		<h3>	'success' : true | false</h3>
+
+		<h2>=> update room info</h2>
+		<p>{update room info}</p>
+
+		<h2>=> Game start</h2>
+		<p>'type' : 'gameStart'</p>
+		<p>'gamePort' : <.port.> # port of the websocket for game</p>
+		<p>'paddleId' : <.paddle id.></p>
+		<p>'teamId' : <.team id.></p>
+
+		<p>{update room info} :</p>
+		<p>'type' : 'updateRoomInfo'</p>
+		<p>'teamLeft' : [<.paddleInfo.>, <.paddleInfo.>]</p>
+		<p>'teamRight' : [<.paddleInfo.>, <.paddleInfo.>]</p>
+		<p>'teamLeftReady' : [<.readyInfo.>, <.readyInfo.>]</p>
+		<p>'teamRightReady' : [<.readyInfo.>, <.readyInfo.>]</p>
+		<p>'powerUpActivate' : false | true</p>
+		<p>'mapId' : <.map id.></p>
+
+		<p><.paddleInfo.> :</p>
+		<p>- null = no player</p>
+		<p>- 'ia' = paddle control by ia</p>
+		<p>- 'pending-<.user id.>' = wait for the response of <.user id.></p>
+		<p>- <.user id.> = player</p>
+
+		<p><.readyInfo.> :</p>
+		<p>- null = no player</p>
+		<p>- false = not ready</p>
+		<p>- true = ready</p>
+
+
+		<h1>TOURNAMENT</h1>
+		<p class="apiDocWarning">/!\ Only the administrator can create tournament /!\</p>
+		<h2>create tournament</h2>
+		<p>'type' : 'tournament'</p>
+		<p>'cmd' : 'create'</p>
+		<p>'start' : <.start date.></p>
+		<p>'powerUp' : true | false</p>
+		<p>'mapId' : <.map id.></p>
+		<h3>-> No more field</h3>
+
+		<h2>join tournament</h2>
+		<p>'type' : 'tournament'</p>
+		<p>'cmd' : 'join'</p>
+		<h3>-> 'type' : 'joinReply'</h3>
+		<p>	'tournamentUserId' : <.tournament user id.></p>
+
+		<h2>=> Game start</h2>
+		<p>'type' : 'gameStart'</p>
+		<p>'gamePort' : <.port.> # port of the websocket for game</p>
+		<p>'paddleId' : <.paddle id.></p>
+		<p>'teamId' : <.team id.></p>
+
+		<h2>=> match result</h2>
+		<p>'type' : 'matchResult'</p>
+		<p>'winner' : <.tournament user id.></p>
+		<p>'loser' : <.tournament user id.></p>
+
+		<h2>=> end tournament</h2>
+		<p>'type' : 'endTournament'</p>
+		<p>'onePongMan' : <.tournament user id.></p>
+
+
+		<h1>GAME</h1>
+		<p class="apiDocWarning">/!\ All messages for and from game are in it's websocket /!\</p>
+		<h2>user input</h2>
+		<p>'type' : 'userInput'</p>
+		<p>'key' : 'up' | 'down' | 'powerUp' | 'launchBall'</p>
+		<p>'value' : 'press' | 'release'</p>
+		<h3>-> No more field</h3>
+
+		<h2>=> start info</h2>
+		<p>'type' : 'startInfo'</p>
+		<p>'obstacles' : [<.obstacles.>, ...]</p>
+		<p>'powerUp' : true | false</p>
+
+		<h2>=> server info</h2>
+		<p>'type' : 'serverInfo'</p>
+		<p>'updateObstacles' : <.update obstacles.> | null</p>
+		<p>'updatePaddles' : <.update paddles.>  | null</p>
+		<p>'updateBalls' : <.update balls.>  | null</p>
+		<p>'deleteBall' : <.delete ball.>  | null</p>
+		<p>'changeUserPowerUp' : <.change user power up.>  | null</p>
+		<p>'updatePowerUpInGame' : <.update power up in game.>  | null</p>
+		<p>'updateScore' : <.update score.>  | null</p>
+
+		<h2>=> end game</h2>
+		<p>'type' : 'endGame' # Not the movie</p>
+		<p>'leftTeamScore' : <.left team score.></p>
+		<p>'rightTeamScore' : <.right team score.></p>
+
+		<p><.update obstacles.> :</p>
+		<p>'type' : 'updateObstables'</p>
+		<p>'obstacles' : [<.obstacles.>, ...]</p>
+
+		<p><.update paddles.> :</p>
+		<p>'type' : 'updateObstables'</p>
+		<p>'obstacles' : [<.paddles.>, ...]</p>
+
+		<p><.update balls.> :</p>
+		<p>'type' : 'updateBalls'</p>
+		<p>'balls' : [<.ball.>, ...]</p>
+
+		<p><.delete ball.> :</p>
+		<p>'type' : 'deleteBall'</p>
+		<p>'ballIndex' : <.ball index.></p>
+
+		<p><.change user power up.> :</p>
+		<p>'type' : 'changeUserPowerUp'</p>
+		<p>'powerUpId' : <.power up id.></p>
+
+		<p><.update power up in game.> :</p>
+		<p>'type' : 'updatePowerUp'</p>
+		<p>'position' : <.point.></p>
+		<p>'visible' : true | false</p>
+
+		<p><.update score.> :</p>
+		<p>'type' : 'updateScore'</p>
+		<p>'scoreLeft' : <.score left.></p>
+		<p>'scoreRight' : <.score right.></p>
+
+		<p><.obstacles.> :</p>
+		<p>'points' : [<.point.>, ...]</p>
+
+		<p><.paddles.> :</p>
+		<p>'topLeft' : <.point.></p>
+		<p>'botLeft' : <.point.></p>
+		<p>'topRight' : <.point.></p>
+		<p>'botRight' : <.point.></p>
+		<p>'teamId' : <.team id.> # 0 = left, 1 = right</p>
+		<p>'paddleId' : <.paddle id.></p>
+
+		<p><.ball.> :</p>
+		<p>'position' : <.point.></p>
+		<p>'direction' : <.point.></p>
+		<p>'radius' : int</p>
+		<p>'speed' : int</p>
+
+		<p><.point.> :</p>
+		<p>'x' : float</p>
+		<p>'y' : float</p>
+	</div>
+
+</body>
+
+</html>

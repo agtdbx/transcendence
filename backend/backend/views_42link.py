@@ -3,29 +3,17 @@
 #                                                         :::      ::::::::    #
 #    views_42link.py                                    :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: lflandri <lflandri@student.42.fr>          +#+  +:+       +#+         #
+#    By: aderouba <aderouba@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/23 20:20:38 by lflandri          #+#    #+#              #
-#    Updated: 2024/01/26 16:53:06 by lflandri         ###   ########.fr        #
+#    Updated: 2024/01/31 13:46:59 by aderouba         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-import hashlib, jwt, sys, random, os
-import backend.settings as settings
-
-import requests
-
-from django.views.decorators.csrf import csrf_exempt
-from django.http import Http404, HttpResponse, JsonResponse
-from django.shortcuts import render
-
+from django.http import JsonResponse
 from db_test.models import User, connectionPassword, connection42
-import datetime
-
-from .forms import UserForm
-
 from . import views
-from .views import *
+
 
 def checkislinked(request):
     check = views.checkToken(request)
@@ -37,6 +25,7 @@ def checkislinked(request):
     if len(test) == 0:
         return JsonResponse({"success" : False, "error" : "User is not linked."})
     return JsonResponse({"success" : True, "error" : "User is linked."})
+
 
 def removelink(request):
     check = views.checkToken(request)
@@ -55,4 +44,3 @@ def removelink(request):
     except :
         return JsonResponse({"success" : False, "error" : "Error when try to remove link of db"})
     return JsonResponse({"success" : True, "error" : "Link to 42 removed"})
-    
