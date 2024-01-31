@@ -1,9 +1,11 @@
 import asyncio
 import websockets
-import json, sys
+import json
+import sys
 from websocket_server.utils import send_error, set_user_status
 from websocket_server.connection import connection_by_token, connection_by_username
 from websocket_server.message import recieved_message
+from websocket_server.quick_room import join_quick_room, leave_quick_room
 
 # Dict to save the actives connections
 connected_users = dict()
@@ -23,6 +25,7 @@ def remove_user_connected(myid, websocket):
     print("Bye bye client " + str(myid) + " :", connected_users, file=sys.stderr)
     if len(connected_users.get(myid, [])) == 0:
         set_user_status(myid, 0)
+        leave_quick_room(myid)
 
 
 async def handle_client(websocket : websockets.WebSocketServerProtocol, path):
@@ -66,6 +69,17 @@ async def handle_client(websocket : websockets.WebSocketServerProtocol, path):
             if request_type == "message":
                 if request_cmd == 'sendMessage':
                     await recieved_message(data, connected_users, websocket, myid)
+                else:
+                    await send_error(websocket,
+                                     "Request cmd unkown")
+                continue
+
+            # Quick game room gestion
+            if request_type == "quickRoom":
+                if request_cmd == "askForRoom":
+                    await join_quick_room(myid, connected_users)
+                elif request_cmd == "quitRoom":
+                    leave_quick_room(myid)
                 else:
                     await send_error(websocket,
                                      "Request cmd unkown")

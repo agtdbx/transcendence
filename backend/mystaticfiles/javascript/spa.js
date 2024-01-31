@@ -1,3 +1,5 @@
+let current_page = null;
+
 function changeBackground(num)
 {
 	let body = document.getElementById('body');
@@ -92,6 +94,19 @@ function manageChat(num)
 }
 
 
+function manageAPI(num)
+{
+	if (num == 3 && current_page == 4)
+	{
+		leave_request_quick_game();
+	}
+	else if (num == 4)
+	{
+		join_request_quick_game();
+	}
+}
+
+
 function runScript()
 {
 	/* this is an advertissement : don't try to understand, i know, you don't*/
@@ -151,6 +166,9 @@ function changePage(num, byArrow=false)
 		changeBackground(num);
 		manageHeader(num);
 		manageChat(num);
+		manageAPI(num);
+
+		current_page = num;
 
 		// Run the script tag if they is one in the html load
 		runScript();

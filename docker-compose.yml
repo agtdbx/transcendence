@@ -46,6 +46,12 @@ services:
   ports:
    - "4200:8000"
    - "8765:8765"
+  #  Ports for game servers
+   - "8766:8766"
+   - "8767:8767"
+   - "8768:8768"
+   - "8769:8769"
+   - "8770:8770"
 
  adminer:
   container_name: adminer

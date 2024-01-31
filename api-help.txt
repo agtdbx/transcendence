@@ -67,8 +67,7 @@ QUICK GAME ROOM
     ask for new game
         'type' : 'quickRoom'
         'cmd' : 'askForRoom'
-        -> 'type' : 'quickRoomResponse'
-           'quickRoomId' : <quick room id>
+        -> No more field
 
     quit game wait
         'type' : 'quickRoom'
@@ -79,7 +78,7 @@ QUICK GAME ROOM
         'type' : 'gameStart'
         'gamePort' : <port> # port of the websocket for game
         'paddleId' : <paddle id>
-        'teamId' : <team id>
+        'teamId' : <team id> # 0 left, 1 right
 
 
 GAME ROOM
@@ -145,7 +144,7 @@ GAME ROOM
         'type' : 'gameStart'
         'gamePort' : <port> # port of the websocket for game
         'paddleId' : <paddle id>
-        'teamId' : <team id>
+        'teamId' : <team id> # 0 left, 1 right
 
     {{update room info}} :
         'type' : 'updateRoomInfo'

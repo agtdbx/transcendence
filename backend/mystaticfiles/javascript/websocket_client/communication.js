@@ -28,6 +28,10 @@ function onRecieveData(event)
 	{
 		recievedMessage(data);
 	}
+	else if (type == 'gameStart')
+	{
+		console.log("GAME START !");
+	}
 	else
 		console.error("Unkown data recieved :", data);
 }
