@@ -8,7 +8,7 @@
 			{% csrf_token %}
 			<div class ="rectLogin" id = "rectLogin">
 				<div class ="textRectLogin" id = "textRectLogin">
-					<p id="textLogin">LOG-IN</p>
+					<p id="textLogin">LOGIN</p>
 				</div>
 				<input type="text" id="login" name="login" required><br>
 				<div class ="speratorLogin" id = "speratorlog"></div>
@@ -22,11 +22,10 @@
 				<div class ="speratorPassword" id = "speratorPassword"></div>
 			</div>
 
-			<button data-section="1" type="submit" class ="btn-drg" id = "btn-pop-login">LOG IN</button>
+			<button data-section="1" type="submit" class ="btn-drg" id = "btn-pop-login">LOGIN</button>
 			<script>
 
 				const form = document.getElementById('form_log');
-
 				form.addEventListener('submit', async event => {
 					event.preventDefault();
 
@@ -35,7 +34,7 @@
 				});
 			</script>
 		</form>
-
+		<p id="error"></p>
 		<p id="text42">STUDENT AT 42 ?</p>
 		{% block 42link %}
 		<a type="button" style="text-align:center;text-decoration:none;" class ="btn-drg" id = "btn-pop-link-42" href="https://api.intra.42.fr/oauth/authorize?client_id=u-s4t2ud-1b900294f4f0042d646cdbafdf98a5fe9216f3efd76b592e56b7ae3a18a43bd1&redirect_uri={{ 42urllink }}/3&response_type=code">LINK 42</a>

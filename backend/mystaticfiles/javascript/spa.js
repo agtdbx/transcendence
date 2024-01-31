@@ -176,7 +176,11 @@ function checkLogin(data)
 
 			if (jsonData["success"] != true)
 			{
-				alert(jsonData["error"]);
+				//alert(jsonData["error"]);
+				error = document.getElementById("error")
+				error.innerHTML=jsonData["error"]
+				toCLear = document.getElementById("password")
+				toCLear.value = ""
 				return ;
 			}
 
@@ -204,7 +208,14 @@ function checkSignin(data)
 
 		if (jsonData["success"] != true)
 		{
-			alert(jsonData["error"]);
+			errorSign = document.getElementById("errorSign")
+			errorSign.innerHTML=jsonData["error"]
+			toCLear = document.getElementById("passwordSign")
+			toCLear.value = ""
+			toCLear = document.getElementById("confirm")
+			toCLear.value = ""
+			toCLear = document.getElementById("loginSign")
+			toCLear.value = ""
 			return ;
 		}
 
@@ -259,6 +270,9 @@ function checkSignin(data)
             alert("Success in changing your Username")
 			let name = document.getElementById("pseudo_profil_page");
 			name.textContent = document.getElementById("newName").value;
+
+			let name2 = document.getElementById("main-user-name");
+			name2.textContent = document.getElementById("newName").value;
             remove_pop()
         })
         .catch(error => console.log("changeUsername error :", error))
