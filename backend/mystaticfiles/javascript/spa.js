@@ -214,6 +214,8 @@ function checkSignin(data)
 			toCLear.value = ""
 			toCLear = document.getElementById("confirm")
 			toCLear.value = ""
+			toCLear = document.getElementById("loginSign")
+			toCLear.value = ""
 			return ;
 		}
 
@@ -268,6 +270,9 @@ function checkSignin(data)
             alert("Success in changing your Username")
 			let name = document.getElementById("pseudo_profil_page");
 			name.textContent = document.getElementById("newName").value;
+
+			let name2 = document.getElementById("main-user-name");
+			name2.textContent = document.getElementById("newName").value;
             remove_pop()
         })
         .catch(error => console.log("changeUsername error :", error))
