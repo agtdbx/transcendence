@@ -1,8 +1,8 @@
-from pong_server.define import *
-from pong_server.server_code.vec2 import *
-import pong_server.server_code.hitbox as hitbox
-import pong_server.server_code.paddle as paddle
-import pong_server.server_code.obstacle as obstacle
+from define import *
+from server_code.vec2 import *
+import server_code.hitbox as hitbox
+import server_code.paddle as paddle
+import server_code.obstacle as obstacle
 
 
 def getPointOfCircle(radius, precision, beginDegree = 0):

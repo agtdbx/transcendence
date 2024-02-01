@@ -4,6 +4,8 @@ let id_team = null;
 
 function startGameClient(server_port, id_paddle, id_team)
 {
+	if (ws_game != null)
+		return ;
 	console.log("Try create game webSocket at ws://" + window.location.hostname + ":" + server_port + "/");
 	try {
 		ws_game = new WebSocket("ws://" + window.location.hostname + ":" + server_port + "/")
@@ -18,7 +20,7 @@ function startGameClient(server_port, id_paddle, id_team)
 	{
 		console.log("Client ws connection ok !");
 		// Go to game page
-		changePage('5');
+		changePage('6');
 		ws_game.send(JSON.stringify({
 			'type' : 'userIdentification',
 			'id_paddle' : id_paddle,

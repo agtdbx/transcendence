@@ -1,8 +1,8 @@
-from pong_server.define import *
-from pong_server.server_code.vec2 import *
+from define import *
+from server_code.vec2 import *
 
-import pong_server.server_code.hitbox as hitbox
-import pong_server.server_code.ball as ball
+import server_code.hitbox as hitbox
+import server_code.ball as ball
 
 class Obstacle:
 	def __init__(self, x:int, y:int, color:tuple[int, int, int]=(200, 200, 200)) -> None:

@@ -1,5 +1,7 @@
+import os
 import asyncio
-from pong_server.ws_game_server import start_game_thread
+import time
+# from pong_server.ws_game_server import start_game_thread
 
 # List of game server
 # List : [server running, port] ; if thread is False, the server is unused
@@ -23,10 +25,20 @@ def is_game_server_free():
     return (number_game_servers_free != 0)
 
 
+def start_game_websocket(port:int,
+                               map_id : int,
+                               power_up_enable : bool,
+                               team_left:list[int],
+                               team_right:list[int]):
+    os.system("python3 pong_server/ws_game_server.py " + str(port) + "&")
+    time.sleep(5)
+    os.system("echo test websocket now running on ws://localhost:" + str(port))
+
+
 def create_new_game(map_id : int,
-                    power_up_enable : bool,
-                    team_left:list[int],
-                    team_right:list[int]):
+                          power_up_enable : bool,
+                          team_left:list[int],
+                          team_right:list[int]):
     global number_game_servers_free
 
     for i in range (number_game_servers):
@@ -34,11 +46,15 @@ def create_new_game(map_id : int,
             game_servers[i][0] = True
 
             # Create game server thread ^^
-            asyncio.create_task(start_game_thread(
-                                game_servers[i][1],
-                                map_id, power_up_enable,
-                                team_left, team_right,
-                                game_servers[i]))
+            # asyncio.create_task(start_game_thread(
+            #                     game_servers[i][1],
+            #                     map_id, power_up_enable,
+            #                     team_left, team_right,
+            #                     game_servers[i]))
+
+            start_game_websocket(game_servers[i][1],
+                                       map_id, power_up_enable,
+                                       team_left, team_right)
 
             number_game_servers_free -= 1
             return i, game_servers[i][1]

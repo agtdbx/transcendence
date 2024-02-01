@@ -1,9 +1,9 @@
-from pong_server.define import *
-from pong_server.server_code.vec2 import *
-import pong_server.server_code.obstacle as obstacle
-import pong_server.server_code.paddle as paddle
-import pong_server.server_code.team as team
-import pong_server.server_code.ball as ball
+from define import *
+from server_code.vec2 import *
+import server_code.obstacle as obstacle
+import server_code.paddle as paddle
+import server_code.team as team
+import server_code.ball as ball
 
 ########################################################
 #                        DEFINE                        #
