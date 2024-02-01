@@ -1093,7 +1093,6 @@ p {
 	left: 0.5%;
 	width:30%;
 	height:35%;
-	text-align: center;
 	background: rgba(40,35,23,0.75);
 }
 
@@ -1123,7 +1122,6 @@ p {
 	left: 22%;
 	width:77%;
 	height:86%;
-	text-align: center;
 	background: rgba(18,16,11, 0.8);
 	overflow-y: auto;
 	overflow-wrap: anywhere;
