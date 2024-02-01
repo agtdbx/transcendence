@@ -651,6 +651,7 @@ p {
 	height:82%;
 	background: 	rgba(18, 16, 11, 0.8);
 	overflow-y: auto;
+	overflow-wrap: anywhere;
 }
 
 #main-chat{
@@ -766,6 +767,7 @@ p {
 	height:80%;
 	background: rgba(18, 16, 11, 0.8);
 	overflow-y: auto;
+	overflow-wrap: anywhere;
 }
 
 #wait-chat{
@@ -1020,87 +1022,89 @@ p {
 
 #tournamentChangeChat{
 	position: absolute;
-	top: 11%;
-	left: 0%;
-	width:30%;
-	height:45%;
+	top: 1%;
+	left: 1%;
+	width:20%;
+	height:98%;
 	text-align: center;
-	background: rgba(40,35,23,0.75);
+	background: rgba(18,16,11, 0.8);
 	overflow-y: auto;
 }
 
 #tournamentChat{
 	position: absolute;
-	top: 58%;
-	left: 0%;
+	top: 64%;
+	left: 0.5%;
 	width:30%;
-	height:42%;
+	height:35%;
 	text-align: center;
 	background: rgba(40,35,23,0.75);
 }
 
-#tournamentStatus{
+.changeTournament{
 	position: absolute;
-	top: 68%;
-	left: 30%;
-	width:25%;
-	height:32%;
-	text-align: center;
-	background: rgba(40,35,23,0.75);
-}
-
-#tournamentNextMatch{
-	position: absolute;
-	top: 68%;
-	left: 55%;
-	width:45%;
-	height:32%;
-	text-align: center;
-	background: rgba(40,35,23,0.75);
+	top: 46%;
+	left: 79%;
+	width: 15%;
+	height: 50%;
+	background-color: rgba(40,35,23, 0.75);
 }
 
 #tournamentProgress{
-	position: absolute;
-	top: 11%;
-	left: 55%;
-	width:45%;
-	height:57%;
-	text-align: center;
-	background: rgba(40,35,23,0.75);
-}
-
-#tournamentrect1{
-	position: absolute;
-	-ms-transform: translate(-50%, -50%);
-	transform: translate(-50%, -50%);
-	top: 44%;
-	left: 50%;
-	width:96%;
-	height:80%;
-	text-align: left;
-	background: rgba(18,16,11, 0.8);
-	overflow-y: auto;
-}
-
-#tournamentrect2{
 	position: absolute;
 	-ms-transform: translate(-50%, -50%);
 	transform: translate(-50%, -50%);
 	top: 50%;
 	left: 50%;
-	width:99%;
-	height:97%;
+	width:25%;
+	height:30%;
+	text-align: center;
+	background: rgba(40,35,23,0.75);
+}
+#tournamentrect1{
+	position: absolute;
+	top: 1%;
+	left: 22%;
+	width:77%;
+	height:86%;
 	text-align: center;
 	background: rgba(18,16,11, 0.8);
+	overflow-y: auto;
+	overflow-wrap: anywhere;
+}
+
+#btnTournamentStartGame{
+	position: absolute;
+	-ms-transform: translate(-50%, -50%);
+	transform: translate(-50%, -50%);
+	top: 25%;
+	left: 50%;
+	width: 10%;
+	height: 8%;
+}
+
+#btnTournamentQuit{
+	position: absolute;
+	top: 12%;
+	left: 0.5%;
+
+}
+
+#btnTournamentShuffle{
+	-ms-transform: translate(-50%, -50%);
+	transform: translate(-50%, -50%);
+	position: absolute;
+	top: 70%;
+	left: 50%;
+	width: 8%;
+	height: 5%;
 }
 
 #tournamentrect3{
 	position: absolute;
-	-ms-transform: translate(-50%, -50%);
-	transform: translate(-50%, -50%);
-	top: 51%;
-	left: 50%;
-	width:99%;
+	top: 1%;
+	left: 1%;
+	width:98%;
 	height:98%;
 	text-align: center;
 	background: rgba(18,16,11, 0.8);
@@ -1108,9 +1112,9 @@ p {
 
 #tournament-chat{
 	position: absolute;
-	top: 86%;
-	left: 1.5%;
-	width: 96.5%;
+	top: 88%;
+	left: 22%;
+	width: 77%;
 	color: white;
 	background-color: rgba(207,188,188,0.5);
 	font-size: 1vw;
@@ -1186,73 +1190,102 @@ p {
 	font-size: 100%;
 }
 
-#tournament-next-match-text{
+/* join tournament*/
+
+#joinTournamentOption{
 	position: absolute;
 	-ms-transform: translate(-50%, -50%);
 	transform: translate(-50%, -50%);
-	top: 10%;
+	top: 71%;
 	left: 50%;
-	color: white;
-	font-size: 200%;
+	width:20%;
+	height:10%;
+	text-align: center;
+	background: rgba(40,35,23,0.75);
 }
 
-#tournament-VS-text{
+#joinTournamentOption1{
 	position: absolute;
-	-ms-transform: translate(-50%, -50%);
-	transform: translate(-50%, -50%);
-	top: 50%;
-	left: 50%;
+	top: 1%;
+	left: 1%;
+	width:98%;
+	height:98%;
+	text-align: center;
+	background: rgba(18,16,11, 0.8);;
 	color: white;
-	font-size: 225%;
 }
 
-#tournamentmapTextRect{
+#joinTournamentVSrect{
 	position: absolute;
-	top: 80%;
-	left: 2%;
-	width: 60%;
-	height: 15%;
-	background-color: hidden;
+	top: 40%;
+	left: 0.5%;
+	width:30%;
+	height:20%;
+	text-align: center;
+	background: rgba(40,35,23,0.75);
 }
 
-#tournament-map-text{
+#joinTournamentVSrect1{
 	position: absolute;
-	top: 0%;
-	left: 0%;
+	top: 1%;
+	left: 1%;
+	width:98%;
+	height:98%;
+	text-align: center;
+	background: rgba(18,16,11, 0.8);;
 	color: white;
-	font-size: 1.5rem;
+	overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
 }
 
-#tournamentPowerTextRect{
+#tournamentPlayer1{
 	position: absolute;
-	top: 80%;
-	left: 58%;
-	width: 40%;
-	height: 15%;
-	text-align: end;
-	background-color: hidden;
+	top: 1%;
+	left: 1%;
+	width: 30%;
+	height: 98%;
+	background-color: transparent;
 }
 
-.tournament-power-text{
-	object-fit: cover;
-	text-align: right;
+#tournamentPlayer2{
+	position: absolute;
+	top: 1%;
+	left: 69%;
+	width: 30%;
+	height: 98%;
+	background-color: transparent;
 }
 
-#tournament-power-text{
-	color: white;
-	font-size: 1.5rem;
-	text-align: right;
+#textVsTournament{
+	position: absolute;
+	top: 1%;
+	left: 32%;
+	width: 36%;
+	height: 98%;
+	background-color: transparent;
+	overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+#nextmatch{
+	font-size:200%
+}
+
+#vsTournament{
+	font-size:300%
 }
 
 /* tournamentCreate*/
 
 #tournamentCreate{
 	position: absolute;
-top: 11%;
-left: 0%;
-width: 40%;
-height: 40%;
-background-color: rgba(40,35,23,0.75);
+	top: 11%;
+	left: 0%;
+	width: 40%;
+	height: 40%;
+	background-color: rgba(40,35,23,0.75);
 }
 
 #tournamentCreatePowerUp{
@@ -1275,45 +1308,55 @@ background-color: rgba(18,16,11,0.8);
 
 #tournament-create-text1{
 	position: absolute;
--ms-transform: translate(-50%, -50%);
-transform: translate(-50%, -50%);
-top: 20%;
-left: 50%;
-font-size: 150%;
-text-align: center;
-color: white;
+	-ms-transform: translate(-50%, -50%);
+	transform: translate(-50%, -50%);
+	top: 20%;
+	left: 50%;
+	font-size: 150%;
+	text-align: center;
+	color: white;
 }
 
 
 #tournament-create-text2{
 	position: absolute;
--ms-transform: translate(-50%, -50%);
-transform: translate(-50%, -50%);
-color: green;
-top: 44%;
-left: 50%;
+	-ms-transform: translate(-50%, -50%);
+	transform: translate(-50%, -50%);
+	color: green;
+	top: 44%;
+	left: 50%;
 }
 
 #btn-tournament-create-desac{
 	position: absolute;
--ms-transform: translate(-50%, -50%);
-transform: translate(-50%, -50%);
-top: 70%;
-left: 50%;
-width: 70%;
-height: 20%;
-font-size: 1rem;
+	-ms-transform: translate(-50%, -50%);
+	transform: translate(-50%, -50%);
+	top: 70%;
+	left: 50%;
+	width: 70%;
+	height: 20%;
+	font-size: 1rem;
 }
 
 
 #tournament-create-text3{
 	position: absolute;
--ms-transform: translate(-50%, -50%);
-transform: translate(-50%, -50%);
-color: white;
-top: 10%;
-left: 50%;
-font-size: 200%;
+	-ms-transform: translate(-50%, -50%);
+	transform: translate(-50%, -50%);
+	top: 20%;
+	left: 50%;
+	font-size: 150%;
+	text-align: center;
+	color: white;
+}
+
+#tournament-create-text4{
+	position: absolute;
+	-ms-transform: translate(-50%, -50%);
+	transform: translate(-50%, -50%);
+	color: red;
+	top: 44%;
+	left: 50%;
 }
 
 #btn-tournament-create-map1{
@@ -1321,17 +1364,6 @@ font-size: 200%;
 -ms-transform: translate(-50%, -50%);
 transform: translate(-50%, -50%);
 top: 30%;
-left: 50%;
-width: 70%;
-height: 20%;
-font-size: 1rem;
-}
-
-#btn-tournament-create-map2{
-	position: absolute;
--ms-transform: translate(-50%, -50%);
-transform: translate(-50%, -50%);
-top: 50%;
 left: 50%;
 width: 70%;
 height: 20%;
@@ -1388,51 +1420,40 @@ background: rgba(0,128,0, 0.8);
 	height: 5%;
 }
 
-
-#createGameTopLeft{
-	position: absolute;
-	background-color: rgba(40,35,23, 0.75);
-	top: 10%;
-	left: 0%;
-	width: 24%;
-	height: 44%;
-	overflow-y: auto;
-}
-
 #createGameBotLeft{
 	position: absolute;
-	background-color: rgba(40,35,23, 0.75);
-	top: 56%;
-	left: 0%;
+	background-color: rgba(40, 35, 23, 0.75);
+	top: 69%;
+	left: 0.5%;
 	width: 24%;
-	height: 44%;
+	height: 30%;
 }
 
 #createGameMiddle{
 	position: absolute;
 	background-color: rgba(40,35,23, 0.75);
-	top: 70%;
+	top: 69%;
 	left: 26%;
-	width: 48%;
-	height: 30%;
+	width: 23%;
+	height: 10%;
 }
 
 #createGameBotRight{
 	position: absolute;
-background-color: rgba(40,35,23, 0.75);
-top: 10%;
-left: 76%;
-width: 24%;
-height: 44%;
+	background-color: rgba(40,35,23, 0.75);
+	top: 40%;
+	left: 30%;
+	width: 15%;
+	height: 25%;
 }
 
 #createGameTopRight{
 	position: absolute;
-background-color: rgba(40,35,23, 0.75);
-top: 56%;
-left: 76%;
-width: 24%;
-height: 44%;
+	background-color: rgba(40,35,23, 0.75);
+	top: 40%;
+	left: 55%;
+	width: 15%;
+	height: 25%;
 }
 
 #btn-create-game-desac{
@@ -1459,13 +1480,13 @@ font-size: 1rem;
 
 #btn-create-game-map2{
 	position: absolute;
--ms-transform: translate(-50%, -50%);
-transform: translate(-50%, -50%);
-top: 50%;
-left: 50%;
-width: 70%;
-height: 20%;
-font-size: 1rem;
+	-ms-transform: translate(-50%, -50%);
+	transform: translate(-50%, -50%);
+	top: 50%;
+	left: 50%;
+	width: 70%;
+	height: 20%;
+	font-size: 1rem;
 }
 
 #btn-create-game-map3{
@@ -1480,22 +1501,33 @@ font-size: 1rem;
 }
 
 #createGameChat{
- position: absolute;
-top: 2%;
-left: 2%;
-width: 96%;
-height: 80%;
-background-color: rgba(40,35,23, 0.75);
-overflow-y: auto;
+	position: absolute;
+	top: 2%;
+	left: 23%;
+	width: 76%;
+	height: 83%;
+	background-color: rgba(18, 16, 11, 0.8);
+	overflow-y: auto;
+	overflow-wrap: anywhere;
 }
 
 #createGameChatInput{
 	position: absolute;
-top: 87%;
-left: 2%;
-width: 96%;
-height: 10%;
-background-color: rgba(207,188,188,0.5);
+	top: 87%;
+	left: 23%;
+	width: 76%;
+	height: 10%;
+	background-color: white;
+}
+
+
+#createGameTopLeft{
+	position: absolute;
+	top: 2%;
+	left: 1%;
+	width: 20%;
+	height: 95%;
+	background-color: rgba(18, 16, 11, 0.8);
 }
 
 #global-create-game{
@@ -1513,11 +1545,9 @@ background-color: rgba(207,188,188,0.5);
 
 #create-game-team1{
 	position: absolute;
-	-ms-transform: translate(-50%, -50%);
-	transform: translate(-50%, -50%);
-	top: 6%;
-	left: 50%;
-	height: 10%;
+	top: 1%;
+	left: 1%;
+	height: 15%;
 	width: 98%;
 	color: white;
 	background : rgba(18, 16, 11, 0.8);
@@ -1527,22 +1557,181 @@ background-color: rgba(207,188,188,0.5);
 
 #create-game-team2{
 	position: absolute;
-	-ms-transform: translate(-50%, -50%);
-	transform: translate(-50%, -50%);
-	top: 6%;
-	left: 50%;
-	height: 10%;
+	top: 1%;
+	left: 1%;
+	height: 15%;
 	width: 98%;
 	color: white;
 	background : rgba(18, 16, 11, 0.8);
 	border: 3px solid #FF9C00;
 	text-align: center;
-} */
+}
+
+#team1Player{
+	position: absolute;
+	top: 17%;
+	left: 1%;
+	height: 81%;
+	width: 98%;
+	background : rgba(18, 16, 11, 0.8);
+	overflow-y: auto;
+	overflow-wrap: anywhere;
+}
+
+#team2Player{
+	position: absolute;
+	top: 17%;
+	left: 1%;
+	height: 81%;
+	width: 98%;
+	background : rgba(18, 16, 11, 0.8);
+	overflow-y: auto;
+	overflow-wrap: anywhere;
+}
+
+.btn-bot{
+	position: relative;
+	top: 84.5%;
+	left: 70%;
+	width: 30%;
+	height: 15%;
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+}
+
+#vs{
+	position: absolute;
+	-ms-transform: translate(-50%, -50%);
+	transform: translate(-50%, -50%);
+	top: 53%;
+	left: 50%;
+	height: 10%;
+	width: 10%;
+	font-size: 200%;
+	background : transparent;
+}
+
+#vstext{
+	font-size: 200%;
+}
+
+#createGameStatus{
+	position: absolute;
+	-ms-transform: translate(-50%, -50%);
+	transform: translate(-50%, -50%);
+	top: 73%;
+	left: 50%;
+	height: 8%;
+	width: 15%;
+	font-size: 200%;
+	background : rgba(40,35,23, 0.75);
+	text-align: center;
+}
+
+#CreateGamePowerUp{
+	position: absolute;
+	top: 1%;
+	left: 1%;
+	height: 98%;
+	width: 48%;
+	font-size: 50%;
+	background : rgba(18, 16, 11, 0.8);
+	border: 3px solid #FF9C00;
+	text-align: center;
+
+}
+
+#CreateGameMap{
+	position: absolute;
+	top: 1%;
+	left: 51%;
+	height: 98%;
+	width: 48%;
+	font-size: 50%;
+	background : rgba(18, 16, 11, 0.8);
+	border: 3px solid #FF9C00;
+	text-align: center;
+
+}
+
+#gameCreatePowerTxt{
+	top: 1%;
+	color: white;
+}
+
+#gameCreatePowerStatus{
+	top: 1%;
+	color: green;
+}
+
+#gameCreateMapTxt{
+	top: 1%;
+	color: white;
+}
+
+#gameCreateMapName{
+	top: 1%;
+	color: white;
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+}
+
+/*		Status Game Custom		*/
 
 
+.changeCustomGame{
+	position: absolute;
+	top: 25%;
+	left: 79%;
+	width: 15%;
+	height: 50%;
+	background-color: rgba(40,35,23, 0.75);
+}
+
+.CustomPowerUp{
+	position: absolute;
+	top:1%;
+	left: 1%;
+	height: 25%;
+	width: 98%;
+	background : rgba(18, 16, 11, 0.8);
+	text-align: center;
+}
+
+#customPTxt{
+	color: white;
+}
 
 
+#btnStatusPowerUp{
+	width: 30%;
+	height: 30%;
+}
 
+.CustomMap{
+	position: absolute;
+	top: 27%;
+	left: 1%;
+	height: 72%;
+	width: 98%;
+	background : rgba(18, 16, 11, 0.8);
+	text-align: center;
+
+}
+
+#customMTxt{
+	color: white;
+}
+
+.btn-map{
+	width: 95%;
+	height: 10%;
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+}
 
 
 

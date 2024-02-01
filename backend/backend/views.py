@@ -6,7 +6,7 @@
 #    By: hde-min <hde-min@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/08 14:00:09 by lflandri          #+#    #+#              #
-#    Updated: 2024/01/30 15:27:04 by hde-min          ###   ########.fr        #
+#    Updated: 2024/02/01 15:01:32 by hde-min          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -166,7 +166,7 @@ def section(request, num):
         if fullPage:
             return render(request, "tournament_full.html")
         else:
-            return render(request,"tournament.html")
+            return render(request,"joinTournament.html")
 
     elif num == 8:
         if fullPage:
