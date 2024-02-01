@@ -201,7 +201,13 @@ TOURNAMENT
 
 /!\ All messages for and from game are in it's websocket /!\
 GAME
-    user input
+	player identification
+		'type' : 'userIdentification'
+		'id_paddle' : <id paddle>
+		'id_team' : <id team>
+		-> No more field
+
+    player input
         'type' : 'userInput'
         'key' : 'up' | 'down' | 'powerUp' | 'launchBall'
         'value' : 'press' | 'release'

@@ -1,6 +1,6 @@
-from define import *
-from server_side.vec2 import *
-import server_side.hitbox as hitbox
+from pong_server.define import *
+from pong_server.server_code.vec2 import *
+import pong_server.server_code.hitbox as hitbox
 
 class Paddle:
 	def	__init__(self, x, y, id, team) -> None:

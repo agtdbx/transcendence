@@ -1,17 +1,19 @@
 import sys
-from websocket_server.game_server_manager import create_new_game
+from websocket_server.game_server_manager import create_new_game, is_game_server_free
 
 waitlist = []
 
 def create_game_start_message(port, paddle_id, team_id):
     message : dict = {
         "type" : "gameStart",
-        "gamePort" : port,
-        "paddleId" : paddle_id,
-        "teamID" : team_id
+        "gamePort" : str(port),
+        "paddleId" : str(paddle_id),
+        "teamID" : str(team_id)
     }
     str_message = str(message)
     str_message = str_message.replace("'", '"')
+
+    print("MESSAGE CREATE :", str_message, file=sys.stderr)
     return str_message
 
 
@@ -21,15 +23,23 @@ async def join_quick_room(my_id : int, connected_users : dict):
         print("Put user", my_id, "in waitlist", file=sys.stderr)
         return
 
-    ret = create_new_game(0, False)
-
-    if ret == None:
+    if not is_game_server_free():
         waitlist.append(my_id)
         print("No game server free, put user", my_id, "in waitlist", file=sys.stderr)
         return
 
+
     first_player_id = waitlist.pop(0)
     print("Start game beetween", my_id, "and", first_player_id, file=sys.stderr)
+
+    # team [int, int]
+    # int per paddle, 0 for player, 1 for ia
+    ret = create_new_game(0, False, [0], [0])
+
+    if ret == None:
+        waitlist.append(my_id)
+        print("ERROR : No game server free, put user", my_id, "in waitlist", file=sys.stderr)
+        return
 
     # Send start game message to first player in waitlist
     first_player_msg = create_game_start_message(ret[1], 0, 0)

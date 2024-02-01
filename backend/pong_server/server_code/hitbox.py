@@ -1,5 +1,5 @@
-from define import *
-from server_side.vec2 import *
+from pong_server.define import *
+from pong_server.server_code.vec2 import *
 
 import math
 

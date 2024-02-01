@@ -1,5 +1,5 @@
 from define import *
-from server_side.tcp_server import runGameServer
+from server_code.tcp_server import runGameServer
 
 
 map_to_load = 2

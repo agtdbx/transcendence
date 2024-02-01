@@ -1,10 +1,10 @@
-from define import *
-from server_side.vec2 import *
-import server_side.hitbox as hitbox
-import server_side.team as team
-import server_side.ball as ball
-import server_side.obstacle as obstacle
-import server_side.ia as ia
+from pong_server.define import *
+from pong_server.server_code.vec2 import *
+import pong_server.server_code.hitbox as hitbox
+import pong_server.server_code.team as team
+import pong_server.server_code.ball as ball
+import pong_server.server_code.obstacle as obstacle
+import pong_server.server_code.ia as ia
 
 import random
 import time

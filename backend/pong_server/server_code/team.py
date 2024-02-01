@@ -1,6 +1,6 @@
-from define import *
+from pong_server.define import *
 
-import server_side.paddle as paddle
+import pong_server.server_code.paddle as paddle
 import random
 
 class Team:
