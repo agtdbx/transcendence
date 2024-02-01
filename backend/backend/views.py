@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    views.py                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: aderouba <aderouba@student.42.fr>          +#+  +:+       +#+         #
+#    By: hde-min <hde-min@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/08 14:00:09 by lflandri          #+#    #+#              #
-#    Updated: 2024/01/31 13:31:30 by aderouba         ###   ########.fr        #
+#    Updated: 2024/02/01 15:48:49 by hde-min          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -170,7 +170,7 @@ def section(request, num):
         if fullPage:
             return render(request, "tournament_full.html")
         else:
-            return render(request,"tournament.html")
+            return render(request,"joinTournament.html")
 
     elif num == 8:
         if fullPage:
