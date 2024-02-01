@@ -33,7 +33,7 @@ function createMessage(message, username, pp, date)
 	img.style.width = "3em";
 	img.style.height = "3em";
 	img.style.borderRadius = "50%";
-	img.src = pp
+	img.src = pp;
 	messageCase.style.width = "85%";
 	messageCase.style.paddingLeft = "0%";
 	messageCase.style.verticalAlign = "top";
