@@ -6,7 +6,7 @@
 /*   By: lflandri <lflandri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 14:56:17 by lflandri          #+#    #+#             */
-/*   Updated: 2023/12/07 16:53:06 by lflandri         ###   ########.fr       */
+/*   Updated: 2024/02/01 16:24:00 by lflandri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,8 @@ const playerList = [
 
 				]
 
+const lenthVertBar = 450
+
 function drawTree(content, mapPoint)
 {
 	for (let floor = 0; floor < mapPoint.length - 1; floor++)
@@ -62,8 +64,8 @@ function drawTree(content, mapPoint)
 		for (let index = 0; index < mapPoint[floor + 1].length; index+=2)
 		{
 			let newPath1 = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-			let d1 = "M" + mapPoint[floor][index / 2] + " " + ((floor) * 300 / (mapPoint.length + 1));
-			d1 +=  " V " + ((floor + 1) * 300 / (mapPoint.length + 1));
+			let d1 = "M" + mapPoint[floor][index / 2] + " " + ((floor) * lenthVertBar / (mapPoint.length + 1));
+			d1 +=  " V " + ((floor + 1) * lenthVertBar / (mapPoint.length + 1));
 			d1 +=  " H " + mapPoint[floor + 1][index];
 			newPath1.style.stroke = "white";
 			newPath1.style.strokeWidth = "2px";
@@ -72,8 +74,8 @@ function drawTree(content, mapPoint)
 			content.insertBefore(newPath1, null);
 			
 			let newPath2 = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-			let d2 = "M" + mapPoint[floor][index / 2] + " " + ((floor) * 300 / (mapPoint.length + 1));
-			d2 +=  " V " + ((floor + 1) * 300 / (mapPoint.length + 1));
+			let d2 = "M" + mapPoint[floor][index / 2] + " " + ((floor) * lenthVertBar / (mapPoint.length + 1));
+			d2 +=  " V " + ((floor + 1) * lenthVertBar / (mapPoint.length + 1));
 			d2 +=  " H " + mapPoint[floor + 1][index + 1];
 			newPath2.style.stroke = "white";
 			newPath2.style.strokeWidth = "2px";
@@ -86,8 +88,8 @@ function drawTree(content, mapPoint)
 	for (let index = 0; index < mapPoint[mapPoint.length - 1].length; index+=2)
 	{
 			let newPath1 = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-			let d1 = "M" + mapPoint[mapPoint.length - 1][index] + " " + ((mapPoint.length - 1) * 300 / (mapPoint.length + 1));
-			d1 +=  " V " + ((mapPoint.length) * 300 / (mapPoint.length + 1));
+			let d1 = "M" + mapPoint[mapPoint.length - 1][index] + " " + ((mapPoint.length - 1) * lenthVertBar / (mapPoint.length + 1));
+			d1 +=  " V " + ((mapPoint.length) * lenthVertBar / (mapPoint.length + 1));
 			newPath1.style.stroke = "white";
 			newPath1.style.strokeWidth = "2px";
 			console.log(mapPoint[mapPoint.length - 1][index]);
@@ -95,8 +97,8 @@ function drawTree(content, mapPoint)
 			content.insertBefore(newPath1, null);
 			
 			let newPath2 = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-			let d2 = "M" + mapPoint[mapPoint.length - 1][index + 1] + " " + ((mapPoint.length - 1) * 300 / (mapPoint.length + 1));
-			d2 +=  " V " + ((mapPoint.length) * 300 / (mapPoint.length + 1));
+			let d2 = "M" + mapPoint[mapPoint.length - 1][index + 1] + " " + ((mapPoint.length - 1) * lenthVertBar / (mapPoint.length + 1));
+			d2 +=  " V " + ((mapPoint.length) * lenthVertBar / (mapPoint.length + 1));
 			newPath2.style.stroke = "white";
 			newPath2.style.strokeWidth = "2px";
 			newPath2.setAttribute('d', d2);
@@ -123,15 +125,15 @@ function addPlayerTournamentTree(content, mapPoint, listPlayer, nb_player_max)
 		let newPoint = document.createElementNS('http://www.w3.org/2000/svg', 'image');
 		if (grade === 0)
 		{
-			newPoint.setAttribute('y', "" + ((grade) * 300 / (mapPoint.length + 1)));
+			newPoint.setAttribute('y', "" + ((grade) * lenthVertBar / (mapPoint.length + 1)));
 		}
 		else if (grade != mapPoint.length - 1)
 		{
-			newPoint.setAttribute('y', "" + ((grade) * 300 / (mapPoint.length + 1) - 15))
+			newPoint.setAttribute('y', "" + ((grade) * lenthVertBar / (mapPoint.length + 1) - 15))
 		}
 		else
 		{
-			newPoint.setAttribute('y', "" + ((grade + 1) * 300 / (mapPoint.length + 1) - 15));
+			newPoint.setAttribute('y', "" + ((grade + 1) * lenthVertBar / (mapPoint.length + 1) - 15));
 		}
 		newPoint.setAttribute('x', "" + mapPoint[grade][ Math.floor(index / mod)] - 15);
 		newPoint.setAttribute('width', "30");
