@@ -59,7 +59,7 @@ class Vec2:
 
 
 	def asTupple(self) -> tuple:
-		return (self.x, self.y)
+		return [self.x, self.y]
 
 
 	def asTuppleCenter(self, x, y) -> tuple:

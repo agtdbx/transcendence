@@ -71,7 +71,6 @@ function changePolygon(path, pointList)
 export class GameClient {
 	constructor()
 	{
-		websockGame.onmessage = this.parseMessageFromServer;
 		console.log("area rect")
 		console.log(dc.AREA_RECT[0])
 		console.log(dc.AREA_RECT[1])
@@ -97,7 +96,7 @@ export class GameClient {
 		// this.last = time.time()
 		this.last = new Date().getTime();
 
-		this.runMainLoop = true
+		this.runMainLoop = false
 
 		this.inputWait = 0
 
@@ -161,14 +160,14 @@ export class GameClient {
 		//test tempo :
 
 
-		let cubePointListe = [[-45,-45], [45,-45], [45,45], [-45, 45]]
+		// let cubePointListe = [[-45,-45], [45,-45], [45,45], [-45, 45]]
 		// this.walls.push(createObstacle(400, 399, cubePointListe))
 		// this.wallsHtmlObjects.push(addPolygon(this.win, 400, 399, cubePointListe, "#FF00FF"))
 
-		let ys = 420
+		// let ys = 420
 
-		this.walls.push(createObstacle(1400, ys, cubePointListe))
-		this.wallsHtmlObjects.push(addPolygon(this.win, 1400, ys, cubePointListe, "#FF00FF"))
+		// this.walls.push(createObstacle(1400, ys, cubePointListe))
+		// this.wallsHtmlObjects.push(addPolygon(this.win, 1400, ys, cubePointListe, "#FF00FF"))
 
 		// this.walls.push(createObstacle(800, 300, cubePointListe))
 		// this.wallsHtmlObjects.push(addPolygon(this.win, 800, 300, cubePointListe, "#FF00FF"))
@@ -189,15 +188,15 @@ export class GameClient {
 		// this.walls.push(createObstacle(400, 0, wallPointListe))
 		// this.wallsHtmlObjects.push(addPolygon(this.win, 400, 0, wallPointListe, "#FF00FF"))
 
-		let borderListe = [[-900,-2], [900,-2], [900,2], [-900, 2]]
-		this.walls.push(createObstacle(900, 2, borderListe))
-		this.wallsHtmlObjects.push(addPolygon(this.win, 900, 2, borderListe, "#FF00FF"))
-		this.walls.push(createObstacle(900, 897, borderListe))
-		this.wallsHtmlObjects.push(addPolygon(this.win, 900, 897, borderListe, "#FF00FF"))
+		// let borderListe = [[-900,-2], [900,-2], [900,2], [-900, 2]]
+		// this.walls.push(createObstacle(900, 2, borderListe))
+		// this.wallsHtmlObjects.push(addPolygon(this.win, 900, 2, borderListe, "#FF00FF"))
+		// this.walls.push(createObstacle(900, 897, borderListe))
+		// this.wallsHtmlObjects.push(addPolygon(this.win, 900, 897, borderListe, "#FF00FF"))
 
-		let testobj = [[-300, 0], [300, 0], [275, 50], [75, 75], [0, 125], [-75, 75], [-275, 50]]
-		this.walls.push(createObstacle(d.AREA_SIZE[0] / 2, 0, testobj))
-		this.wallsHtmlObjects.push(addPolygon(this.win, d.AREA_SIZE[0] / 2, 0, testobj, "#FF00FF"))
+		// let testobj = [[-300, 0], [300, 0], [275, 50], [75, 75], [0, 125], [-75, 75], [-275, 50]]
+		// this.walls.push(createObstacle(d.AREA_SIZE[0] / 2, 0, testobj))
+		// this.wallsHtmlObjects.push(addPolygon(this.win, d.AREA_SIZE[0] / 2, 0, testobj, "#FF00FF"))
 		// idPaddle, paddleTeam, Ball speed, Number of bounce, CC, Perfect shoot, time of goal
 		this.goals = []
 
@@ -491,6 +490,7 @@ export class GameClient {
 
 	parseMessageFromServer(event)
 	{
+		console.log("DATA FROM GWS RECEIVED");
 		let data = null;
 		try
 		{
@@ -525,22 +525,37 @@ export class GameClient {
 		// 	this.parseMessageForScore(message[1])
 		else if (type === "endGame") // Not the movie !
 		{
-		let but = document.createElement("button");
-		but.classList = "btn-drg";
-		but.textContent = "Return to main page";
-		but.onclick = function(){
-			changePage('3');
-		};
-		document.getElementById("content").appendChild(but);
-		ws_game.onclose = {};
-		ws_game.close();
-		ws_game = null;
-		id_paddle = null;
-		id_team = null;
-		console.log("GWS CLOSE");
-	}
-	else
-		console.error("GWS :Unkown data recieved :", data);
+			let but = document.createElement("button");
+			but.classList = "btn-drg";
+			but.textContent = "Return to main page";
+			but.onclick = function(){
+				changePage('3');
+			};
+			document.getElementById("content").appendChild(but);
+			ws_game.onclose = {};
+			ws_game.close();
+			ws_game = null;
+			id_paddle = null;
+			id_team = null;
+			console.log("GWS CLOSE");
+		}
+		else if (type === "startInfo")
+		{
+
+			this.runMainLoop = true
+			this.createObstaclesOnMap(data['obstacles'])
+		}
+		else
+			console.error("GWS :Unkown data recieved :", data);
+		}
+
+	createObstaclesOnMap(lstObstacle)
+	{
+		for (const obstables of lstObstacle)
+		{
+			this.walls.push(createObstacle(0, 0, obstables))
+			this.wallsHtmlObjects.push(addPolygon(this.win, 0, 0, obstables, "#FF00FF"))
+		}
 	}
 
 

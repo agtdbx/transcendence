@@ -182,10 +182,13 @@ async def game_server_manager():
     global game, can_shutdown
     print("\nGWS : START GAME", file=sys.stderr)
     game = GameServer(power_up, team_left, team_right, map_id);
+    lstObstacle = []
+    for wall in game.walls :
+        lstObstacle.append(wall.hitbox.getPoints())
     
-    
+    await asyncio.sleep(3)
     end_game_msg = {"type" : "startInfo",
-                    "obstacles" : game.walls,
+                    "obstacles": lstObstacle ,
                     'powerUp' : power_up
                     }
     str_msg = str(end_game_msg)
@@ -199,7 +202,7 @@ async def game_server_manager():
     while game.runMainLoop :
         print("\nGWS : GAME STEP", file=sys.stderr)
         game.step()
-        await asyncio.sleep(10)
+        await asyncio.sleep(0.1)
     print("\nGWS : END GAME (not the movie)", file=sys.stderr)
 
     end_game_msg = {"type" : "endGame",
