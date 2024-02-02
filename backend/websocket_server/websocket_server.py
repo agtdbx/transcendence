@@ -17,12 +17,14 @@ def add_user_connected(myid, websocket):
         set_user_status(myid, 1)
     lst.append(websocket)
     connected_users[myid] = lst
-    print("Hello new client " + str(myid) + " :", connected_users, file=sys.stderr)
+    print("\nWS : Hello new client " + str(myid) + " :",
+          connected_users, file=sys.stderr)
 
 
 def remove_user_connected(myid, websocket):
     connected_users.get(myid, []).remove(websocket)
-    print("Bye bye client " + str(myid) + " :", connected_users, file=sys.stderr)
+    print("\nWS : Bye bye client " + str(myid) + " :",
+          connected_users, file=sys.stderr)
     if len(connected_users.get(myid, [])) == 0:
         set_user_status(myid, 0)
         leave_quick_room(myid)
@@ -30,11 +32,11 @@ def remove_user_connected(myid, websocket):
 
 async def handle_client(websocket : websockets.WebSocketServerProtocol, path):
     myid = None
-    print("Hello anonymous client", file=sys.stderr)
+    print("\nWS : Hello anonymous client", file=sys.stderr)
 
     try:
         async for data in websocket:
-            print("DATA RECIEVED :", data, file=sys.stderr)
+            print("\nWS : DATA RECIEVED :", data, file=sys.stderr)
             data : dict = json.loads(data)
 
             request_type = data.get("type", None)
@@ -88,14 +90,14 @@ async def handle_client(websocket : websockets.WebSocketServerProtocol, path):
             await send_error(websocket, "Request type unkown")
 
     except Exception as error:
-        print("CRITICAL ERROR :", error, file=sys.stderr)
+        print("\nWS : CRITICAL ERROR :", error, file=sys.stderr)
 
     finally:
         # Delete the connection when the client disconnect
         if myid != None:
             remove_user_connected(myid, websocket)
         else:
-            print("Bye bye anonymous client", file=sys.stderr)
+            print("\nWS : Bye bye anonymous client", file=sys.stderr)
 
 
 # Start the websocket server

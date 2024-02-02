@@ -10,6 +10,12 @@ from server_code.game_server import GameServer
 connected_player = dict()
 game = None
 game_server_run = True
+# team list will fill by False when create, and fill of True when every player are
+# connected
+team_left = []
+team_right = []
+map_id = 0
+power_up = False
 
 
 async def send_error(websocket, error_explaination):
@@ -23,59 +29,105 @@ def add_user_connected(myid, websocket):
     lst : list = connected_player.get(myid, [])
     lst.append(websocket)
     connected_player[myid] = lst
-    print("Hello new player " + str(myid) + " :",
+    print("\nGWS : Hello new player " + str(myid) + " :",
           connected_player, file=sys.stderr)
 
 
 def remove_user_connected(myid, websocket):
     connected_player.get(myid, []).remove(websocket)
-    print("Bye bye player " + str(myid) + " :", connected_player, file=sys.stderr)
+    print("\nGWS : Bye bye player " + str(myid) + " :",
+          connected_player, file=sys.stderr)
 
 
 async def handle_client(websocket : websockets.WebSocketServerProtocol, path):
+    global map_id, power_up, team_left, team_right
     # None | (id paddle, id team)
     myid = None
-    print("Hello anonymous player", file=sys.stderr)
+    print("\nGWS : Hello anonymous player", path, file=sys.stderr)
 
     try:
         async for data in websocket:
-            print("DATA RECIEVED :", data, file=sys.stderr)
+            print("\nGWS : DATA RECIEVED :", data, file=sys.stderr)
             data : dict = json.loads(data)
+            print("JSON parse OK :", data, file=sys.stderr)
 
             request_type = data.get("type", None)
 
             # Check if the common part of the request exist
             if request_type == None:
-                await send_error(websocket, "Missing type or cmd field in request")
+                await send_error(websocket, "Missing type field in request")
+                print("GWS : Missing type field in request :", data,
+                      file=sys.stderr)
                 continue
 
             if request_type == "userIdentification":
-                id_paddle = data.get("id_paddle", None)
-                id_team = data.get("id_team", None)
-                if id_paddle == None or id_team != None:
+                id_paddle = data.get("idPaddle", None)
+                id_team = data.get("idTeam", None)
+                if id_paddle == None or id_team == None:
                     await send_error(websocket,
-                                     "Missing type or cmd field in request")
+                                     "Missing idPaddle or idTeam")
+                    continue
+                try:
+                    id_paddle = int(id_paddle)
+                    id_team = int(id_team)
+                except:
+                     await send_error(websocket,
+                                     "idPaddle and idTeam must be integer")
                 else:
                     myid = (id_paddle, id_team)
                     add_user_connected(myid, connected_player)
                 continue
 
+            elif request_type == "info":
+                print("\nGWS : DATA RECIEVED ON GAME SERVER :", data,
+                        file=sys.stderr)
+                mapId = data.get("mapId", None)
+                powerUp = data.get("powerUp", None)
+                teamLeft = data.get("teamLeft", None)
+                teamRight = data.get("teamRight", None)
+                if mapId == None or powerUp == None or teamLeft == None or\
+                    teamRight == None:
+                    await send_error(websocket,
+                                     "Missing info")
+                else:
+                    map_id = mapId
+                    power_up = powerUp
+                    size = len(teamLeft)
+                    team_left = [False] * size
+                    for i in range(size):
+                        # If it's an ia, it's ready
+                        if teamLeft[i] == 1:
+                            team_left[i] = True
+                    size = len(teamRight)
+                    team_right = [False] * size
+                    for i in range(size):
+                        # If it's an ia, it's ready
+                        if teamRight[i] == 1:
+                            team_right[i] = True
+                continue
+
             await send_error(websocket, "Request type unkown")
 
     except Exception as error:
-        print("CRITICAL ERROR :", error, file=sys.stderr)
+        print("\nGWS : CRITICAL ERROR :", error, file=sys.stderr)
 
     finally:
         # Delete the connection when the client disconnect
         if myid != None:
             remove_user_connected(myid, websocket)
         else:
-            print("Bye bye anonymous player", file=sys.stderr)
-        if len(connected_player) == 0:
-            exit()
+            print("\nGWS : Bye bye anonymous player", path, file=sys.stderr)
+        #if len(connected_player) == 0:
+        #    print("\nGWS : No more connection, quitting", file=sys.stderr)
+        #    exit()
 
-    # while game_server_run:
-    #     time.sleep(1)
+
+print("START GAME WEBSOCKET (GWS)", file=sys.stderr)
+print("PARAM :", sys.argv, file=sys.stderr)
+start_server = websockets.serve(handle_client, "0.0.0.0", int(sys.argv[1]))
+
+asyncio.get_event_loop().run_until_complete(start_server)
+asyncio.get_event_loop().run_forever()
 
 
 # async def game_server_manager(team_left, team_right):
@@ -137,11 +189,3 @@ async def handle_client(websocket : websockets.WebSocketServerProtocol, path):
 #     p.start()
 #     p.join()
 #     server_state[0] = False
-
-
-print("START GAME WEBSOCKET", file=sys.stderr)
-print("PARAM :", sys.argv, file=sys.stderr)
-start_server = websockets.serve(handle_client, "0.0.0.0", int(sys.argv[1]))
-
-asyncio.get_event_loop().run_until_complete(start_server)
-asyncio.get_event_loop().run_forever()

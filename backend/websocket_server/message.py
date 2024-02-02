@@ -29,7 +29,7 @@ async def message_in_general(message:str, user:User, connected_users:dict):
                                      "/static/" + str(user.profilPicture),
                                      date, "general")
 
-    print("client states :", connected_users, file=sys.stderr)
+    print("\nclient states :", connected_users, file=sys.stderr)
     for _, websockets in connected_users.items():
         for i in range(len(websockets)):
             websocket = websockets[i]
@@ -57,7 +57,7 @@ async def message_in_private(message:str,
                                            target_id)
 
     # Send message to user
-    print("SEND MSG TO USER :", myid, file=sys.stderr)
+    print("\nSEND MSG TO USER :", myid, file=sys.stderr)
     for websocket in connected_users.get(myid, []):
         try:
             await websocket.send(str_msg_to_myuser)
@@ -66,7 +66,7 @@ async def message_in_private(message:str,
             print("SEND FAIL", file=sys.stderr)
 
     # Send message to target
-    print("SEND MSG TO TARGET :", target_id, file=sys.stderr)
+    print("\nSEND MSG TO TARGET :", target_id, file=sys.stderr)
     for websocket in connected_users.get(target_id, []):
         try:
             await websocket.send(str_msg_to_target)
@@ -108,4 +108,4 @@ async def recieved_message(data : dict,
 
     except Exception as error:
         await send_error(websocket, "Invalid channel")
-        print("Channel :", channel, "ERROR :", error, file=sys.stderr)
+        print("\nChannel :", channel, "ERROR :", error, file=sys.stderr)

@@ -1,6 +1,8 @@
 import os
 import asyncio
+import sys
 import time
+import websockets
 # from pong_server.ws_game_server import start_game_thread
 
 # List of game server
@@ -25,17 +27,27 @@ def is_game_server_free():
     return (number_game_servers_free != 0)
 
 
-def start_game_websocket(port:int,
-                               map_id : int,
-                               power_up_enable : bool,
-                               team_left:list[int],
-                               team_right:list[int]):
+async def start_game_websocket(port:int,
+                         map_id : int,
+                         power_up_enable : bool,
+                         team_left:list[int],
+                         team_right:list[int]):
     os.system("python3 pong_server/ws_game_server.py " + str(port) + "&")
-    time.sleep(5)
-    os.system("echo test websocket now running on ws://localhost:" + str(port))
+    time.sleep(2)
+    os.system("echo; echo test websocket now running on ws://localhost:" + str(port))
+    ws = await websockets.connect("ws://localhost:" + str(port))
+    msg = {"type":"info",
+        "mapId" : map_id,
+        "powerUp" : str(power_up_enable).lower(),
+        "teamLeft" : team_left,
+        "teamRight" : team_right}
+    str_msg = str(msg).replace("'", '"')
+    await ws.send(str_msg)
+    await ws.close()
+    print("\nWS : all go info go to game server", file=sys.stderr)
 
 
-def create_new_game(map_id : int,
+async def create_new_game(map_id : int,
                           power_up_enable : bool,
                           team_left:list[int],
                           team_right:list[int]):
@@ -52,7 +64,7 @@ def create_new_game(map_id : int,
             #                     team_left, team_right,
             #                     game_servers[i]))
 
-            start_game_websocket(game_servers[i][1],
+            await start_game_websocket(game_servers[i][1],
                                        map_id, power_up_enable,
                                        team_left, team_right)
 

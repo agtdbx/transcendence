@@ -119,7 +119,7 @@ function runScript()
 				data.text().then(function (r) {
 					eval(r);
 				})
-			});
+			}).catch(error => console.log("error :", error))
 		}
 	}
 }

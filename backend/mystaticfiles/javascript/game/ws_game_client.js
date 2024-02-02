@@ -2,7 +2,7 @@ let ws_game = null;
 let id_paddle = null;
 let id_team = null;
 
-function startGameClient(server_port, id_paddle, id_team)
+function startGameClient(server_port, idPaddle, idTeam)
 {
 	if (ws_game != null)
 		return ;
@@ -12,25 +12,25 @@ function startGameClient(server_port, id_paddle, id_team)
 	}
 	catch (error)
 	{
-		console.error("WS GAME ERROR :", error);
+		console.error("GWS GAME ERROR :", error);
 		return
 	}
 
 	ws_game.onopen = function(e)
 	{
-		console.log("Client ws connection ok !");
+		console.log("Client gws connection ok !");
 		// Go to game page
 		changePage('6');
 		ws_game.send(JSON.stringify({
 			'type' : 'userIdentification',
-			'id_paddle' : id_paddle,
-			'id_team': id_team
+			'idPaddle' : idPaddle,
+			'idTeam': idTeam
 		}));
 	}
 
 	ws_game.onmessage = parseServerMessage;
 
-	ws_game.onerror = function(e) {console.error("WS GAME ERROR :", e)};
+	ws_game.onerror = function(e) {console.error("GWS ERROR :", e)};
 }
 
 
@@ -40,10 +40,11 @@ function parseServerMessage(event)
 	try
 	{
 		data = JSON.parse(event.data);
+		console.log("DATA FROM GWS :", data);
 	}
 	catch (error)
 	{
-		console.error("Json parsing error :", event.data, error);
+		console.error("GWS : Json parsing error :", event.data, error);
 		return ;
 	}
 
@@ -51,8 +52,8 @@ function parseServerMessage(event)
 
 	if (type === "error")
 	{
-		console.error("Error :", data['error']);
+		console.error("GWS :Error :", data['error']);
 	}
 	else
-		console.error("Unkown data recieved :", data);
+		console.error("GWS :Unkown data recieved :", data);
 }

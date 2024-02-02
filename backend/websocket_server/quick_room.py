@@ -8,37 +8,36 @@ def create_game_start_message(port, paddle_id, team_id):
         "type" : "gameStart",
         "gamePort" : str(port),
         "paddleId" : str(paddle_id),
-        "teamID" : str(team_id)
+        "teamId" : str(team_id)
     }
     str_message = str(message)
     str_message = str_message.replace("'", '"')
 
-    print("MESSAGE CREATE :", str_message, file=sys.stderr)
     return str_message
 
 
 async def join_quick_room(my_id : int, connected_users : dict):
     if len(waitlist) == 0:
         waitlist.append(my_id)
-        print("Put user", my_id, "in waitlist", file=sys.stderr)
+        print("\nPut user", my_id, "in waitlist", file=sys.stderr)
         return
 
     if not is_game_server_free():
         waitlist.append(my_id)
-        print("No game server free, put user", my_id, "in waitlist", file=sys.stderr)
+        print("\nNo game server free, put user", my_id, "in waitlist", file=sys.stderr)
         return
 
 
     first_player_id = waitlist.pop(0)
-    print("Start game beetween", my_id, "and", first_player_id, file=sys.stderr)
+    print("\nStart game beetween", my_id, "and", first_player_id, file=sys.stderr)
 
     # team [int, int]
     # int per paddle, 0 for player, 1 for ia
-    ret = create_new_game(0, False, [0], [0])
+    ret = await create_new_game(0, False, [0], [0])
 
     if ret == None:
         waitlist.append(my_id)
-        print("ERROR : No game server free, put user", my_id, "in waitlist", file=sys.stderr)
+        print("\nERROR : No game server free, put user", my_id, "in waitlist", file=sys.stderr)
         return
 
     # Send start game message to first player in waitlist
@@ -54,5 +53,5 @@ async def join_quick_room(my_id : int, connected_users : dict):
 
 def leave_quick_room(user_id):
     if user_id in waitlist:
-        print("Remove user", user_id, "of waitlist", file=sys.stderr)
+        print("\nRemove user", user_id, "of waitlist", file=sys.stderr)
         waitlist.remove(user_id)
