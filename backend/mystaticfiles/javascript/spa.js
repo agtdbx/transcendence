@@ -172,7 +172,6 @@ function changePage(num, byArrow=false)
 
 		// Run the script tag if they is one in the html load
 		runScript();
-
 		// Set the new page in the browser history if the page isn't load by arrow, or not the wait and game page.
 		if (!byArrow && num != 4 && num != 6)
 			history.pushState({section: num}, "", "/" + num);
@@ -195,9 +194,9 @@ function checkLogin(data)
 			if (jsonData["success"] != true)
 			{
 				//alert(jsonData["error"]);
-				error = document.getElementById("error")
+				error = document.getElementById("LoginError")
 				error.innerHTML=jsonData["error"]
-				toCLear = document.getElementById("password")
+				toCLear = document.getElementById("LoginPassword")
 				toCLear.value = ""
 				return ;
 			}
@@ -226,13 +225,13 @@ function checkSignin(data)
 
 		if (jsonData["success"] != true)
 		{
-			errorSign = document.getElementById("errorSign")
+			errorSign = document.getElementById("SignError")
 			errorSign.innerHTML=jsonData["error"]
-			toCLear = document.getElementById("passwordSign")
+			toCLear = document.getElementById("SignUsername")
 			toCLear.value = ""
-			toCLear = document.getElementById("confirm")
+			toCLear = document.getElementById("SignPassword")
 			toCLear.value = ""
-			toCLear = document.getElementById("loginSign")
+			toCLear = document.getElementById("SignConfirm")
 			toCLear.value = ""
 			return ;
 		}

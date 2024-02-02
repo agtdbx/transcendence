@@ -1,0 +1,166 @@
+#LoginPopup{
+	width:50%;
+	height:30em;
+	position: relative;
+	background: rgba(40, 35, 23, 0.75);
+	margin: auto;
+}
+
+#LoginForm{
+	position: absolute;
+	width:100%;
+	height:100%;
+	background: transparent;
+}
+
+.LoginSeparator{
+	position: absolute;
+	top: 0%;
+	left: 28%;
+	width:1%;
+	height:100%;
+	background: rgba(255, 156, 0, 0.30);
+}
+
+.LoginTextRect{
+	position: absolute;
+	top: 0%;
+	left: 0%;
+	width:28%;
+	height:100%;
+	text-align: center;
+	background: transparent;
+}
+
+.LoginInput{
+	position: absolute;
+	top: 4%;
+	left: 30%;
+	color: white;
+	width: 68%;
+	background-color: transparent;
+	font-size: 20px;
+	border: 2px solid #ff9c00;
+}
+
+/* username input */
+
+#LoginRect{
+	position: relative;
+	top: 7%;
+	width:60%;
+	height:8%;
+	background: rgba(18, 16, 11, 0.80);
+	margin: auto;
+}
+
+#LoginText{
+	color: #ff9c00;
+	font-size: 1.5vw;
+	position: absolute;
+	top: 0%;
+	left : 30%;
+	-webkit-text-stroke: 1px #fd4c00;
+}
+
+/* password input */
+
+#LoginRectPassword{
+	position: relative;
+	top: 10%;
+	width:60%;
+	height:8%;
+	background: rgba(18, 16, 11, 0.80);
+	margin: auto;
+}
+
+#LoginTextPassword{
+	color: #ff9c00;
+	font-size: 1.5vw;
+	-webkit-text-stroke: 1px #fd4c00;
+	position: absolute;
+	top: 0%;
+	left : 25%;
+}
+
+/* bouton input */
+
+#LoginBtnPop {
+	-ms-transform: translate(-50%, -50%);
+	transform: translate(-50%, -50%);
+	position: absolute;
+	display: block;
+	visibility: visible;
+	top: 40%;
+	left: 50%;
+	width: 5em;
+	height: 1.5em;
+	font-size: 200%;
+}
+
+#LoginText42{
+	position: absolute;
+	display: block;
+	top: 65%;
+	left: 14%;
+	color: #ff9c00;
+	font-size: 1vw;
+	-webkit-text-stroke: 1px #fd4c00;
+}
+
+#LoginBtnLink42{
+	-ms-transform: translate(-50%, -50%);
+	transform: translate(-50%, -50%);
+	position: absolute;
+	display: block;
+	visibility: visible;
+	top: 80%;
+	left: 20%;
+	width: 20%;
+    height: 10%;
+    font-size: 200%;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+	text-align:center;
+	text-decoration:none;
+}
+
+#LoginTextPopSignIn{
+	position: absolute;
+	display: block;
+	top: 65%;
+	left: 78%;
+	color: #ff9c00;
+	font-size: 1vw;
+	-webkit-text-stroke: 1px #fd4c00;
+}
+
+#LoginBtnSign{
+	-ms-transform: translate(-50%, -50%);
+	transform: translate(-50%, -50%);
+	position: absolute;
+	display: block;
+	visibility: visible;
+	top: 80%;
+	left: 80%;
+	width: 20%;
+    height: 10%;
+    font-size: 200%;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+/* error input */
+
+#LoginError{
+	position: absolute;
+	-ms-transform: translate(-50%, -50%);
+	transform: translate(-50%, -50%);
+	display: block;
+	top: 30%;
+	left: 50%;
+	color: red;
+	font-size: 1vw;
+}

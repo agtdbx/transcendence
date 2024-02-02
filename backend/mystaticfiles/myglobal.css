@@ -1,58 +1,6 @@
-html{
-	cursor: url("./image/cursor/cursor1.png"), auto;
-}
-
-body {
-	font-family: KhazadDum;
-	cursor: url("./image/cursor/cursor1.png"), auto;
-	background-image:url(./image/background/index.png);
-	background-attachment: fixed;
-	background-repeat:	no-repeat;
-	background-size: cover;
-	max-width: 100%;
-	height: auto;
-}
-
-@font-face {
-	font-family: KhazadDum;
-	src: url('./image/fonts/KhazadDum-0WXEr.ttf');
-}
-
-h1 {
-	text-align : center;
-	margin-top : 10%;
-	font-size: 900%;
-	color: #ff9c00;
-	-webkit-text-stroke: 2px #fd4c00;
-	font-family: "KhazadDum", sans-serif;
-}
-
-.title{
-	text-align : center;
-	margin-top : 10%;
-	font-size: 900%;
-	color: #ff9c00;
-	-webkit-text-stroke: 2px #fd4c00;
-	font-family: "KhazadDum", sans-serif;
-}
 
 
-p {
-	font-family: "KhazadDum", sans-serif;
-}
 
-.animation{
-	animation: animate 0.40s infinite;
-}
-
-.btn-drg {
-	color: black;
-	background: rgb(187,114,11);
-	background:linear-gradient(90deg,#ff9c00 0% 2%,rgba(0,0,0,0) 0.1%,rgba(0,0,0,0) 2% 4%,#ff9c00 0.1%,#ff9c00 4% 96%,rgba(0,0,0,0) 0.1%,rgba(0,0,0,0) 96% 98%,#ff9c00 0.1%, #ff9c00 98% 100%);
-	border: none;
-	animation: animate 0.40s infinite;
-	font-family: "KhazadDum", sans-serif;
-}
 
 /* FOR API PAGE */
 .apiDoc {
@@ -149,56 +97,7 @@ p {
 }
 
 /* BTN GESTION */
-.btn-drg {
-	color: black;
-	background: rgb(187,114,11);
-	background:linear-gradient(90deg,#ff9c00 0% 2%,rgba(0,0,0,0) 0.1%,rgba(0,0,0,0) 2% 4%,#ff9c00 0.1%,#ff9c00 4% 96%,rgba(0,0,0,0) 0.1%,rgba(0,0,0,0) 96% 98%,#ff9c00 0.1%, #ff9c00 98% 100%);
-	border: none;
-	animation: animate 0.40s infinite;
-	font-family: "KhazadDum", sans-serif;
-}
 
-#btn-log {
-	margin: auto;
-	display : block;
-	visibility: visible;
-	margin-top: 7%;
-	width: 5em;
-	height: 1.5em;
-	font-size: 400%;
-
-}
-
-#btn-sign {
-	margin: auto;
-	display : block;
-	visibility: visible;
-	margin-top: 1%;
-	width: 5em;
-	height: 1.5em;
-	font-size: 400%;
-}
-
-@keyframes animate{
-	0%{
-	cursor: url("./image/cursor/cursor1.png"), auto;
-	}
-	20%{
-	cursor: url("./image/cursor/cursor1.png"), auto;
-	}
-	40%{
-	cursor: url("./image/cursor/cursor2.png"), auto;
-	}
-	60%{
-	cursor: url("./image/cursor/cursor2.png"), auto;
-	}
-	80%{
-	cursor: url("./image/cursor/cursor4.png"), auto;
-	}
-	100%{
-	cursor: url("./image/cursor/cursor4.png"), auto;
-	}
-}
 
 /* Clique on login */
 
@@ -235,14 +134,7 @@ p {
 }
 
 
-.rectLogin{
-	position: relative;
-	top: 7%;
-	width:60%;
-	height:8%;
-	background: rgba(18, 16, 11, 0.80);
-	margin: auto;
-}
+
 
 .textRectLogin{
 	position: absolute;
@@ -414,18 +306,7 @@ p {
 
 /* bouton/test pop up login/sign in/42 */
 
-#btn-pop-login {
-	-ms-transform: translate(-50%, -50%);
-	transform: translate(-50%, -50%);
-	position: absolute;
-	display: block;
-	visibility: visible;
-	top: 40%;
-	left: 50%;
-	width: 5em;
-	height: 1.5em;
-	font-size: 200%;
-}
+
 
 #error{
 	position: absolute;

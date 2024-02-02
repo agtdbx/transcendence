@@ -1,0 +1,143 @@
+/* Page shenanigans */
+
+html{
+	cursor: url("./image/cursor/cursor1.png"), auto;
+}
+
+body {
+	font-family: KhazadDum;
+	cursor: url("./image/cursor/cursor1.png"), auto;
+	background-image:url(./image/background/index.png);
+	background-attachment: fixed;
+	background-repeat:	no-repeat;
+	background-size: cover;
+	max-width: 100%;
+	height: auto;
+}
+
+@font-face {
+	font-family: KhazadDum;
+	src: url('./image/fonts/KhazadDum-0WXEr.ttf');
+}
+
+/* cool title */
+
+.title{
+	text-align : center;
+	margin-top : 10%;
+	font-size: 900%;
+	color: #ff9c00;
+	-webkit-text-stroke: 2px #fd4c00;
+	font-family: "KhazadDum", sans-serif;
+}
+
+/* cool police */
+
+p {
+	font-family: "KhazadDum", sans-serif;
+}
+
+/* cool button */
+
+.btn-drg {
+	color: black;
+	background: rgb(187,114,11);
+	background:linear-gradient(90deg,#ff9c00 0% 2%,rgba(0,0,0,0) 0.1%,rgba(0,0,0,0) 2% 4%,#ff9c00 0.1%,#ff9c00 4% 96%,rgba(0,0,0,0) 0.1%,rgba(0,0,0,0) 96% 98%,#ff9c00 0.1%, #ff9c00 98% 100%);
+	border: none;
+	animation: animate 0.40s infinite;
+	font-family: "KhazadDum", sans-serif;
+}
+
+/* simple call to animation */
+
+.animation{
+	animation: animate 0.40s infinite;
+}
+
+/* a very cool grey rectangle */
+
+.greyRect{
+	position: absolute;
+	top: 1%;
+	left: 1%;
+	height: 98%;
+	width: 98%;
+	background : rgba(18, 16, 11, 0.8);
+}
+
+/* Animation */
+
+@keyframes animate{
+	0%{
+	cursor: url("./image/cursor/cursor1.png"), auto;
+	}
+	20%{
+	cursor: url("./image/cursor/cursor1.png"), auto;
+	}
+	40%{
+	cursor: url("./image/cursor/cursor2.png"), auto;
+	}
+	60%{
+	cursor: url("./image/cursor/cursor2.png"), auto;
+	}
+	80%{
+	cursor: url("./image/cursor/cursor4.png"), auto;
+	}
+	100%{
+	cursor: url("./image/cursor/cursor4.png"), auto;
+	}
+}
+
+/* FOR Changing channel (don't touch that Hugo)*/
+
+.channel-container
+{
+	padding: 0.5em;
+	overflow-y: auto;
+}
+
+.channel {
+	color: white;
+	background : rgba(18, 16, 11, 0.8);
+	margin-bottom: 0.5em;
+	animation: animate 0.40s infinite;
+	display: flex;
+	font-family: "KhazadDum", sans-serif;
+}
+
+#channel-general p {
+	width: 100%;
+}
+
+.channel-active {
+	border: 3px solid #FF9C00;
+}
+
+.channel-unactive {
+	border: 3px solid #404040;
+}
+
+.friendPP {
+	width: 3em;
+	height: 3em;
+	border-radius: 50%;
+	margin: 0.2em;
+}
+
+.status-offline {
+	border: 3px solid #FF0000;
+}
+
+.status-online {
+	border: 3px solid #00FF00;
+}
+
+.channel p {
+	text-align: center;
+	margin-top: 0.8em;
+	width: 80%;
+}
+
+#channel-general p {
+	width: 100%;
+}

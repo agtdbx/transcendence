@@ -1,0 +1,101 @@
+#mainPageTournament{
+	position: absolute;
+	top: 59%;
+	left: 0.5%;
+	width:20%;
+	height:40%;
+	background: rgba(40, 35, 23, 0.75);
+}
+
+#mainPageTxtTournament{
+	position: absolute;
+	-ms-transform: translate(-50%, -50%);
+	transform: translate(-50%, -50%);
+	top: 10%;
+	left: 50%;
+	margin-top: 0%;
+	font-size: 2.5em;
+	color: 	white;
+	font-family: "KhazadDum", sans-serif;
+}
+
+#mainBtnJoin{
+	position: absolute;
+	-ms-transform: translate(-50%, -50%);
+	transform: translate(-50%, -50%);
+	top: 50%;
+	left: 50%;
+	visibility: visible;
+	margin-top: 1%;
+	width: 60%;
+	height: 20%;
+	font-size: 200%;
+}
+
+#mainPageChat{
+	position: absolute;
+	top: 59%;
+	left: 22%;
+	width:56%;
+	height:40%;
+	background: rgba(40, 35, 23, 0.75);
+}
+
+#mainPageChatMessage{
+	position: absolute;
+	top: 2%;
+	left: 18%;
+	width:80%;
+	height:82%;
+	background: 	rgba(18, 16, 11, 0.8);
+	overflow-y: auto;
+	overflow-wrap: anywhere;
+}
+
+#mainPageChatInput{
+	position: absolute;
+	top: 87%;
+	left: 18%;
+	width: 80%;
+	color: white;
+	background-color: rgba(207,188,188,0.5);
+	font-size: 1vw;
+}
+
+#SwitchChannel{
+	position: absolute;
+	top: 2%;
+	left: 1%;
+	width:16%;
+	height:96%;
+	background: rgba(18, 16, 11, 0.8);
+	overflow-y: auto;
+}
+
+#mainPageBtnQuick{
+	-ms-transform: translate(-50%, -50%);
+	transform: translate(-50%, -50%);
+	display : block;
+	position: absolute;
+	top: 40%;
+	left: 30%;
+	visibility: visible;
+	margin-top: 1%;
+	width: 10em;
+	height: 2.5em;
+	font-size: 200%;
+}
+
+#mainPageBtnCustom{
+	-ms-transform: translate(-50%, -50%);
+	transform: translate(-50%, -50%);
+	display : block;
+	position: absolute;
+	top: 40%;
+	left: 70%;
+	visibility: visible;
+	margin-top: 1%;
+	width: 10em;
+	height: 2.5em;
+	font-size: 200%;
+}

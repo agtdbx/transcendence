@@ -1,0 +1,19 @@
+#btnLog {
+	margin: auto;
+	display : block;
+	visibility: visible;
+	margin-top: 7%;
+	width: 5em;
+	height: 1.5em;
+	font-size: 400%;
+}
+
+#btnSign {
+	margin: auto;
+	display : block;
+	visibility: visible;
+	margin-top: 1%;
+	width: 5em;
+	height: 1.5em;
+	font-size: 400%;
+}

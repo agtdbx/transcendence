@@ -75,7 +75,7 @@ function endChatConnection()
 
 function getChatElement()
 {
-	let chat = document.getElementById("main-page-chat-write");
+	let chat = document.getElementById("mainPageChatMessage");
 
 	if (chat == null)
 		chat = document.getElementById("createGameChat");
