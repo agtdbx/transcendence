@@ -11,6 +11,7 @@ from server_code.game_server import GameServer
 # Dict to save the actives connections
 connected_player = dict()
 game = None
+can_shutdown = False
 # team list will fill by False when create, and fill of True
 # when every player are connected
 team_left = []
@@ -27,6 +28,7 @@ async def send_error(websocket, error_explaination):
 
 
 def add_user_connected(myid, websocket):
+    global connected_player
     lst : list = connected_player.get(myid, [])
     lst.append(websocket)
     connected_player[myid] = lst
@@ -35,13 +37,14 @@ def add_user_connected(myid, websocket):
 
 
 def remove_user_connected(myid, websocket):
+    global connected_player
     connected_player.get(myid, []).remove(websocket)
     print("\nGWS : Bye bye player " + str(myid) + " :",
           connected_player, file=sys.stderr)
 
 
 async def handle_client(websocket : websockets.WebSocketServerProtocol, path):
-    global map_id, power_up, team_left, team_right, can_quit
+    global map_id, power_up, team_left, team_right, connected_player
     # None | (id paddle, id team)
     myid = None
     id_paddle = None
@@ -130,6 +133,12 @@ async def handle_client(websocket : websockets.WebSocketServerProtocol, path):
         else:
             print("\nGWS : Bye bye anonymous player", path, file=sys.stderr)
 
+        if can_shutdown:
+            print("\nGWS : CHECKIF SERVER CAN SHUTDOWN", file=sys.stderr)
+            if can_server_shutdown():
+                print("\nGWS : SERVER TRY TO SHUTDOWN", file=sys.stderr)
+                os.kill(os.getpid(), signal.SIGTERM)
+
 
 def can_start_game():
     for state in team_left:
@@ -142,6 +151,7 @@ def can_start_game():
 
 
 def can_server_shutdown():
+    global connected_player
     for lst in connected_player.values():
         if len(lst) > 0:
             return False
@@ -149,7 +159,7 @@ def can_server_shutdown():
 
 
 async def game_server_manager():
-    global game
+    global game, can_shutdown
     print("\nGWS : START GAME", file=sys.stderr)
     game = GameServer(power_up, team_left, team_right, map_id)
     game.step()
@@ -166,24 +176,7 @@ async def game_server_manager():
         for websocket in websockets:
             await websocket.send(str_msg)
 
-    await send_info_to_main_websocket()
-    print("\nGWS : CHECKIF SERVER CAN SHUTDOWN", file=sys.stderr)
-    while not can_server_shutdown():
-        print("\nGWS : SERVER WAIT FOR SHUTDOWN", file=sys.stderr)
-        time.sleep(1)
-    print("\nGWS : SERVER TRY TO SHUTDOWN", file=sys.stderr)
-    os.kill(os.getpid(), signal.SIGTERM)
-
-
-async def send_info_to_main_websocket():
-    ws = await websockets.connect("ws://localhost:8765")
-    # TODO : Need to return all statistique of the game !
-    msg = {"type":"gws",
-           "cmd" : "definitelyNotTheMovie(endGame)",
-           "port" : int(sys.argv[1])}
-    str_msg = str(msg).replace("'", '"')
-    await ws.send(str_msg)
-    await ws.close()
+    can_shutdown = True
 
 
 async def start_server():
@@ -193,6 +186,16 @@ async def start_server():
 
     async with websockets.serve(handle_client, "0.0.0.0", int(sys.argv[1])):
         await stop
+    print("\nGWS : SERVER PORT CLOSE", file=sys.stderr)
+
+    ws = await websockets.connect("ws://localhost:8765")
+    # TODO : Need to return all statistique of the game !
+    msg = {"type":"gws",
+            "cmd" : "definitelyNotTheMovie(endGame)",
+            "port" : int(sys.argv[1])}
+    str_msg = str(msg).replace("'", '"')
+    await ws.send(str_msg)
+    await ws.close()
     print("\nGWS : SERVER SHUTDOWN", file=sys.stderr)
 
 print("START GAME WEBSOCKET (GWS) WITH PARAM :", sys.argv, file=sys.stderr)
