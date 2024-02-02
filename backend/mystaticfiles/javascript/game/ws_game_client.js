@@ -54,6 +54,22 @@ function parseServerMessage(event)
 	{
 		console.error("GWS :Error :", data['error']);
 	}
+	else if (type === "endGame") // Not the movie !
+	{
+		let but = document.createElement("button");
+		but.classList = "btn-drg";
+		but.textContent = "Return to main page";
+		but.onclick = function(){
+			changePage('3');
+		};
+		document.getElementById("content").appendChild(but);
+		ws_game.onclose = {};
+		ws_game.close();
+		ws_game = null;
+		id_paddle = null;
+		id_team = null;
+		console.log("GWS CLOSE");
+	}
 	else
 		console.error("GWS :Unkown data recieved :", data);
 }

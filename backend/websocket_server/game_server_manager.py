@@ -15,16 +15,15 @@ game_servers = [
     # [False, 8770]
 ]
 
-number_game_servers = 1
-# number_game_servers = 5
-
-number_game_servers_free = 1
-# game_servers_free = 5
-
 
 def is_game_server_free():
-    global number_game_servers_free
-    return (number_game_servers_free != 0)
+    print("\nWS : ALL SERVER :", game_servers, file=sys.stderr)
+
+    for i in range(len(game_servers)):
+        if game_servers[i][0] == False:
+            return True
+
+    return False
 
 
 async def start_game_websocket(port:int,
@@ -34,7 +33,7 @@ async def start_game_websocket(port:int,
                          team_right:list[int]):
     os.system("python3 pong_server/ws_game_server.py " + str(port) + "&")
     time.sleep(2)
-    os.system("echo; echo test websocket now running on ws://localhost:" + str(port))
+    os.system("echo; echo WS : websocket now running on ws://localhost:" + str(port))
     ws = await websockets.connect("ws://localhost:" + str(port))
     msg = {"type":"info",
         "mapId" : map_id,
@@ -44,7 +43,7 @@ async def start_game_websocket(port:int,
     str_msg = str(msg).replace("'", '"')
     await ws.send(str_msg)
     await ws.close()
-    print("\nWS : all go info go to game server", file=sys.stderr)
+    print("\nWS : all info go to game server", file=sys.stderr)
 
 
 async def create_new_game(map_id : int,
@@ -53,7 +52,9 @@ async def create_new_game(map_id : int,
                           team_right:list[int]):
     global number_game_servers_free
 
-    for i in range (number_game_servers):
+    print("\nWS : ALL SERVER :", game_servers, file=sys.stderr)
+
+    for i in range(len(game_servers)):
         if game_servers[i][0] == False:
             game_servers[i][0] = True
 
@@ -68,7 +69,22 @@ async def create_new_game(map_id : int,
                                        map_id, power_up_enable,
                                        team_left, team_right)
 
-            number_game_servers_free -= 1
             return i, game_servers[i][1]
 
     return None
+
+
+def end_game(data):
+    global game_servers
+    port = data.get("port", None)
+
+    if port == None:
+        print("\nWS : MISSING PORT :", data, file=sys.stderr)
+        return
+
+    for i in range(len(game_servers)):
+        if game_servers[i][1] == port:
+            game_servers[i][0] = False
+            print("\nWS : SERVER ON PORT", port, "IS NOW FREE", file=sys.stderr)
+            print("\nWS : ALL SERVER :", game_servers, file=sys.stderr)
+

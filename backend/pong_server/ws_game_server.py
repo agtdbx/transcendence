@@ -2,16 +2,17 @@ import asyncio
 import websockets
 import json
 import sys
+import os
 import time
+import signal
 from server_code.game_server import GameServer
 
 
 # Dict to save the actives connections
 connected_player = dict()
 game = None
-game_server_run = True
-# team list will fill by False when create, and fill of True when every player are
-# connected
+# team list will fill by False when create, and fill of True
+# when every player are connected
 team_left = []
 team_right = []
 map_id = 0
@@ -40,24 +41,23 @@ def remove_user_connected(myid, websocket):
 
 
 async def handle_client(websocket : websockets.WebSocketServerProtocol, path):
-    global map_id, power_up, team_left, team_right
+    global map_id, power_up, team_left, team_right, can_quit
     # None | (id paddle, id team)
     myid = None
+    id_paddle = None
+    id_team = None
     print("\nGWS : Hello anonymous player", path, file=sys.stderr)
 
     try:
         async for data in websocket:
             print("\nGWS : DATA RECIEVED :", data, file=sys.stderr)
             data : dict = json.loads(data)
-            print("JSON parse OK :", data, file=sys.stderr)
 
             request_type = data.get("type", None)
 
             # Check if the common part of the request exist
             if request_type == None:
                 await send_error(websocket, "Missing type field in request")
-                print("GWS : Missing type field in request :", data,
-                      file=sys.stderr)
                 continue
 
             if request_type == "userIdentification":
@@ -71,16 +71,28 @@ async def handle_client(websocket : websockets.WebSocketServerProtocol, path):
                     id_paddle = int(id_paddle)
                     id_team = int(id_team)
                 except:
-                     await send_error(websocket,
+                    id_paddle = None
+                    id_team = None
+                    await send_error(websocket,
                                      "idPaddle and idTeam must be integer")
                 else:
                     myid = (id_paddle, id_team)
-                    add_user_connected(myid, connected_player)
+                    add_user_connected(myid, websocket)
+                    if id_team == 0:
+                        team_left[id_paddle] = True
+                    elif id_team == 1:
+                        team_right[id_paddle] = True
+                    print("\nGWS : TEST IF EVERYONE READY", file=sys.stderr)
+                    print("GWS : LTEAM :", team_left, file=sys.stderr)
+                    print("GWS : RTEAM :", team_right, file=sys.stderr)
+                    if can_start_game():
+                        print("GWS : OK", file=sys.stderr)
+                        asyncio.create_task(game_server_manager())
+                    else:
+                        print("GWS : KO", file=sys.stderr)
                 continue
 
             elif request_type == "info":
-                print("\nGWS : DATA RECIEVED ON GAME SERVER :", data,
-                        file=sys.stderr)
                 mapId = data.get("mapId", None)
                 powerUp = data.get("powerUp", None)
                 teamLeft = data.get("teamLeft", None)
@@ -117,75 +129,71 @@ async def handle_client(websocket : websockets.WebSocketServerProtocol, path):
             remove_user_connected(myid, websocket)
         else:
             print("\nGWS : Bye bye anonymous player", path, file=sys.stderr)
-        #if len(connected_player) == 0:
-        #    print("\nGWS : No more connection, quitting", file=sys.stderr)
-        #    exit()
 
 
-print("START GAME WEBSOCKET (GWS)", file=sys.stderr)
-print("PARAM :", sys.argv, file=sys.stderr)
-start_server = websockets.serve(handle_client, "0.0.0.0", int(sys.argv[1]))
-
-asyncio.get_event_loop().run_until_complete(start_server)
-asyncio.get_event_loop().run_forever()
-
-
-# async def game_server_manager(team_left, team_right):
-#     global game_server_run
-#     # global game
-#     number_of_player = len(team_left) + len(team_right)
-
-#     start_time = time.time()
-
-#     while len(connected_player) < number_of_player:
-#         print("Wait all player connected", file=sys.stderr)
-#         if time.time() - start_time > 60:
-#             print("Wait all player TIME OUT", file=sys.stderr)
-#             return
-#         time.sleep(5)
-#     print("START GAME", file=sys.stderr)
-#     game.step()
-#     time.sleep(15)
-#     print("END GAME", file=sys.stderr)
-
-#     end_game_msg = {"type" : "endGame",
-#                     "leftTeamScore" : 0,
-#                     "rightTeamScore" : 0}
-#     str_msg = str(end_game_msg)
-#     str_msg = str_msg.replace("'", '"')
-
-#     for _, websockets in connected_player.items():
-#         for websocket in websockets:
-#             await websocket.send(str_msg)
-
-#     game_server_run = False
+def can_start_game():
+    for state in team_left:
+        if not state:
+            return False
+    for state in team_right:
+        if not state:
+            return False
+    return True
 
 
-# def start_game_server(port:int,
-#                       map_id:int,
-#                       power_up_enable:bool,
-#                       team_left:list[int],
-#                       team_right:list[int]):
-#     global game, game_server_run
-#     # Start the websocket server
-#     game = GameServer(power_up_enable, team_left, team_right, map_id)
-#     game_server_run = True
-
-#     # asyncio.create_task(game_server_manager(team_left, team_right))
-
-#     start_server = websockets.serve(handle_client, "0.0.0.0", port)
-
-#     asyncio.get_event_loop().run_until_complete(start_server)
-#     asyncio.get_event_loop().run_forever()
+def can_server_shutdown():
+    for lst in connected_player.values():
+        if len(lst) > 0:
+            return False
+    return True
 
 
-# async def start_game_thread(port:int,
-#                             map_id:int,
-#                             power_up_enable:bool,
-#                             team_left:list[int],
-#                             team_right:list[int],
-#                             server_state:list[bool, int]):
-#     p = Process(target=start_game_server, args=(port, map_id, power_up_enable, team_left, team_right))
-#     p.start()
-#     p.join()
-#     server_state[0] = False
+async def game_server_manager():
+    global game
+    print("\nGWS : START GAME", file=sys.stderr)
+    game = GameServer(power_up, team_left, team_right, map_id)
+    game.step()
+    time.sleep(3)
+    print("\nGWS : END GAME (not the movie)", file=sys.stderr)
+
+    end_game_msg = {"type" : "endGame",
+                    "leftTeamScore" : 0,
+                    "rightTeamScore" : 0}
+    str_msg = str(end_game_msg)
+    str_msg = str_msg.replace("'", '"')
+
+    for websockets in connected_player.values():
+        for websocket in websockets:
+            await websocket.send(str_msg)
+
+    await send_info_to_main_websocket()
+    print("\nGWS : CHECKIF SERVER CAN SHUTDOWN", file=sys.stderr)
+    while not can_server_shutdown():
+        print("\nGWS : SERVER WAIT FOR SHUTDOWN", file=sys.stderr)
+        time.sleep(1)
+    print("\nGWS : SERVER TRY TO SHUTDOWN", file=sys.stderr)
+    os.kill(os.getpid(), signal.SIGTERM)
+
+
+async def send_info_to_main_websocket():
+    ws = await websockets.connect("ws://localhost:8765")
+    # TODO : Need to return all statistique of the game !
+    msg = {"type":"gws",
+           "cmd" : "definitelyNotTheMovie(endGame)",
+           "port" : int(sys.argv[1])}
+    str_msg = str(msg).replace("'", '"')
+    await ws.send(str_msg)
+    await ws.close()
+
+
+async def start_server():
+    loop = asyncio.get_running_loop()
+    stop = loop.create_future()
+    loop.add_signal_handler(signal.SIGTERM, stop.set_result, None)
+
+    async with websockets.serve(handle_client, "0.0.0.0", int(sys.argv[1])):
+        await stop
+    print("\nGWS : SERVER SHUTDOWN", file=sys.stderr)
+
+print("START GAME WEBSOCKET (GWS) WITH PARAM :", sys.argv, file=sys.stderr)
+asyncio.run(start_server())
