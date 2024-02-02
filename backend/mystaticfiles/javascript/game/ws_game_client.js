@@ -1,3 +1,6 @@
+
+
+
 let ws_game = null;
 let id_paddle = null;
 let id_team = null;
@@ -21,6 +24,7 @@ function startGameClient(server_port, idPaddle, idTeam)
 		console.log("Client gws connection ok !");
 		// Go to game page
 		changePage('6');
+		gameStart = true;
 		ws_game.send(JSON.stringify({
 			'type' : 'userIdentification',
 			'idPaddle' : idPaddle,
