@@ -3,15 +3,13 @@
 /*                                                        :::      ::::::::   */
 /*   profil.js                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hde-min <hde-min@student.42.fr>            +#+  +:+       +#+        */
+/*   By: lflandri <lflandri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/23 15:26:52 by lflandri          #+#    #+#             */
-/*   Updated: 2024/01/19 17:22:30 by hde-min          ###   ########.fr       */
+/*   Updated: 2024/02/02 15:03:14 by lflandri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-
-//TODO all
 
 //document.getElementById('pp_profil_page_img').src = "https://avatars.githubusercontent.com/u/126075485?v=4";
 //document.getElementById('pp_profil_page_img').src = "https://avatars.githubusercontent.com/u/126075485?v=4";

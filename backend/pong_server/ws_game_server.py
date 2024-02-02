@@ -120,6 +120,11 @@ async def handle_client(websocket : websockets.WebSocketServerProtocol, path):
                         if teamRight[i] == 1:
                             team_right[i] = True
                 continue
+            
+            # Check if client is connected
+            if myid == None:
+                await send_error(websocket, "Need to be connected")
+                continue
 
             await send_error(websocket, "Request type unkown")
 
@@ -157,13 +162,44 @@ def can_server_shutdown():
             return False
     return True
 
+async def sendGlobalMessage(updateObstacles='null', updatePaddles='null',updateBalls='null',deleteBall='null',changeUserPowerUp='null',updatePowerUpInGame='null',updateScore='null'):
+    end_game_msg = {"type" : "serverInfo",
+                    "updateObstacles" : [],
+                    "updatePaddles" : [],
+                    'updateBalls' : [],
+                    'deleteBall' : null,
+                    'changeUserPowerUp' : 0,
+                    'updatePowerUpInGame' : 0,
+                    'updateScore' : 0}
+    str_msg = str(end_game_msg)
+    str_msg = str_msg.replace("'", '"')
+
+    for websockets in connected_player.values():
+        for websocket in websockets:
+            await websocket.send(str_msg)
 
 async def game_server_manager():
     global game, can_shutdown
     print("\nGWS : START GAME", file=sys.stderr)
-    game = GameServer(power_up, team_left, team_right, map_id)
-    game.step()
-    time.sleep(3)
+    game = GameServer(power_up, team_left, team_right, map_id);
+    
+    
+    end_game_msg = {"type" : "startInfo",
+                    "obstacles" : game.walls,
+                    'powerUp' : power_up
+                    }
+    str_msg = str(end_game_msg)
+    str_msg = str_msg.replace("'", '"')
+
+    for websockets in connected_player.values():
+        for websocket in websockets:
+            await websocket.send(str_msg)
+
+
+    while game.runMainLoop :
+        print("\nGWS : GAME STEP", file=sys.stderr)
+        game.step()
+        await asyncio.sleep(10)
     print("\nGWS : END GAME (not the movie)", file=sys.stderr)
 
     end_game_msg = {"type" : "endGame",

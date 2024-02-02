@@ -185,7 +185,7 @@ export class Hitbox {
 
 	draw( win)
 	{
-		//TODO change to correct transition
+
 
 		if (d.DRAW_HITBOX)
 		{
@@ -201,7 +201,7 @@ export class Hitbox {
 
 	drawFill( win)
 	{
-		//TODO change to correct transition
+	
 
 		let points = []
 		for (const p of this.points)

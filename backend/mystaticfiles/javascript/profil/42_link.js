@@ -6,11 +6,10 @@
 /*   By: lflandri <lflandri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/23 15:27:08 by lflandri          #+#    #+#             */
-/*   Updated: 2024/01/26 17:05:42 by lflandri         ###   ########.fr       */
+/*   Updated: 2024/02/02 15:03:38 by lflandri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-//TODO all
 
 function changeLinkInterface(linked)
 {

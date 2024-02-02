@@ -6,11 +6,11 @@
 /*   By: lflandri <lflandri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/23 15:24:40 by lflandri          #+#    #+#             */
-/*   Updated: 2024/01/19 17:40:06 by lflandri         ###   ########.fr       */
+/*   Updated: 2024/02/02 15:03:28 by lflandri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-//TODO connection to db
+//TODO connection to db for stats
 
 var popOpened = false;
 

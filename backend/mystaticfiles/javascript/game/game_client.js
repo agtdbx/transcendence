@@ -71,6 +71,7 @@ function changePolygon(path, pointList)
 export class GameClient {
 	constructor()
 	{
+		websockGame.onmessage = this.parseMessageFromServer;
 		console.log("area rect")
 		console.log(dc.AREA_RECT[0])
 		console.log(dc.AREA_RECT[1])
@@ -252,7 +253,7 @@ export class GameClient {
 		// Clear the message for server
 		this.messageForServer.length = []
 
-		this.parseMessageFromServer()
+		// this.parseMessageFromServer()
 		// Game loop
 		if (this.runMainLoop)
 		{
@@ -271,37 +272,12 @@ export class GameClient {
 	input(event, type)
 	{
 		console.log("event : " + event.code + " : type : " + type)
-		//TODO change to accept our input
 
-		/*
-		The method catch user's inputs, as key presse or a mouse click
-		*/
-		// We check each event
-		// for (const event of pg.event.get())
-		// {
-		// 	// If the event it a click on the top right cross, we quit the game
-		// 	if (event.type == pg.QUIT)
-		// 		this.runMainLoop = false
-		// }
-
-		// this.keyboardState = pg.key.get_pressed()
-		// this.mouseState = pg.mouse.get_pressed()
-		// this.mousePos = pg.mouse.get_pos()
-
-		// Press espace to quit
-		// if (this.keyboardState[pg.K_ESCAPE])
-		// 	this.runMainLoop = false
 
 		// Update paddles keys
 		for (let i = 0; i < 4; i++)
 		{
-			// {id_paddle, id_key, key_action [true = press, false = release]}
 			let templateContent = {"paddleId" : i, "keyId" : 0, "keyAction" : true}
-
-			// console.log("test for : " + dc.PLAYER_KEYS[i][d.KEY_UP])
-			// console.log("test condition : " + (! (event.code == dc.PLAYER_KEYS[i][d.KEY_UP])))
-			// console.log("test condition : " + this.paddlesKeyState[i * 4 + d.KEY_UP])
-			// console.log("test condition : " + (! event.code == dc.PLAYER_KEYS[i][d.KEY_UP] && this.paddlesKeyState[i * 4 + d.KEY_UP]))
 
 			if (type == "down" && event.code == dc.PLAYER_KEYS[i][d.KEY_UP] && ! this.paddlesKeyState[i * 4 + d.KEY_UP])
 			{
@@ -310,6 +286,11 @@ export class GameClient {
 				// content["keyId"] = KEY_UP
 				// content["keyAction"] = true
 				// this.messageForServer.append((CLIENT_MSG_TYPE_USER_EVENT, content))
+				websockGame.send(JSON.stringify({
+					'type' : 'userInput',
+					'key' : 'up',
+					'value': "press"
+				}));
 			}
 			else if (type == "up" && ( (event.code == dc.PLAYER_KEYS[i][d.KEY_UP])) && this.paddlesKeyState[i * 4 + d.KEY_UP])
 			{
@@ -318,6 +299,11 @@ export class GameClient {
 				// content["keyId"] = KEY_UP
 				// content["keyAction"] = false
 				// this.messageForServer.append((CLIENT_MSG_TYPE_USER_EVENT, content))
+				websockGame.send(JSON.stringify({
+					'type' : 'userInput',
+					'key' : 'up',
+					'value': "release"
+				}));
 			}
 
 			// console.log("test for : " + dc.PLAYER_KEYS[i][d.KEY_DOWN])
@@ -330,6 +316,11 @@ export class GameClient {
 				// content["keyId"] = KEY_DOWN
 				// content["keyAction"] = true
 				// this.messageForServer.append((CLIENT_MSG_TYPE_USER_EVENT, content))
+				websockGame.send(JSON.stringify({
+					'type' : 'userInput',
+					'key' : 'down',
+					'value': "press"
+				}));
 			}
 			else if (type == "up" && ( (event.code == dc.PLAYER_KEYS[i][d.KEY_DOWN])) && this.paddlesKeyState[i * 4 + d.KEY_DOWN])
 			{
@@ -338,47 +329,52 @@ export class GameClient {
 				// content["keyId"] = KEY_DOWN
 				// content["keyAction"] = false
 				// this.messageForServer.append((CLIENT_MSG_TYPE_USER_EVENT, content))
+				websockGame.send(JSON.stringify({
+					'type' : 'userInput',
+					'key' : 'down',
+					'value': "release"
+				}));
 			}
 
 			// console.log("test for : " + dc.PLAYER_KEYS[i][d.KEY_POWER_UP])
 
 
-			if (type == "down" && event.code == dc.PLAYER_KEYS[i][d.KEY_POWER_UP] && ! this.paddlesKeyState[i * 4 + d.KEY_POWER_UP])
-			{
-				this.paddlesKeyState[i * 4 + d.KEY_POWER_UP] = true
-				// let content = templateContent.copy()
-				// content["keyId"] = KEY_POWER_UP
-				// content["keyAction"] = true
-				// this.messageForServer.append((CLIENT_MSG_TYPE_USER_EVENT, content))
-			}
-			else if (type == "up" && ( (event.code == dc.PLAYER_KEYS[i][d.KEY_POWER_UP])) && this.paddlesKeyState[i * 4 + d.KEY_POWER_UP])
-			{
-				this.paddlesKeyState[i * 4 + d.KEY_POWER_UP] = false
-				// let content = templateContent.copy()
-				// content["keyId"] = KEY_POWER_UP
-				// content["keyAction"] = false
-				// this.messageForServer.append((CLIENT_MSG_TYPE_USER_EVENT, content))
-			}
+			// if (type == "down" && event.code == dc.PLAYER_KEYS[i][d.KEY_POWER_UP] && ! this.paddlesKeyState[i * 4 + d.KEY_POWER_UP])
+			// {
+			// 	this.paddlesKeyState[i * 4 + d.KEY_POWER_UP] = true
+			// 	// let content = templateContent.copy()
+			// 	// content["keyId"] = KEY_POWER_UP
+			// 	// content["keyAction"] = true
+			// 	// this.messageForServer.append((CLIENT_MSG_TYPE_USER_EVENT, content))
+			// }
+			// else if (type == "up" && ( (event.code == dc.PLAYER_KEYS[i][d.KEY_POWER_UP])) && this.paddlesKeyState[i * 4 + d.KEY_POWER_UP])
+			// {
+			// 	this.paddlesKeyState[i * 4 + d.KEY_POWER_UP] = false
+			// 	// let content = templateContent.copy()
+			// 	// content["keyId"] = KEY_POWER_UP
+			// 	// content["keyAction"] = false
+			// 	// this.messageForServer.append((CLIENT_MSG_TYPE_USER_EVENT, content))
+			// }
 
-			// console.log("test for : " + dc.PLAYER_KEYS[i][d.KEY_LAUNCH_BALL])
+			// // console.log("test for : " + dc.PLAYER_KEYS[i][d.KEY_LAUNCH_BALL])
 
 
-			if (type == "down" && event.code == dc.PLAYER_KEYS[i][d.KEY_LAUNCH_BALL] && ! this.paddlesKeyState[i * 4 + d.KEY_LAUNCH_BALL])
-			{
-				this.paddlesKeyState[i * 4 + d.KEY_LAUNCH_BALL] = true
-				// let content = templateContent.copy()
-				// content["keyId"] = KEY_LAUNCH_BALL
-				// content["keyAction"] = true
-				// this.messageForServer.append((CLIENT_MSG_TYPE_USER_EVENT, content))
-			}
-			else if (type == "up" && ( (event.code == dc.PLAYER_KEYS[i][d.KEY_LAUNCH_BALL])) && this.paddlesKeyState[i * 4 + d.KEY_LAUNCH_BALL])
-			{
-				this.paddlesKeyState[i * 4 + d.KEY_LAUNCH_BALL] = false
-				// let content = templateContent.copy()
-				// content["keyId"] = KEY_LAUNCH_BALL
-				// content["keyAction"] = false
-				// this.messageForServer.append((CLIENT_MSG_TYPE_USER_EVENT, content))
-			}
+			// if (type == "down" && event.code == dc.PLAYER_KEYS[i][d.KEY_LAUNCH_BALL] && ! this.paddlesKeyState[i * 4 + d.KEY_LAUNCH_BALL])
+			// {
+			// 	this.paddlesKeyState[i * 4 + d.KEY_LAUNCH_BALL] = true
+			// 	// let content = templateContent.copy()
+			// 	// content["keyId"] = KEY_LAUNCH_BALL
+			// 	// content["keyAction"] = true
+			// 	// this.messageForServer.append((CLIENT_MSG_TYPE_USER_EVENT, content))
+			// }
+			// else if (type == "up" && ( (event.code == dc.PLAYER_KEYS[i][d.KEY_LAUNCH_BALL])) && this.paddlesKeyState[i * 4 + d.KEY_LAUNCH_BALL])
+			// {
+			// 	this.paddlesKeyState[i * 4 + d.KEY_LAUNCH_BALL] = false
+			// 	// let content = templateContent.copy()
+			// 	// content["keyId"] = KEY_LAUNCH_BALL
+			// 	// content["keyAction"] = false
+			// 	// this.messageForServer.append((CLIENT_MSG_TYPE_USER_EVENT, content))
+			// }
 		}
 		// console.log(this.paddlesKeyState)
 		this.inputCooldown = 2
@@ -391,10 +387,10 @@ export class GameClient {
 		This is the method where all calculations will be done
 		*/
 
-	if (this.balls[0].state != 0)
-	{
-		console.log("ball status : " + this.balls[0].state)
-	}
+	// if (this.balls[0].state != 0)
+	// {
+	// 	console.log("ball status : " + this.balls[0].state)
+	// }
 
 
 		let tmp = new Date().getTime()
@@ -493,25 +489,58 @@ export class GameClient {
 	}
 
 
-	parseMessageFromServer()
+	parseMessageFromServer(event)
 	{
-		for (const message of this.messageFromServer)
+		let data = null;
+		try
 		{
-			if (message[0] == SERVER_MSG_TYPE_CREATE_START_INFO)
-				this.parseMessageStartInfo(message[1])
-			else if (message[0] == SERVER_MSG_TYPE_UPDATE_OBSTACLE)
-				this.parseMessageForObstacle(message[1])
-			else if (message[0] == SERVER_MSG_TYPE_UPDATE_PADDLES)
-				this.parseMessageForPaddles(message[1])
-			else if (message[0] == SERVER_MSG_TYPE_UPDATE_BALLS)
-				this.parseMessageForBalls(message[1])
-			else if (message[0] == SERVER_MSG_TYPE_DELETE_BALLS)
-				this.parseMessageForDeleteBalls(message[1])
-			else if (message[0] == SERVER_MSG_TYPE_UPDATE_POWER_UP)
-				this.parseMessageForPowerUp(message[1])
-			else if (message[0] == SERVER_MSG_TYPE_SCORE_UPDATE)
-				this.parseMessageForScore(message[1])
+			data = JSON.parse(event.data);
+			console.log("DATA FROM GWS :", data);
 		}
+		catch (error)
+		{
+			console.error("GWS : Json parsing error :", event.data, error);
+			return ;
+		}
+	
+		const type = data['type'];
+	
+		if (type === "error")
+		{
+			console.error("GWS :Error :", data['error']);
+		}
+		// else if (type == SERVER_MSG_TYPE_CREATE_START_INFO)
+		// 	this.parseMessageStartInfo(message[1])
+		// else if (type == SERVER_MSG_TYPE_UPDATE_OBSTACLE)
+		// 	this.parseMessageForObstacle(message[1])
+		// else if (type == SERVER_MSG_TYPE_UPDATE_PADDLES)
+		// 	this.parseMessageForPaddles(message[1])
+		// else if (type == SERVER_MSG_TYPE_UPDATE_BALLS)
+		// 	this.parseMessageForBalls(message[1])
+		// else if (type == SERVER_MSG_TYPE_DELETE_BALLS)
+		// 	this.parseMessageForDeleteBalls(message[1])
+		// else if (type == SERVER_MSG_TYPE_UPDATE_POWER_UP)
+		// 	this.parseMessageForPowerUp(message[1])
+		// else if (type == SERVER_MSG_TYPE_SCORE_UPDATE)
+		// 	this.parseMessageForScore(message[1])
+		else if (type === "endGame") // Not the movie !
+		{
+		let but = document.createElement("button");
+		but.classList = "btn-drg";
+		but.textContent = "Return to main page";
+		but.onclick = function(){
+			changePage('3');
+		};
+		document.getElementById("content").appendChild(but);
+		ws_game.onclose = {};
+		ws_game.close();
+		ws_game = null;
+		id_paddle = null;
+		id_team = null;
+		console.log("GWS CLOSE");
+	}
+	else
+		console.error("GWS :Unkown data recieved :", data);
 	}
 
 

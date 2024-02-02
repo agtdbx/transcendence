@@ -32,21 +32,11 @@ export async function runGameClient(
 			{
 				console.log("event detected : " + event.code)
 				gameClient.input(event, "down")
-				// const paddle = document.getElementById("paddle");
-   				// if (event.code === 'KeyV')
-				// {
-				// 	playsound()
-				// }
 			});
 	document.addEventListener("keyup", function(event)
 			{
 				console.log("event detected : " + event.code)
 				gameClient.input(event, "up")
-				// const paddle = document.getElementById("paddle");
-   				// if (event.code === 'KeyV')
-				// {
-				// 	playsound()
-				// }
 			});
 
     // Clients loop
