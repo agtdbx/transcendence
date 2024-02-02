@@ -61,13 +61,6 @@ async def create_new_game(map_id : int,
         if game_servers[i][0] == False:
             game_servers[i][0] = True
 
-            # Create game server thread ^^
-            # asyncio.create_task(start_game_thread(
-            #                     game_servers[i][1],
-            #                     map_id, power_up_enable,
-            #                     team_left, team_right,
-            #                     game_servers[i]))
-
             await start_game_websocket(game_servers[i][1],
                                        map_id, power_up_enable,
                                        team_left, team_right, users_id)
