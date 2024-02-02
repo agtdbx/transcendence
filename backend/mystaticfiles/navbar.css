@@ -1,14 +1,11 @@
-#header{
-	/* position: absolute;
-	top: 0%;
-	left: 0%; */
+#NavHeader{
 	width:100%;
 	height:100px;
 	box-shadow: 0px 2px 25px  #ff9c00;
 	background-color:	rgba(40, 35, 23, 0.75);
 }
 
-#header_title{
+#NavHeaderTitle{
 	position: absolute;
 	top: 0%;
 	left: 2%;
@@ -19,7 +16,7 @@
 	font-family: "KhazadDum", sans-serif;
 }
 
-#main-user-name{
+#NavUserName{
 	position: absolute;
 	-ms-transform: translate(-50%, -50%);
 	transform: translate(-50%, -50%);
@@ -33,7 +30,7 @@
 	background: transparent;
 }
 
-#credit-nav{
+#NavCredit{
 	position: relative;
 	-ms-transform: translate(-50%, -50%);
 	transform: translate(-50%, -50%);
@@ -46,7 +43,7 @@
 	font-size: 2vw;
 }
 
-#main-user-money{
+#NavUserMoney{
 	position: absolute;
 	-ms-transform: translate(-50%, -50%);
 	transform: translate(-50%, -50%);
@@ -61,7 +58,7 @@
 }
 
 
-#main-profile-user {
+#NavProfileUser {
 	position: absolute;
 	-ms-transform: translate(-50%, -50%);
 	transform: translate(-50%, -50%);
@@ -72,7 +69,7 @@
 	border-radius: 35px;
 }
 
-#rankpp{
+#NavRankpp{
 	position: absolute;
 	-ms-transform: translate(-50%, -50%);
 	transform: translate(-50%, -50%);
