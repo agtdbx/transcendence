@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Config django server
-sleep 5
+sleep 2
 python3 manage.py makemigrations db_test && python3 manage.py migrate
 
 # Start websocket server

@@ -1,9 +1,12 @@
 import asyncio
 import websockets
-import json, sys
+import json
+import sys
 from websocket_server.utils import send_error, set_user_status
 from websocket_server.connection import connection_by_token, connection_by_username
 from websocket_server.message import recieved_message
+from websocket_server.quick_room import join_quick_room, leave_quick_room
+from websocket_server.game_server_manager import end_game
 
 # Dict to save the actives connections
 connected_users = dict()
@@ -15,23 +18,26 @@ def add_user_connected(myid, websocket):
         set_user_status(myid, 1)
     lst.append(websocket)
     connected_users[myid] = lst
-    print("Hello new client " + str(myid) + " :", connected_users, file=sys.stderr)
+    print("\nWS : Hello new client " + str(myid) + " :",
+          connected_users, file=sys.stderr)
 
 
 def remove_user_connected(myid, websocket):
     connected_users.get(myid, []).remove(websocket)
-    print("Bye bye client " + str(myid) + " :", connected_users, file=sys.stderr)
+    print("\nWS : Bye bye client " + str(myid) + " :",
+          connected_users, file=sys.stderr)
     if len(connected_users.get(myid, [])) == 0:
         set_user_status(myid, 0)
+        leave_quick_room(myid)
 
 
 async def handle_client(websocket : websockets.WebSocketServerProtocol, path):
     myid = None
-    print("Hello anonymous client", file=sys.stderr)
+    print("\nWS : Hello anonymous client", file=sys.stderr)
 
     try:
         async for data in websocket:
-            print("DATA RECIEVED :", data, file=sys.stderr)
+            print("\nWS : DATA RECIEVED :", data, file=sys.stderr)
             data : dict = json.loads(data)
 
             request_type = data.get("type", None)
@@ -57,6 +63,12 @@ async def handle_client(websocket : websockets.WebSocketServerProtocol, path):
                     add_user_connected(myid, websocket)
                 continue
 
+            elif request_type == "gws":
+                if request_cmd == 'definitelyNotTheMovie(endGame)':
+                    end_game(data)
+                else:
+                    await send_error("Request cmd unkown")
+
             # Check if connected
             if myid == None:
                 await send_error(websocket, "You need to be connected to execute" +
@@ -71,17 +83,28 @@ async def handle_client(websocket : websockets.WebSocketServerProtocol, path):
                                      "Request cmd unkown")
                 continue
 
+            # Quick game room gestion
+            if request_type == "quickRoom":
+                if request_cmd == "askForRoom":
+                    await join_quick_room(myid, connected_users)
+                elif request_cmd == "quitRoom":
+                    leave_quick_room(myid)
+                else:
+                    await send_error(websocket,
+                                     "Request cmd unkown")
+                continue
+
             await send_error(websocket, "Request type unkown")
 
     except Exception as error:
-        print("CRITICAL ERROR :", error, file=sys.stderr)
+        print("\nWS : CRITICAL ERROR :", error, file=sys.stderr)
 
     finally:
         # Delete the connection when the client disconnect
         if myid != None:
             remove_user_connected(myid, websocket)
         else:
-            print("Bye bye anonymous client", file=sys.stderr)
+            print("\nWS : Bye bye anonymous client", file=sys.stderr)
 
 
 # Start the websocket server
