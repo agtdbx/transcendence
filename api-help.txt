@@ -220,12 +220,12 @@ GAME
 
     => server info
         'type' : 'serverInfo'
-        'updateObstacles' : [[<point>, ...], ...] | null
+        'updateObstacles' : [[<obstacles index>, [<point>, ...]], ...] | null
         'updatePaddles' : [<paddles>, ...]  | null
         'updateBalls' : [<ball>, ...] | null
-        'deleteBall' : <ball index>  | null
+        'deleteBall' : [<ball index>, ...]  | null
         'changeUserPowerUp' :  <power up id> | null 					
-        'updatePowerUpInGame' : <powerUp> | null # 
+        'updatePowerUpInGame' : <powerUp> | null 
         'updateScore' : [<score left, score right>]  | null
 
     => end game

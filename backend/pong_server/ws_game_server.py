@@ -179,6 +179,41 @@ async def sendGlobalMessage(updateObstacles='null', updatePaddles='null',updateB
     for websockets in connected_player.values():
         for websocket in websockets:
             await websocket.send(str_msg)
+            
+def parsingGlobalMessage():
+    updateObstacles='null'
+    updatePaddles='null'
+    updateBalls='null'
+    deleteBall='null'
+    changeUserPowerUp='null'
+    updatePowerUpInGame='null'
+    updateScore='null'
+    for changement in game.messageForClients :
+        typeContent = changement[0]
+        content = changement[1]
+        if typeContent == SERVER_MSG_TYPE_UPDATE_OBSTACLE :
+            if updateObstacles == null :
+                updateObstacles = []
+            for obstacle in content :
+                updateObstacles.append([obstacle["id"], obstacle["points"]])
+        if typeContent == SERVER_MSG_TYPE_UPDATE_PADDLES :
+            if updatePaddles == null :
+                updatePaddles = []  
+        if typeContent == SERVER_MSG_TYPE_UPDATE_BALLS :
+            if updateBalls == null :
+                updateBalls = []  
+        if typeContent == SERVER_MSG_TYPE_DELETE_BALLS :
+            if deleteBall == null :
+                deleteBall = []
+            deleteBall += content.copy()
+        if typeContent == SERVER_MSG_TYPE_UPDATE_POWER_UP :
+            if changeUserPowerUp == null :
+                changeUserPowerUp = []  
+        if typeContent == SERVER_MSG_TYPE_SCORE_UPDATE :
+            if updateScore == null :
+                updateScore = []  
+    sendGlobalMessage(updateObstacles, updatePaddles,updateBalls,deleteBall,changeUserPowerUp,updatePowerUpInGame,updateScore)
+
 
 async def game_server_manager():
     global game, can_shutdown
@@ -204,6 +239,7 @@ async def game_server_manager():
     while game.runMainLoop :
         print("\nGWS : GAME STEP", file=sys.stderr)
         game.step()
+        parsingGlobalMessage()
         await asyncio.sleep(0.1)
     print("\nGWS : END GAME (not the movie)", file=sys.stderr)
 
