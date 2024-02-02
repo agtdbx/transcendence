@@ -5,7 +5,7 @@ import sys
 from websocket_server.utils import send_error, set_user_status
 from websocket_server.connection import connection_by_token, connection_by_username
 from websocket_server.message import recieved_message
-from websocket_server.quick_room import join_quick_room, leave_quick_room
+from websocket_server.quick_room import join_quick_room, leave_quick_room, check_if_can_start_new_game
 from websocket_server.game_server_manager import end_game
 
 # Dict to save the actives connections
@@ -66,6 +66,7 @@ async def handle_client(websocket : websockets.WebSocketServerProtocol, path):
             elif request_type == "gws":
                 if request_cmd == 'definitelyNotTheMovie(endGame)':
                     end_game(data)
+                    await check_if_can_start_new_game(data, connected_users)
                 else:
                     await send_error("Request cmd unkown")
 

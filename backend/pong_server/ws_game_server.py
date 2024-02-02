@@ -18,7 +18,7 @@ team_left = []
 team_right = []
 map_id = 0
 power_up = False
-
+users_id = []
 
 async def send_error(websocket, error_explaination):
     error = {"type" : "error", "error" : error_explaination}
@@ -44,7 +44,7 @@ def remove_user_connected(myid, websocket):
 
 
 async def handle_client(websocket : websockets.WebSocketServerProtocol, path):
-    global map_id, power_up, team_left, team_right, connected_player
+    global map_id, power_up, team_left, team_right, connected_player, users_id
     # None | (id paddle, id team)
     myid = None
     id_paddle = None
@@ -100,13 +100,15 @@ async def handle_client(websocket : websockets.WebSocketServerProtocol, path):
                 powerUp = data.get("powerUp", None)
                 teamLeft = data.get("teamLeft", None)
                 teamRight = data.get("teamRight", None)
+                usersId = data.get("usersId", None)
                 if mapId == None or powerUp == None or teamLeft == None or\
-                    teamRight == None:
+                    teamRight == None or usersId == None:
                     await send_error(websocket,
                                      "Missing info")
                 else:
                     map_id = mapId
                     power_up = powerUp
+                    users_id = usersId
                     size = len(teamLeft)
                     team_left = [False] * size
                     for i in range(size):
@@ -231,7 +233,8 @@ async def start_server():
     # TODO : Need to return all statistique of the game !
     msg = {"type":"gws",
             "cmd" : "definitelyNotTheMovie(endGame)",
-            "port" : int(sys.argv[1])}
+            "port" : int(sys.argv[1]),
+            "usersId" : users_id}
     str_msg = str(msg).replace("'", '"')
     await ws.send(str_msg)
     await ws.close()
