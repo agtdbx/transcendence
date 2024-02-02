@@ -33,7 +33,7 @@ async def start_game_websocket(port:int,
                          team_right:list[int],
                          users_id:list[int]):
     os.system("python3 pong_server/ws_game_server.py " + str(port) + "&")
-    time.sleep(2)
+    await asyncio.sleep(2)
     os.system("echo; echo WS : websocket now running on ws://localhost:" + str(port))
     ws = await websockets.connect("ws://localhost:" + str(port))
     msg = {"type":"info",
