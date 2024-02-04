@@ -1,0 +1,25 @@
+#beerPage{
+	position: absolute;
+	-ms-transform: translate(-50%, -50%);
+	transform: translate(-50%, -50%);
+	top: 93%;
+	left: 50%;
+	width: 50%;
+	height: 10%;
+	background-color: rgba(18,16,11,0.8);
+}
+
+#beerText{
+	color: #ff9c00;
+	font-size: 1.5vw;
+	position: absolute;
+	top: 0%;
+	left: 1%;
+	-webkit-text-stroke: 1px #fd4c00;
+}
+
+#beer-button{
+	position: relative;
+	left:90%;
+	top:65%;
+}
