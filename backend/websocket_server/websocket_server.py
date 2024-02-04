@@ -11,6 +11,9 @@ from websocket_server.game_server_manager import end_game
 # Dict to save the actives connections
 connected_users = dict()
 
+waitlist = []
+game_rooms = dict()
+in_game_list = []
 
 def add_user_connected(myid, websocket):
     lst : list = connected_users.get(myid, [])
@@ -65,7 +68,7 @@ async def handle_client(websocket : websockets.WebSocketServerProtocol, path):
 
             elif request_type == "gws":
                 if request_cmd == 'definitelyNotTheMovie(endGame)':
-                    end_game(data)
+                    end_game(data, waitlist, in_game_list)
                     await check_if_can_start_new_game(data, connected_users)
                 else:
                     await send_error("Request cmd unkown")
@@ -87,12 +90,12 @@ async def handle_client(websocket : websockets.WebSocketServerProtocol, path):
             # Quick game room gestion
             if request_type == "quickRoom":
                 if request_cmd == "askForRoom":
-                    await join_quick_room(myid, connected_users)
+                    await join_quick_room(myid, waitlist, in_game_list,
+                                          connected_users)
                 elif request_cmd == "quitRoom":
-                    leave_quick_room(myid)
+                    await leave_quick_room(myid, waitlist, connected_users)
                 else:
-                    await send_error(websocket,
-                                     "Request cmd unkown")
+                    await send_error(websocket, "Request cmd unkown")
                 continue
 
             await send_error(websocket, "Request type unkown")

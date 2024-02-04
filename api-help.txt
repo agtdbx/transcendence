@@ -67,12 +67,12 @@ QUICK GAME ROOM
     ask for new game
         'type' : 'quickRoom'
         'cmd' : 'askForRoom'
-        -> No more field
+        -> 'type' : 'joinWaitlist'
 
     quit game wait
         'type' : 'quickRoom'
         'cmd' : 'quitRoom'
-        -> No more field
+        -> 'type' : 'quitWaitlist'
 
     => Game start
         'type' : 'gameStart'
@@ -85,7 +85,7 @@ GAME ROOM
     create game room
         'type' : 'gameRoom'
         'cmd' : 'createRoom'
-        -> <update room info>
+        -> {{update room info}}
 
     join game room
         'type' : 'gameRoom'

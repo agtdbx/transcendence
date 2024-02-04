@@ -28,6 +28,16 @@ function onRecieveData(event)
 	{
 		recievedMessage(data);
 	}
+	else if (type == 'joinWaitlist')
+	{
+		if (current_page != 4)
+			changePage('4');
+	}
+	else if (type == '')
+	{
+		if (current_page != 3)
+			changePage('3');
+	}
 	else if (type == 'gameStart')
 	{
 		console.log("GAME START !");
