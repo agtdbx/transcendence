@@ -2,7 +2,12 @@ import sys
 from websocket_server.game_server_manager import create_new_game, is_game_server_free
 
 #game_rooms
-# id : {''}
+# id : {'creator':<id>,
+#       'power_up':<bool>,
+#       'map_id':<int>,
+#       'team_left':list[<id>],
+#       'team_right':list[<id>]}
+# If you add an ia, the id will be -1
 
 async def create_game_room(my_id : int,
                           game_rooms : dict,

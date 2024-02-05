@@ -85,13 +85,15 @@ GAME ROOM
     create game room
         'type' : 'gameRoom'
         'cmd' : 'createRoom'
-        -> {{update room info}}
+        -> 'type' : 'createRoomInfo'
+           {{update room info}}
 
     join game room
         'type' : 'gameRoom'
         'cmd' : 'joinRoom'
         'gameRoomId' : <game room id>
-        -> {{update room info}}
+        -> 'type' : 'updateRoomInfo'
+           {{join room info}}
 
     /!\ Only the creator of the room can use it /!\
     send game room invite
@@ -110,20 +112,23 @@ GAME ROOM
         'type' : 'gameRoom'
         'cmd' : 'changeTeam'
         'team' : 'left' | 'right'
-        -> {{update room info}}
+        -> 'type' : 'updateRoomInfo'
+           {{update room info}}
 
     /!\ Only the creator of the room can use it /!\
     change power up option
         'type' : 'gameRoom'
         'cmd' : 'changePowerUp'
-        -> {{update room info}}
+        -> 'type' : 'updateRoomInfo'
+           {{update room info}}
 
     /!\ Only the creator of the room can use it /!\
     change map option
         'type' : 'gameRoom'
         'cmd' : 'changeMap'
         'mapId' : <map id>
-        -> {{update room info}}
+        -> 'type' : 'updateRoomInfo'
+    	   {{update room info}}
 
     change ready state
         'type' : 'gameRoom'
@@ -137,7 +142,13 @@ GAME ROOM
         -> 'type' : 'startGame'
            'success' : true | false
 
+	=> invite reply
+		'type' : 'ReplyGameRoom'
+		'targetId' : <user id> | 'ia'
+		'success' : true | false
+
     => update room info
+    	'type' : 'updateRoomInfo'
         {{update room info}}
 
     => Game start
@@ -147,7 +158,6 @@ GAME ROOM
         'teamId' : <team id> # 0 left, 1 right
 
     {{update room info}} :
-        'type' : 'updateRoomInfo'
         'teamLeft' : [<paddleInfo>, <paddleInfo>]
         'teamRight' : [<paddleInfo>, <paddleInfo>]
         'teamLeftReady' : [<readyInfo>, <readyInfo>]
