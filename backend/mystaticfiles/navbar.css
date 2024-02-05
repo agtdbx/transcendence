@@ -1,0 +1,81 @@
+#NavHeader{
+	width:100%;
+	height:100px;
+	box-shadow: 0px 2px 25px  #ff9c00;
+	background-color:	rgba(40, 35, 23, 0.75);
+}
+
+#NavHeaderTitle{
+	position: absolute;
+	top: 0%;
+	left: 2%;
+	color: #ff9c00;
+	-webkit-text-stroke: 1px #fd4c00;
+	margin-top: 0%;
+	font-size: 300%;
+	font-family: "KhazadDum", sans-serif;
+}
+
+#NavUserName{
+	position: absolute;
+	-ms-transform: translate(-50%, -50%);
+	transform: translate(-50%, -50%);
+	top: 5.5%;
+	left: 86%;
+	width: 12%;
+	margin-right: 1%;
+	text-align:right;
+	color: white;
+	font-size: 2vw;
+	background: transparent;
+}
+
+#NavCredit{
+	position: relative;
+	-ms-transform: translate(-50%, -50%);
+	transform: translate(-50%, -50%);
+	top: 48%;
+	left: 78.78%;
+	width: 2%;
+	margin-right: 1%;
+	text-align:right;
+	color: black;
+	font-size: 2vw;
+}
+
+#NavUserMoney{
+	position: absolute;
+	-ms-transform: translate(-50%, -50%);
+	transform: translate(-50%, -50%);
+	top: 5.5%;
+	left: 65%;
+	width: 25%;
+	margin-right: 1%;
+	text-align:right;
+	color: white;
+	font-size: 2vw;
+	background: transparent;
+}
+
+
+#NavProfileUser {
+	position: absolute;
+	-ms-transform: translate(-50%, -50%);
+	transform: translate(-50%, -50%);
+	top: 6%;
+	left: 95%;
+	width: 70px;
+	height: 70px;
+	border-radius: 35px;
+}
+
+#NavRankpp{
+	position: absolute;
+	-ms-transform: translate(-50%, -50%);
+	transform: translate(-50%, -50%);
+	top:4%;
+	left:94.35%;
+	height: 70px;
+	width: 70px;
+	background-color: transparent;
+}

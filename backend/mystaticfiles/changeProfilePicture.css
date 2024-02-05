@@ -1,0 +1,44 @@
+#form-profile{
+	position: absolute;
+	top: 10%;
+	left: 10%;
+	color: white;
+}
+
+#pp{
+	position: absolute;
+	-ms-transform: translate(-50%, -50%);
+	transform: translate(-50%, -50%);
+	top: 70%;
+	left: 50%;
+	width: 50%;
+	height: 40%;
+	background-color: rgba(18,16,11,0.8);
+
+}
+
+#profilepic-button{
+	position: absolute;
+	-ms-transform: translate(-50%, -50%);
+	transform: translate(-50%, -50%);
+	top: 80%;
+	left: 80%;
+	width: 20%;
+	height: 20%;
+}
+
+#form-profile{
+	position: absolute;
+	top: 10%;
+	left: 10%;
+	color: white;
+}
+
+#beer{
+	position: absolute;
+	top: 11%;
+	left: 10%;
+	width: 15%;
+	height: 50%;
+	background-color: transparent;
+}

@@ -1,26 +1,30 @@
+{% load static %}
+<link rel="stylesheet" href="{% static 'mainPage.css' %}">
 <div id="Page">
 
-	<div class ="main-page-tournament" id = "main-page-tournament">
-		<p id="main-page-txt-tournament">TOURNAMENT</p>
-		<button data-section="7" type="button" class ="changePage btn-drg" id = "main-btn-join" onclick="changePage(this.dataset.section)">JOIN</button>
+	<div id="mainPageTournament">
+		<div class="greyRect">
+			<p id="mainPageTxtTournament">TOURNAMENT</p>
+			<button data-section="7" type="button" class ="changePage btn-drg" id="mainBtnJoin" onclick="changePage(this.dataset.section)">JOIN</button>
+		</div>
 	</div>
 
-	<form class ="main-page-chat" id = "main-page-chat">
+	<form id="mainPageChat">
 		{% csrf_token %}
-		<div class ="main-page-chat-write" id = "main-page-chat-write">
+		<div id="mainPageChatMessage">
 		</div>
-		<input type="message" id="main-chat" name="message"><br><br>
+		<input type="message" id="mainPageChatInput" name="message"><br><br>
 
 		<script>
-			const form = document.getElementById('main-page-chat');
-			messageInput = document.getElementById('main-chat');
+			const form = document.getElementById('mainPageChat');
+			messageInput = document.getElementById('mainPageChatInput');
 			form.addEventListener('submit', async event => {
 				event.preventDefault();
 				sendMessage(messageInput);
 			});
 		</script>
 
-		<div class ="channel-container" id="main-page-chat-switch">
+		<div class ="channel-container" id="SwitchChannel">
 			<div class ="channel channel-active" id ="channel-general" onclick="selectChannel('general');">
 				<p>GLOBAL</p>
 			</div>
@@ -28,6 +32,6 @@
 	</form>
 
 
-	<button data-section="4" type="button" class ="changePage btn-drg" id = "main-btn-quick" onclick="changePage(this.dataset.section)">QUICK GAME</button>
-	<button data-section="5" type="button" class ="changePage btn-drg" id = "main-btn-custom" onclick="changePage(this.dataset.section)">CUSTOM GAME</button>
+	<button data-section="4" type="button" class ="changePage btn-drg" id = "mainPageBtnQuick" onclick="changePage(this.dataset.section)">QUICK GAME</button>
+	<button data-section="5" type="button" class ="changePage btn-drg" id = "mainPageBtnCustom" onclick="changePage(this.dataset.section)">CUSTOM GAME</button>
 </div>

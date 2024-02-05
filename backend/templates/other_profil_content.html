@@ -1,4 +1,5 @@
 {% load static %}
+<link rel="stylesheet" href="{% static 'profil.css' %}">
 <div id="Page">
 	
 	<div class="container" style="margin-top:5px;" id="main_block_profil">
@@ -7,7 +8,7 @@
 
 			<!-- Block Profil Right-->
 
-			<div class="col-md-4 col-lg-4 col-xl-4 grey_div" id="profil_pannel_utils" style="min-height:600px; height:750px;">
+			<div class="col-md-4 col-lg-4 col-xl-4 grey_div" id="profil_pannel_utils" style="min-height:600px; height:750px; margin-Top: 10px;">
 				<div class="black_grey_div" id="user_info_container" style="color:white; padding:2%; margin-bottom: 10px; margin-Top: 10px; height:22%;">
 					
 					<div id="pp_profil_page_div" style="float:left; width:20%; margin-right :2%; border-radius: 600px; border: 3px solid #59351B;">
@@ -57,7 +58,7 @@
 
 				<!-- Win Rate-->
 
-				<div class="grey_div" style=" height: 10vw; padding:5px; max-height:40px;">
+				<div class="grey_div" style=" height: 10vw; padding:5px; max-height:40px; margin-Top: 10px;">
 					<div class="black_grey_div" style="width:30%; display:block; color:white; padding-left:3px; padding-right:3px; height: 100%; left:0%; position:relative;  z-index:1;">
 						<p style="height:100%; text-align:center; vertical-align:center; padding:0px" class="profil_win_rate_font">
 							Win Rate : <span id="win_rate_indicator"></span> %
@@ -78,7 +79,7 @@
 				<!-- Match history-->
 
 				<div id="match_history_content" style="background-color: rgba(40, 35, 23, 0.75); padding-top: 2%; padding-bottom: 2%;">
-					<div style="min-height:600px; height:652px; overflow-y:scroll;">
+					<div style="min-height:600px; height:652px; overflow-y:auto;">
 						<table id="match_history" style="width: 100%; border-collapse: separate;" cellpadding="0px"cellspacing="6px">
 							<script src="{% static 'javascript/profil/match_history_creator.js' %}" ></script>
 						</table>

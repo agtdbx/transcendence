@@ -1,38 +1,39 @@
+{% load static %}
+<link rel="stylesheet" href="{% static 'sign.css' %}">
 <div id="Page">
 
 	<h1 class="title" onclick="changePage(`0`)">ROCK AND PONG</h1>
 
-	<div class ="popupSign" id = "popupSign">
-		<form id="form_sign" method="post">
+	<div id="SignPopup">
+		<form id="SignForm" method="post">
 			{% csrf_token %}
-
-			<div class ="rectLogin" id = "rectLogin">
-				<div class ="textRectLogin" id = "textRectLogin">
-					<p id="textLogin">LOGIN</p>
+			<div id="SignRect">
+				<div class ="SignTextRect">
+					<p id="SignText">LOGIN</p>
 				</div>
-				<input type="text" id="loginSign" name="login2" maxlength="10" required><br>
-				<div class ="speratorLogin" id = "speratorlog"></div>
+				<input type="text" id="SignUsername" class="SignInput" name="login2" maxlength="10" required><br>
+				<div class="SignSeparator"></div>
 			</div>
 
-			<div class ="rectPassword" id = "rectPassword">
-				<div class ="textRectPassword" id = "textRectPassword">
-					<p id="textPassword">PASSWORD</p>
+			<div id="SignRectPassword" id = "rectPassword">
+				<div class="SignTextRect">
+					<p id="SignTextPassword">PASSWORD</p>
 				</div>
-				<input type="password" id="passwordSign" name="password2" required><br>
-				<div class ="speratorPassword" id = "speratorPassword"></div>
+				<input type="password" id="SignPassword" class="SignInput" name="password2" required><br>
+				<div class="SignSeparator" id = "speratorPassword"></div>
 			</div>
 
-			<div class ="rectConfirm" id = "rectConfirm">
-				<div class ="textRectConfirm" id = "textRectConfirm">
-					<p id="textConfirm">CONFIRM</p>
+			<div id="SignRectConfirm">
+				<div class ="SignTextRect">
+					<p id="SignTextConfirm">CONFIRM</p>
 				</div>
-				<input type="password" id="confirm" name="confirm" required><br>
-				<div class ="speratorConfirm" id = "speratorConfirm"></div>
+				<input type="password" id="SignConfirm" class="SignInput" name="confirm" required><br>
+				<div class="SignSeparator"></div>
 			</div>
 
-			<button data-section="2" type="submit" class ="btn-drg" id = "btn-pop-sign">SIGN IN</button>
+			<button data-section="2" type="submit" class ="btn-drg" id = "SignBtnPop">SIGN IN</button>
 			<script>
-				const form = document.getElementById('form_sign');
+				const form = document.getElementById('SignForm');
 					form.addEventListener('submit', async event => {
 					event.preventDefault();
 
@@ -41,13 +42,13 @@
 				});
 			</script>
 		</form>
-		<p id="errorSign"></p>
-		<p id="text42">STUDENT AT 42 ?</p>
+		<p id="SignError"></p>
+		<p id="SignText42">STUDENT AT 42 ?</p>
 		{% block 42link %}
-		<a type="button" style="text-align:center;text-decoration:none;" class ="btn-drg" id = "btn-pop-link-42" href="https://api.intra.42.fr/oauth/authorize?client_id=u-s4t2ud-1b900294f4f0042d646cdbafdf98a5fe9216f3efd76b592e56b7ae3a18a43bd1&redirect_uri={{ 42urllink }}/3&response_type=code">LINK 42</a>
+		<a type="button" style="text-align:center;text-decoration:none;" class ="btn-drg" id = "SignBtnLink42" href="https://api.intra.42.fr/oauth/authorize?client_id=u-s4t2ud-1b900294f4f0042d646cdbafdf98a5fe9216f3efd76b592e56b7ae3a18a43bd1&redirect_uri={{ 42urllink }}/3&response_type=code">LINK 42</a>
 		{% endblock 42link %}
-		<p id="textPopLogIn">ALREADY AN ACCOUT ?</p>
-		<button data-section="2" type="button" class ="btn-drg" id = "btn-pop-sign-log" onclick="changePage(this.dataset.section)">LOGIN</button>
+		<p id="SignTextPopLogin">ALREADY AN ACCOUT ?</p>
+		<button data-section="2" type="button" class ="btn-drg" id = "SignBtnLogin" onclick="changePage(this.dataset.section)">LOGIN</button>
 
 	</div>
 

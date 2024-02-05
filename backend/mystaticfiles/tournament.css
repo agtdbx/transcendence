@@ -1,0 +1,260 @@
+.tournament-page{
+	cursor: url("cursor1.png"), auto;
+	background-attachment: auto;
+	background-repeat:	no-repeat;
+}
+
+#tournamentChangeChat{
+	position: absolute;
+	top: 1%;
+	left: 1%;
+	width:20%;
+	height:98%;
+	text-align: center;
+	background: rgba(18,16,11, 0.8);
+	overflow-y: auto;
+}
+
+#tournamentChat{
+	position: absolute;
+	top: 64%;
+	left: 0.5%;
+	width:30%;
+	height:35%;
+	background: rgba(40,35,23,0.75);
+}
+
+.changeTournament{
+	position: absolute;
+	top: 46%;
+	left: 79%;
+	width: 15%;
+	height: 50%;
+	background-color: rgba(40,35,23, 0.75);
+}
+
+#tournamentProgress{
+	position: absolute;
+	-ms-transform: translate(-50%, -50%);
+	transform: translate(-50%, -50%);
+	top: 50%;
+	left: 50%;
+	width:25%;
+	height:30%;
+	text-align: center;
+	background: rgba(40,35,23,0.75);
+}
+#tournamentrect1{
+	position: absolute;
+	top: 1%;
+	left: 22%;
+	width:77%;
+	height:86%;
+	background: rgba(18,16,11, 0.8);
+	overflow-y: auto;
+	overflow-wrap: anywhere;
+}
+
+#btnTournamentStartGame{
+	position: absolute;
+	-ms-transform: translate(-50%, -50%);
+	transform: translate(-50%, -50%);
+	top: 25%;
+	left: 50%;
+	width: 10%;
+	height: 8%;
+}
+
+#btnTournamentQuit{
+	position: absolute;
+	top: 12%;
+	left: 0.5%;
+
+}
+
+#btnTournamentShuffle{
+	-ms-transform: translate(-50%, -50%);
+	transform: translate(-50%, -50%);
+	position: absolute;
+	top: 70%;
+	left: 50%;
+	width: 8%;
+	height: 5%;
+}
+
+#tournamentrect3{
+	position: absolute;
+	top: 1%;
+	left: 1%;
+	width:98%;
+	height:98%;
+	text-align: center;
+	background: rgba(18,16,11, 0.8);
+}
+
+#tournament-chat{
+	position: absolute;
+	top: 88%;
+	left: 22%;
+	width: 77%;
+	color: white;
+	background-color: rgba(207,188,188,0.5);
+	font-size: 1vw;
+}
+
+#tournament-name-text1{
+	position: absolute;
+	-ms-transform: translate(-50%, -50%);
+	transform: translate(-50%, -50%);
+	top: 10%;
+	left: 50%;
+	color: white;
+	background-color: transparent;
+	font-size: 200%;
+}
+
+#tournament-name-text2{
+	position: absolute;
+	-ms-transform: translate(-50%, -50%);
+	transform: translate(-50%, -50%);
+	top: 25%;
+	left: 50%;
+	color: white;
+	background-color: transparent;
+	font-size: 200%;
+}
+
+#tournament-name{
+	position: absolute;
+	-ms-transform: translate(-50%, -50%);
+	transform: translate(-50%, -50%);
+	top: 40%;
+	left: 50%;
+	width: 60%;
+	height: 15%;
+	color: white;
+	background-color: transparent;
+	font-size: 1vw;
+	text-align: center;
+	border: 2px solid #ff9c00;
+}
+
+#tournament-status-text{
+	position: absolute;
+	-ms-transform: translate(-50%, -50%);
+	transform: translate(-50%, -50%);
+	top: 56%;
+	left: 50%;
+	color: white;
+	background-color: transparent;
+	font-size: 200%;
+}
+
+#tournament-wait-text{
+	position: absolute;
+	-ms-transform: translate(-50%, -50%);
+	transform: translate(-50%, -50%);
+	top: 68%;
+	left: 50%;
+	color: red;
+	background-color: transparent;
+	font-size: 200%;
+}
+
+#btn-set{
+	position: absolute;
+	-ms-transform: translate(-50%, -50%);
+	transform: translate(-50%, -50%);
+	top: 86%;
+	left: 50%;
+	background-color: transparent;
+	width: 60%;
+	font-size: 100%;
+}
+
+/* join tournament*/
+
+#joinTournamentOption{
+	position: absolute;
+	-ms-transform: translate(-50%, -50%);
+	transform: translate(-50%, -50%);
+	top: 71%;
+	left: 50%;
+	width:20%;
+	height:10%;
+	text-align: center;
+	background: rgba(40,35,23,0.75);
+}
+
+#joinTournamentOption1{
+	position: absolute;
+	top: 1%;
+	left: 1%;
+	width:98%;
+	height:98%;
+	text-align: center;
+	background: rgba(18,16,11, 0.8);;
+	color: white;
+}
+
+#joinTournamentVSrect{
+	position: absolute;
+	top: 40%;
+	left: 0.5%;
+	width:30%;
+	height:20%;
+	text-align: center;
+	background: rgba(40,35,23,0.75);
+}
+
+#joinTournamentVSrect1{
+	position: absolute;
+	top: 1%;
+	left: 1%;
+	width:98%;
+	height:98%;
+	text-align: center;
+	background: rgba(18,16,11, 0.8);;
+	color: white;
+	overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+#tournamentPlayer1{
+	position: absolute;
+	top: 1%;
+	left: 1%;
+	width: 30%;
+	height: 98%;
+	background-color: transparent;
+}
+
+#tournamentPlayer2{
+	position: absolute;
+	top: 1%;
+	left: 69%;
+	width: 30%;
+	height: 98%;
+	background-color: transparent;
+}
+
+#textVsTournament{
+	position: absolute;
+	top: 1%;
+	left: 32%;
+	width: 36%;
+	height: 98%;
+	background-color: transparent;
+	overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+#nextmatch{
+	font-size:200%
+}
+
+#vsTournament{
+	font-size:300%
+}

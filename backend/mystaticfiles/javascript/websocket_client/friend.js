@@ -1,6 +1,6 @@
 function getFriendsElement()
 {
-	let friendElement = document.getElementById("main-page-chat-switch");
+	let friendElement = document.getElementById("SwitchChannel");
 
 	if (friendElement == null)
 		friendElement = document.getElementById("wait-page-global");

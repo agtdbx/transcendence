@@ -1,0 +1,113 @@
+.wait-page{
+	cursor: url("./image/cursor/cursor1.png"), auto;
+	background-image:url(./image/background/waitpage.png);
+	background-attachment: auto;
+	background-repeat:	no-repeat;
+}
+
+#wait-page-text{
+	position: absolute;
+	-ms-transform: translate(-50%, -50%);
+	transform: translate(-50%, -50%);
+	top: 35%;
+	left: 50%;
+	width:100%;
+	height:20%;
+	background: transparent;
+	text-align: center;
+}
+
+#wait-page-waiting{
+	color: white;
+	text-align: center;
+	font-size: 300%;
+	-webkit-text-stroke: 0.5px black;
+
+}
+
+#wait-page-left-bosco{
+	position: absolute;
+	-ms-transform: translate(-50%, -50%);
+	transform: translate(-50%, -50%);
+	top: 37%;
+	left: 38.5%;
+	width: 96px;
+	height: 99px;
+	background-image:url(./image/background/bosco_move.gif);
+	text-align: center;
+}
+
+#wait-page-right-bosco{
+	position: absolute;
+	-ms-transform: translate(-50%, -50%);
+	transform: translate(-50%, -50%);
+	top: 37%;
+	left: 61%;
+	width: 96px;
+	height: 99px;
+	background-image:url(./image/background/bosco_move.gif);
+	text-align: center;
+}
+
+#wait-btn-cancel{
+	position: absolute;
+	-ms-transform: translate(-50%, -50%);
+	transform: translate(-50%, -50%);
+	top: 37%;
+	left: 50%;
+	height: 6%;
+	width: 12.5%;
+}
+
+#wait-page-chat{
+	position: absolute;
+	top: 65%;
+	left: 0.5%;
+	width:40%;
+	height:35%;
+	background: rgba(40, 35, 23, 0.75);
+}
+
+#wait-page-chat-write{
+	position: absolute;
+	top: 1%;
+	left: 18%;
+	width:80%;
+	height:80%;
+	background: rgba(18, 16, 11, 0.8);
+	overflow-y: auto;
+	overflow-wrap: anywhere;
+}
+
+#wait-chat{
+	position: absolute;
+	top: 85%;
+	left: 18%;
+	width: 80%;
+	color: white;
+	background-color: rgba(207,188,188,0.5);
+	font-size: 1vw;
+}
+
+#wait-page-global{
+	position: absolute;
+	top: 1%;
+	left: 1%;
+	width:16%;
+	height:95%;
+	background: rgba(18, 16, 11, 0.8);
+	overflow-y: auto;
+}
+
+#wait-global{
+	position: absolute;
+	-ms-transform: translate(-50%, -50%);
+	transform: translate(-50%, -50%);
+	top: 6%;
+	left: 50%;
+	height: 10%;
+	width: 98%;
+	color: white;
+	background : rgba(18, 16, 11, 0.8);
+	border: 3px solid #FF9C00;
+}
