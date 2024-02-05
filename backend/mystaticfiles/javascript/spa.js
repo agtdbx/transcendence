@@ -288,7 +288,7 @@ function checkSignin(data)
 			let name = document.getElementById("pseudo_profil_page");
 			name.textContent = document.getElementById("newName").value;
 
-			let name2 = document.getElementById("main-user-name");
+			let name2 = document.getElementById("NavUserName");
 			name2.textContent = document.getElementById("newName").value;
             remove_pop()
         })
