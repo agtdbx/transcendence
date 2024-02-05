@@ -38,7 +38,7 @@ async def join_quick_room(my_id : int,
                           in_game_list: list,
                           connected_users : dict):
     # If the user is already in waitlist or in game, don't pu it in waitlist
-    if my_id in in_game_list:
+    if my_id in waitlist or my_id in in_game_list:
         print("\nWS : User", my_id, "already in waitlist or in game",
               file=sys.stderr)
         return

@@ -31,7 +31,7 @@ def remove_user_connected(myid, websocket):
           connected_users, file=sys.stderr)
     if len(connected_users.get(myid, [])) == 0:
         set_user_status(myid, 0)
-        leave_quick_room(myid)
+        leave_quick_room(myid, waitlist, connected_users)
 
 
 async def handle_client(websocket : websockets.WebSocketServerProtocol, path):

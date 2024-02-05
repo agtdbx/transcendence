@@ -33,7 +33,7 @@ function onRecieveData(event)
 		if (current_page != 4)
 			changePage('4');
 	}
-	else if (type == '')
+	else if (type == 'quitWaitlist')
 	{
 		if (current_page != 3)
 			changePage('3');
