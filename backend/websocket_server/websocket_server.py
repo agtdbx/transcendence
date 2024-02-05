@@ -5,8 +5,11 @@ import sys
 from websocket_server.utils import send_error, set_user_status
 from websocket_server.connection import connection_by_token, connection_by_username
 from websocket_server.message import recieved_message
-from websocket_server.quick_room import join_quick_room, leave_quick_room, check_if_can_start_new_game
+from websocket_server.quick_room import join_quick_room, leave_quick_room, \
+                                        check_if_can_start_new_game
 from websocket_server.game_server_manager import end_game
+from websocket_server.game_room import create_game_room, join_game_room, \
+                                       quit_game_room
 
 # Dict to save the actives connections
 connected_users = dict()
@@ -15,27 +18,28 @@ waitlist = []
 game_rooms = dict()
 in_game_list = []
 
-def add_user_connected(myid, websocket):
-    lst : list = connected_users.get(myid, [])
+def add_user_connected(my_id, websocket):
+    lst : list = connected_users.get(my_id, [])
     if len(lst) == 0:
-        set_user_status(myid, 1)
+        set_user_status(my_id, 1)
     lst.append(websocket)
-    connected_users[myid] = lst
-    print("\nWS : Hello new client " + str(myid) + " :",
+    connected_users[my_id] = lst
+    print("\nWS : Hello new client " + str(my_id) + " :",
           connected_users, file=sys.stderr)
 
 
-def remove_user_connected(myid, websocket):
-    connected_users.get(myid, []).remove(websocket)
-    print("\nWS : Bye bye client " + str(myid) + " :",
+def remove_user_connected(my_id, websocket):
+    connected_users.get(my_id, []).remove(websocket)
+    print("\nWS : Bye bye client " + str(my_id) + " :",
           connected_users, file=sys.stderr)
-    if len(connected_users.get(myid, [])) == 0:
-        set_user_status(myid, 0)
-        leave_quick_room(myid, waitlist, connected_users)
+    if len(connected_users.get(my_id, [])) == 0:
+        set_user_status(my_id, 0)
+        leave_quick_room(my_id, waitlist, connected_users)
 
 
 async def handle_client(websocket : websockets.WebSocketServerProtocol, path):
-    myid = None
+    my_id = None
+    my_game_room_id = None
     print("\nWS : Hello anonymous client", file=sys.stderr)
 
     try:
@@ -62,8 +66,8 @@ async def handle_client(websocket : websockets.WebSocketServerProtocol, path):
                     await send_error("Request cmd unkown")
 
                 if ret != None:
-                    myid = ret
-                    add_user_connected(myid, websocket)
+                    my_id = ret
+                    add_user_connected(my_id, websocket)
                 continue
 
             elif request_type == "gws":
@@ -74,14 +78,14 @@ async def handle_client(websocket : websockets.WebSocketServerProtocol, path):
                     await send_error("Request cmd unkown")
 
             # Check if connected
-            if myid == None:
+            if my_id == None:
                 await send_error(websocket, "You need to be connected to execute" +
                                  " this request")
 
             # Message gestion
             if request_type == "message":
                 if request_cmd == 'sendMessage':
-                    await recieved_message(data, connected_users, websocket, myid)
+                    await recieved_message(data, connected_users, websocket, my_id)
                 else:
                     await send_error(websocket,
                                      "Request cmd unkown")
@@ -90,10 +94,30 @@ async def handle_client(websocket : websockets.WebSocketServerProtocol, path):
             # Quick game room gestion
             if request_type == "quickRoom":
                 if request_cmd == "askForRoom":
-                    await join_quick_room(myid, waitlist, in_game_list,
+                    await join_quick_room(my_id, waitlist, in_game_list,
                                           connected_users)
                 elif request_cmd == "quitRoom":
-                    await leave_quick_room(myid, waitlist, connected_users)
+                    await leave_quick_room(my_id, waitlist, connected_users)
+                else:
+                    await send_error(websocket, "Request cmd unkown")
+                continue
+
+            # Game room gestion
+            if request_type == "gameRoom":
+                if request_cmd == "createRoom":
+                    my_game_room_id = await create_game_room(my_id,
+                                                             game_rooms,
+                                                             in_game_list,
+                                                             connected_users)
+                elif request_cmd == "joinRoom":
+                    my_game_room_id = await join_game_room(my_id,
+                                                           data,
+                                                           game_rooms,
+                                                           in_game_list,
+                                                           connected_users)
+                elif request_cmd == "quitGameRoom":
+                    await quit_game_room(my_id, data, connected_users,
+                                         my_game_room_id, game_rooms)
                 else:
                     await send_error(websocket, "Request cmd unkown")
                 continue
@@ -105,8 +129,8 @@ async def handle_client(websocket : websockets.WebSocketServerProtocol, path):
 
     finally:
         # Delete the connection when the client disconnect
-        if myid != None:
-            remove_user_connected(myid, websocket)
+        if my_id != None:
+            remove_user_connected(my_id, websocket)
         else:
             print("\nWS : Bye bye anonymous client", file=sys.stderr)
 
