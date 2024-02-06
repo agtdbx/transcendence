@@ -140,7 +140,7 @@ export class Paddle {
 			this.pos.y = dc.AREA_RECT[1] + d.PERFECT_SHOOT_SIZE + (this.halfH * this.modifierSize)
 			this.hitbox.setPos(this.pos.dup())
 		}
-		if (this.pos.y + (this.halfH * this.modifierSize) > AREA_RECT[1] + AREA_RECT[3] - d.PERFECT_SHOOT_SIZE)
+		if (this.pos.y + (this.halfH * this.modifierSize) > dc.AREA_RECT[1] + dc.AREA_RECT[3] - d.PERFECT_SHOOT_SIZE)
 		{
 			this.pos.y = dc.AREA_RECT[1] + dc.AREA_RECT[3] - d.PERFECT_SHOOT_SIZE - (this.halfH * this.modifierSize)
 			this.hitbox.setPos(this.pos.dup())

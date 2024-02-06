@@ -134,7 +134,7 @@ export class Ball {
 	modifySize( modifier)
 	{
 		this.modifierSize = modifier;
-		this.sprite = pg.transform.scale(this.originalSprite, ((this.radius * 2) * this.modifierSize, (this.radius * 2) * this.modifierSize));
+		// this.sprite = pg.transform.scale(this.originalSprite, ((this.radius * 2) * this.modifierSize, (this.radius * 2) * this.modifierSize));
 		this.resetHitbox();
 	}
 
@@ -585,7 +585,7 @@ export class Ball {
 					this.modifierInvisibleBall = true
 			}
 
-			paddle.powerUpInCharge.clear()
+			paddlee.powerUpInCharge = []
 		}
 		return true
 	}

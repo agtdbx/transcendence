@@ -124,14 +124,14 @@ export class GameClient {
 			
 		}
 
-
+		this.balls = []
 		// Ball creation
-		this.balls = [ new ball.Ball(dc.WIN_WIDTH / 2, dc.WIN_HEIGHT / 2)]
-		this.win.insertBefore(this.balls[0].htmlObject, null);
-		for (let index = 0; index < this.balls[0].shadowBalls.length; index++) {
-			this.win.insertBefore(this.balls[0].shadowBalls[index][0], null);
-		}
-		console.log("nb shadow ball : " + this.balls[0].shadowBalls.length)
+		// this.balls = [ new ball.Ball(dc.WIN_WIDTH / 2, dc.WIN_HEIGHT / 2)]
+		// this.win.insertBefore(this.balls[0].htmlObject, null);
+		// for (let index = 0; index < this.balls[0].shadowBalls.length; index++) {
+		// 	this.win.insertBefore(this.balls[0].shadowBalls[index][0], null);
+		// }
+		// console.log("nb shadow ball : " + this.balls[0].shadowBalls.length)
 
 		// // Ball begin left side
 		// if (random.random() > 0.5)
@@ -153,7 +153,7 @@ export class GameClient {
 			temp_list.push([p[0], p[1]])
 			this.powerUp[1].addPoint(p[0], p[1])
 		}
-		this.powerUp[4] = addPolygon(this.win, 500,500, temp_list, "#FFFFFF")
+		this.powerUp[4] = addPolygon(this.win, 0,0, temp_list, "#FFFFFF")
 		this.powerUp[4].style.opacity = "0"
 
 
@@ -547,7 +547,7 @@ export class GameClient {
 		}
 		else if (type === "startInfo")
 		{
-			console.error("Starting info received");
+			console.log("Starting info received");
 			this.runMainLoop = true
 			this.createObstaclesOnMap(data['obstacles'])
 		}
@@ -557,8 +557,8 @@ export class GameClient {
 			this.parseMessageForObstacle(data["updateObstacles"])
 			this.parseMessageForPaddles(data["updatePaddles"])
 			this.parseMessageForBalls(data["updateBalls"])
-			// this.parseMessageForDeleteBalls(data["deleteBall"])
-			// this.parseMessageForPowerUp(data["updatePowerUpInGame"])
+			this.parseMessageForDeleteBalls(data["deleteBall"])
+			this.parseMessageForPowerUp(data["updatePowerUpInGame"])
 			// this.parseMessageForScore(data["updateScore"])
 		}
 		else
@@ -677,8 +677,8 @@ export class GameClient {
 				b.speed = content[3]
 				b.radius = content[2]
 				b.state = content[4]
-				b.htmlObject.setAttribute('width', this.radius * 2)
-				b.htmlObject.setAttribute('height', this.radius * 2)
+				b.htmlObject.setAttribute('width', b.radius * 2)
+				b.htmlObject.setAttribute('height', b.radius * 2)
 				// b.lastPaddleHitId = content["last_paddle_hit_info"][0]
 				// b.lastPaddleTeam = content["last_paddle_hit_info"][1]
 				b.setModifierByState(content[5])
@@ -695,8 +695,10 @@ export class GameClient {
 				// b.lastPaddleHitId = content["last_paddle_hit_info"][0]
 				// b.lastPaddleTeam = content["last_paddle_hit_info"][1]
 				b.setModifierByState(content[5])
-				this.balls.append(b)
+				this.balls.push(b)
 				this.win.insertBefore(b.htmlObject, null);
+				b.htmlObject.setAttribute('width', b.radius * 2)
+				b.htmlObject.setAttribute('height', b.radius * 2)
 				for (let index = 0; index < b.shadowBalls.length; index++) {
 					this.win.insertBefore(b.shadowBalls[index][0], null);
 				}
@@ -709,8 +711,15 @@ export class GameClient {
 	{
 		// Content of delete balls :
 		// [id_ball]
+		if (messageContent == "null")
+			return ;
 		for (let i = 0; i < messageContent.length; i++) {
-			this.balls.pop(messageContent[i] - i)
+			this.balls[messageContent[i] - i].htmlObject.remove()
+			for (let index = 0; index < this.balls[messageContent[i] - i].shadowBalls.length; index++)
+			{
+				this.balls[messageContent[i] - i].shadowBalls[index][0].remove()
+			}
+			this.balls.splice(messageContent[i] - i, 1)
 		}
 	}
 
@@ -719,11 +728,29 @@ export class GameClient {
 	{
 		// Content of balls :
 		// {position:[x, y], state}
-		x = AREA_RECT[0] + messageContent["position"][0]
-		y = AREA_RECT[1] + messageContent["position"][1]
+		if (messageContent === 'null')
+			return ;
+		let x = dc.AREA_RECT[0] + messageContent[0][0]
+		let y = dc.AREA_RECT[1] + messageContent[0][1]
 
-		this.powerUp[0] = messageContent["state"]
-		this.powerUp[1].setPos(Vec2(x, y))
+		this.powerUp[0] = messageContent[1]
+		this.powerUp[1].setPos(new Vec2(x, y))
+		let temp_list = []
+		for ( const p of ball.getPointOfCircle(d.POWER_UP_HITBOX_RADIUS, d.POWER_UP_HITBOX_PRECISION, 0))
+		{
+			temp_list.push([p[0], p[1]])
+		}
+		this.powerUp[4].remove()
+		this.powerUp[4] = addPolygon(this.win, x,y, temp_list, "#FFFFFF")
+		if (messageContent[1])
+		{
+			this.powerUp[4].style.opacity = 0;
+		}
+		else
+		{
+			this.powerUp[4].style.opacity = 1;
+		}
+
 	}
 
 
