@@ -220,7 +220,7 @@ GAME
 
     => server info
         'type' : 'serverInfo'
-        'updateObstacles' : [[<obstacles index>, [<point>, ...]], ...] | null
+        'updateObstacles' : [[<obstacles index>, <point>, [<point>, ...]], ...] | null
         'updatePaddles' : [<paddles>, ...]  | null
         'updateBalls' : [<ball>, ...] | null
         'deleteBall' : [<ball index>, ...]  | null
@@ -237,13 +237,13 @@ GAME
 		[<point>, true | false] {=} ['coordonne', 'visible']
 
     <paddles> :
-		[<point>, <point>, <point>, <point>, <team id>, <paddle id> ] {=} ['topLeft', 'botLeft','topRight','botRight','teamId','paddleId']
+		[<point>, float, <team id>, <paddle id> , int] {=} ['position', 'modifiersize', 'teamId','paddleId', 'powerUpInCharge']
 
 	<team id> :
 		0 | 1 {=} left | right
 
     <ball> :
-		[<point>, <point>, int, int] {=} ['position', 'direction', 'radius', 'speed']
+		[<point>, <point>, int, int, int, int] {=} ['position', 'direction', 'radius', 'speed', 'status', 'modifier_state']
 
     <point> :
 		[float, float] {=} ['x', 'y']

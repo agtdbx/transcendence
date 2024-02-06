@@ -36,6 +36,8 @@ export class Ball {
 		this.direction = new Vec2(1, 0)
 		this.htmlObject = document.createElementNS('http://www.w3.org/2000/svg', 'image')
 		this.htmlObject.setAttributeNS('http://www.w3.org/1999/xlink','href', "/static/image/game/ball.png");
+		this.htmlObject.setAttribute('width', this.radius * 2)
+		this.htmlObject.setAttribute('height', this.radius * 2)
 		// this.htmlObject.setAttribute('transform-origin', "center");
 		console.log("create ball at : " + x + "," + y)
 		this.shadowBalls = []
@@ -227,7 +229,7 @@ export class Ball {
 	{
 		if (! (this.modifierWaveBall))
 			return this.direction
-		realDirection = this.direction.dup()
+		let realDirection = this.direction.dup()
 		realDirection.rotate(d.POWER_UP_BALL_WAVE_DEGREES * Math.sin(this.modifierWaveBallTimer * d.POWER_UP_BALL_WAVE_SPEED_FACTOR))
 
 		return realDirection;
@@ -251,10 +253,15 @@ export class Ball {
 			// console.log(this.shadowBalls[index])
 			this.shadowBalls[index][0].setAttribute('x', "" +  this.shadowBalls[index + 1][1][0]);
 			this.shadowBalls[index][0].setAttribute('y', "" +  this.shadowBalls[index + 1][1][1]);
+			this.shadowBalls[index][0].setAttribute('width', this.radius * 2)
+			this.shadowBalls[index][0].setAttribute('height', this.radius * 2)
 		}
 		this.shadowBalls[NB_SHADOW_BALL - 1][1] = [(this.pos.x - (this.radius / 2)), (this.pos.y - (this.radius / 2))]
 		this.shadowBalls[NB_SHADOW_BALL - 1][0].setAttribute('x', "" +  (this.pos.x - (this.radius / 2)));
 		this.shadowBalls[NB_SHADOW_BALL - 1][0].setAttribute('y', "" +  (this.pos.y - (this.radius / 2)));
+		this.shadowBalls[NB_SHADOW_BALL - 1][0].setAttribute('width', this.radius * 2)
+		this.shadowBalls[NB_SHADOW_BALL - 1][0].setAttribute('height', this.radius * 2)
+
 
 		// Store last positions
 		// Store last colors

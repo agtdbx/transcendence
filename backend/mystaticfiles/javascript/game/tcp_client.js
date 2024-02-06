@@ -12,7 +12,15 @@ const sleep = ms => new Promise(r => setTimeout(r, ms));
 
 function parseMessageFromServerWS(event)
 {
-	actuelGame.parseMessageFromServer(event);
+	// try
+	// {
+		actuelGame.parseMessageFromServer(event);
+	// }
+	// catch (error)
+	// {
+	// 	console.log(console.error(error));
+	// }
+	
 }
 
 export async function runGameClient(

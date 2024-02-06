@@ -1,6 +1,6 @@
 import * as dc from "./client_define.js"
 import * as d from "./define.js"
-import "./vec2.js"
+import {Vec2} from "./vec2.js"
 import * as hitbox from "./hitbox.js"
 import * as team from "./team.js"
 import * as paddle from "./paddle.js"
@@ -37,14 +37,20 @@ function createObstacle(x, y, listPoint, color)
 	return hit
 }
 
-function addPolygon(content,x , y, pointList, color)
+function createDirectivePath(x , y, pointList)
 {
-    let d = "M" + (pointList[0][0] + x) + " " + (pointList[0][1] + y);
+	let d = "M" + (pointList[0][0] + x) + " " + (pointList[0][1] + y);
     for (let index = 1; index < pointList.length ; index++)
     {
             d +=  " L " + (pointList[index][0] + x) + " " + (pointList[index][1] + y) +" ";
     }
     d +=  " Z";
+	return d;
+}
+
+function addPolygon(content,x , y, pointList, color)
+{
+	let d = createDirectivePath(x, y, pointList);
     let newPath = document.createElementNS('http://www.w3.org/2000/svg', 'path');
     //newPath.style.stroke = color;
 	newPath.setAttribute('x', x)
@@ -541,9 +547,19 @@ export class GameClient {
 		}
 		else if (type === "startInfo")
 		{
-
+			console.error("Starting info received");
 			this.runMainLoop = true
 			this.createObstaclesOnMap(data['obstacles'])
+		}
+		else if (type === "serverInfo") // Not the movie !
+		{
+			console.log("match info received");
+			this.parseMessageForObstacle(data["updateObstacles"])
+			this.parseMessageForPaddles(data["updatePaddles"])
+			this.parseMessageForBalls(data["updateBalls"])
+			// this.parseMessageForDeleteBalls(data["deleteBall"])
+			// this.parseMessageForPowerUp(data["updatePowerUpInGame"])
+			// this.parseMessageForScore(data["updateScore"])
 		}
 		else
 			console.error("GWS :Unkown data recieved :", data);
@@ -559,24 +575,24 @@ export class GameClient {
 	}
 
 
-	parseMessageStartInfo( messageContent)
-	{
-		// Content of obstacles :
-		// {
-		// 	obstables : [ {position:[x, y], points:[[x, y]], color:(r, g, b)} ]
-		// 	powerUp : true or false
-		// }
-		this.walls.clear()
+	// parseMessageStartInfo( messageContent)
+	// {
+	// 	// Content of obstacles :
+	// 	// {
+	// 	// 	obstables : [ {position:[x, y], points:[[x, y]], color:(r, g, b)} ]
+	// 	// 	powerUp : true or false
+	// 	// }
+	// 	this.walls.clear()
 
-		for (const content of messageContent["obstacles"])
-		{
-			x = AREA_RECT[0] + content["position"][0]
-			y = AREA_RECT[1] + content["position"][1]
-			obstacle = createObstacle(x, y, content["points"], content["color"])
-			this.walls.append(obstacle)
-		}
-		this.powerUpEnable = messageContent["powerUp"]
-	}
+	// 	for (const content of messageContent["obstacles"])
+	// 	{
+	// 		x = dc.AREA_RECT[0] + content[0][0]
+	// 		y = dc.AREA_RECT[1] + content[0][1]
+	// 		obstacle = createObstacle(x, y, content["points"], content["color"])
+	// 		this.walls.append(obstacle)
+	// 	}
+	// 	this.powerUpEnable = messageContent["powerUp"]
+	// }
 
 
 	parseMessageForObstacle( messageContent){
@@ -586,9 +602,11 @@ export class GameClient {
 		// ]
 		for (const content of messageContent)
 		{
-			this.walls[content["id"]].setPos(vec2Add(Vec2(content["position"][0], content["position"][1]), Vec2(AREA_RECT[0], AREA_RECT[1])))
-			this.walls[content["id"]].clearPoints()
-			this.walls[content["id"]].addPoints(content["points"])
+			this.walls[content[0]].setPos(vec2Add(Vec2(content[1][0], content[1][1]), Vec2(dc.AREA_RECT[0], dc.AREA_RECT[1])))
+			this.walls[content[0]].clearPoints()
+			this.walls[content[0]].addPoints(content[2])
+			this.wallsHtmlObjects[content[0]].setAttribute('d', createDirectivePath(0, 0, content[2]));
+			
 		}
 	}
 
@@ -600,36 +618,36 @@ export class GameClient {
 		// ]
 		for (const content of messageContent)
 		{
-			x = AREA_RECT[0] + content["position"][0]
-			y = AREA_RECT[1] + content["position"][1]
+			let x = dc.AREA_RECT[0] + content[0][0]
+			let y = dc.AREA_RECT[1] + content[0][1]
 
-			if (content["id_team"] == TEAM_LEFT)
+			if (content[2] == d.TEAM_LEFT)
 			{
-				if (content["id_paddle"] >= len(this.teamLeft.paddles))
+				if (content[3] >= this.teamLeft.paddles.length)
 				{
-					while (content["id_paddle"] > len(this.teamLeft.paddles))
-						this.teamLeft.paddles.append(paddle.Paddle(0, 0, len(this.teamLeft.paddles), TEAM_LEFT))
-					this.teamLeft.paddles.append(paddle.Paddle(0, 0, content["id_paddle"], TEAM_LEFT))
+					while (content[3] > this.teamLeft.paddles.length)
+						this.teamLeft.paddles.append(paddle.Paddle(0, 0, this.teamLeft.paddles.length, d.TEAM_LEFT))
+					this.teamLeft.paddles.append(paddle.Paddle(0, 0, content[3], d.TEAM_LEFT))
 				}
-				this.teamLeft.paddles[content["id_paddle"]].setPos(x, y)
-				if (this.teamLeft.paddles[content["id_paddle"]].modifierSize != content["modifierSize"])
-					this.teamLeft.paddles[content["id_paddle"]].modifySize(content["modifierSize"])
-				this.teamLeft.paddles[content["id_paddle"]].powerUp = content["powerUp"]
-				this.teamLeft.paddles[content["id_paddle"]].powerUpInCharge = content["powerUpInCharge"]
+				this.teamLeft.paddles[content[3]].setPos(x, y)
+				if (this.teamLeft.paddles[content[3]].modifierSize != content[1])
+					this.teamLeft.paddles[content[3]].modifySize(content[1])
+				//this.teamLeft.paddles[content[3]].powerUp = content["powerUp"]
+				this.teamLeft.paddles[content[3]].powerUpInCharge = content[4]
 			}
 			else
 			{
-				if (content["id_paddle"] >= len(this.teamRight.paddles))
+				if (content[3] >= this.teamRight.paddles.length)
 				{
-					while (content["id_paddle"] > len(this.teamRight.paddles))
-						this.teamRight.paddles.append(paddle.Paddle(0, 0, len(this.teamRight.paddles), TEAM_RIGHT))
-					this.teamRight.paddles.append(paddle.Paddle(0, 0, content["id_paddle"], TEAM_RIGHT))
+					while (content[3] > this.teamRight.paddles.length)
+						this.teamRight.paddles.append(paddle.Paddle(0, 0, this.teamRight.paddles.length, d.TEAM_RIGHT))
+					this.teamRight.paddles.append(paddle.Paddle(0, 0, content[3], d.TEAM_RIGHT))
 				}
-				this.teamRight.paddles[content["id_paddle"]].setPos(x, y)
-				if (this.teamRight.paddles[content["id_paddle"]].modifierSize != content["modifierSize"])
-					this.teamRight.paddles[content["id_paddle"]].modifySize(content["modifierSize"])
-				this.teamRight.paddles[content["id_paddle"]].powerUp = content["powerUp"]
-				this.teamRight.paddles[content["id_paddle"]].powerUpInCharge = content["powerUpInCharge"]
+				this.teamRight.paddles[content[3]].setPos(x, y)
+				if (this.teamRight.paddles[content[3]].modifierSize != content[1])
+					this.teamRight.paddles[content[3]].modifySize(content[1])
+				//this.teamRight.paddles[content[3]].powerUp = content["powerUp"]
+				this.teamRight.paddles[content[3]].powerUpInCharge = content[4]
 			}
 		}
 	}
@@ -640,45 +658,50 @@ export class GameClient {
 		// [
 		// 	{position:[x, y], direction:[x, y], speed, radius, state, last_paddle_hit_info:[id, team], modifier_state}
 		// ]
-		i = 0
-		numberOfMessageBall = len(messageContent)
+		let i = 0
+		let numberOfMessageBall = messageContent.length
 		while (i < numberOfMessageBall)
 		{
-			content = messageContent[i]
-			x = AREA_RECT[0] + content["position"][0]
-			y = AREA_RECT[1] + content["position"][1]
+			let content = messageContent[i]
+			let x = dc.AREA_RECT[0] + content[0][0]
+			let y = dc.AREA_RECT[1] + content[0][1]
 
 			// Update ball if exist
-			if (i < len(this.balls))
+			if (i < this.balls.length)
 			{
-				b = this.balls[i]
+				let b = this.balls[i]
 				b.pos.x = x
 				b.pos.y = y
-				b.hitbox.setPos(Vec2(x, y))
-				b.direction = Vec2(content["direction"][0], content["direction"][1])
-				b.speed = content["speed"]
-				b.radius = content["radius"]
-				b.state = content["state"]
-				b.lastPaddleHitId = content["last_paddle_hit_info"][0]
-				b.lastPaddleTeam = content["last_paddle_hit_info"][1]
-				b.setModifierByState(content["modifier_state"])
+				b.hitbox.setPos(new Vec2(x, y))
+				b.direction = new Vec2(content[1][0], content[1][1])
+				b.speed = content[3]
+				b.radius = content[2]
+				b.state = content[4]
+				b.htmlObject.setAttribute('width', this.radius * 2)
+				b.htmlObject.setAttribute('height', this.radius * 2)
+				// b.lastPaddleHitId = content["last_paddle_hit_info"][0]
+				// b.lastPaddleTeam = content["last_paddle_hit_info"][1]
+				b.setModifierByState(content[5])
 			}
 
 			// Create a new one instead
 			else
 			{
-				b = ball.Ball(x, y)
-				b.direction = Vec2(content["direction"][0], content["direction"][1])
-				b.speed = content["speed"]
-				b.radius = content["radius"]
-				b.state = content["state"]
-				b.lastPaddleHitId = content["last_paddle_hit_info"][0]
-				b.lastPaddleTeam = content["last_paddle_hit_info"][1]
-				b.setModifierByState(content["modifier_state"])
+				let b = new ball.Ball(x, y)
+				b.direction = new Vec2(content[1][0], content[1][1])
+				b.speed = content[3]
+				b.radius = content[2]
+				b.state = content[4]
+				// b.lastPaddleHitId = content["last_paddle_hit_info"][0]
+				// b.lastPaddleTeam = content["last_paddle_hit_info"][1]
+				b.setModifierByState(content[5])
 				this.balls.append(b)
-
-			i += 1
-		}
+				this.win.insertBefore(b.htmlObject, null);
+				for (let index = 0; index < b.shadowBalls.length; index++) {
+					this.win.insertBefore(b.shadowBalls[index][0], null);
+				}
+			}
+			i += 1;
 		}
 	}
 

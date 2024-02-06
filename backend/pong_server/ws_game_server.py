@@ -6,6 +6,7 @@ import os
 import time
 import signal
 from server_code.game_server import GameServer
+from define import *
 
 
 # Dict to save the actives connections
@@ -165,19 +166,26 @@ def can_server_shutdown():
     return True
 
 async def sendGlobalMessage(updateObstacles='null', updatePaddles='null',updateBalls='null',deleteBall='null',changeUserPowerUp='null',updatePowerUpInGame='null',updateScore='null'):
+    global connected_player
+    print("\nGWS : SENDING DATA .", file=sys.stderr)
     end_game_msg = {"type" : "serverInfo",
-                    "updateObstacles" : [],
-                    "updatePaddles" : [],
-                    'updateBalls' : [],
-                    'deleteBall' : null,
-                    'changeUserPowerUp' : 0,
-                    'updatePowerUpInGame' : 0,
-                    'updateScore' : 0}
+                    "updateObstacles" : updateObstacles,
+                    "updatePaddles" : updatePaddles,
+                    'updateBalls' : updateBalls,
+                    'deleteBall' : deleteBall,
+                    'changeUserPowerUp' : changeUserPowerUp,
+                    'updatePowerUpInGame' : updatePowerUpInGame,
+                    'updateScore' : updateScore}
+    print("\nGWS : SENDING DATA ..", file=sys.stderr)
     str_msg = str(end_game_msg)
     str_msg = str_msg.replace("'", '"')
-
+    str_msg = str_msg.replace("False", 'false')
+    str_msg = str_msg.replace("True", 'true')
+    
+    print("\nGWS : SENDING DATA ...", file=sys.stderr)
     for websockets in connected_player.values():
         for websocket in websockets:
+            print("\nGWS : SEND data to : ", websocket, file=sys.stderr)
             await websocket.send(str_msg)
             
 def parsingGlobalMessage():
@@ -192,27 +200,36 @@ def parsingGlobalMessage():
         typeContent = changement[0]
         content = changement[1]
         if typeContent == SERVER_MSG_TYPE_UPDATE_OBSTACLE :
-            if updateObstacles == null :
+            if updateObstacles == 'null' :
                 updateObstacles = []
             for obstacle in content :
-                updateObstacles.append([obstacle["id"], obstacle["points"]])
+                updateObstacles.append([obstacle["id"],obstacle["position"], obstacle["points"]])
         if typeContent == SERVER_MSG_TYPE_UPDATE_PADDLES :
-            if updatePaddles == null :
-                updatePaddles = []  
+            if updatePaddles == 'null' :
+                updatePaddles = []
+            for paddle in content :
+                updatePaddles.append([paddle["position"], paddle["modifierSize"], paddle["id_team"], paddle["id_paddle"], paddle["powerUpInCharge"]])
         if typeContent == SERVER_MSG_TYPE_UPDATE_BALLS :
-            if updateBalls == null :
-                updateBalls = []  
+            if updateBalls == 'null' :
+                updateBalls = []
+            for ball in content :
+                updateBalls.append([ball["position"], ball["direction"], ball["radius"], ball["speed"], ball["state"], ball["modifier_state"]])
         if typeContent == SERVER_MSG_TYPE_DELETE_BALLS :
-            if deleteBall == null :
+            if deleteBall == 'null' :
                 deleteBall = []
             deleteBall += content.copy()
         if typeContent == SERVER_MSG_TYPE_UPDATE_POWER_UP :
-            if changeUserPowerUp == null :
-                changeUserPowerUp = []  
+            if changeUserPowerUp == 'null' :
+                changeUserPowerUp = []
+            changeUserPowerUp.append(content["position"])
+            changeUserPowerUp.append(content["state"])
         if typeContent == SERVER_MSG_TYPE_SCORE_UPDATE :
-            if updateScore == null :
-                updateScore = []  
-    sendGlobalMessage(updateObstacles, updatePaddles,updateBalls,deleteBall,changeUserPowerUp,updatePowerUpInGame,updateScore)
+            if updateScore == 'null' :
+                updateScore = []
+            updateScore.append(content['leftTeam'])
+            updateScore.append(content['rightTeam'])
+    print("\nGWS : SEND data to client : ", [updateObstacles, updatePaddles,updateBalls,deleteBall,changeUserPowerUp,updatePowerUpInGame,updateScore], file=sys.stderr)
+    asyncio.create_task(sendGlobalMessage(updateObstacles, updatePaddles,updateBalls,deleteBall,changeUserPowerUp,updatePowerUpInGame,updateScore))
 
 
 async def game_server_manager():
@@ -226,7 +243,7 @@ async def game_server_manager():
     await asyncio.sleep(3)
     end_game_msg = {"type" : "startInfo",
                     "obstacles": lstObstacle ,
-                    'powerUp' : power_up
+                    'powerUp' : str(power_up).lower()
                     }
     str_msg = str(end_game_msg)
     str_msg = str_msg.replace("'", '"')
