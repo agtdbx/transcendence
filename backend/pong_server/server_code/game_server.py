@@ -670,6 +670,9 @@ class GameServer:
 			)
 		]
 
+		#TODO removed at the end
+		idMap = 2
+
 		if idMap == 1:
 			self.walls.append(createPolygonObstacle(
 								AREA_SIZE[0] / 2,

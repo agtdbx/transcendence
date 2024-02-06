@@ -203,7 +203,10 @@ def parsingGlobalMessage():
             if updateObstacles == 'null' :
                 updateObstacles = []
             for obstacle in content :
-                updateObstacles.append([obstacle["id"],obstacle["position"], obstacle["points"]])
+                lstPoint = []
+                for point in obstacle["points"]:
+                    lstPoint.append([point[0], point[1]])
+                updateObstacles.append([obstacle["id"],obstacle["position"], lstPoint])
         if typeContent == SERVER_MSG_TYPE_UPDATE_PADDLES :
             if updatePaddles == 'null' :
                 updatePaddles = []
@@ -258,7 +261,7 @@ async def game_server_manager():
         print("\nGWS : GAME STEP", file=sys.stderr)
         game.step()
         parsingGlobalMessage()
-        await asyncio.sleep(0.1)
+        await asyncio.sleep(0.01)
     print("\nGWS : END GAME (not the movie)", file=sys.stderr)
 
     end_game_msg = {"type" : "endGame",

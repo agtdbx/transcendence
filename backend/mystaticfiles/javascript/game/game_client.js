@@ -1,6 +1,6 @@
 import * as dc from "./client_define.js"
 import * as d from "./define.js"
-import {Vec2} from "./vec2.js"
+import {Vec2, vec2Add} from "./vec2.js"
 import * as hitbox from "./hitbox.js"
 import * as team from "./team.js"
 import * as paddle from "./paddle.js"
@@ -496,12 +496,12 @@ export class GameClient {
 
 	parseMessageFromServer(event)
 	{
-		console.log("DATA FROM GWS RECEIVED");
+		// console.log("DATA FROM GWS RECEIVED");
 		let data = null;
 		try
 		{
 			data = JSON.parse(event.data);
-			console.log("DATA FROM GWS :", data);
+			// console.log("DATA FROM GWS :", data);
 		}
 		catch (error)
 		{
@@ -602,10 +602,10 @@ export class GameClient {
 		// ]
 		for (const content of messageContent)
 		{
-			this.walls[content[0]].setPos(vec2Add(Vec2(content[1][0], content[1][1]), Vec2(dc.AREA_RECT[0], dc.AREA_RECT[1])))
+			this.walls[content[0]].setPos(vec2Add(new Vec2(content[1][0], content[1][1]), new Vec2(dc.AREA_RECT[0], dc.AREA_RECT[1])))
 			this.walls[content[0]].clearPoints()
 			this.walls[content[0]].addPoints(content[2])
-			this.wallsHtmlObjects[content[0]].setAttribute('d', createDirectivePath(0, 0, content[2]));
+			this.wallsHtmlObjects[content[0]].setAttribute('d', createDirectivePath(content[1][0], content[1][1], content[2]));
 			
 		}
 	}
