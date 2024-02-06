@@ -60,6 +60,7 @@ async def join_quick_room(my_id : int,
     ret = await create_new_game(0, False, [0], [0], [my_id, first_player_id])
 
     if ret == None:
+        waitlist.append(first_player_id)
         waitlist.append(my_id)
         print("\nWS : ERROR : No game server free, put user", my_id, "in waitlist",
               file=sys.stderr)
@@ -83,7 +84,10 @@ async def leave_quick_room(user_id:int,
                            waitlist : list,
                            connected_users : dict):
     if user_id in waitlist:
-        await waitlist_message("quit", user_id, waitlist, connected_users)
+        try:
+            await waitlist_message("quit", user_id, waitlist, connected_users)
+        except:
+            pass
 
 
 async def check_if_can_start_new_game(data:dict,
@@ -92,7 +96,8 @@ async def check_if_can_start_new_game(data:dict,
                                       connected_users:dict):
     users_id = data.get("usersId", None)
     if users_id == None:
-        print("\nWS : Missing info which user was in game :", data, file=sys.stderr)
+        print("\nWS : Missing info which user was in game :", data,
+              file=sys.stderr)
 
     for id in users_id:
         if id in in_game_list:

@@ -51,7 +51,6 @@ MESSAGE
         'type' : 'invite'
         'username' : <username>
         'pp' : <profile picture link>
-        'date' : <date>
         'roomId' : <room id>
 
     {{message}} :
@@ -80,6 +79,7 @@ QUICK GAME ROOM
         'paddleId' : <paddle id>
         'teamId' : <team id> # 0 left, 1 right
         
+
 GAME ROOM
     create game room
         'type' : 'gameRoom'
@@ -104,8 +104,15 @@ GAME ROOM
         'type' : 'gameRoom'
         'cmd' : inviteGameRoom'
         'targetId' : <user id> | 'ia'
-        'roomId' : <roomId>
         -> No more field
+        
+    /!\ Only the creator of the room can use it /!\
+    add bot to a team
+    	'type' : 'gameRoom'
+    	'cmd' : 'addBot'
+    	'team' : 'left' | 'right'
+        -> 'type' : 'updateRoomInfo'
+           {{update room info}}
 
     change team
         'type' : 'gameRoom'
@@ -122,17 +129,12 @@ GAME ROOM
            {{update room info}}
 
     /!\ Only the creator of the room can use it /!\
-    change map option
+    change map
         'type' : 'gameRoom'
         'cmd' : 'changeMap'
         'mapId' : <map id>
         -> 'type' : 'updateRoomInfo'
     	   {{update room info}}
-
-    change ready state
-        'type' : 'gameRoom'
-        'cmd' : 'changeReady'
-        -> No more field
 
     /!\ Only the creator of the room can use it /!\
     start game
@@ -164,18 +166,10 @@ GAME ROOM
         'teamId' : <team id> # 0 left, 1 right
 
     {{update room info}} :
-        'teamLeft' : [<paddleInfo>, <paddleInfo>]
-        'teamRight' : [<paddleInfo>, <paddleInfo>]
+        'teamLeft' : [<user id>] # if id -1, it's an ia
+        'teamRight' : [<user id>]
         'powerUpActivate' : false | true
         'mapId' : <map id>
-
-    <paddleInfo> :
-    	[id, state]
-    	'id' : <id user> | -1 # if is an ia
-    	'state' :
-    		- 0 = not ready
-			- 1 = ready
-			- 2 = wait for the response of invite
 
 
 TOURNAMENT

@@ -9,7 +9,10 @@ from websocket_server.quick_room import join_quick_room, leave_quick_room, \
                                         check_if_can_start_new_game
 from websocket_server.game_server_manager import end_game
 from websocket_server.game_room import create_game_room, join_game_room, \
-                                       quit_game_room
+                                       quit_game_room, send_game_room_invite, \
+                                       game_room_add_bot, game_room_change_team, \
+                                       game_room_change_power_up, \
+                                       game_room_change_map, game_room_start_game
 
 # Dict to save the actives connections
 connected_users = dict()
@@ -28,13 +31,15 @@ def add_user_connected(my_id, websocket):
           connected_users, file=sys.stderr)
 
 
-def remove_user_connected(my_id, websocket):
+def remove_user_connected(my_id, websocket, my_game_room_id):
     connected_users.get(my_id, []).remove(websocket)
     print("\nWS : Bye bye client " + str(my_id) + " :",
           connected_users, file=sys.stderr)
     if len(connected_users.get(my_id, [])) == 0:
         set_user_status(my_id, 0)
         leave_quick_room(my_id, waitlist, connected_users)
+        if my_game_room_id != None:
+            quit_game_room(my_id, connected_users, my_game_room_id, game_rooms)
 
 
 async def handle_client(websocket : websockets.WebSocketServerProtocol, path):
@@ -105,19 +110,40 @@ async def handle_client(websocket : websockets.WebSocketServerProtocol, path):
             # Game room gestion
             if request_type == "gameRoom":
                 if request_cmd == "createRoom":
-                    my_game_room_id = await create_game_room(my_id,
-                                                             game_rooms,
+                    my_game_room_id = await create_game_room(my_id, game_rooms,
                                                              in_game_list,
                                                              connected_users)
                 elif request_cmd == "joinRoom":
-                    my_game_room_id = await join_game_room(my_id,
-                                                           data,
+                    my_game_room_id = await join_game_room(my_id, data,
                                                            game_rooms,
                                                            in_game_list,
                                                            connected_users)
                 elif request_cmd == "quitGameRoom":
-                    await quit_game_room(my_id, data, connected_users,
+                    await quit_game_room(my_id, connected_users,
                                          my_game_room_id, game_rooms)
+                    my_game_room_id = None
+                elif request_cmd == "inviteGameRoom":
+                    await send_game_room_invite(my_id, connected_users, data,
+                                                my_game_room_id, game_rooms)
+                elif request_cmd == "addBot":
+                    await game_room_add_bot(my_id, connected_users, data,
+                                            my_game_room_id, game_rooms)
+                elif request_cmd == "changeTeam":
+                    await game_room_change_team(my_id, connected_users, data,
+                                                my_game_room_id, game_rooms)
+                elif request_cmd == "changePowerUp":
+                    await game_room_change_power_up(my_id, connected_users,
+                                                    my_game_room_id, game_rooms)
+                elif request_cmd == "changeMap":
+                    await game_room_change_map(my_id, connected_users, data,
+                                               my_game_room_id, game_rooms)
+                elif request_cmd == "startGame":
+                    ret = await game_room_start_game(my_id, connected_users,
+                                                     my_game_room_id, game_rooms,
+                                                     in_game_list)
+                    # If the creation of the game succeed, remove game id
+                    if ret:
+                        my_game_room_id = None
                 else:
                     await send_error(websocket, "Request cmd unkown")
                 continue
@@ -130,7 +156,7 @@ async def handle_client(websocket : websockets.WebSocketServerProtocol, path):
     finally:
         # Delete the connection when the client disconnect
         if my_id != None:
-            remove_user_connected(my_id, websocket)
+            remove_user_connected(my_id, websocket, my_game_room_id)
         else:
             print("\nWS : Bye bye anonymous client", file=sys.stderr)
 
