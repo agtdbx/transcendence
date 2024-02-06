@@ -259,10 +259,10 @@ function checkSignin(data)
 
 			if (jsonData["success"] != true)
 			{
-				alert(jsonData["error"]);
+				errorSign = document.getElementById("errorPopPassword")
+				errorSign.innerHTML=jsonData["error"]
 				return ;
 			}
-			alert("Success in changing your password")
 			remove_pop()
 		})
 		.catch(error => console.log("checkSignin error :", error))
@@ -281,10 +281,10 @@ function checkSignin(data)
 
             if (jsonData["success"] != true)
             {
-                alert(jsonData["error"]);
+                errorSign = document.getElementById("errorPopUsername")
+				errorSign.innerHTML=jsonData["error"]
                 return ;
             }
-            alert("Success in changing your Username")
 			let name = document.getElementById("pseudo_profil_page");
 			name.textContent = document.getElementById("newName").value;
 

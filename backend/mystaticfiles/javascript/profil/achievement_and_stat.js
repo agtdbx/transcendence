@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   achievement_and_stat.js                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lflandri <lflandri@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hde-min <hde-min@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/23 15:24:40 by lflandri          #+#    #+#             */
-/*   Updated: 2024/01/19 17:40:06 by lflandri         ###   ########.fr       */
+/*   Updated: 2024/02/06 15:24:51 by hde-min          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -314,7 +314,9 @@ function createPass()
 	<p id="passPopNew">New password <input type="password" id="newPass" name="newPass" required></p><br>\
 	<p id="passPopConfirm">Confirm new password <input type="password" id="newPassConfirm" name="newPassConfirm" required></p><br>\
 	<button type="submit" class ="btn-drg" id="btnNewPass">Change Password</button>\
-	</form><br><br><br><br><br><br><br><br><br><br><br>\
+	</form>\
+	<p id="errorPopPassword" style="color:red;"></p>\
+	<br><br><br><br><br><br><br><br><br><br><br>\
 	<button class ="btn-drg" style="width:15%; margin:auto;" id="btnQuitPop" onclick="remove_pop()">Go Back</button>';
 	const form = document.getElementById('form_newPass');
 					form.addEventListener('submit', async event => {
@@ -361,7 +363,9 @@ function createName()
 	succesBlock.innerHTML = '<form id="form_newName" method="post">\
 	<p id="passPopNew">New Username <input type="text" id="newName" name="newName" required></p><br>\
 	<button type="submit" class ="btn-drg" id="btnNewName">Change Username</button>\
-	</form><br><br><br><br><br><br><br><br><br><br><br>\
+	</form>\
+	<p id="errorPopUsername" style="color:red;"></p>\
+	<br><br><br><br><br><br><br><br><br><br><br>\
 	<button class ="btn-drg" style="width:15%; margin:auto;" id="btnQuitPop" onclick="remove_pop()">Go Back</button>';
 	const form = document.getElementById('form_newName');
 					form.addEventListener('submit', async event => {
