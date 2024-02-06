@@ -142,6 +142,10 @@ p {
 	border: 3px solid #00FF00;
 }
 
+.status-ingame {
+	border: 3px solid #FF7F00;
+}
+
 .channel p {
 	text-align: center;
 	margin-top: 0.8em;
@@ -1743,6 +1747,16 @@ font-size: 1rem;
 
 /*		Status Game Custom		*/
 
+.invite_list_bg {
+	position: absolute;
+	top: 15%;
+	left: 0.5em;
+	width: 11em;
+	height: 40%;
+	background-color: rgba(40,35,23, 0.75);
+	padding: 0.2em;
+	overflow-y: auto;
+}
 
 .changeCustomGame{
 	position: absolute;

@@ -42,6 +42,8 @@ function addChannelFriend(friendElement, friend)
 		pp.className = "friendPP status-offline";
 	else if (friend["status"] == 1)
 		pp.className = "friendPP status-online";
+	else if (friend["status"] == 2)
+		pp.className = "friendPP status-ingame";
 
 	let username = document.createElement("p");
 	username.textContent = friend["name"];

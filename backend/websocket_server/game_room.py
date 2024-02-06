@@ -1,5 +1,5 @@
 import sys
-from websocket_server.utils import send_error, get_user_by_id
+from websocket_server.utils import send_error, get_user_by_id, set_user_status
 from websocket_server.quick_room import create_game_start_message
 from websocket_server.game_server_manager import create_new_game, \
                                                  is_game_server_free
@@ -526,6 +526,7 @@ async def game_room_start_game(my_id:int,
     game_rooms.pop(game_room_id)
 
     for user_id, paddle_id, team_id in paddles:
+        set_user_status(user_id, 2)
         in_game_list.append(user_id)
         str_msg = create_game_start_message(ret[1], paddle_id, team_id)
         await send_msg_to_id(user_id, connected_users, str_msg)

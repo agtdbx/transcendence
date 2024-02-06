@@ -104,6 +104,10 @@ function manageAPI(num)
 	{
 		join_request_quick_game();
 	}
+	else if (num == 5)
+	{
+		createGameRoom();
+	}
 }
 
 
@@ -137,6 +141,8 @@ function getCookieValue(name)
 
 function changePage(num, byArrow=false)
 {
+	if (num == current_page)
+		return ;
 	try
 	{
 		remove_pop();
@@ -174,7 +180,7 @@ function changePage(num, byArrow=false)
 		runScript();
 
 		// Set the new page in the browser history if the page isn't load by arrow, or not the wait and game page.
-		if (!byArrow && num != 4 && num != 6)
+		if (!byArrow && num != 4 && num != 5 && num != 51 && num != 6)
 			history.pushState({section: num}, "", "/" + num);
 	})
 	.catch(error => console.log("CHANGE PAGE ERROR FETCH :", error, '\n'))

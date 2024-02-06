@@ -51,6 +51,7 @@ urlpatterns = [
     path('getlistefriendrequest', views_user_relation.getlistefriendrequest, name='getlistefriendrequest'),
     path('getlistefriend', views_user_relation.getlistefriend, name='getlistefriend'),
     path('getlisteblocked', views_user_relation.getlisteblocked, name='getlisteblocked'),
+    path('getcanbeinvited', views_user_relation.get_can_be_invited, name='get_can_be_invited'),
 
     #User achievement
     path('getselfachievement', views_achievement.getselfachievement, name='getselfachievement'),

@@ -1,4 +1,5 @@
 import sys
+from websocket_server.utils import set_user_status
 from websocket_server.game_server_manager import create_new_game, is_game_server_free
 
 
@@ -69,6 +70,9 @@ async def join_quick_room(my_id : int,
     in_game_list.append(first_player_id)
     in_game_list.append(my_id)
 
+    set_user_status(first_player_id, 2)
+    set_user_status(my_id, 2)
+
     # Send start game message to first player in waitlist
     first_player_msg = create_game_start_message(ret[1], 0, 0)
     for websocket in connected_users.get(first_player_id, []):
@@ -100,6 +104,7 @@ async def check_if_can_start_new_game(data:dict,
               file=sys.stderr)
 
     for id in users_id:
+        set_user_status(id, 1)
         if id in in_game_list:
             in_game_list.remove(id)
 

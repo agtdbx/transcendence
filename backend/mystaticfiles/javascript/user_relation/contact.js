@@ -6,7 +6,7 @@
 /*   By: aderouba <aderouba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/23 15:27:08 by lflandri          #+#    #+#             */
-/*   Updated: 2024/01/23 17:45:46 by aderouba         ###   ########.fr       */
+/*   Updated: 2024/02/06 19:10:19 by aderouba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,8 +73,6 @@ function contactCreate(content, before, name, img,status)
 	box.insertBefore(divText, null);
 	box.insertBefore(image, null);
 	divText.insertBefore(titleText, null);
-
-
 }
 
 

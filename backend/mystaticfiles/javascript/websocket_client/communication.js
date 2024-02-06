@@ -38,6 +38,22 @@ function onRecieveData(event)
 		if (current_page != 3)
 			changePage('3');
 	}
+	else if (type == 'createRoomInfo')
+	{
+		if (current_page != 5)
+			changePage('5');
+		// Update room info
+	}
+	else if (type == 'joinRoomInfo')
+	{
+		if (current_page != 5)
+			changePage('5');
+		// Update room info
+	}
+	else if (type == 'updateRoomInfo')
+	{
+		// Update room info
+	}
 	else if (type == 'gameStart')
 	{
 		console.log("GAME START !");
