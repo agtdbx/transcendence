@@ -40,19 +40,43 @@ function onRecieveData(event)
 	}
 	else if (type == 'createRoomInfo')
 	{
+		console.log("GAME ROOM CREATED");
 		if (current_page != 5)
 			changePage('5');
-		// Update room info
+
+		const map_id = data["mapId"];
+		const power_up = data["powerUpActivate"];
+		const team_left = data["teamLeft"];
+		const team_right = data["teamRight"];
+		updateGameRoomInfo(map_id, power_up, team_left, team_right);
 	}
 	else if (type == 'joinRoomInfo')
 	{
+		console.log("GAME ROOM JOINED");
 		if (current_page != 5)
 			changePage('5');
-		// Update room info
+
+		const map_id = data["mapId"];
+		const power_up = data["powerUpActivate"];
+		const team_left = data["teamLeft"];
+		const team_right = data["teamRight"];
+		updateGameRoomInfo(map_id, power_up, team_left, team_right);
 	}
 	else if (type == 'updateRoomInfo')
 	{
-		// Update room info
+		console.log("GAME ROOM UPDATE");
+
+		const map_id = data["mapId"];
+		const power_up = data["powerUpActivate"];
+		const team_left = data["teamLeft"];
+		const team_right = data["teamRight"];
+		updateGameRoomInfo(map_id, power_up, team_left, team_right);
+	}
+	else if (type == 'quitGameRoom')
+	{
+		console.log("QUIT GAME ROOM");
+		if (current_page == 5)
+			changePage('3');
 	}
 	else if (type == 'gameStart')
 	{

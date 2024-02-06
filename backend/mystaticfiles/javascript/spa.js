@@ -96,11 +96,16 @@ function manageChat(num)
 
 function manageAPI(num)
 {
-	if (num == 3 && current_page == 4)
+	if (current_page == 4)
 	{
 		leave_request_quick_game();
 	}
-	else if (num == 4)
+	else if (current_page == 5)
+	{
+		quitGameRoom();
+	}
+
+	if (num == 4)
 	{
 		join_request_quick_game();
 	}

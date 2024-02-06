@@ -16,6 +16,7 @@ MAX_PLAYER_PER_TEAM = 2
 NUMBER_OF_MAP = 5
 IA_ID = -1
 
+
 async def send_msg_to_id(my_id:int,
                          connected_users:dict,
                          msg:str):
@@ -72,7 +73,7 @@ async def create_game_room(my_id : int,
 
     str_msg = create_game_room_status_message("createRoomInfo", room)
 
-    send_msg_to_id(my_id, connected_users, str_msg)
+    await send_msg_to_id(my_id, connected_users, str_msg)
 
     return room_id
 
@@ -172,6 +173,9 @@ async def quit_game_room(my_id:int,
             if user_id != my_id:
                 await send_msg_to_id(user_id, connected_users, str_msg)
         game_rooms.pop(game_room_id)
+        print("\nWS : User", my_id, "create quit and destroy game room",
+              file=sys.stderr)
+
         return
 
     # Check if user is in team left
@@ -189,6 +193,7 @@ async def quit_game_room(my_id:int,
         return
 
     # Send to player in room that user leave it
+    print("\nWS : User", my_id, "quit game room", file=sys.stderr)
     str_msg = str({"type":"quitGameRoom"}).replace("'", '"')
     await send_msg_to_id(my_id, connected_users, str_msg)
 
@@ -297,10 +302,10 @@ async def game_room_add_bot(my_id:int,
 
     # Update message
     str_msg = create_game_room_status_message("updateRoomInfo", game_room)
-    for id in ["team_left"]:
-        send_msg_to_id(id, connected_users, str_msg)
-    for id in ["team_right"]:
-        send_msg_to_id(id, connected_users, str_msg)
+    for id in game_room["team_left"]:
+        await send_msg_to_id(id, connected_users, str_msg)
+    for id in game_room["team_right"]:
+        await send_msg_to_id(id, connected_users, str_msg)
 
 
 async def game_room_change_team(my_id:int,
@@ -372,10 +377,10 @@ async def game_room_change_team(my_id:int,
 
     # Update message
     str_msg = create_game_room_status_message("updateRoomInfo", game_room)
-    for id in ["team_left"]:
-        send_msg_to_id(id, connected_users, str_msg)
-    for id in ["team_right"]:
-        send_msg_to_id(id, connected_users, str_msg)
+    for id in game_room["team_left"]:
+        await send_msg_to_id(id, connected_users, str_msg)
+    for id in game_room["team_right"]:
+        await send_msg_to_id(id, connected_users, str_msg)
 
 
 async def game_room_change_power_up(my_id:int,
@@ -397,12 +402,13 @@ async def game_room_change_power_up(my_id:int,
 
     game_room['power_up'] = not game_room['power_up']
 
+    print("\nWS : User", my_id, "change power up to", game_room['power_up'], file=sys.stderr)
     # Update message
     str_msg = create_game_room_status_message("updateRoomInfo", game_room)
-    for id in ["team_left"]:
-        send_msg_to_id(id, connected_users, str_msg)
-    for id in ["team_right"]:
-        send_msg_to_id(id, connected_users, str_msg)
+    for id in game_room["team_left"]:
+        await send_msg_to_id(id, connected_users, str_msg)
+    for id in game_room["team_right"]:
+        await send_msg_to_id(id, connected_users, str_msg)
 
 
 async def game_room_change_map(my_id:int,
@@ -448,12 +454,13 @@ async def game_room_change_map(my_id:int,
 
     game_room["map_id"] = new_map
 
+    print("\nWS : User", my_id, "change map to", new_map, file=sys.stderr)
     # Update message
     str_msg = create_game_room_status_message("updateRoomInfo", game_room)
-    for id in ["team_left"]:
-        send_msg_to_id(id, connected_users, str_msg)
-    for id in ["team_right"]:
-        send_msg_to_id(id, connected_users, str_msg)
+    for id in game_room["team_left"]:
+        await send_msg_to_id(id, connected_users, str_msg)
+    for id in game_room["team_right"]:
+        await send_msg_to_id(id, connected_users, str_msg)
 
 
 async def game_room_start_game(my_id:int,

@@ -166,10 +166,10 @@ GAME ROOM
         'teamId' : <team id> # 0 left, 1 right
 
     {{update room info}} :
+        'mapId' : <map id>
+        'powerUpActivate' : false | true
         'teamLeft' : [<user id>] # if id -1, it's an ia
         'teamRight' : [<user id>]
-        'powerUpActivate' : false | true
-        'mapId' : <map id>
 
 
 TOURNAMENT

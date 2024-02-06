@@ -35,7 +35,7 @@
 
 		<div class ="CreateGameMap" id = "CreateGameMap">
 			<p id="gameCreateMapTxt">Map</p>
-			<p id = "gameCreateMapName">Dwarf cave  medium</p>
+			<p id = "gameCreateMapName">Dwarf cave medium</p>
 		</div>
 	</div>
 
@@ -60,16 +60,16 @@
 	<div class="changeCustomGame">
 		<div class="CustomPowerUp">
 			<p id="customPTxt">Power Up</p>
-			<button type="button" class ="btn-drg" id="btnStatusPowerUp">OFF</button>
+			<button type="button" class ="btn-drg" id="btnStatusPowerUp" onclick="gameRoomSwitchPowerUp()">OFF</button>
 		</div>
 
 		<div class="CustomMap">
 			<p id="customMTxt">Map</p>
-			<button type="button" class ="btn-drg btn-map" id="btnMap1">map 1 cave is wierd i guess</button><br><br>
-			<button type="button" class ="btn-drg btn-map" id="btnMap2">map 2 cave is wierd i guess</button><br><br>
-			<button type="button" class ="btn-drg btn-map" id="btnMap3">map 3 cave is wierd i guess</button><br><br>
-			<button type="button" class ="btn-drg btn-map" id="btnMap4">map 4 cave is wierd i guess</button><br><br>
-			<button type="button" class ="btn-drg btn-map" id="btnMap5">map 5 cave is wierd i guess</button>
+			<button type="button" class ="btn-drg btn-map" id="btnMap1" onclick="gameRoomChangeMap(0)">map 1 cave is wierd i guess</button><br><br>
+			<button type="button" class ="btn-drg btn-map" id="btnMap2" onclick="gameRoomChangeMap(1)">map 2 cave is wierd i guess</button><br><br>
+			<button type="button" class ="btn-drg btn-map" id="btnMap3" onclick="gameRoomChangeMap(2)">map 3 cave is wierd i guess</button><br><br>
+			<button type="button" class ="btn-drg btn-map" id="btnMap4" onclick="gameRoomChangeMap(3)">map 4 cave is wierd i guess</button><br><br>
+			<button type="button" class ="btn-drg btn-map" id="btnMap5" onclick="gameRoomChangeMap(4)">map 5 cave is wierd i guess</button>
 		</div>
 	</div>
 
