@@ -67,6 +67,7 @@ urlpatterns = [
 
     # API
     path('api', views.apiDoc, name="api"),
+    path('getUserViewById', views_connection.getUserViewById, name="getUserViewById")
 ]
 
 if settings.DEBUG:

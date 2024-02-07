@@ -31,15 +31,15 @@ def add_user_connected(my_id, websocket):
           connected_users, file=sys.stderr)
 
 
-def remove_user_connected(my_id, websocket, my_game_room_id):
+async def remove_user_connected(my_id, websocket, my_game_room_id):
     connected_users.get(my_id, []).remove(websocket)
     print("\nWS : Bye bye client " + str(my_id) + " :",
           connected_users, file=sys.stderr)
     if len(connected_users.get(my_id, [])) == 0:
         set_user_status(my_id, 0)
-        leave_quick_room(my_id, waitlist, connected_users)
+        await leave_quick_room(my_id, waitlist, connected_users)
         if my_game_room_id != None:
-            quit_game_room(my_id, connected_users, my_game_room_id, game_rooms)
+            await quit_game_room(my_id, connected_users, my_game_room_id, game_rooms)
 
 
 async def handle_client(websocket : websockets.WebSocketServerProtocol, path):
@@ -156,7 +156,7 @@ async def handle_client(websocket : websockets.WebSocketServerProtocol, path):
     finally:
         # Delete the connection when the client disconnect
         if my_id != None:
-            remove_user_connected(my_id, websocket, my_game_room_id)
+            await remove_user_connected(my_id, websocket, my_game_room_id)
         else:
             print("\nWS : Bye bye anonymous client", file=sys.stderr)
 

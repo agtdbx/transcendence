@@ -78,7 +78,7 @@ QUICK GAME ROOM
         'gamePort' : <port> # port of the websocket for game
         'paddleId' : <paddle id>
         'teamId' : <team id> # 0 left, 1 right
-        
+
 
 GAME ROOM
     create game room
@@ -98,14 +98,14 @@ GAME ROOM
         'type' : 'gameRoom'
         'cmd' : 'quitGameRoom'
         -> 'type' : 'quitGameRoom'
-        
+
     /!\ Only the creator of the room can use it /!\
     send game room invite
         'type' : 'gameRoom'
         'cmd' : inviteGameRoom'
-        'targetId' : <user id> | 'ia'
+        'targetId' : <user id>
         -> No more field
-        
+
     /!\ Only the creator of the room can use it /!\
     add bot to a team
     	'type' : 'gameRoom'
@@ -147,11 +147,11 @@ GAME ROOM
 		'type' : 'ReplyGameRoom'
 		'targetId' : <user id> | 'ia'
 		'success' : true | false
-		
+
 	=> someone quit game room
 		'type' : 'quitGameRoom'
 		{{update room info}}
-	
+
 	=> quick from game room # When the creator leave the game room
 		'type' : 'quickFromGameRoom'
 

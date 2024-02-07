@@ -8,7 +8,7 @@ function changeBackground(num)
 		body.style.backgroundImage = 'url(/static/image/background/mainpage.png)';
 	else if (num == "4")
 		body.style.backgroundImage = 'url(/static/image/background/waitpage.png)';
-	else if (num == "5")
+	else if (num == "5" || num == "51")
 		body.style.backgroundImage = 'url(/static/image/background/waitpage.png)';
 	else if (num == "6")
 		body.style.backgroundImage = 'url(/static/image/background/game.png)';
@@ -84,7 +84,7 @@ function manageHeader(num)
 
 function manageChat(num)
 {
-	if (num == 3 || num == 4 || num == 5 || num == 7)
+	if (num == 3 || num == 4 || num == 5 || num == 51 || num == 7)
 	{
 		setChannelTarget("general");
 		displayFiends();
@@ -100,7 +100,7 @@ function manageAPI(num)
 	{
 		leave_request_quick_game();
 	}
-	else if (current_page == 5)
+	else if (current_page == 5 || current_page == 51)
 	{
 		quitGameRoom();
 	}

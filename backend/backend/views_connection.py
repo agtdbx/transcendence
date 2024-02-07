@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    views_connection.py                                :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: aderouba <aderouba@student.42.fr>          +#+  +:+       +#+         #
+#    By: auguste <auguste@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/23 19:48:51 by aderouba          #+#    #+#              #
-#    Updated: 2024/01/23 19:48:52 by aderouba         ###   ########.fr        #
+#    Updated: 2024/02/07 17:07:16 by auguste          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,9 +24,28 @@ from django.shortcuts import render
 from django.contrib import messages
 
 
+@csrf_exempt
+def getUserViewById(request):
+    if request.method != 'POST':
+        return JsonResponse({"success" : False, "error" : "Only post request"})
+
+    user_id = request.POST.get('userId')
+    test_users = User.objects.all().filter(idUser=user_id)
+
+    if len(test_users) != 1:
+        return JsonResponse({"success" : False, "error" : "User not exist"})
+
+    user = test_users[0]
+    return JsonResponse({"success" : True,
+                         "username" : user.username,
+                         "pp" : "/static/" + user.profilPicture.name})
+
 
 @csrf_exempt
 def checkLogin(request):
+    if request.method != 'POST':
+        return JsonResponse({"success" : False, "error" : "Only post request"})
+
     username = request.POST.get('login')
     password = request.POST.get('password')
 
@@ -34,36 +53,41 @@ def checkLogin(request):
     if len(username_check) == 0:
         return JsonResponse({"success" : False, "error" : "Username does not exist"})
 
-    password_check = connectionPassword.objects.all().filter(idUser=username_check[0].idUser)
+    password_check = connectionPassword.objects.all()\
+                        .filter(idUser=username_check[0].idUser)
     if len(password_check) == 0:
-        return JsonResponse({"success" : False, "error" : "No password authentification"})
+        return JsonResponse({"success" : False,
+                             "error" : "No password authentification"})
 
     hash = hashlib.sha512(password.encode(), usedforsecurity=True)
     if hash.hexdigest() != password_check[0].password:
         return JsonResponse({"success" : False, "error" : "Password incorrect"})
-    token = jwt.encode({"userId": username_check[0].idUser}, settings.SECRET_KEY, algorithm="HS256")
-
-    #username_check[0].tokenJWT = token
-    #User.save()
+    token = jwt.encode({"userId": username_check[0].idUser},
+                       settings.SECRET_KEY, algorithm="HS256")
 
     return JsonResponse({"success" : True, "token" : token})
 
 
 @csrf_exempt
 def checkSignin(request):
+    if request.method != 'POST':
+        return JsonResponse({"success" : False, "error" : "Only post request"})
+
     username = request.POST.get('login2')
     password = request.POST.get('password2')
     passwordconfirm = request.POST.get('confirm')
 
     if not username or password == "" or passwordconfirm == "":
-        return JsonResponse({"success" : False, "error" : "Empty field aren't accept"})
+        return JsonResponse({"success" : False,
+                             "error" : "Empty field aren't accept"})
 
     test = User.objects.all().filter(username=username)
     if len(test):
         return JsonResponse({"success" : False, "error" : "Username already use"})
 
     if password != passwordconfirm:
-        return JsonResponse({"success" : False, "error" : "Password and confirm aren't the same"})
+        return JsonResponse({"success" : False,
+                             "error" : "Password and confirm aren't the same"})
 
     hashPwd = hashlib.sha512(password.encode(), usedforsecurity=True)
 
@@ -72,40 +96,52 @@ def checkSignin(request):
 
     token = jwt.encode({"userId": id}, settings.SECRET_KEY, algorithm="HS256")
     try:
-        str = ["images/default/Scout.png", "images/default/Driller.png", "images/default/Engineer.png", "images/default/Soldier.png"]
-        user = User(idUser=id, idType=idType, username=username, profilPicture=str[random.randint(0,3)], tokenJWT=token, money=id, idStatus=0)
+        str = ["images/default/Scout.png", "images/default/Driller.png",
+               "images/default/Engineer.png", "images/default/Soldier.png"]
+        user = User(idUser=id, idType=idType, username=username,
+                    profilPicture=str[random.randint(0,3)], tokenJWT=token,
+                    money=id, idStatus=0)
         user.save()
     except:
         return JsonResponse({"success" : False, "error" : "Error on user creation"})
 
     try:
-        password = connectionPassword(idPassword=id, password=hashPwd.hexdigest(), idUser=user)
+        password = connectionPassword(idPassword=id, password=hashPwd.hexdigest(),
+                                      idUser=user)
         password.save()
     except:
-        return JsonResponse({"success" : False, "error" : "Error on password creation"})
+        return JsonResponse({"success" : False,
+                             "error" : "Error on password creation"})
 
     return JsonResponse({"success" : True, "token" : token})
 
 
 @csrf_exempt
 def changePassword(request):
+    if request.method != 'POST':
+        return JsonResponse({"success" : False, "error" : "Only post request"})
+
     currentPassword = request.POST.get('currentPass')
     newPassword = request.POST.get('newPass')
     newPasswordComfirm = request.POST.get('newPassConfirm')
     check = checkToken(request)
     userId = check["userId"]
     user = User.objects.all().filter(idUser=userId)[0]
-        
+
     password_check = connectionPassword.objects.all().filter(idUser=user.idUser)
     if (len(password_check) != 0): #if user has a password
         password_check = password_check[0]
         hash = hashlib.sha512(currentPassword.encode(), usedforsecurity=True)
         if hash.hexdigest() != password_check.password:
-            return JsonResponse({"success" : False, "error" : "Wrong account password, please try again !"})
+            return JsonResponse({"success" : False, "error" :
+                                    "Wrong account password, please try again !"})
     else :			#if user hasn't a password
-        password_check = connectionPassword(idPassword=user.idUser, password="", idUser=user)
+        password_check = connectionPassword(idPassword=user.idUser, password="",
+                                            idUser=user)
     if newPassword != newPasswordComfirm:
-        return JsonResponse({"success" : False, "error" : "New password is different from new password confirmation, please try again !"})
+        return JsonResponse({"success" : False, "error" :
+                                "New password is different from new password " +
+                                "confirmation, please try again !"})
     else:
         hashPwd = hashlib.sha512(newPassword.encode(), usedforsecurity=True)
         try:
@@ -113,11 +149,17 @@ def changePassword(request):
             password_check.password = hashPwd.hexdigest()
             password_check.save()
         except:
-            return JsonResponse({"success" : False, "error" : "Somethink very wrong appened, please try again !"})
+            return JsonResponse({"success" : False,
+                                 "error" : "Somethink very wrong appened, please " +
+                                 "try again !"})
     return JsonResponse({"success" : True})
+
 
 @csrf_exempt
 def changeUsername(request):
+    if request.method != 'POST':
+        return JsonResponse({"success" : False, "error" : "Only post request"})
+
     newName = request.POST.get('newName')
     check = checkToken(request)
     userId = check["userId"]
@@ -128,16 +170,20 @@ def changeUsername(request):
     while i < len(user1):
         if user1[i].username == newName:
             if user1[i].idUser != userId:
-                return JsonResponse({"success" : False, "error" : "This Username is already taken !"})
+                return JsonResponse({"success" : False,
+                                     "error" : "This Username is already taken !"})
         i = i + 1
     if newName == user.username:
-        return JsonResponse({"success" : False, "error" : "This is already your Username !"})
+        return JsonResponse({"success" : False,
+                             "error" : "This is already your Username !"})
     else:
         try:
             user.username = newName
             user.save()
         except:
-            return JsonResponse({"success" : False, "error" : "Somethink very wrong appened, please try again !"})
+            return JsonResponse({"success" : False,
+                                 "error" : "Somethink very wrong appened, please " +
+                                 "try again !"})
         return JsonResponse({"success" : True})
 
 
@@ -166,6 +212,7 @@ def checkToken(request):
 
     return {"success" : True, "userId" : userId}
 
+
 def checkApi42Request(request, islogin, user):
     code = request.GET.get('code')
 	# First request : get an users tocken
@@ -185,7 +232,7 @@ def checkApi42Request(request, islogin, user):
 		"client_secret": os.getenv('API_KEY'),
 		"code": code,
 		"redirect_uri": websiteUrl + "/3" if islogin else websiteUrl + "/9",
-		
+
     }
     response = requests.post("https://api.intra.42.fr/oauth/token", params=params)
     if response.status_code != 200:

@@ -53,14 +53,16 @@ function onRecieveData(event)
 	else if (type == 'joinRoomInfo')
 	{
 		console.log("GAME ROOM JOINED");
-		if (current_page != 5)
-			changePage('5');
+		if (current_page != 51)
+			changePage('51');
 
-		const map_id = data["mapId"];
-		const power_up = data["powerUpActivate"];
-		const team_left = data["teamLeft"];
-		const team_right = data["teamRight"];
-		updateGameRoomInfo(map_id, power_up, team_left, team_right);
+		setTimeout(function(){
+			const map_id = data["mapId"];
+			const power_up = data["powerUpActivate"];
+			const team_left = data["teamLeft"];
+			const team_right = data["teamRight"];
+			updateGameRoomInfo(map_id, power_up, team_left, team_right);
+		}, 100);
 	}
 	else if (type == 'updateRoomInfo')
 	{
@@ -72,10 +74,26 @@ function onRecieveData(event)
 		const team_right = data["teamRight"];
 		updateGameRoomInfo(map_id, power_up, team_left, team_right);
 	}
+	else if (type == 'invite')
+	{
+		const pp = data["pp"];
+		const username = data["username"];
+		const roomId = data["roomId"];
+		if (popup == null)
+			createInvitePopup(pp, username, roomId);
+		else
+			invite_list.push([pp, username, roomId])
+	}
 	else if (type == 'quitGameRoom')
 	{
 		console.log("QUIT GAME ROOM");
-		if (current_page == 5)
+		if (current_page == 5 || current_page == 51)
+			changePage('3');
+	}
+	else if (type == 'quickFromGameRoom')
+	{
+		console.log("QUICK FROM GAME ROOM");
+		if (current_page == 5 || current_page == 51)
 			changePage('3');
 	}
 	else if (type == 'gameStart')

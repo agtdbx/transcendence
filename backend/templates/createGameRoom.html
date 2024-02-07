@@ -40,10 +40,10 @@
 	</div>
 
 	<div class ="createGameBotRight" id = "createGameBotRight">
-		<p class="animation" id="create-game-team1">join team 1</p>
+		<p class="animation" id="create-game-team1" onclick="gameRoomChangeTeam('left')">join team 1</p>
 		<div id = "team1Player">
 		</div>
-		<button type="button" class ="btn-drg btn-bot" id="btnbot1">Add bot</button>
+		<button type="button" class ="btn-drg btn-bot" id="btnbot1" onclick="gameRoomAddBot('left')">Add bot</button>
 	</div>
 
 	<div id="vs">
@@ -51,10 +51,10 @@
 	</div>
 
 	<div class ="createGameTopRight" id = "createGameTopRight">
-		<p class="animation" id="create-game-team2">join team 2</p>
+		<p class="animation" id="create-game-team2" onclick="gameRoomChangeTeam('right')">join team 2</p>
 		<div id = "team2Player">
 		</div>
-		<button type="button" class ="btn-drg btn-bot" id="btnbot2">Add bot</button>
+		<button type="button" class ="btn-drg btn-bot" id="btnbot2" onclick="gameRoomAddBot('right')">Add bot</button>
 	</div>
 
 	<div class="changeCustomGame">

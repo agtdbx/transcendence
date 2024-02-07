@@ -48,6 +48,14 @@ def create_game_room_status_message(type, game_room:dict):
     return str_msg
 
 
+async def update_message(game_room:dict, connected_users:dict):
+    str_msg = create_game_room_status_message("updateRoomInfo", game_room)
+    for id in game_room["team_left"]:
+        await send_msg_to_id(id, connected_users, str_msg)
+    for id in game_room["team_right"]:
+        await send_msg_to_id(id, connected_users, str_msg)
+
+
 async def create_game_room(my_id : int,
                           game_rooms : dict,
                           in_game_list: list,
@@ -108,7 +116,7 @@ async def join_game_room(my_id:int,
     game_room = game_rooms.get(room_id, None)
     if game_room == None:
         print("\nWS : User", my_id, "room doesn't exist", file=sys.stderr)
-        await send_error_to_id(my_id, connected_users, "Room doesn't exist")
+        await send_error_to_id(my_id, connected_users, "Room doesn t exist")
         return None
 
     # If team right isn't full, put it the new player
@@ -117,6 +125,7 @@ async def join_game_room(my_id:int,
         str_msg = create_game_room_status_message("joinRoomInfo", game_room)
         await send_msg_to_id(my_id, connected_users, str_msg)
         print("\nWS : User", my_id, "join room", room_id, file=sys.stderr)
+        await update_message(game_room, connected_users)
         return room_id
     # If it full, check if there is an ia
     elif IA_ID in game_room['team_right']:
@@ -126,6 +135,7 @@ async def join_game_room(my_id:int,
         str_msg = create_game_room_status_message("joinRoomInfo", game_room)
         await send_msg_to_id(my_id, connected_users, str_msg)
         print("\nWS : User", my_id, "join room", room_id, file=sys.stderr)
+        await update_message(game_room, connected_users)
         return room_id
 
     # If team left isn't full, put it the new player
@@ -134,6 +144,7 @@ async def join_game_room(my_id:int,
         str_msg = create_game_room_status_message("joinRoomInfo", game_room)
         await send_msg_to_id(my_id, connected_users, str_msg)
         print("\nWS : User", my_id, "join room", room_id, file=sys.stderr)
+        await update_message(game_room, connected_users)
         return room_id
     # If it full, check if there is an ia
     elif IA_ID in game_room['team_left']:
@@ -142,6 +153,7 @@ async def join_game_room(my_id:int,
         str_msg = create_game_room_status_message("joinRoomInfo", game_room)
         await send_msg_to_id(my_id, connected_users, str_msg)
         print("\nWS : User", my_id, "join room", room_id, file=sys.stderr)
+        await update_message(game_room, connected_users)
         return room_id
 
     # Game room is full
@@ -158,7 +170,7 @@ async def quit_game_room(my_id:int,
     game_room = game_rooms.get(game_room_id, None)
     if game_room == None:
         print("\nWS : User", my_id, "room doesn't exist", file=sys.stderr)
-        await send_error_to_id(my_id, connected_users, "Room doesn't exist")
+        await send_error_to_id(my_id, connected_users, "Room doesn t exist")
         return
 
     # If the user is the creator, quick everyone from the room
@@ -175,7 +187,6 @@ async def quit_game_room(my_id:int,
         game_rooms.pop(game_room_id)
         print("\nWS : User", my_id, "create quit and destroy game room",
               file=sys.stderr)
-
         return
 
     # Check if user is in team left
@@ -183,7 +194,7 @@ async def quit_game_room(my_id:int,
         print("\nWS : Remove user", my_id, "from left team", file=sys.stderr)
         game_room['team_left'].remove(my_id)
     # Check if user is in team right
-    elif my_id in game_room['team_left']:
+    elif my_id in game_room['team_right']:
         print("\nWS : Remove user", my_id, "from right team", file=sys.stderr)
         game_room['team_right'].remove(my_id)
     # The user isn't in the room
@@ -197,11 +208,8 @@ async def quit_game_room(my_id:int,
     str_msg = str({"type":"quitGameRoom"}).replace("'", '"')
     await send_msg_to_id(my_id, connected_users, str_msg)
 
-    str_msg = create_game_room_status_message("quitGameRoom", game_room)
-    for paddle in game_room['team_left']:
-        await send_msg_to_id(paddle['id'], connected_users, str_msg)
-    for paddle in game_room['team_right']:
-        await send_msg_to_id(paddle['id'], connected_users, str_msg)
+    # Update message
+    await update_message(game_room, connected_users)
 
 
 async def send_game_room_invite(my_id:int,
@@ -213,13 +221,13 @@ async def send_game_room_invite(my_id:int,
     game_room:dict = game_rooms.get(game_room_id, None)
     if game_room == None:
         print("\nWS : User", my_id, "room doesn't exist", file=sys.stderr)
-        await send_error_to_id(my_id, connected_users, "Room doesn't exist")
+        await send_error_to_id(my_id, connected_users, "Room doesn t exist")
         return
 
     # Check if user if the room creator
     if my_id != game_room["creator"]:
         print("\nWS : User", my_id, "isn't the room creator", file=sys.stderr)
-        await send_error_to_id(my_id, connected_users, "Must be room's creator")
+        await send_error_to_id(my_id, connected_users, "Must be room s creator")
         return
 
     # Get the target info
@@ -227,6 +235,19 @@ async def send_game_room_invite(my_id:int,
     if target == None:
         print("\nWS : User", my_id, "missing target field", file=sys.stderr)
         await send_error_to_id(my_id, connected_users, "Missing target field")
+        return
+
+    try:
+        target = int(target)
+    except:
+        print("\nWS : User", my_id, "Target must be an integer", file=sys.stderr)
+        await send_error_to_id(my_id, connected_users, "Target must be an integer")
+        return
+
+    # Check if the target is already in the room
+    if target in game_room['team_left'] or target in game_room['team_right']:
+        print("\nWS : User", my_id, "Target already in room", file=sys.stderr)
+        await send_error_to_id(my_id, connected_users, "Target already in room")
         return
 
     # If user can join
@@ -244,7 +265,8 @@ async def send_game_room_invite(my_id:int,
                        "username" : user.username,
                        "pp" : str(user.profilPicture),
                        "roomId" : game_room_id}).replace("'", '"')
-        await send_msg_to_id(my_id, connected_users, str_msg)
+        await send_msg_to_id(target, connected_users, str_msg)
+        return
 
     # User can't join
     print("\nWS : User", my_id, "room is full", file=sys.stderr)
@@ -260,13 +282,13 @@ async def game_room_add_bot(my_id:int,
     game_room:dict = game_rooms.get(game_room_id, None)
     if game_room == None:
         print("\nWS : User", my_id, "room doesn't exist", file=sys.stderr)
-        await send_error_to_id(my_id, connected_users, "Room doesn't exist")
+        await send_error_to_id(my_id, connected_users, "Room doesn t exist")
         return
 
     # Check if user if the room creator
     if my_id != game_room["creator"]:
         print("\nWS : User", my_id, "isn't the room creator", file=sys.stderr)
-        await send_error_to_id(my_id, connected_users, "Must be room's creator")
+        await send_error_to_id(my_id, connected_users, "Must be room s creator")
         return
 
     # Get team field from data
@@ -301,11 +323,7 @@ async def game_room_add_bot(my_id:int,
                                 "Team is only left or right")
 
     # Update message
-    str_msg = create_game_room_status_message("updateRoomInfo", game_room)
-    for id in game_room["team_left"]:
-        await send_msg_to_id(id, connected_users, str_msg)
-    for id in game_room["team_right"]:
-        await send_msg_to_id(id, connected_users, str_msg)
+    await update_message(game_room, connected_users)
 
 
 async def game_room_change_team(my_id:int,
@@ -317,7 +335,7 @@ async def game_room_change_team(my_id:int,
     game_room:dict = game_rooms.get(game_room_id, None)
     if game_room == None:
         print("\nWS : User", my_id, "room doesn't exist", file=sys.stderr)
-        await send_error_to_id(my_id, connected_users, "Room doesn't exist")
+        await send_error_to_id(my_id, connected_users, "Room doesn t exist")
         return
 
     # Get team field from data
@@ -376,11 +394,7 @@ async def game_room_change_team(my_id:int,
                                 "Team is only left or right")
 
     # Update message
-    str_msg = create_game_room_status_message("updateRoomInfo", game_room)
-    for id in game_room["team_left"]:
-        await send_msg_to_id(id, connected_users, str_msg)
-    for id in game_room["team_right"]:
-        await send_msg_to_id(id, connected_users, str_msg)
+    await update_message(game_room, connected_users)
 
 
 async def game_room_change_power_up(my_id:int,
@@ -391,24 +405,21 @@ async def game_room_change_power_up(my_id:int,
     game_room:dict = game_rooms.get(game_room_id, None)
     if game_room == None:
         print("\nWS : User", my_id, "room doesn't exist", file=sys.stderr)
-        await send_error_to_id(my_id, connected_users, "Room doesn't exist")
+        await send_error_to_id(my_id, connected_users, "Room doesn t exist")
         return
 
     # Check if user if the room creator
     if my_id != game_room["creator"]:
         print("\nWS : User", my_id, "isn't the room creator", file=sys.stderr)
-        await send_error_to_id(my_id, connected_users, "Must be room's creator")
+        await send_error_to_id(my_id, connected_users, "Must be room s creator")
         return
 
     game_room['power_up'] = not game_room['power_up']
 
-    print("\nWS : User", my_id, "change power up to", game_room['power_up'], file=sys.stderr)
+    print("\nWS : User", my_id, "change power up to", game_room['power_up'],
+          file=sys.stderr)
     # Update message
-    str_msg = create_game_room_status_message("updateRoomInfo", game_room)
-    for id in game_room["team_left"]:
-        await send_msg_to_id(id, connected_users, str_msg)
-    for id in game_room["team_right"]:
-        await send_msg_to_id(id, connected_users, str_msg)
+    await update_message(game_room, connected_users)
 
 
 async def game_room_change_map(my_id:int,
@@ -420,13 +431,13 @@ async def game_room_change_map(my_id:int,
     game_room:dict = game_rooms.get(game_room_id, None)
     if game_room == None:
         print("\nWS : User", my_id, "room doesn't exist", file=sys.stderr)
-        await send_error_to_id(my_id, connected_users, "Room doesn't exist")
+        await send_error_to_id(my_id, connected_users, "Room doesn t exist")
         return
 
     # Check if user if the room creator
     if my_id != game_room["creator"]:
         print("\nWS : User", my_id, "isn't the room creator", file=sys.stderr)
-        await send_error_to_id(my_id, connected_users, "Must be room's creator")
+        await send_error_to_id(my_id, connected_users, "Must be room s creator")
         return
 
     # Get map id field
@@ -456,11 +467,7 @@ async def game_room_change_map(my_id:int,
 
     print("\nWS : User", my_id, "change map to", new_map, file=sys.stderr)
     # Update message
-    str_msg = create_game_room_status_message("updateRoomInfo", game_room)
-    for id in game_room["team_left"]:
-        await send_msg_to_id(id, connected_users, str_msg)
-    for id in game_room["team_right"]:
-        await send_msg_to_id(id, connected_users, str_msg)
+    await update_message(game_room, connected_users)
 
 
 async def game_room_start_game(my_id:int,
@@ -472,13 +479,13 @@ async def game_room_start_game(my_id:int,
     game_room:dict = game_rooms.get(game_room_id, None)
     if game_room == None:
         print("\nWS : User", my_id, "room doesn't exist", file=sys.stderr)
-        await send_error_to_id(my_id, connected_users, "Room doesn't exist")
+        await send_error_to_id(my_id, connected_users, "Room doesn t exist")
         return False
 
     # Check if user if the room creator
     if my_id != game_room["creator"]:
         print("\nWS : User", my_id, "isn't the room creator", file=sys.stderr)
-        await send_error_to_id(my_id, connected_users, "Must be room's creator")
+        await send_error_to_id(my_id, connected_users, "Must be room s creator")
         return False
 
     if len(game_room['team_left']) == 0:
