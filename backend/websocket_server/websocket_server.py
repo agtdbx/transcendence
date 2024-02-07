@@ -77,8 +77,9 @@ async def handle_client(websocket : websockets.WebSocketServerProtocol, path):
 
             elif request_type == "gws":
                 if request_cmd == 'definitelyNotTheMovie(endGame)':
-                    end_game(data, waitlist, in_game_list)
-                    await check_if_can_start_new_game(data, connected_users)
+                    end_game(data)
+                    await check_if_can_start_new_game(data, waitlist, in_game_list,
+                                                      connected_users)
                 else:
                     await send_error("Request cmd unkown")
 

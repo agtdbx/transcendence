@@ -478,30 +478,36 @@ async def game_room_start_game(my_id:int,
     # Check if the room exist
     game_room:dict = game_rooms.get(game_room_id, None)
     if game_room == None:
-        print("\nWS : User", my_id, "room doesn't exist", file=sys.stderr)
+        print("\nWS : User", my_id, "room", game_room_id, "doesn't exist",
+              file=sys.stderr)
         await send_error_to_id(my_id, connected_users, "Room doesn t exist")
         return False
+    print("\nWS : User", my_id, "room check ok", file=sys.stderr)
 
     # Check if user if the room creator
     if my_id != game_room["creator"]:
         print("\nWS : User", my_id, "isn't the room creator", file=sys.stderr)
         await send_error_to_id(my_id, connected_users, "Must be room s creator")
         return False
+    print("\nWS : User", my_id, "permisson check ok", file=sys.stderr)
 
     if len(game_room['team_left']) == 0:
         print("\nWS : User", my_id, "Team left empty", file=sys.stderr)
         await send_error_to_id(my_id, connected_users, "Team left empty")
         return False
+    print("\nWS : User", my_id, "team left check ok", file=sys.stderr)
 
-    if len(game_room['team_right'] == 0):
+    if len(game_room['team_right']) == 0:
         print("\nWS : User", my_id, "Team right empty", file=sys.stderr)
         await send_error_to_id(my_id, connected_users, "Team right empty")
         return False
+    print("\nWS : User", my_id, "team right check ok", file=sys.stderr)
 
     if not is_game_server_free():
         print("\nWS : User", my_id, "No server free", file=sys.stderr)
         await send_error_to_id(my_id, connected_users, "No server free")
         return False
+    print("\nWS : User", my_id, "game server free", file=sys.stderr)
 
     users_id = []
     paddles = []
@@ -536,6 +542,7 @@ async def game_room_start_game(my_id:int,
         print("\nWS : ERROR : No game server free, put user", my_id, "in waitlist",
               file=sys.stderr)
         return False
+    print("\nWS : User", my_id, "game server ok", file=sys.stderr)
 
     game_rooms.pop(game_room_id)
 

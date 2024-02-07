@@ -89,9 +89,9 @@ function gameRoomChangeMap(map_id)
 }
 
 
-function gameRoomStartGame(map_id)
+function gameRoomStartGame()
 {
-	console.log("CHANGE MAP REQUEST");
+	console.log("START GAME REQUEST");
 	webSocket.send(JSON.stringify({
 		'type' : 'gameRoom',
 		'cmd' : 'startGame',
