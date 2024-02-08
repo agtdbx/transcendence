@@ -273,6 +273,69 @@ async def send_game_room_invite(my_id:int,
     await send_error_to_id(my_id, connected_users, "Room is full")
 
 
+async def game_room_quick_user(my_id:int,
+                               connected_users:dict,
+                               data:dict,
+                               game_room_id:int,
+                               game_rooms:dict):
+    # Check if the room exist
+    game_room:dict = game_rooms.get(game_room_id, None)
+    if game_room == None:
+        print("\nWS : User", my_id, "room doesn't exist", file=sys.stderr)
+        await send_error_to_id(my_id, connected_users, "Room doesn t exist")
+        return
+
+    # Check if user if the room creator
+    if my_id != game_room["creator"]:
+        print("\nWS : User", my_id, "isn't the room creator", file=sys.stderr)
+        await send_error_to_id(my_id, connected_users, "Must be room s creator")
+        return
+
+    # Get the target info
+    target = data.get("targetId", None)
+    if target == None:
+        print("\nWS : User", my_id, "missing target field", file=sys.stderr)
+        await send_error_to_id(my_id, connected_users, "Missing target field")
+        return
+
+    try:
+        target = int(target)
+    except:
+        print("\nWS : User", my_id, "Target must be an integer", file=sys.stderr)
+        await send_error_to_id(my_id, connected_users, "Target must be an integer")
+        return
+
+     # Check if target if the room creator
+    if target == game_room["creator"]:
+        print("\nWS : User", my_id, "Can't quick the room creator", file=sys.stderr)
+        await send_error_to_id(my_id, connected_users, "Can't quick room s creator")
+        return
+
+    # Check if target is in left team
+    if target in game_room["team_left"]:
+        game_room["team_left"].remove(target)
+
+    # Check if target is in right team
+    elif target in game_room["team_right"]:
+        game_room["team_right"].remove(target)
+
+    # Target is not in game room
+    else:
+        print("\nWS : User", my_id, "is not in the room", file=sys.stderr)
+        await send_error_to_id(my_id, connected_users, "User not in room")
+        return
+
+    # Send to player in room that user leave it
+    print("\nWS : User", my_id, "quick user", target, "from game room",
+          file=sys.stderr)
+
+    str_msg = str({"type":"quickFromGameRoom"}).replace("'", '"')
+    await send_msg_to_id(target, connected_users, str_msg)
+
+    # Update message
+    await update_message(game_room, connected_users)
+
+
 async def game_room_add_bot(my_id:int,
                             connected_users:dict,
                             data:dict,
@@ -323,6 +386,61 @@ async def game_room_add_bot(my_id:int,
                                 "Team is only left or right")
 
     # Update message
+    print("\nWS : User", my_id, "Bot add to team", target_team, file=sys.stderr)
+    await update_message(game_room, connected_users)
+
+
+async def game_room_remove_bot(my_id:int,
+                               connected_users:dict,
+                               data:dict,
+                               game_room_id:int,
+                               game_rooms:dict):
+    # Check if the room exist
+    game_room:dict = game_rooms.get(game_room_id, None)
+    if game_room == None:
+        print("\nWS : User", my_id, "room doesn't exist", file=sys.stderr)
+        await send_error_to_id(my_id, connected_users, "Room doesn t exist")
+        return
+
+    # Check if user if the room creator
+    if my_id != game_room["creator"]:
+        print("\nWS : User", my_id, "isn't the room creator", file=sys.stderr)
+        await send_error_to_id(my_id, connected_users, "Must be room s creator")
+        return
+
+    # Get team field from data
+    target_team = data.get("team", None)
+    if target_team == None:
+        print("\nWS : User", my_id, "missing team field", file=sys.stderr)
+        await send_error_to_id(my_id, connected_users, "Missing team field")
+        return
+
+    # Join left team
+    if target_team == "left":
+        # Check if bot isn't in team
+        if IA_ID not in game_room["team_left"]:
+            print("\nWS : User", my_id, "Left team have not bot", file=sys.stderr)
+            await send_error_to_id(my_id, connected_users, "Left team have not bot")
+            return
+        game_room["team_left"].remove(IA_ID)
+
+    # Join right team
+    elif target_team == "right":
+        # Check if bot isn't in team
+        if IA_ID not in game_room["team_right"]:
+            print("\nWS : User", my_id, "Right team have not bot", file=sys.stderr)
+            await send_error_to_id(my_id, connected_users, "Right team have not bot")
+            return
+        game_room["team_right"].remove(IA_ID)
+
+    else:
+        # Team field is incorrect
+        print("\nWS : User", my_id, "team is only left or right", file=sys.stderr)
+        await send_error_to_id(my_id, connected_users,
+                                "Team is only left or right")
+
+    # Update message
+    print("\nWS : User", my_id, "Bot remove from team", target_team, file=sys.stderr)
     await update_message(game_room, connected_users)
 
 

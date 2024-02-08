@@ -3,7 +3,10 @@
 	<button type="button" class ="btn-drg" id = "btn-create-game-start" onclick="gameRoomStartGame()">start</button>
 	<button data-section="3" type="button" class ="changePage btn-drg" id = "btn-create-game-quit" onclick="changePage(this.dataset.section)">quit</button>
 
-	<div class="invite_list_bg" id="invite_list_container">
+	<div class="invite_list_bg">
+		<button class="btn-drg" onclick="createListInvite()">Refresh</button>
+		<div id="invite_list_container">
+		</div>
 	</div>
 
 	<form class ="createGameBotLeft" id = "createGameBotLeft">

@@ -10,7 +10,8 @@ from websocket_server.quick_room import join_quick_room, leave_quick_room, \
 from websocket_server.game_server_manager import end_game
 from websocket_server.game_room import create_game_room, join_game_room, \
                                        quit_game_room, send_game_room_invite, \
-                                       game_room_add_bot, game_room_change_team, \
+                                       game_room_quick_user, game_room_add_bot, \
+                                       game_room_remove_bot, game_room_change_team, \
                                        game_room_change_power_up, \
                                        game_room_change_map, game_room_start_game
 
@@ -126,8 +127,14 @@ async def handle_client(websocket : websockets.WebSocketServerProtocol, path):
                 elif request_cmd == "inviteGameRoom":
                     await send_game_room_invite(my_id, connected_users, data,
                                                 my_game_room_id, game_rooms)
+                elif request_cmd == "quickUser":
+                    await game_room_quick_user(my_id, connected_users, data,
+                                            my_game_room_id, game_rooms)
                 elif request_cmd == "addBot":
                     await game_room_add_bot(my_id, connected_users, data,
+                                            my_game_room_id, game_rooms)
+                elif request_cmd == "removeBot":
+                    await game_room_remove_bot(my_id, connected_users, data,
                                             my_game_room_id, game_rooms)
                 elif request_cmd == "changeTeam":
                     await game_room_change_team(my_id, connected_users, data,

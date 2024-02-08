@@ -107,10 +107,26 @@ GAME ROOM
         -> No more field
 
     /!\ Only the creator of the room can use it /!\
+    quick user from room
+        'type' : 'gameRoom'
+        'cmd' : 'quickUser'
+        'targetId' : <user id>
+        -> 'type' : 'updateRoomInfo'
+           {{update room info}}
+
+    /!\ Only the creator of the room can use it /!\
     add bot to a team
-    	'type' : 'gameRoom'
-    	'cmd' : 'addBot'
-    	'team' : 'left' | 'right'
+        'type' : 'gameRoom'
+        'cmd' : 'addBot'
+        'team' : 'left' | 'right'
+        -> 'type' : 'updateRoomInfo'
+           {{update room info}}
+
+    /!\ Only the creator of the room can use it /!\
+    remove bot to a team
+        'type' : 'gameRoom'
+        'cmd' : 'removeBot'
+        'team' : 'left' | 'right'
         -> 'type' : 'updateRoomInfo'
            {{update room info}}
 

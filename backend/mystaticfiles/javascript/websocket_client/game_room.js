@@ -45,12 +45,34 @@ function gameRoomSendInvite(user_id)
 }
 
 
+function gameRoomQuickUser(user_id)
+{
+	console.log("QUICK USER", user_id, "FROM GAME ROOM REQUEST");
+	webSocket.send(JSON.stringify({
+		'type' : 'gameRoom',
+		'cmd' : 'quickUser',
+		'targetId' : user_id
+	}));
+}
+
+
 function gameRoomAddBot(team)
 {
 	console.log("ADD BOT TO TEAM ", team, " REQUEST");
 	webSocket.send(JSON.stringify({
 		'type' : 'gameRoom',
 		'cmd' : 'addBot',
+		'team' : team
+	}));
+}
+
+
+function gameRoomRemoveBot(team)
+{
+	console.log("REMOVE BOT TO TEAM ", team, " REQUEST");
+	webSocket.send(JSON.stringify({
+		'type' : 'gameRoom',
+		'cmd' : 'removeBot',
 		'team' : team
 	}));
 }
@@ -134,6 +156,13 @@ function addUserToElement(user_id, element)
 			div.style.backgroundColor = "rgba(18, 16, 11, 0.8)";
 			div.appendChild(pp);
 			div.appendChild(username);
+			if (current_page == 5)
+			{
+				div.style.animation = "animate 0.40s infinite";
+				div.onclick = function (){
+					gameRoomQuickUser(user_id);
+				}
+			}
 
 			element.appendChild(div);
 		})
@@ -141,7 +170,7 @@ function addUserToElement(user_id, element)
 }
 
 
-function addBotToElement(element)
+function addBotToElement(element, team)
 {
 	let pp = document.createElement("img");
 	pp.src = "/static/images/default/Bosco.png";
@@ -158,6 +187,13 @@ function addBotToElement(element)
 	div.style.backgroundColor = "rgba(18, 16, 11, 0.8)";
 	div.appendChild(pp);
 	div.appendChild(username);
+	if (current_page == 5)
+	{
+		div.style.animation = "animate 0.40s infinite";
+		div.onclick = function (){
+			gameRoomRemoveBot(team);
+		}
+	}
 
 	element.appendChild(div);
 }
@@ -206,7 +242,7 @@ function updateGameRoomInfo(map_id, power_up, team_left, team_right)
 			let user_id = team_left[i];
 
 			if (user_id == -1)
-				addBotToElement(team_left_element);
+				addBotToElement(team_left_element, "left");
 			else
 				addUserToElement(user_id, team_left_element);
 		}
@@ -221,7 +257,7 @@ function updateGameRoomInfo(map_id, power_up, team_left, team_right)
 			let user_id = team_right[i];
 
 			if (user_id == -1)
-				addBotToElement(team_right_element);
+				addBotToElement(team_right_element, "right");
 			else
 				addUserToElement(user_id, team_right_element);
 		}
@@ -249,6 +285,7 @@ function createInviteContact(invite_list_container, invite_user)
 	div.style.display = "flex";
 	div.style.flexDirection = "row";
 	div.style.backgroundColor = "rgba(18, 16, 11, 0.8)";
+	div.style.animation = "animate 0.40s infinite";
 	div.appendChild(pp);
 	div.appendChild(username);
 	div.onclick = function (){
