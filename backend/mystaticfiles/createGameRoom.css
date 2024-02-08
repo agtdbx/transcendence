@@ -189,10 +189,10 @@ font-size: 1rem;
 
 .btn-bot{
 	position: relative;
-	top: 84.5%;
+	top:90%;
 	left: 70%;
 	width: 30%;
-	height: 15%;
+	height: 10%;
 	overflow: hidden;
 	white-space: nowrap;
 	text-overflow: ellipsis;
@@ -203,7 +203,7 @@ font-size: 1rem;
 	-ms-transform: translate(-50%, -50%);
 	transform: translate(-50%, -50%);
 	top: 53%;
-	left: 50%;
+	left: 53%;
 	height: 10%;
 	width: 10%;
 	font-size: 200%;

@@ -6,7 +6,7 @@
 #    By: hde-min <hde-min@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/08 14:00:09 by lflandri          #+#    #+#              #
-#    Updated: 2024/02/01 15:48:49 by hde-min          ###   ########.fr        #
+#    Updated: 2024/02/08 13:47:07 by hde-min          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -170,7 +170,7 @@ def section(request, num):
         if fullPage:
             return render(request, "tournament_full.html")
         else:
-            return render(request,"joinTournament.html")
+            return render(request,"tournament.html")
 
     elif num == 8:
         if fullPage:
@@ -246,6 +246,18 @@ def section(request, num):
             return render(request, "beer_full.html")
         else:
             return render(request,"beer.html")
+        
+    elif num == 13:
+        if fullPage:
+            return render(request, "joinTournament_full.html")
+        else:
+            return render(request,"joinTournament.html")
+        
+    elif num == 14:
+        if fullPage:
+            return render(request, "tournamentInscription_full.html")
+        else:
+            return render(request,"tournamentInscription.html")
 
     else:
         if fullPage:

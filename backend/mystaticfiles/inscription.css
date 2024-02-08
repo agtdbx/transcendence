@@ -1,0 +1,55 @@
+#rect{
+	position: absolute;
+	-ms-transform: translate(-50%, -50%);
+	transform: translate(-50%, -50%);
+	top: 50%;
+	left: 50%;
+	width: 20%;
+	height: 20%;
+	overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+	background: rgba(40,35,23,0.5);
+}
+
+#tournamentUsername
+{
+	margin-left: 5%;
+	margin-top: 5%;
+	color: white;
+	overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+#tournamentNewName
+{
+	position: absolute;
+}
+
+#Participate
+{
+	-ms-transform: translate(-50%, -50%);
+	transform: translate(-50%, -50%);
+	position: relative;
+	top: 50%;
+	left: 50%;
+	width: 25%;
+	overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+#btnQuitTournament
+{
+	-ms-transform: translate(-50%, -50%);
+	transform: translate(-50%, -50%);
+	position: absolute;
+	top: 70%;
+	left: 50%;
+	width: 25%;
+	height: 15%;
+	overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
