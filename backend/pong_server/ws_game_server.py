@@ -17,6 +17,8 @@ can_shutdown = False
 # when every player are connected
 team_left = []
 team_right = []
+team_left_ready = []
+team_right_ready = []
 map_id = 0
 power_up = False
 users_id = []
@@ -45,11 +47,13 @@ def remove_user_connected(myid, websocket):
 
 
 async def handle_client(websocket : websockets.WebSocketServerProtocol, path):
-    global map_id, power_up, team_left, team_right, connected_player, users_id
+    global map_id, power_up, team_left_ready, team_right_ready, connected_player, users_id
     # None | (id paddle, id team)
     myid = None
     id_paddle = None
     id_team = None
+    id_paddle_with_team = None
+    controleDictConvertion = {'up': KEY_UP, 'down': KEY_DOWN, 'powerUp': KEY_POWER_UP, 'launchBall': KEY_LAUNCH_BALL}
     print("\nGWS : Hello anonymous player", path, file=sys.stderr)
 
     try:
@@ -82,13 +86,14 @@ async def handle_client(websocket : websockets.WebSocketServerProtocol, path):
                 else:
                     myid = (id_paddle, id_team)
                     add_user_connected(myid, websocket)
+                    id_paddle_with_team = id_paddle + (id_team * TEAM_MAX_PLAYER)
                     if id_team == 0:
-                        team_left[id_paddle] = True
+                        team_left_ready[id_paddle] = True
                     elif id_team == 1:
-                        team_right[id_paddle] = True
+                        team_right_ready[id_paddle] = True
                     print("\nGWS : TEST IF EVERYONE READY", file=sys.stderr)
-                    print("GWS : LTEAM :", team_left, file=sys.stderr)
-                    print("GWS : RTEAM :", team_right, file=sys.stderr)
+                    print("GWS : LTEAM :", team_left_ready, file=sys.stderr)
+                    print("GWS : RTEAM :", team_right_ready, file=sys.stderr)
                     if can_start_game():
                         print("GWS : OK", file=sys.stderr)
                         asyncio.create_task(game_server_manager())
@@ -111,25 +116,35 @@ async def handle_client(websocket : websockets.WebSocketServerProtocol, path):
                     power_up = powerUp
                     users_id = usersId
                     size = len(teamLeft)
-                    team_left = [False] * size
+                    team_left_ready = [False] * size
                     for i in range(size):
                         # If it's an ia, it's ready
                         if teamLeft[i] == 1:
-                            team_left[i] = True
+                            team_left_ready[i] = True
+                            team_left.append(PADDLE_IA)
+                        else:
+                            team_left.append(PADDLE_PLAYER)
                     size = len(teamRight)
-                    team_right = [False] * size
+                    team_right_ready = [False] * size
                     for i in range(size):
                         # If it's an ia, it's ready
                         if teamRight[i] == 1:
-                            team_right[i] = True
+                            team_right_ready[i] = True
+                            team_right.append(PADDLE_IA)
+                        else:
+                            team_right.append(PADDLE_PLAYER)
                 continue
             
             # Check if client is connected
             if myid == None:
                 await send_error(websocket, "Need to be connected")
                 continue
-
-            await send_error(websocket, "Request type unkown")
+            
+            if request_type == "userInput" and data.get("key", None) != None and data.get("value", None) != None:
+                game.messageFromClients.append([CLIENT_MSG_TYPE_USER_EVENT, {"id_paddle":id_paddle_with_team, "id_key":controleDictConvertion[data.get("key", None)],
+                                                                             "key_action": data.get("value", None) == "press"}])
+            else :
+                await send_error(websocket, "Request type unkown")
 
     except Exception as error:
         print("\nGWS : CRITICAL ERROR :", error, file=sys.stderr)
@@ -149,10 +164,10 @@ async def handle_client(websocket : websockets.WebSocketServerProtocol, path):
 
 
 def can_start_game():
-    for state in team_left:
+    for state in team_left_ready:
         if not state:
             return False
-    for state in team_right:
+    for state in team_right_ready:
         if not state:
             return False
     return True

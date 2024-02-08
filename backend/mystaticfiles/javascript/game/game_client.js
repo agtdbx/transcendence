@@ -341,47 +341,65 @@ export class GameClient {
 				}));
 			}
 
-			// console.log("test for : " + dc.PLAYER_KEYS[i][d.KEY_POWER_UP])
 
 
-			// if (type == "down" && event.code == dc.PLAYER_KEYS[i][d.KEY_POWER_UP] && ! this.paddlesKeyState[i * 4 + d.KEY_POWER_UP])
-			// {
-			// 	this.paddlesKeyState[i * 4 + d.KEY_POWER_UP] = true
-			// 	// let content = templateContent.copy()
-			// 	// content["keyId"] = KEY_POWER_UP
-			// 	// content["keyAction"] = true
-			// 	// this.messageForServer.append((CLIENT_MSG_TYPE_USER_EVENT, content))
-			// }
-			// else if (type == "up" && ( (event.code == dc.PLAYER_KEYS[i][d.KEY_POWER_UP])) && this.paddlesKeyState[i * 4 + d.KEY_POWER_UP])
-			// {
-			// 	this.paddlesKeyState[i * 4 + d.KEY_POWER_UP] = false
-			// 	// let content = templateContent.copy()
-			// 	// content["keyId"] = KEY_POWER_UP
-			// 	// content["keyAction"] = false
-			// 	// this.messageForServer.append((CLIENT_MSG_TYPE_USER_EVENT, content))
-			// }
+			if (type == "down" && event.code == dc.PLAYER_KEYS[i][d.KEY_POWER_UP] && ! this.paddlesKeyState[i * 4 + d.KEY_POWER_UP])
+			{
+				this.paddlesKeyState[i * 4 + d.KEY_POWER_UP] = true
+				// let content = templateContent.copy()
+				// content["keyId"] = KEY_POWER_UP
+				// content["keyAction"] = true
+				// this.messageForServer.append((CLIENT_MSG_TYPE_USER_EVENT, content))
+				websockGame.send(JSON.stringify({
+					'type' : 'userInput',
+					'key' : 'powerUp',
+					'value': "press"
+				}));
+			}
+			else if (type == "up" && ( (event.code == dc.PLAYER_KEYS[i][d.KEY_POWER_UP])) && this.paddlesKeyState[i * 4 + d.KEY_POWER_UP])
+			{
+				this.paddlesKeyState[i * 4 + d.KEY_POWER_UP] = false
+				// let content = templateContent.copy()
+				// content["keyId"] = KEY_POWER_UP
+				// content["keyAction"] = false
+				// this.messageForServer.append((CLIENT_MSG_TYPE_USER_EVENT, content))
+				websockGame.send(JSON.stringify({
+					'type' : 'userInput',
+					'key' : 'powerUp',
+					'value': "release"
+				}));
+			}
 
-			// // console.log("test for : " + dc.PLAYER_KEYS[i][d.KEY_LAUNCH_BALL])
 
 
-			// if (type == "down" && event.code == dc.PLAYER_KEYS[i][d.KEY_LAUNCH_BALL] && ! this.paddlesKeyState[i * 4 + d.KEY_LAUNCH_BALL])
-			// {
-			// 	this.paddlesKeyState[i * 4 + d.KEY_LAUNCH_BALL] = true
-			// 	// let content = templateContent.copy()
-			// 	// content["keyId"] = KEY_LAUNCH_BALL
-			// 	// content["keyAction"] = true
-			// 	// this.messageForServer.append((CLIENT_MSG_TYPE_USER_EVENT, content))
-			// }
-			// else if (type == "up" && ( (event.code == dc.PLAYER_KEYS[i][d.KEY_LAUNCH_BALL])) && this.paddlesKeyState[i * 4 + d.KEY_LAUNCH_BALL])
-			// {
-			// 	this.paddlesKeyState[i * 4 + d.KEY_LAUNCH_BALL] = false
-			// 	// let content = templateContent.copy()
-			// 	// content["keyId"] = KEY_LAUNCH_BALL
-			// 	// content["keyAction"] = false
-			// 	// this.messageForServer.append((CLIENT_MSG_TYPE_USER_EVENT, content))
-			// }
+			if (type == "down" && event.code == dc.PLAYER_KEYS[i][d.KEY_LAUNCH_BALL] && ! this.paddlesKeyState[i * 4 + d.KEY_LAUNCH_BALL])
+			{
+				this.paddlesKeyState[i * 4 + d.KEY_LAUNCH_BALL] = true
+				// let content = templateContent.copy()
+				// content["keyId"] = KEY_LAUNCH_BALL
+				// content["keyAction"] = true
+				// this.messageForServer.append((CLIENT_MSG_TYPE_USER_EVENT, content))
+				websockGame.send(JSON.stringify({
+					'type' : 'userInput',
+					'key' : 'launchBall',
+					'value': "press"
+				}));
+			}
+			else if (type == "up" && ( (event.code == dc.PLAYER_KEYS[i][d.KEY_LAUNCH_BALL])) && this.paddlesKeyState[i * 4 + d.KEY_LAUNCH_BALL])
+			{
+				this.paddlesKeyState[i * 4 + d.KEY_LAUNCH_BALL] = false
+				// let content = templateContent.copy()
+				// content["keyId"] = KEY_LAUNCH_BALL
+				// content["keyAction"] = false
+				// this.messageForServer.append((CLIENT_MSG_TYPE_USER_EVENT, content))
+				websockGame.send(JSON.stringify({
+					'type' : 'userInput',
+					'key' : 'launchBall',
+					'value': "release"
+				}));
+			}
 		}
-		// console.log(this.paddlesKeyState)
+
 		this.inputCooldown = 2
 	}
 

@@ -34,10 +34,7 @@ export class Ball {
 		this.radius = d.BALL_RADIUS
 		this.speed = d.BALL_START_SPEED
 		this.direction = new Vec2(1, 0)
-		this.htmlObject = document.createElementNS('http://www.w3.org/2000/svg', 'image')
-		this.htmlObject.setAttributeNS('http://www.w3.org/1999/xlink','href', "/static/image/game/ball.png");
-		this.htmlObject.setAttribute('width', this.radius * 2)
-		this.htmlObject.setAttribute('height', this.radius * 2)
+
 		// this.htmlObject.setAttribute('transform-origin', "center");
 		console.log("create ball at : " + x + "," + y)
 		this.shadowBalls = []
@@ -55,6 +52,10 @@ export class Ball {
 			
 			
 		}
+		this.htmlObject = document.createElementNS('http://www.w3.org/2000/svg', 'image')
+		this.htmlObject.setAttributeNS('http://www.w3.org/1999/xlink','href', "/static/image/game/ball.png");
+		this.htmlObject.setAttribute('width', this.radius * 2)
+		this.htmlObject.setAttribute('height', this.radius * 2)
 		console.log(this.shadowBalls)
 
 
