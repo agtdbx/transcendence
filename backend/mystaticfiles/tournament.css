@@ -240,10 +240,12 @@
 }
 
 #textVsTournament{
+	-ms-transform: translate(-50%, -50%);
+	transform: translate(-50%, -50%);
 	position: absolute;
-	top: 1%;
-	left: 32%;
-	width: 36%;
+	top: 50%;
+	left: 50%;
+	width: 80%;
 	height: 98%;
 	background-color: transparent;
 	overflow: hidden;
@@ -257,4 +259,69 @@
 
 #vsTournament{
 	font-size:300%
+}
+
+#btnTournamentAbandon{
+	position: absolute;
+	-ms-transform: translate(-50%, -50%);
+	transform: translate(-50%, -50%);
+	left: 50%;
+	top: 20%;
+	width: 10%;
+	height: 5%;
+}
+
+
+#joinTournamentVSrectLeft{
+	position: absolute;
+	top: 40%;
+	left: 69.5%;
+	width:30%;
+	height:20%;
+	text-align: center;
+	background: rgba(40,35,23,0.75);
+}
+
+#joinTournamentVSrectLeft1{
+	position: absolute;
+	top: 1%;
+	left: 1%;
+	width:98%;
+	height:98%;
+	text-align: center;
+	background: rgba(18,16,11, 0.8);;
+	color: white;
+	overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+#tournamentPlayer3{
+	position: absolute;
+	top: 1%;
+	left: 1%;
+	width: 30%;
+	height: 98%;
+	background-color: transparent;
+}
+
+#tournamentPlayer4{
+	position: absolute;
+	top: 1%;
+	left: 69%;
+	width: 30%;
+	height: 98%;
+	background-color: transparent;
+}
+
+#RectUserList{
+	position: absolute;
+	top:64%;
+	left: 89.5%;
+	width: 10%;
+	height: 35%;
+	background: rgba(40,35,23,0.75);
+	overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
 }
