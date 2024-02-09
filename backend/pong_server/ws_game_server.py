@@ -23,6 +23,8 @@ map_id = 0
 power_up = False
 users_id = []
 
+websocketPaddleLink = {}
+
 async def send_error(websocket, error_explaination):
     error = {"type" : "error", "error" : error_explaination}
     str_error = str(error)
@@ -87,6 +89,7 @@ async def handle_client(websocket : websockets.WebSocketServerProtocol, path):
                     myid = (id_paddle, id_team)
                     add_user_connected(myid, websocket)
                     id_paddle_with_team = id_paddle + (id_team * TEAM_MAX_PLAYER)
+                    websocketPaddleLink[websocket] = id_paddle_with_team
                     if id_team == 0:
                         team_left_ready[id_paddle] = True
                     elif id_team == 1:
@@ -180,27 +183,26 @@ def can_server_shutdown():
             return False
     return True
 
-async def sendGlobalMessage(updateObstacles='null', updatePaddles='null',updateBalls='null',deleteBall='null',changeUserPowerUp='null',updatePowerUpInGame='null',updateScore='null'):
+async def sendGlobalMessage(updateObstacles='null', updatePaddles='null',updateBalls='null',deleteBall='null',changeUserPowerUp={},updatePowerUpInGame='null',updateScore='null'):
     global connected_player
-    # print("\nGWS : SENDING DATA .", file=sys.stderr)
-    end_game_msg = {"type" : "serverInfo",
+
+    for websockets in connected_player.values():
+        for websocket in websockets:
+            # print("\nGWS : websocketPaddleLink : ", websocketPaddleLink, file=sys.stderr)
+            # print("\nGWS : websockets : ", websockets, file=sys.stderr)
+            # print("\nGWS : websocket to find : ", websocket, file=sys.stderr)
+            end_game_msg = {"type" : "serverInfo",
                     "updateObstacles" : updateObstacles,
                     "updatePaddles" : updatePaddles,
                     'updateBalls' : updateBalls,
                     'deleteBall' : deleteBall,
-                    'changeUserPowerUp' : changeUserPowerUp,
+                    'changeUserPowerUp' : changeUserPowerUp[websocketPaddleLink[websocket]],
                     'updatePowerUpInGame' : updatePowerUpInGame,
                     'updateScore' : updateScore}
-    # print("\nGWS : SENDING DATA ..", file=sys.stderr)
-    str_msg = str(end_game_msg)
-    str_msg = str_msg.replace("'", '"')
-    str_msg = str_msg.replace("False", 'false')
-    str_msg = str_msg.replace("True", 'true')
-    
-    # print("\nGWS : SENDING DATA ...", file=sys.stderr)
-    for websockets in connected_player.values():
-        for websocket in websockets:
-            # print("\nGWS : SEND data to : ", websocket, file=sys.stderr)
+            str_msg = str(end_game_msg)
+            str_msg = str_msg.replace("'", '"')
+            str_msg = str_msg.replace("False", 'false')
+            str_msg = str_msg.replace("True", 'true')
             await websocket.send(str_msg)
             
 def parsingGlobalMessage():
@@ -208,7 +210,7 @@ def parsingGlobalMessage():
     updatePaddles='null'
     updateBalls='null'
     deleteBall='null'
-    changeUserPowerUp='null'
+    changeUserPowerUp={}
     updatePowerUpInGame='null'
     updateScore='null'
     for changement in game.messageForClients :
@@ -227,6 +229,7 @@ def parsingGlobalMessage():
                 updatePaddles = []
             for paddle in content :
                 updatePaddles.append([paddle["position"], paddle["modifierSize"], paddle["id_team"], paddle["id_paddle"], paddle["powerUpInCharge"]])
+                changeUserPowerUp[paddle["id_paddle"] + (paddle["id_team"] * TEAM_MAX_PLAYER)] = paddle["powerUp"]
         if typeContent == SERVER_MSG_TYPE_UPDATE_BALLS :
             if updateBalls == 'null' :
                 updateBalls = []

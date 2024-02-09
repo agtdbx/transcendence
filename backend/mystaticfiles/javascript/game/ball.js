@@ -56,7 +56,9 @@ export class Ball {
 		this.htmlObject.setAttributeNS('http://www.w3.org/1999/xlink','href', "/static/image/game/ball.png");
 		this.htmlObject.setAttribute('width', this.radius * 2)
 		this.htmlObject.setAttribute('height', this.radius * 2)
-		console.log(this.shadowBalls)
+		this.htmlObject.setAttribute('x',  x - (this.radius / 2));
+		this.htmlObject.setAttribute('y',  y - (this.radius / 2));
+		// console.log(this.shadowBalls)
 
 
 

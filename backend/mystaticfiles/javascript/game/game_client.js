@@ -519,7 +519,7 @@ export class GameClient {
 		try
 		{
 			data = JSON.parse(event.data);
-			// console.log("DATA FROM GWS :", data);
+			console.log("DATA FROM GWS :", data);
 		}
 		catch (error)
 		{
@@ -577,7 +577,7 @@ export class GameClient {
 			this.parseMessageForBalls(data["updateBalls"])
 			this.parseMessageForDeleteBalls(data["deleteBall"])
 			this.parseMessageForPowerUp(data["updatePowerUpInGame"])
-			// this.parseMessageForScore(data["updateScore"])
+			this.parseMessageForScore(data["updateScore"])
 		}
 		else
 			console.error("GWS :Unkown data recieved :", data);
@@ -776,7 +776,10 @@ export class GameClient {
 	{
 		// Content of power up :
 		// {leftTeam, rightTeam}
-		this.teamLeft.score = messageContent["leftTeam"]
-		this.teamRight.score = messageContent["rightTeam"]
+		if (messageContent != 'null')
+		{
+			document.getElementById('scoreLeftTeam').textContent = "Score : " + messageContent[0]
+			document.getElementById('scoreRightTeam').textContent = "Score : " + messageContent[1]
+		}
 	}
 }
