@@ -109,12 +109,11 @@ class Goal(models.Model):
 
 class Tournament(models.Model):
     idTournament    = models.IntegerField(primary_key=True)							#[primary key]
-    startDate       = models.TimeField()
-    nameTournament  = models.CharField(max_length=20)
-    nbMaxUser       = models.IntegerField()
     idMap           = models.ForeignKey(Map, on_delete=models.PROTECT)
     powerUp         = models.BooleanField()
     cursed          = models.BooleanField()
+    isStarted       = models.BooleanField()
+    isFinished      = models.BooleanField()
 
 
 class UserTournament(models.Model):

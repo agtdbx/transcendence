@@ -23,6 +23,7 @@ from . import views_message
 from . import views_user_relation
 from . import views_achievement
 from . import views_42link
+from . import views_tournament
 from django.conf.urls.static import static
 
 
@@ -66,6 +67,9 @@ urlpatterns = [
 
     # API
     path('api', views.apiDoc, name="api"),
+
+    #tournament
+    #path('createTournament', views_tournament.createTournament, name='createTournament'),
 ]
 
 if settings.DEBUG:

@@ -295,6 +295,14 @@ function checkSignin(data)
         .catch(error => console.log("changeUsername error :", error))
     }
 
+	function createTournament()
+	{
+		fetch("createTournament",
+        {
+            method: 'POST',
+            cache: "default"
+        })
+	}
 
 function disconnection()
 {

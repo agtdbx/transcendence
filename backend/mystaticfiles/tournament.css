@@ -55,7 +55,7 @@
 	overflow-wrap: anywhere;
 }
 
-#btnTournamentStartGame{
+#btnTournamentCreate{
 	position: absolute;
 	-ms-transform: translate(-50%, -50%);
 	transform: translate(-50%, -50%);
@@ -72,7 +72,7 @@
 
 }
 
-#btnTournamentShuffle{
+#btnTournamentLaunch{
 	-ms-transform: translate(-50%, -50%);
 	transform: translate(-50%, -50%);
 	position: absolute;
@@ -324,4 +324,51 @@
 	overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
+}
+
+
+
+
+
+.CustomPowerUp{
+	position: absolute;
+	top:1%;
+	left: 1%;
+	height: 25%;
+	width: 98%;
+	background : rgba(18, 16, 11, 0.8);
+	text-align: center;
+}
+
+#customPTxt{
+	color: white;
+}
+
+
+#btnStatusPowerUp{
+	width: 30%;
+	height: 30%;
+}
+
+.CustomMap{
+	position: absolute;
+	top: 27%;
+	left: 1%;
+	height: 72%;
+	width: 98%;
+	background : rgba(18, 16, 11, 0.8);
+	text-align: center;
+
+}
+
+#customMTxt{
+	color: white;
+}
+
+.btn-map{
+	width: 95%;
+	height: 10%;
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
 }

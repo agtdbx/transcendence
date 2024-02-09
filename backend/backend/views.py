@@ -16,6 +16,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
 from django.shortcuts import render
 
+from db_test.models import UserTournament
 from db_test.models import User
 import datetime
 
@@ -166,17 +167,19 @@ def section(request, num):
         else:
             return render(request,"game.html")
 
-    elif num == 7:
+    elif num == 7:   #do nothing
         if fullPage:
             return render(request, "tournament_full.html")
         else:
             return render(request,"tournament.html")
 
-    elif num == 8:
+    elif num == 8: #admin page where you can create tournament if you are admin and start them
+        if(user.idType != 2):
+            return render(request, "mainpage_full.html")
         if fullPage:
-            return render(request, "tournamentcreate_full.html")
+            return render(request, "tournament_full.html")
         else:
-            return render(request,"tournamentcreate.html")
+            return render(request,"tournament.html")
 
     elif num == 9:
         ListUser = User.objects.all()
@@ -247,17 +250,31 @@ def section(request, num):
         else:
             return render(request,"beer.html")
         
-    elif num == 13:
+    elif num == 13: #tournament Page where spectateur can go and active tournament user can see their next match
+        #check if user is already in tournament or is tournament full
+        #save user
         if fullPage:
             return render(request, "joinTournament_full.html")
         else:
             return render(request,"joinTournament.html")
         
-    elif num == 14:
-        if fullPage:
-            return render(request, "tournamentInscription_full.html")
+    elif num == 14: #tournament page where user are first send to join the tournament
+        #check if admin or subcribe or tournament full spectate mode
+        if len(UserTournament.objects.all()) == 8:  #tournament full join spectate
+            if fullPage:
+                return render(request, "tournamentSpectate_full.html")
+            else:
+                return render(request,"tournamentSpectate.html")
+        if UserTournament.objects.all().filter(idUser=user.idUser):     #already join tournament
+            if fullPage:        
+                return render(request, "joinTournament_full.html")
+            else:
+                return render(request,"joinTournament.html")
         else:
-            return render(request,"tournamentInscription.html")
+            if fullPage:
+                return render(request, "tournamentInscription_full.html")   #subscribe to tournament
+            else:
+                return render(request,"tournamentInscription.html")
 
     else:
         if fullPage:
