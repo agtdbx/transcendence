@@ -112,8 +112,7 @@ class Tournament(models.Model):
     idMap           = models.ForeignKey(Map, on_delete=models.PROTECT)
     powerUp         = models.BooleanField()
     cursed          = models.BooleanField()
-    isStarted       = models.BooleanField()
-    isFinished      = models.BooleanField()
+    status       = models.IntegerField()	
 
 
 class UserTournament(models.Model):
