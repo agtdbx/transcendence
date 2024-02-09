@@ -193,31 +193,87 @@ TOURNAMENT
     create tournament
         'type' : 'tournament'
         'cmd' : 'create'
+        'powerUp' : true | false
+        'mapId' : <map id>
+        -> {{tournament state}}
+
+    /!\ Only the administrator can modify tournament /!\
+    modify tournament parameters
+        'type' : 'tournament'
+        'cmd' : 'modifyParams'
+        'powerUp' : true | false
+        'mapId' : <map id>
+        -> {{tournament state}}
+        
+    /!\ Only the administrator can start tournament /!\
+    start tournament
+        'type' : 'tournament'
+        'cmd' : 'start'
         'start' : <start date>
         'powerUp' : true | false
         'mapId' : <map id>
-        -> No more field
+        -> 'type' : 'tournamentStart'
 
     join tournament
         'type' : 'tournament'
         'cmd' : 'join'
+        'nickname' : <nickname>
         -> 'type' : 'joinReply'
-           'tournamentUserId' : <tournament user id>
+           'success' : true | false
+           'tournamentUserId' : <tournament user id> | null
+           'error' : <error> | null
+	           
+	quit tournament
+        'type' : 'tournament'
+        'cmd' : 'quit'
+        -> No more field
+        
+	/!\ Only work if the tournament has begin /!\   
+    get next match of user
+        'type' : 'tournament'
+        'cmd' : 'myNextMatch'
+        'tournamentUserId' = <tournament user id>
+        -> 'type' : 'myNextMatch'
+           'playerLeft' : <user view> | null
+           'playerRight' : <user view> | null
+
+	=> {{tournament state}}
 
     => Game start
         'type' : 'gameStart'
         'gamePort' : <port> # port of the websocket for game
         'paddleId' : <paddle id>
         'teamId' : <team id>
+        
+    => update match tree
+        'type' : 'matchTreeUpdate'
+    	'winner' : <tournament user id> | -1
+    	'final' : (<tournament user id> | -1) * 2
+    	'half' : (<tournament user id> | -1) * 4
+    	'quarter' : (<tournament user id> | -1) * 8
 
     => match result
         'type' : 'matchResult'
         'winner' : <tournament user id>
         'loser' : <tournament user id>
 
+    => nextMatch
+        'type' : 'nextMatch'
+        'playerLeft' : <user view>
+        'playerRight' : <user view>
+
     => end tournament
         'type' : 'endTournament'
         'onePongMan' : <tournament user id>
+
+	{{tournament state}}
+		'type' : 'tournamentState'
+		'powerUp' : true | false
+        'mapId' : <map id>
+        'players' : [<user view>]
+
+    <user view>
+    	[<user id>, <user pp>, <user nickmane>]
 
 
 /!\ All messages for and from game are in it's websocket /!\
