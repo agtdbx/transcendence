@@ -239,6 +239,11 @@ GAME
         'obstacles' : [<obstacles>, ...]
         'powerUp' : true | false
 
+    => start info
+        'type' : 'startCount'
+        'number' : int (5 to 0)
+
+
     => server info
         'type' : 'serverInfo'
         'updateObstacles' : [[<obstacles index>, <point>, [<point>, ...]], ...] | null

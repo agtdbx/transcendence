@@ -531,20 +531,6 @@ export class GameClient {
 		{
 			console.error("GWS :Error :", data['error']);
 		}
-		// else if (type == SERVER_MSG_TYPE_CREATE_START_INFO)
-		// 	this.parseMessageStartInfo(message[1])
-		// else if (type == SERVER_MSG_TYPE_UPDATE_OBSTACLE)
-		// 	this.parseMessageForObstacle(message[1])
-		// else if (type == SERVER_MSG_TYPE_UPDATE_PADDLES)
-		// 	this.parseMessageForPaddles(message[1])
-		// else if (type == SERVER_MSG_TYPE_UPDATE_BALLS)
-		// 	this.parseMessageForBalls(message[1])
-		// else if (type == SERVER_MSG_TYPE_DELETE_BALLS)
-		// 	this.parseMessageForDeleteBalls(message[1])
-		// else if (type == SERVER_MSG_TYPE_UPDATE_POWER_UP)
-		// 	this.parseMessageForPowerUp(message[1])
-		// else if (type == SERVER_MSG_TYPE_SCORE_UPDATE)
-		// 	this.parseMessageForScore(message[1])
 		else if (type === "endGame") // Not the movie !
 		{
 			let but = document.createElement("button");
@@ -564,8 +550,19 @@ export class GameClient {
 		else if (type === "startInfo")
 		{
 			console.log("Starting info received");
-			this.runMainLoop = true
 			this.createObstaclesOnMap(data['obstacles'])
+		}
+		else if (type === "startCount")
+		{
+			console.log("Starting in " + data['number']);
+			document.getElementById("startCounter").textContent = "" + data['number'];
+			if (data['number'] == 0)
+			{	
+				this.runMainLoop = true;
+				document.getElementById("divStartCounter").remove();
+				document.getElementById("startStartingIn").remove();
+				document.getElementById("startCounter").remove();
+			}
 		}
 		else if (type === "serverInfo") // Not the movie !
 		{
@@ -693,6 +690,25 @@ export class GameClient {
 				b.direction = new Vec2(content[1][0], content[1][1])
 				b.speed = content[3]
 				b.radius = content[2]
+				if (b.state != content[4] && content[4] != 0)
+				{
+					b.htmlObject.setAttribute("display", "None");
+					for (let index = 0; index < b.shadowBalls.length; index++)
+					{
+						b.shadowBalls[index][0].setAttribute("display", "None");
+						b.shadowBalls[index][1] = [(b.pos.x - (b.radius / 2)), (b.pos.y - (b.radius / 2))]
+						b.shadowBalls[index][0].setAttribute('x', "" +  (b.pos.x - (b.radius / 2)));
+						b.shadowBalls[index][0].setAttribute('y', "" +  (b.pos.y - (b.radius / 2)));
+					}
+				}
+				else if (b.state != content[4] && content[4] == 0)
+				{
+					b.htmlObject.setAttribute("display", "block");
+					for (let index = 0; index < b.shadowBalls.length; index++)
+					{
+						b.shadowBalls[index][0].setAttribute("display", "block");
+					}
+				}
 				b.state = content[4]
 				b.htmlObject.setAttribute('width', b.radius * 2)
 				b.htmlObject.setAttribute('height', b.radius * 2)
