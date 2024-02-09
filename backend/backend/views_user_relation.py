@@ -6,7 +6,7 @@
 #    By: aderouba <aderouba@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/23 19:48:59 by aderouba          #+#    #+#              #
-#    Updated: 2024/01/31 13:47:25 by aderouba         ###   ########.fr        #
+#    Updated: 2024/02/06 18:36:35 by aderouba         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -275,6 +275,26 @@ def getlisteblocked(request):
         try:
             friend = User.objects.all().filter(idUser=link.idTarget)[0]
             listeRequest.append({"name": friend.username, "pp" : "/static/" + friend.profilPicture.name, "status" : friend.idStatus })
+        except:
+            continue
+    return JsonResponse({"success": True, "content" : "", "listcontact" : listeRequest })
+
+
+@csrf_exempt
+def get_can_be_invited(request):
+    check = checkToken(request)
+    if check["success"] == False:
+        return JsonResponse(check)
+
+    userId = check["userId"]
+    user = User.objects.all().filter(idUser=userId)[0]
+    linkFriendRequestList = Link.objects.all().filter(idUser=user.idUser, link=2)
+    listeRequest = []
+    for link in linkFriendRequestList :
+        try:
+            friend = User.objects.all().filter(idUser=link.idTarget)[0]
+            if friend.idStatus == 1:
+                listeRequest.append({"name": friend.username, "pp" : "/static/" + friend.profilPicture.name, "status" : friend.idStatus, "id" : friend.idUser})
         except:
             continue
     return JsonResponse({"success": True, "content" : "", "listcontact" : listeRequest })

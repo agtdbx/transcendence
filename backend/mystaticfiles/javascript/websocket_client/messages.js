@@ -1,54 +1,69 @@
 function createMessage(message, username, pp, date)
 {
-	let messageDiv = document.createElement('tr');
-	let nameCase = document.createElement('td');
+	// Name of the user
 	let nameTXT = document.createElement('p');
-	let dateTXT = document.createElement('p');
-	let imgCase = document.createElement('td');
-	let img = document.createElement('img');
-	let messageCase = document.createElement('td');
-	let messageTXT = document.createElement('p');
-
-	nameCase.style.width = "10%";
-	nameCase.style.textAlign = "center";
-	nameCase.style.verticalAlign = "top";
-	nameCase.onclick = function (){
-		changePage("profil/" + username);
-	}
+	nameTXT.textContent = username;
 	nameTXT.style.marginTop = "5px";
 	nameTXT.style.marginBottom = "2px";
 	nameTXT.style.color = "white";
-	nameTXT.textContent = username;
 	nameTXT.style.fontSize = "0.9em";
+
+	// Date of message
+	let dateTXT = document.createElement('p');
+	dateTXT.textContent = date;
 	dateTXT.style.marginTop = "0px";
 	dateTXT.style.marginBottom = "0px";
 	dateTXT.style.color = "white";
-	dateTXT.textContent = date;
 	dateTXT.style.fontSize = "0.7em";
-	imgCase.style.verticalAlign = "top";
-	imgCase.style.width = "10%";
-	imgCase.onclick = function (){
+
+	// Container of name and date
+	let nameCase = document.createElement('td');
+	nameCase.style.width = "10%";
+	nameCase.style.textAlign = "center";
+	nameCase.style.verticalAlign = "top";
+	nameCase.style.animation = "animate 0.40s infinite";
+	nameCase.appendChild(nameTXT);
+	nameCase.appendChild(dateTXT);
+	nameCase.onclick = function (){
 		changePage("profil/" + username);
 	}
+
+	// PP of the user
+	let img = document.createElement('img');
+	img.src = pp;
 	img.style.width = "3em";
 	img.style.height = "3em";
 	img.style.borderRadius = "50%";
-	img.src = pp;
-	messageCase.style.width = "85%";
-	messageCase.style.paddingLeft = "0%";
-	messageCase.style.verticalAlign = "top";
+
+	// Container of pp
+	let imgCase = document.createElement('td');
+	imgCase.style.verticalAlign = "top";
+	imgCase.style.width = "10%";
+	imgCase.style.animation = "animate 0.40s infinite";
+	imgCase.appendChild(img);
+	imgCase.onclick = function (){
+		changePage("profil/" + username);
+	}
+
+	// The data of the message
+	let messageTXT = document.createElement('p');
+	messageTXT.textContent = message;
 	messageTXT.style.marginTop = "5px";
 	messageTXT.style.color = "white";
 	messageTXT.style.fontSize = "1em";
-	messageTXT.textContent = message;
 
-	messageDiv.insertBefore(nameCase, null);
-	messageDiv.insertBefore(imgCase, null);
-	messageDiv.insertBefore(messageCase, null);
-	nameCase.insertBefore(nameTXT, null);
-	nameCase.insertBefore(dateTXT, null);
-	imgCase.insertBefore(img, null);
-	messageCase.insertBefore(messageTXT, null);
+	// Container of message content
+	let messageCase = document.createElement('td');
+	messageCase.style.width = "85%";
+	messageCase.style.paddingLeft = "0%";
+	messageCase.style.verticalAlign = "top";
+	messageCase.appendChild(messageTXT);
+
+	// Message div
+	let messageDiv = document.createElement('tr');
+	messageDiv.appendChild(nameCase);
+	messageDiv.appendChild(imgCase);
+	messageDiv.appendChild(messageCase);
 
 	return messageDiv;
 }

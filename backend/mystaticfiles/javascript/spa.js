@@ -8,7 +8,7 @@ function changeBackground(num)
 		body.style.backgroundImage = 'url(/static/image/background/mainpage.png)';
 	else if (num == "4")
 		body.style.backgroundImage = 'url(/static/image/background/waitpage.png)';
-	else if (num == "5")
+	else if (num == "5" || num == "51")
 		body.style.backgroundImage = 'url(/static/image/background/waitpage.png)';
 	else if (num == "6")
 		body.style.backgroundImage = 'url(/static/image/background/game.png)';
@@ -84,7 +84,7 @@ function manageHeader(num)
 
 function manageChat(num)
 {
-	if (num == 3 || num == 4 || num == 5 || num == 7)
+	if (num == 3 || num == 4 || num == 5 || num == 51 || num == 7)
 	{
 		setChannelTarget("general");
 		displayFiends();
@@ -96,13 +96,22 @@ function manageChat(num)
 
 function manageAPI(num)
 {
-	if (num == 3 && current_page == 4)
+	if (current_page == 4)
 	{
 		leave_request_quick_game();
 	}
-	else if (num == 4)
+	else if (current_page == 5 || current_page == 51)
+	{
+		quitGameRoom();
+	}
+
+	if (num == 4)
 	{
 		join_request_quick_game();
+	}
+	else if (num == 5)
+	{
+		createGameRoom();
 	}
 }
 
@@ -137,6 +146,8 @@ function getCookieValue(name)
 
 function changePage(num, byArrow=false)
 {
+	if (num == current_page)
+		return ;
 	try
 	{
 		remove_pop();
@@ -173,7 +184,7 @@ function changePage(num, byArrow=false)
 		// Run the script tag if they is one in the html load
 		runScript();
 		// Set the new page in the browser history if the page isn't load by arrow, or not the wait and game page.
-		if (!byArrow && num != 4 && num != 6)
+		if (!byArrow && num != 4 && num != 5 && num != 51 && num != 6)
 			history.pushState({section: num}, "", "/" + num);
 	})
 	.catch(error => console.log("CHANGE PAGE ERROR FETCH :", error, '\n'))

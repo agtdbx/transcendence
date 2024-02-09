@@ -2,8 +2,14 @@
 <link rel="stylesheet" href="{% static 'createGameRoom.css' %}">
 <div id = "Page">
 
-	<button data-section="6" type="button" class ="btn-drg" id = "btn-create-game-start" onclick="changePage(this.dataset.section)">start</button>
+	<button type="button" class ="btn-drg" id = "btn-create-game-start" onclick="gameRoomStartGame()">start</button>
 	<button data-section="3" type="button" class ="changePage btn-drg" id = "btn-create-game-quit" onclick="changePage(this.dataset.section)">quit</button>
+
+	<div class="invite_list_bg">
+		<button class="btn-drg" onclick="createListInvite()">Refresh</button>
+		<div id="invite_list_container">
+		</div>
+	</div>
 
 	<form class ="createGameBotLeft" id = "createGameBotLeft">
 		<div class ="createGameChat" id = "createGameChat">
@@ -24,7 +30,6 @@
 				<p>GLOBAL</p>
 			</div>
 		</div>
-
 	</form>
 
 	<div class ="createGameStatus" id = "createGameStatus">
@@ -35,15 +40,15 @@
 
 		<div class ="CreateGameMap" id = "CreateGameMap">
 			<p id="gameCreateMapTxt">Map</p>
-			<p id = "gameCreateMapName">Dwarf cave  medium</p>
+			<p id = "gameCreateMapName">Dwarf cave medium</p>
 		</div>
 	</div>
 
 	<div class ="createGameBotRight" id = "createGameBotRight">
-		<p class="animation" id="create-game-team1">join team 1</p>
+		<p class="animation" id="create-game-team1" onclick="gameRoomChangeTeam('left')">join team 1</p>
 		<div id = "team1Player">
 		</div>
-		<button type="button" class ="btn-drg btn-bot" id="btnbot1">Add bot</button>
+		<button type="button" class ="btn-drg btn-bot" id="btnbot1" onclick="gameRoomAddBot('left')">Add bot</button>
 	</div>
 
 	<div id="vs">
@@ -51,28 +56,26 @@
 	</div>
 
 	<div class ="createGameTopRight" id = "createGameTopRight">
-		<p class="animation" id="create-game-team2">join team 2</p>
+		<p class="animation" id="create-game-team2" onclick="gameRoomChangeTeam('right')">join team 2</p>
 		<div id = "team2Player">
 		</div>
-		<button type="button" class ="btn-drg btn-bot" id="btnbot2">Add bot</button>
+		<button type="button" class ="btn-drg btn-bot" id="btnbot2" onclick="gameRoomAddBot('right')">Add bot</button>
 	</div>
 
 	<div class="changeCustomGame">
 		<div class="CustomPowerUp">
 			<p id="customPTxt">Power Up</p>
-			<button type="button" class ="btn-drg" id="btnStatusPowerUp">OFF</button>
+			<button type="button" class ="btn-drg" id="btnStatusPowerUp" onclick="gameRoomSwitchPowerUp()">OFF</button>
 		</div>
 
 		<div class="CustomMap">
 			<p id="customMTxt">Map</p>
-			<button type="button" class ="btn-drg btn-map" id="btnMap1">map 1 cave is wierd i guess</button><br><br>
-			<button type="button" class ="btn-drg btn-map" id="btnMap2">map 2 cave is wierd i guess</button><br><br>
-			<button type="button" class ="btn-drg btn-map" id="btnMap3">map 3 cave is wierd i guess</button><br><br>
-			<button type="button" class ="btn-drg btn-map" id="btnMap4">map 4 cave is wierd i guess</button><br><br>
-			<button type="button" class ="btn-drg btn-map" id="btnMap5">map 5 cave is wierd i guess</button>
+			<button type="button" class ="btn-drg btn-map" id="btnMap1" onclick="gameRoomChangeMap(0)">map 1 cave is wierd i guess</button><br><br>
+			<button type="button" class ="btn-drg btn-map" id="btnMap2" onclick="gameRoomChangeMap(1)">map 2 cave is wierd i guess</button><br><br>
+			<button type="button" class ="btn-drg btn-map" id="btnMap3" onclick="gameRoomChangeMap(2)">map 3 cave is wierd i guess</button><br><br>
+			<button type="button" class ="btn-drg btn-map" id="btnMap4" onclick="gameRoomChangeMap(3)">map 4 cave is wierd i guess</button><br><br>
+			<button type="button" class ="btn-drg btn-map" id="btnMap5" onclick="gameRoomChangeMap(4)">map 5 cave is wierd i guess</button>
 		</div>
 	</div>
-
-
 
 </div>

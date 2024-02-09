@@ -51,7 +51,6 @@ MESSAGE
         'type' : 'invite'
         'username' : <username>
         'pp' : <profile picture link>
-        'date' : <date>
         'roomId' : <room id>
 
     {{message}} :
@@ -67,12 +66,12 @@ QUICK GAME ROOM
     ask for new game
         'type' : 'quickRoom'
         'cmd' : 'askForRoom'
-        -> No more field
+        -> 'type' : 'joinWaitlist'
 
     quit game wait
         'type' : 'quickRoom'
         'cmd' : 'quitRoom'
-        -> No more field
+        -> 'type' : 'quitWaitlist'
 
     => Game start
         'type' : 'gameStart'
@@ -85,50 +84,73 @@ GAME ROOM
     create game room
         'type' : 'gameRoom'
         'cmd' : 'createRoom'
-        -> <update room info>
+        -> 'type' : 'createRoomInfo'
+           {{update room info}}
 
     join game room
         'type' : 'gameRoom'
         'cmd' : 'joinRoom'
         'gameRoomId' : <game room id>
-        -> {{update room info}}
+        -> 'type' : 'joinRoomInfo'
+           {{join room info}}
+
+    quit game room
+        'type' : 'gameRoom'
+        'cmd' : 'quitGameRoom'
+        -> 'type' : 'quitGameRoom'
 
     /!\ Only the creator of the room can use it /!\
     send game room invite
         'type' : 'gameRoom'
         'cmd' : inviteGameRoom'
-        'targetId' : <user id> | 'ia'
-        'roomId' : <roomId>
+        'targetId' : <user id>
         -> No more field
 
-    quit game room
-        'type' : 'quickRoom'
-        'cmd' : 'quitGameRoom'
-        -> No more field
+    /!\ Only the creator of the room can use it /!\
+    quick user from room
+        'type' : 'gameRoom'
+        'cmd' : 'quickUser'
+        'targetId' : <user id>
+        -> 'type' : 'updateRoomInfo'
+           {{update room info}}
+
+    /!\ Only the creator of the room can use it /!\
+    add bot to a team
+        'type' : 'gameRoom'
+        'cmd' : 'addBot'
+        'team' : 'left' | 'right'
+        -> 'type' : 'updateRoomInfo'
+           {{update room info}}
+
+    /!\ Only the creator of the room can use it /!\
+    remove bot to a team
+        'type' : 'gameRoom'
+        'cmd' : 'removeBot'
+        'team' : 'left' | 'right'
+        -> 'type' : 'updateRoomInfo'
+           {{update room info}}
 
     change team
         'type' : 'gameRoom'
         'cmd' : 'changeTeam'
         'team' : 'left' | 'right'
-        -> {{update room info}}
+        -> 'type' : 'updateRoomInfo'
+           {{update room info}}
 
     /!\ Only the creator of the room can use it /!\
     change power up option
         'type' : 'gameRoom'
         'cmd' : 'changePowerUp'
-        -> {{update room info}}
+        -> 'type' : 'updateRoomInfo'
+           {{update room info}}
 
     /!\ Only the creator of the room can use it /!\
-    change map option
+    change map
         'type' : 'gameRoom'
         'cmd' : 'changeMap'
         'mapId' : <map id>
-        -> {{update room info}}
-
-    change ready state
-        'type' : 'gameRoom'
-        'cmd' : 'changeReady'
-        -> No more field
+        -> 'type' : 'updateRoomInfo'
+    	   {{update room info}}
 
     /!\ Only the creator of the room can use it /!\
     start game
@@ -137,7 +159,20 @@ GAME ROOM
         -> 'type' : 'startGame'
            'success' : true | false
 
+	=> invite reply
+		'type' : 'ReplyGameRoom'
+		'targetId' : <user id> | 'ia'
+		'success' : true | false
+
+	=> someone quit game room
+		'type' : 'quitGameRoom'
+		{{update room info}}
+
+	=> quick from game room # When the creator leave the game room
+		'type' : 'quickFromGameRoom'
+
     => update room info
+    	'type' : 'updateRoomInfo'
         {{update room info}}
 
     => Game start
@@ -147,24 +182,10 @@ GAME ROOM
         'teamId' : <team id> # 0 left, 1 right
 
     {{update room info}} :
-        'type' : 'updateRoomInfo'
-        'teamLeft' : [<paddleInfo>, <paddleInfo>]
-        'teamRight' : [<paddleInfo>, <paddleInfo>]
-        'teamLeftReady' : [<readyInfo>, <readyInfo>]
-        'teamRightReady' : [<readyInfo>, <readyInfo>]
-        'powerUpActivate' : false | true
         'mapId' : <map id>
-
-    <paddleInfo> :
-        - null = no player
-        - 'ia' = paddle control by ia
-        - 'pending-<user id>' = wait for the response of <user id>
-        - <user id> = player
-
-    <readyInfo> :
-        - null = no player
-        - false = not ready
-        - true = ready
+        'powerUpActivate' : false | true
+        'teamLeft' : [<user id>] # if id -1, it's an ia
+        'teamRight' : [<user id>]
 
 
 TOURNAMENT

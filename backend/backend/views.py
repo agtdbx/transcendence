@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    views.py                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: hde-min <hde-min@student.42.fr>            +#+  +:+       +#+         #
+#    By: aderouba <aderouba@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/08 14:00:09 by lflandri          #+#    #+#              #
-#    Updated: 2024/02/08 13:47:07 by hde-min          ###   ########.fr        #
+#    Updated: 2024/02/09 14:47:27 by aderouba         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -156,9 +156,15 @@ def section(request, num):
 
     elif num == 5:
         if fullPage:
-            return render(request, "createGameRoom_full.html")
+            return render(request, "mainpage_full.html")
         else:
             return render(request,"createGameRoom.html")
+
+    elif num == 51:
+        if fullPage:
+            return render(request, "mainpage_full.html")
+        else:
+            return render(request,"joinGameRoom.html")
 
     elif num == 6:
         if fullPage:
@@ -246,13 +252,13 @@ def section(request, num):
             return render(request, "beer_full.html")
         else:
             return render(request,"beer.html")
-        
+
     elif num == 13:
         if fullPage:
             return render(request, "joinTournament_full.html")
         else:
             return render(request,"joinTournament.html")
-        
+
     elif num == 14:
         if fullPage:
             return render(request, "tournamentInscription_full.html")

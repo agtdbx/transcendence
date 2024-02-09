@@ -1,6 +1,7 @@
+{% load static %}
+<link rel="stylesheet" href="{% static 'createGameRoom.css' %}">
 <div id = "Page">
 
-	<button data-section="6" type="button" class ="btn-drg" id = "btn-create-game-start" onclick="changePage(this.dataset.section)">start</button>
 	<button data-section="3" type="button" class ="changePage btn-drg" id = "btn-create-game-quit" onclick="changePage(this.dataset.section)">quit</button>
 
 	<form class ="createGameBotLeft" id = "createGameBotLeft">
@@ -38,7 +39,7 @@
 	</div>
 
 	<div class ="createGameBotRight" id = "createGameBotRight">
-		<p class="animation" id="create-game-team1">join team 1</p>
+		<p class="animation" id="create-game-team1" onclick="gameRoomChangeTeam('left')">join team 1</p>
 		<div id = "team1Player">
 		</div>
 	</div>
@@ -48,7 +49,7 @@
 	</div>
 
 	<div class ="createGameTopRight" id = "createGameTopRight">
-		<p class="animation" id="create-game-team2">join team 2</p>
+		<p class="animation" id="create-game-team2" onclick="gameRoomChangeTeam('right')">join team 2</p>
 		<div id = "team2Player">
 		</div>
 	</div>
