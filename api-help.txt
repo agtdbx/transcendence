@@ -241,66 +241,30 @@ GAME
 
     => server info
         'type' : 'serverInfo'
-        'updateObstacles' : <update obstacles> | null
-        'updatePaddles' : <update paddles>  | null
-        'updateBalls' : <update balls>  | null
-        'deleteBall' : <delete ball>  | null
-        'changeUserPowerUp' : <change user power up>  | null
-        'updatePowerUpInGame' : <update power up in game>  | null
-        'updateScore' : <update score>  | null
+        'updateObstacles' : [[<obstacles index>, <point>, [<point>, ...]], ...] | null
+        'updatePaddles' : [<paddles>, ...]  | null
+        'updateBalls' : [<ball>, ...] | null
+        'deleteBall' : [<ball index>, ...]  | null
+        'changeUserPowerUp' :  <power up id> | null 					
+        'updatePowerUpInGame' : <powerUp> | null 
+        'updateScore' : [<score left, score right>]  | null
 
     => end game
         'type' : 'endGame' # Not the movie
         'leftTeamScore' : <left team score>
         'rightTeamScore' : <right team score>
 
-    <update obstacles> :
-        'type' : 'updateObstables'
-        'obstacles' : [<obstacles>, ...]
-
-    <update paddles> :
-        'type' : 'updateObstables'
-        'obstacles' : [<paddles>, ...]
-
-    <update balls> :
-        'type' : 'updateBalls'
-        'balls' : [<ball>, ...]
-
-    <delete ball> :
-        'type' : 'deleteBall'
-        'ballIndex' : <ball index>
-
-    <change user power up> :
-        'type' : 'changeUserPowerUp'
-        'powerUpId' : <power up id>
-
-    <update power up in game> :
-        'type' : 'updatePowerUp'
-        'position' : <point>
-        'visible' : true | false
-
-    <update score> :
-        'type' : 'updateScore'
-        'scoreLeft' : <score left>
-        'scoreRight' : <score right>
-
-    <obstacles> :
-        'points' : [<point>, ...]
+	<powerUp> :
+		[<point>, true | false] {=} ['coordonne', 'visible']
 
     <paddles> :
-        'topLeft' : <point>
-        'botLeft' : <point>
-        'topRight' : <point>
-        'botRight' : <point>
-        'teamId' : <team id> # 0 = left, 1 = right
-        'paddleId' : <paddle id>
+		[<point>, float, <team id>, <paddle id> , int] {=} ['position', 'modifiersize', 'teamId','paddleId', 'powerUpInCharge']
+
+	<team id> :
+		0 | 1 {=} left | right
 
     <ball> :
-        'position' : <point>
-        'direction' : <point>
-        'radius' : int
-        'speed' : int
+		[<point>, <point>, int, int, int, int] {=} ['position', 'direction', 'radius', 'speed', 'status', 'modifier_state']
 
     <point> :
-        'x' : float
-        'y' : float
+		[float, float] {=} ['x', 'y']

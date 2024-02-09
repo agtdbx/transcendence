@@ -6,7 +6,7 @@ let intervalGameStart = setInterval
 (
 	function ()
 	{
-		if (gameStart && document.getElementById("GameBox") != null)
+		if (gameStart && document.getElementById("GameBox") != null && websockGame != null)
 		{
 			gameStart = false;
 			runGameClient();

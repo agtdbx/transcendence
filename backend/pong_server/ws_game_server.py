@@ -6,6 +6,7 @@ import os
 import time
 import signal
 from server_code.game_server import GameServer
+from define import *
 
 
 # Dict to save the actives connections
@@ -16,9 +17,13 @@ can_shutdown = False
 # when every player are connected
 team_left = []
 team_right = []
+team_left_ready = []
+team_right_ready = []
 map_id = 0
 power_up = False
 users_id = []
+
+websocketPaddleLink = {}
 
 async def send_error(websocket, error_explaination):
     error = {"type" : "error", "error" : error_explaination}
@@ -44,11 +49,13 @@ def remove_user_connected(myid, websocket):
 
 
 async def handle_client(websocket : websockets.WebSocketServerProtocol, path):
-    global map_id, power_up, team_left, team_right, connected_player, users_id
+    global map_id, power_up, team_left_ready, team_right_ready, connected_player, users_id
     # None | (id paddle, id team)
     myid = None
     id_paddle = None
     id_team = None
+    id_paddle_with_team = None
+    controleDictConvertion = {'up': KEY_UP, 'down': KEY_DOWN, 'powerUp': KEY_POWER_UP, 'launchBall': KEY_LAUNCH_BALL}
     print("\nGWS : Hello anonymous player", path, file=sys.stderr)
 
     try:
@@ -81,13 +88,15 @@ async def handle_client(websocket : websockets.WebSocketServerProtocol, path):
                 else:
                     myid = (id_paddle, id_team)
                     add_user_connected(myid, websocket)
+                    id_paddle_with_team = id_paddle + (id_team * TEAM_MAX_PLAYER)
+                    websocketPaddleLink[websocket] = id_paddle_with_team
                     if id_team == 0:
-                        team_left[id_paddle] = True
+                        team_left_ready[id_paddle] = True
                     elif id_team == 1:
-                        team_right[id_paddle] = True
+                        team_right_ready[id_paddle] = True
                     print("\nGWS : TEST IF EVERYONE READY", file=sys.stderr)
-                    print("GWS : LTEAM :", team_left, file=sys.stderr)
-                    print("GWS : RTEAM :", team_right, file=sys.stderr)
+                    print("GWS : LTEAM :", team_left_ready, file=sys.stderr)
+                    print("GWS : RTEAM :", team_right_ready, file=sys.stderr)
                     if can_start_game():
                         print("GWS : OK", file=sys.stderr)
                         asyncio.create_task(game_server_manager())
@@ -110,20 +119,35 @@ async def handle_client(websocket : websockets.WebSocketServerProtocol, path):
                     power_up = powerUp
                     users_id = usersId
                     size = len(teamLeft)
-                    team_left = [False] * size
+                    team_left_ready = [False] * size
                     for i in range(size):
                         # If it's an ia, it's ready
                         if teamLeft[i] == 1:
-                            team_left[i] = True
+                            team_left_ready[i] = True
+                            team_left.append(PADDLE_IA)
+                        else:
+                            team_left.append(PADDLE_PLAYER)
                     size = len(teamRight)
-                    team_right = [False] * size
+                    team_right_ready = [False] * size
                     for i in range(size):
                         # If it's an ia, it's ready
                         if teamRight[i] == 1:
-                            team_right[i] = True
+                            team_right_ready[i] = True
+                            team_right.append(PADDLE_IA)
+                        else:
+                            team_right.append(PADDLE_PLAYER)
                 continue
-
-            await send_error(websocket, "Request type unkown")
+            
+            # Check if client is connected
+            if myid == None:
+                await send_error(websocket, "Need to be connected")
+                continue
+            
+            if request_type == "userInput" and data.get("key", None) != None and data.get("value", None) != None:
+                game.messageFromClients.append([CLIENT_MSG_TYPE_USER_EVENT, {"id_paddle":id_paddle_with_team, "id_key":controleDictConvertion[data.get("key", None)],
+                                                                             "key_action": data.get("value", None) == "press"}])
+            else :
+                await send_error(websocket, "Request type unkown")
 
     except Exception as error:
         print("\nGWS : CRITICAL ERROR :", error, file=sys.stderr)
@@ -143,10 +167,10 @@ async def handle_client(websocket : websockets.WebSocketServerProtocol, path):
 
 
 def can_start_game():
-    for state in team_left:
+    for state in team_left_ready:
         if not state:
             return False
-    for state in team_right:
+    for state in team_right_ready:
         if not state:
             return False
     return True
@@ -159,13 +183,103 @@ def can_server_shutdown():
             return False
     return True
 
+async def sendGlobalMessage(updateObstacles='null', updatePaddles='null',updateBalls='null',deleteBall='null',changeUserPowerUp={},updatePowerUpInGame='null',updateScore='null'):
+    global connected_player
+
+    for websockets in connected_player.values():
+        for websocket in websockets:
+            # print("\nGWS : websocketPaddleLink : ", websocketPaddleLink, file=sys.stderr)
+            # print("\nGWS : websockets : ", websockets, file=sys.stderr)
+            # print("\nGWS : websocket to find : ", websocket, file=sys.stderr)
+            end_game_msg = {"type" : "serverInfo",
+                    "updateObstacles" : updateObstacles,
+                    "updatePaddles" : updatePaddles,
+                    'updateBalls' : updateBalls,
+                    'deleteBall' : deleteBall,
+                    'changeUserPowerUp' : changeUserPowerUp[websocketPaddleLink[websocket]],
+                    'updatePowerUpInGame' : updatePowerUpInGame,
+                    'updateScore' : updateScore}
+            str_msg = str(end_game_msg)
+            str_msg = str_msg.replace("'", '"')
+            str_msg = str_msg.replace("False", 'false')
+            str_msg = str_msg.replace("True", 'true')
+            await websocket.send(str_msg)
+            
+def parsingGlobalMessage():
+    updateObstacles='null'
+    updatePaddles='null'
+    updateBalls='null'
+    deleteBall='null'
+    changeUserPowerUp={}
+    updatePowerUpInGame='null'
+    updateScore='null'
+    for changement in game.messageForClients :
+        typeContent = changement[0]
+        content = changement[1]
+        if typeContent == SERVER_MSG_TYPE_UPDATE_OBSTACLE :
+            if updateObstacles == 'null' :
+                updateObstacles = []
+            for obstacle in content :
+                lstPoint = []
+                for point in obstacle["points"]:
+                    lstPoint.append([point[0], point[1]])
+                updateObstacles.append([obstacle["id"],obstacle["position"], lstPoint])
+        if typeContent == SERVER_MSG_TYPE_UPDATE_PADDLES :
+            if updatePaddles == 'null' :
+                updatePaddles = []
+            for paddle in content :
+                updatePaddles.append([paddle["position"], paddle["modifierSize"], paddle["id_team"], paddle["id_paddle"], paddle["powerUpInCharge"]])
+                changeUserPowerUp[paddle["id_paddle"] + (paddle["id_team"] * TEAM_MAX_PLAYER)] = paddle["powerUp"]
+        if typeContent == SERVER_MSG_TYPE_UPDATE_BALLS :
+            if updateBalls == 'null' :
+                updateBalls = []
+            for ball in content :
+                updateBalls.append([ball["position"], ball["direction"], ball["radius"], ball["speed"], ball["state"], ball["modifier_state"]])
+        if typeContent == SERVER_MSG_TYPE_DELETE_BALLS :
+            if deleteBall == 'null' :
+                deleteBall = []
+            deleteBall += content.copy()
+        if typeContent == SERVER_MSG_TYPE_UPDATE_POWER_UP :
+            if updatePowerUpInGame == 'null' :
+                updatePowerUpInGame = []
+            updatePowerUpInGame.append(content["position"])
+            updatePowerUpInGame.append(content["state"])
+        if typeContent == SERVER_MSG_TYPE_SCORE_UPDATE :
+            if updateScore == 'null' :
+                updateScore = []
+            updateScore.append(content['leftTeam'])
+            updateScore.append(content['rightTeam'])
+    # print("\nGWS : SEND data to client : ", [updateObstacles, updatePaddles,updateBalls,deleteBall,changeUserPowerUp,updatePowerUpInGame,updateScore], file=sys.stderr)
+    print("\nGWS : SEND updatePowerUpInGame to client : ", updatePowerUpInGame, file=sys.stderr)
+    asyncio.create_task(sendGlobalMessage(updateObstacles, updatePaddles,updateBalls,deleteBall,changeUserPowerUp,updatePowerUpInGame,updateScore))
+
 
 async def game_server_manager():
     global game, can_shutdown
     print("\nGWS : START GAME", file=sys.stderr)
-    game = GameServer(power_up, team_left, team_right, map_id)
-    game.step()
-    time.sleep(3)
+    game = GameServer(power_up, team_left, team_right, map_id);
+    lstObstacle = []
+    for wall in game.walls :
+        lstObstacle.append(wall.hitbox.getPoints())
+    
+    await asyncio.sleep(3)
+    end_game_msg = {"type" : "startInfo",
+                    "obstacles": lstObstacle ,
+                    'powerUp' : str(power_up).lower()
+                    }
+    str_msg = str(end_game_msg)
+    str_msg = str_msg.replace("'", '"')
+
+    for websockets in connected_player.values():
+        for websocket in websockets:
+            await websocket.send(str_msg)
+
+
+    while game.runMainLoop and (len(connected_player.values()) > 1):
+        print("\nGWS : GAME STEP", file=sys.stderr)
+        game.step()
+        parsingGlobalMessage()
+        await asyncio.sleep(0.01)
     print("\nGWS : END GAME (not the movie)", file=sys.stderr)
 
     end_game_msg = {"type" : "endGame",

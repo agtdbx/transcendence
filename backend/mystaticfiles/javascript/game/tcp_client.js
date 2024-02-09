@@ -4,11 +4,23 @@ import  {GameClient} from "./game_client.js"
 // import select
 // import socket
 
+var actuelGame = null;
+
 const sleep = ms => new Promise(r => setTimeout(r, ms));
 
-function GameAddStep(gameClient)
-{
 
+
+function parseMessageFromServerWS(event)
+{
+	// try
+	// {
+		actuelGame.parseMessageFromServer(event);
+	// }
+	// catch (error)
+	// {
+	// 	console.log(console.error(error));
+	// }
+	
 }
 
 export async function runGameClient(
@@ -16,6 +28,7 @@ export async function runGameClient(
         port=20000
     )
 {
+	websockGame.onmessage = parseMessageFromServerWS;
     // Start tcp client
     // clientSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     // clientSocket.connect((host, port))
@@ -23,55 +36,46 @@ export async function runGameClient(
     // pollerObject = select.poll()
     // pollerObject.register(clientSocket, select.POLLIN)
 
-    let runTcpClient = true
+    let isReady = false
 
     // Start game client
     let gameClient = new GameClient()
+	actuelGame = gameClient;
 
 	document.addEventListener("keydown", function(event)
 			{
 				console.log("event detected : " + event.code)
 				gameClient.input(event, "down")
-				// const paddle = document.getElementById("paddle");
-   				// if (event.code === 'KeyV')
-				// {
-				// 	playsound()
-				// }
 			});
 	document.addEventListener("keyup", function(event)
 			{
 				console.log("event detected : " + event.code)
 				gameClient.input(event, "up")
-				// const paddle = document.getElementById("paddle");
-   				// if (event.code === 'KeyV')
-				// {
-				// 	playsound()
-				// }
 			});
 
     // Clients loop
 
-	if (runTcpClient && gameClient.runMainLoop)
-	{
 		var intervalGame = setInterval(
 			function ()
 			{
-
-				if (runTcpClient && gameClient.runMainLoop)
+				if (!isReady && gameClient.runMainLoop)
+				{
+					gameClient.step()
+					isReady = true
+				}
+				else if (isReady && gameClient.runMainLoop)
 				{
 					gameClient.step()
 					//console.log("game step")
 				}
-				else
+				else if (isReady)
 				{
 					console.log("game end")
 					gameClient.quit()
 					clearInterval(interval);
-				}	
-				GameAddStep(gameClient)
+				}
 			},
 			16); //value : 16
-	}
 
 
     // while(runTcpClient && gameClient.runMainLoop)

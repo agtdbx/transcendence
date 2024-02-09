@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   achievement_and_stat.js                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hde-min <hde-min@student.42.fr>            +#+  +:+       +#+        */
+/*   By: lflandri <lflandri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/23 15:24:40 by lflandri          #+#    #+#             */
-/*   Updated: 2024/02/06 15:24:51 by hde-min          ###   ########.fr       */
+/*   Updated: 2024/02/09 16:42:42 by lflandri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-//TODO connection to db
+//TODO connection to db for stats
 
 var popOpened = false;
 

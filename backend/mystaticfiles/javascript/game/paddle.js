@@ -140,11 +140,15 @@ export class Paddle {
 			this.pos.y = dc.AREA_RECT[1] + d.PERFECT_SHOOT_SIZE + (this.halfH * this.modifierSize)
 			this.hitbox.setPos(this.pos.dup())
 		}
-		if (this.pos.y + (this.halfH * this.modifierSize) > AREA_RECT[1] + AREA_RECT[3] - d.PERFECT_SHOOT_SIZE)
+		if (this.pos.y + (this.halfH * this.modifierSize) > dc.AREA_RECT[1] + dc.AREA_RECT[3] - d.PERFECT_SHOOT_SIZE)
 		{
 			this.pos.y = dc.AREA_RECT[1] + dc.AREA_RECT[3] - d.PERFECT_SHOOT_SIZE - (this.halfH * this.modifierSize)
 			this.hitbox.setPos(this.pos.dup())
 		}
+		this.htmlObject.setAttribute('x',  this.pos.x - (this.halfW * this.modifierSize));
+		this.htmlObject.setAttribute('y',  this.pos.y - (this.halfH * this.modifierSize));
+		this.htmlObject.setAttribute('width', this.w * this.modifierSize);
+		this.htmlObject.setAttribute('height',  this.h * this.modifierSize);
 
 		if (modifier != 1)
 			this.modifierTimeEffect = 5
@@ -172,7 +176,11 @@ export class Paddle {
 
 	setPos( x, y)
 	{
-		this.pos = Vec2(x, y)
-		this.hitbox.setPos(Vec2(x, y))
+		this.pos = new Vec2(x, y)
+		this.hitbox.setPos(new Vec2(x, y))
+		this.htmlObject.setAttribute('x',  x - (this.halfW * this.modifierSize));
+		this.htmlObject.setAttribute('y',  y - (this.halfH * this.modifierSize));
+		this.htmlObject.setAttribute('width', this.w * this.modifierSize);
+		this.htmlObject.setAttribute('height',  this.h * this.modifierSize);
 	}
 }

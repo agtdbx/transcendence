@@ -154,7 +154,7 @@ class GameServer:
 				content = message[1]
 				# Content of user event :
 				# # {id_paddle, id_key, key_action [True = press, False = release]}
-				self.paddlesKeyState[content["paddleId"] * 4 + content["keyId"]] = content["keyAction"]
+				self.paddlesKeyState[content["id_paddle"] * 4 + content["id_key"]] = content["key_action"]
 
 
 	def tick(self):
@@ -669,6 +669,9 @@ class GameServer:
 				(50, 50, 50)
 			)
 		]
+
+		#TODO removed at the end
+		# idMap = 2
 
 		if idMap == 1:
 			self.walls.append(createPolygonObstacle(
