@@ -63,10 +63,10 @@ export const POWER_UP_BALL_INVISIBLE_COLOR = (200, 200, 0) // in seconds
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // PLAYERS KEYS QWERTY
 export const PLAYER_KEYS = [
-	["KeyQ", "KeyA", "KeyZ", "Space"], // L1 player
-	["KeyW", "KeyS", "KeyX", "Space"], // L2 player
-	["KeyO", "KeyK", "KeyM", "Space"], // R1 player
-	["KeyI", "KeyJ", "KeyN", "Space"], // R2 player
+	["KeyW", "KeyS", "KeyF", "Space"], // L1 player
+	["KeyW", "KeyS", "KeyF", "Space"], // L2 player
+	["KeyW", "KeyS", "KeyF", "Space"], // R1 player
+	["KeyW", "KeyS", "KeyF", "Space"], // R2 player
 ]
 
 // // PLAYERS KEYS AZERTY

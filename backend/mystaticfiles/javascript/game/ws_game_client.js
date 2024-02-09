@@ -18,6 +18,7 @@ function startGameClient(server_port, idPaddle, idTeam)
 		console.error("GWS GAME ERROR :", error);
 		return
 	}
+	paddleInfoUser = [idPaddle, idTeam];
 
 	ws_game.onopen = function(e)
 	{
