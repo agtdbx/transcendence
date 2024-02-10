@@ -2,7 +2,7 @@ from db_test.models import User
 
 def set_user_status(myid, status):
     user = User.objects.all().filter(idUser=myid)[0]
-    user.idStatus = status
+    user.status = status
     user.save()
 
 
@@ -15,6 +15,13 @@ async def send_error(websocket, error_explaination):
 
 def get_user_by_id(user_id : int):
     users = User.objects.all().filter(idUser=user_id)
+    if len(users) != 1:
+        return None
+    return users[0]
+
+
+def get_user_by_username(username : str):
+    users = User.objects.all().filter(username=username)
     if len(users) != 1:
         return None
     return users[0]

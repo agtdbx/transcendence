@@ -42,11 +42,6 @@ MESSAGE
     => Message recieved
         {{message}}
 
-    => Server message recieved
-        'type' : 'serverMessage'
-        'message' : <message>
-        'date' : <date>
-
     => Invite recieved
         'type' : 'invite'
         'username' : <username>
@@ -56,7 +51,7 @@ MESSAGE
     {{message}} :
         'type' : 'message'
         'message' : <message>
-        'username' : <username>
+        'username' : <username> # if it's "Mission Control", it's a server message
         'pp' : <profile picture link>
         'date' : <date>
         'channel' : 'general' | <user id>
@@ -198,10 +193,15 @@ TOURNAMENT
         -> {{tournament state}}
 
     /!\ Only the administrator can modify tournament /!\
-    modify tournament parameters
+    switch tournament power up
         'type' : 'tournament'
-        'cmd' : 'modifyParams'
-        'powerUp' : true | false
+        'cmd' : 'modifyPowerUp'
+        -> {{tournament state}}
+
+    /!\ Only the administrator can modify tournament /!\
+    modify tournament map id
+        'type' : 'tournament'
+        'cmd' : 'modifyMapId'
         'mapId' : <map id>
         -> {{tournament state}}
         
@@ -209,9 +209,6 @@ TOURNAMENT
     start tournament
         'type' : 'tournament'
         'cmd' : 'start'
-        'start' : <start date>
-        'powerUp' : true | false
-        'mapId' : <map id>
         -> 'type' : 'tournamentStart'
 
     join tournament
@@ -234,7 +231,7 @@ TOURNAMENT
         'cmd' : 'myNextMatch'
         'tournamentUserId' = <tournament user id>
         -> 'type' : 'myNextMatch'
-           'playerLeft' : <user view> | null
+           'playerLeft' : <user view> | null # null = no future match (loser)
            'playerRight' : <user view> | null
 
 	=> {{tournament state}}
@@ -245,12 +242,12 @@ TOURNAMENT
         'paddleId' : <paddle id>
         'teamId' : <team id>
         
-    => update match tree
-        'type' : 'matchTreeUpdate'
-    	'winner' : <tournament user id> | -1
-    	'final' : (<tournament user id> | -1) * 2
-    	'half' : (<tournament user id> | -1) * 4
-    	'quarter' : (<tournament user id> | -1) * 8
+    => update tournament tree
+        'type' : 'tournamentTreeUpdate'
+    	'winner' : <tournament user id> | -1 | null			# -1 for bot, null for empty
+    	'final' : (<tournament user id> | -1 | null) * 2
+    	'half' : (<tournament user id> | -1 | null) * 4
+    	'quarter' : (<tournament user id> | -1 | null) * 8
 
     => match result
         'type' : 'matchResult'

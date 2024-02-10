@@ -11,9 +11,13 @@ from websocket_server.game_server_manager import end_game
 from websocket_server.game_room import create_game_room, join_game_room, \
                                        quit_game_room, send_game_room_invite, \
                                        game_room_quick_user, game_room_add_bot, \
-                                       game_room_remove_bot, game_room_change_team, \
+                                       game_room_remove_bot, \
+                                       game_room_change_team, \
                                        game_room_change_power_up, \
                                        game_room_change_map, game_room_start_game
+from websocket_server.tournament import create_tournament, \
+                                        switch_tournament_power_up, \
+                                        modify_tournament_map_id
 
 # Dict to save the actives connections
 connected_users = dict()
@@ -40,7 +44,8 @@ async def remove_user_connected(my_id, websocket, my_game_room_id):
         set_user_status(my_id, 0)
         await leave_quick_room(my_id, waitlist, connected_users)
         if my_game_room_id != None:
-            await quit_game_room(my_id, connected_users, my_game_room_id, game_rooms)
+            await quit_game_room(my_id, connected_users, my_game_room_id,
+                                 game_rooms)
 
 
 async def handle_client(websocket : websockets.WebSocketServerProtocol, path):
@@ -152,6 +157,18 @@ async def handle_client(websocket : websockets.WebSocketServerProtocol, path):
                     # If the creation of the game succeed, remove game id
                     if ret:
                         my_game_room_id = None
+                else:
+                    await send_error(websocket, "Request cmd unkown")
+                continue
+
+            # Tournament gestion
+            if request_type == "tournament":
+                if request_cmd == "create":
+                    await create_tournament(my_id, connected_users)
+                if request_cmd == "modifyPowerUp":
+                    await switch_tournament_power_up(my_id, connected_users)
+                if request_cmd == "modifyMapId":
+                    await modify_tournament_map_id(my_id, connected_users, data)
                 else:
                     await send_error(websocket, "Request cmd unkown")
                 continue

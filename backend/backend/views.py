@@ -6,7 +6,7 @@
 #    By: aderouba <aderouba@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/08 14:00:09 by lflandri          #+#    #+#              #
-#    Updated: 2024/02/09 14:47:27 by aderouba         ###   ########.fr        #
+#    Updated: 2024/02/10 16:05:16 by aderouba         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -200,7 +200,7 @@ def section(request, num):
             return render(request,"profil_content.html", {'user': user, 'pos': i, '42urllink' : os.getenv('WEBSITE_URL')})
 
     elif num == 10:
-        ListUser = list(User.objects.all().order_by("-money"))
+        ListUser = list(User.objects.all().filter(idUser__gt=0).order_by("-money"))
         ListUser = ListUser[:18]
 
         Void = User(idUser=0, idType=0, username="", profilPicture="images/default/void.png", tokenJWT="", money=0, idStatus=0)
