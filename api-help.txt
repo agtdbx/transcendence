@@ -216,8 +216,10 @@ TOURNAMENT
         'cmd' : 'join'
         'nickname' : <nickname>
         -> 'type' : 'joinReply'
-           'userTID' : <tournament user id>
-	           
+		   'powerUp' : true | false
+		   'mapId' : <map id>
+		   'players' : [<user view>]
+           
 	quit tournament # if the tournament has begun, it will not work
         'cmd' : 'quit'
         -> No more field
@@ -226,7 +228,7 @@ TOURNAMENT
     get next match of user
         'type' : 'tournament'
         'cmd' : 'myNextMatch'
-        'tournamentUserId' = <tournament user id>
+        'userId' = <user id>
         -> 'type' : 'myNextMatch'
            'playerLeft' : <user view> | null # null = no future match (loser)
            'playerRight' : <user view> | null
@@ -235,7 +237,7 @@ TOURNAMENT
     get next match of tournament
         'type' : 'tournament'
         'cmd' : 'nextMatch'
-        'tournamentUserId' = <tournament user id>
+        'userId' = <user id>
         -> 'type' : 'nextMatch'
            'playerLeft' : <user view> | null # null = no future match (loser)
            'playerRight' : <user view> | null
@@ -276,7 +278,7 @@ TOURNAMENT
         'players' : [<user view>]
 
     <user view>
-    	[<tournament user id>, <user pp>, <tournament user nickmane>] # -1 id for bot
+    	[<user id>, <user pp>, <tournament user nickmane>] # -1 id for bot
 
 
 /!\ All messages for and from game are in it's websocket /!\

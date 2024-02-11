@@ -25,7 +25,7 @@ tournament = {
     "final" : [None] * 2,
     "half" : [None] * 4,
     "quarter" : [None] * 8,
-    "player" : []
+    "players" : []
 }
 
 
@@ -59,7 +59,7 @@ def get_next_match_tournament() -> tuple[int, int] | None:
     return (final[0], final[1])
 
 
-def get_next_match_userT(userT_id:int) -> tuple[int, int] | None:
+def get_next_match_userT(user_id:int) -> tuple[int, int] | None:
     global tournament
 
     winner = tournament["winner"]
@@ -71,7 +71,7 @@ def get_next_match_userT(userT_id:int) -> tuple[int, int] | None:
     if winner != None:
         return None
 
-    quarter_index = quarter.index(userT_id)
+    quarter_index = quarter.index(user_id)
     half_index = quarter_index // 2
 
     # Next match is quarter
@@ -81,7 +81,7 @@ def get_next_match_userT(userT_id:int) -> tuple[int, int] | None:
         return (quarter[quarter_index_1], quarter[quarter_index_2])
 
     # If quarter match if lose
-    if half[half_index] != userT_id:
+    if half[half_index] != user_id:
         return None
 
     final_index = half_index // 2
@@ -93,7 +93,7 @@ def get_next_match_userT(userT_id:int) -> tuple[int, int] | None:
         return (half[half_index_1], half[half_index_2] )
 
     # If half final match is lose
-    if final[final] != userT_id:
+    if final[final] != user_id:
         return None
 
     # This is the final
@@ -140,7 +140,7 @@ def create_tournament_state_msg():
     msg = {"type" : "tournamentState",
            "powerUp" : str(tournament["powerUp"]).lower(),
            "mapId" : tournament["mapId"],
-           "player" : tournament["player"]}
+           "player" : tournament["players"]}
     return str(msg).replace("'", '"')
 
 
@@ -239,7 +239,7 @@ async def switch_tournament_power_up(my_id:int,
           "switch power up", error, file=sys.stderr)
     str_msg = create_tournament_state_msg()
     await send_msg_to_id(my_id, connected_users, str_msg)
-    for user_id in tournament["player"]:
+    for user_id in tournament["players"]:
         await send_msg_to_id(user_id, connected_users, str_msg)
 
 
@@ -304,7 +304,7 @@ async def modify_tournament_map_id(my_id:int,
           "switch power up", error, file=sys.stderr)
     str_msg = create_tournament_state_msg()
     await send_msg_to_id(my_id, connected_users, str_msg)
-    for user_id in tournament["player"]:
+    for user_id in tournament["players"]:
         await send_msg_to_id(user_id, connected_users, str_msg)
 
 
@@ -330,7 +330,7 @@ async def start_tournament(my_id:int,
         return
 
     # Check if threre is less than 2 players
-    if len(tournament["player"]) < 2:
+    if len(tournament["players"]) < 2:
         print("WS : User", my_id, "Tournament must be have at least 2 player " \
               + " for begin", file=sys.stderr)
         await send_error_to_id(my_id, connected_users,
@@ -342,7 +342,7 @@ async def start_tournament(my_id:int,
 
     # Fill the fist step of tournament
     tournament["quarter"] = list()
-    for player_id in tournament["player"]:
+    for player_id in tournament["players"]:
         tournament["quarter"].append(player_id)
 
     while len(tournament["quarter"]) < 8:
@@ -397,7 +397,7 @@ async def joinTournament(my_id:int,
         return
 
     # Check if the tournament is full
-    if len(tournament["player"]) >= 8:
+    if len(tournament["players"]) >= 8:
         print("WS : User", my_id, "Tournament is full", file=sys.stderr)
         await send_error_to_id(my_id, connected_users, "Tournament is full")
         return
@@ -440,11 +440,15 @@ async def joinTournament(my_id:int,
 
     idUserTournament += 1
 
-    tournament["player"].append(userT.id)
+    tournament["players"].append(my_id)
 
     print("WS : User", my_id, "join tournament", current_id_tournament, "as userT",
           userT.id, file=sys.stderr)
-    str_msg = str({"type" : "joinReply", "userTID" : userT.id}).replace("'", '"')
+    str_msg = str({"type" : "joinReply",
+                   "powerUp" : str(tournament['powerUp']).lower(),
+                   "mapId" : tournament["mapId"],
+                   "players" : tournament["players"]
+                 }).replace("'", '"')
     await send_msg_to_id(my_id, connected_users, str_msg)
 
 
@@ -495,6 +499,6 @@ async def quit_tournament(my_id:int,
         await send_error_to_id(my_id, connected_users, "db userT error")
         return
 
-    tournament["player"].remove(id)
+    tournament["players"].remove(my_id)
     print("WS : User", my_id, "quit tournament", current_id_tournament, "as userT",
           userT.id, file=sys.stderr)
