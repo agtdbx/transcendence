@@ -17,7 +17,11 @@ from websocket_server.game_room import create_game_room, join_game_room, \
                                        game_room_change_map, game_room_start_game
 from websocket_server.tournament import create_tournament, \
                                         switch_tournament_power_up, \
-                                        modify_tournament_map_id
+                                        modify_tournament_map_id, \
+                                        start_tournament , joinTournament, \
+                                        quit_tournament
+
+
 
 # Dict to save the actives connections
 connected_users = dict()
@@ -165,10 +169,16 @@ async def handle_client(websocket : websockets.WebSocketServerProtocol, path):
             if request_type == "tournament":
                 if request_cmd == "create":
                     await create_tournament(my_id, connected_users)
-                if request_cmd == "modifyPowerUp":
+                elif request_cmd == "modifyPowerUp":
                     await switch_tournament_power_up(my_id, connected_users)
-                if request_cmd == "modifyMapId":
+                elif request_cmd == "modifyMapId":
                     await modify_tournament_map_id(my_id, connected_users, data)
+                elif request_cmd == "start":
+                    await start_tournament(my_id, connected_users)
+                elif request_cmd == "join":
+                    await joinTournament(my_id, connected_users, data)
+                elif request_cmd == "join":
+                    await quit_tournament(my_id, connected_users)
                 else:
                     await send_error(websocket, "Request cmd unkown")
                 continue

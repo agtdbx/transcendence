@@ -216,12 +216,9 @@ TOURNAMENT
         'cmd' : 'join'
         'nickname' : <nickname>
         -> 'type' : 'joinReply'
-           'success' : true | false
-           'tournamentUserId' : <tournament user id> | null
-           'error' : <error> | null
+           'userTID' : <tournament user id>
 	           
-	quit tournament
-        'type' : 'tournament'
+	quit tournament # if the tournament has begun, it will not work
         'cmd' : 'quit'
         -> No more field
         
@@ -231,6 +228,15 @@ TOURNAMENT
         'cmd' : 'myNextMatch'
         'tournamentUserId' = <tournament user id>
         -> 'type' : 'myNextMatch'
+           'playerLeft' : <user view> | null # null = no future match (loser)
+           'playerRight' : <user view> | null
+        
+	/!\ Only work if the tournament has begin /!\   
+    get next match of tournament
+        'type' : 'tournament'
+        'cmd' : 'nextMatch'
+        'tournamentUserId' = <tournament user id>
+        -> 'type' : 'nextMatch'
            'playerLeft' : <user view> | null # null = no future match (loser)
            'playerRight' : <user view> | null
 
@@ -244,10 +250,10 @@ TOURNAMENT
         
     => update tournament tree
         'type' : 'tournamentTreeUpdate'
-    	'winner' : <tournament user id> | -1 | null			# -1 for bot, null for empty
-    	'final' : (<tournament user id> | -1 | null) * 2
-    	'half' : (<tournament user id> | -1 | null) * 4
-    	'quarter' : (<tournament user id> | -1 | null) * 8
+    	'winner' : <user view> | null			# null for empty
+    	'final' : (<user view> | null) * 2
+    	'half' : (<user view> | null) * 4
+    	'quarter' : (<user view> | null) * 8
 
     => match result
         'type' : 'matchResult'
@@ -270,7 +276,7 @@ TOURNAMENT
         'players' : [<user view>]
 
     <user view>
-    	[<user id>, <user pp>, <user nickmane>]
+    	[<tournament user id>, <user pp>, <tournament user nickmane>] # -1 id for bot
 
 
 /!\ All messages for and from game are in it's websocket /!\
