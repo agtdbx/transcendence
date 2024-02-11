@@ -97,24 +97,3 @@ class Goal(models.Model):
     perfectedShot   = models.BooleanField()
     ballSpeed       = models.IntegerField()
     ownGoal         = models.BooleanField()
-
-
-class Tournament(models.Model):
-    idTournament    = models.IntegerField(primary_key=True)                                                     #[primary key]
-    state           = models.IntegerField()
-    idMap           = models.ForeignKey(Map, on_delete=models.PROTECT)
-    powerUp         = models.BooleanField()
-
-
-class UserTournament(models.Model):
-    id              = models.IntegerField(primary_key=True)                                                     # TRUE [primary key]
-    idTournament    = models.ForeignKey(Tournament, on_delete=models.PROTECT)                                   #[primary key]
-    idUser          = models.ForeignKey(User, on_delete=models.PROTECT)                                         #[primary key]
-    nickname        = models.CharField(max_length=20, unique=True)                                              #[unique]
-    rank            = models.IntegerField()
-
-
-class MatchTournament(models.Model):
-    idMatch         = models.OneToOneField(Match, on_delete=models.PROTECT, primary_key=True)                   #[primary key]
-    idTournament    = models.ForeignKey(Tournament, on_delete=models.PROTECT)
-

@@ -1,6 +1,5 @@
 import sys
 import random
-from db_test.models import User, UserTournament, Tournament
 from websocket_server.utils import get_user_by_id
 from websocket_server.game_room import send_error_to_id, send_msg_to_id, \
                                         NUMBER_OF_MAP, IA_ID
@@ -13,10 +12,6 @@ STATE_CREATE_TOURNAMENT = 1
 STATE_START_TOURNAMENT = 2
 STATE_FINISH_TOURNAMENT = 3
 
-current_id_tournament = None
-
-idUserTournament = 0
-
 tournament = {
     "state" : STATE_NO_TOURNAMENT,
     "mapId" : 0,
@@ -25,9 +20,9 @@ tournament = {
     "final" : [None] * 2,
     "half" : [None] * 4,
     "quarter" : [None] * 8,
-    "players" : []
+    "players" : [],
+    "nicknames" : dict()
 }
-
 
 def get_next_match_tournament() -> tuple[int, int] | None:
     global tournament
@@ -119,22 +114,6 @@ async def check_user_admin(my_id:int,
     return True
 
 
-async def get_db_tournament(my_id:int,
-                            connected_users:dict) -> Tournament | None:
-    global current_id_tournament
-
-    # Get the tournament in db
-    test = Tournament.objects.all().filter(idTournament=current_id_tournament)
-
-    if len(test) != 1:
-        print("WS : User", my_id, "Tournament not found in db", file=sys.stderr)
-        await send_error_to_id(my_id, connected_users,
-                               "Tournament not found in db")
-        return None
-
-    return test[0]
-
-
 def create_tournament_state_msg():
     global tournament
     msg = {"type" : "tournamentState",
@@ -157,7 +136,7 @@ def create_tournament_tree_msg():
 
 async def create_tournament(my_id:int,
                             connected_users:dict):
-    global current_id_tournament, tournament
+    global tournament
 
     # Check if user is an admin
     if not await check_user_admin(my_id, connected_users):
@@ -171,20 +150,6 @@ async def create_tournament(my_id:int,
                          "Tournament already create and not finish")
         return
 
-    id_tournament = Tournament.objects.all().count()
-    try:
-        db_tournament = Tournament.objects.create(idTournament=id_tournament,
-                                               state=STATE_CREATE_TOURNAMENT,
-                                               idMap=0,
-                                               powerUp=False)
-        db_tournament.save()
-    except Exception as error:
-        print("WS : User", my_id, "Tournament creation error :", error,
-              file=sys.stderr)
-        await send_error_to_id(my_id, connected_users,
-                         "Tournament creation error")
-        return
-
     tournament = {
         "state" : STATE_NO_TOURNAMENT,
         "mapId" : 0,
@@ -193,19 +158,18 @@ async def create_tournament(my_id:int,
         "final" : [None] * 2,
         "half" : [None] * 4,
         "quarter" : [None] * 8,
-        "player" : []
+        "player" : [],
+        "nicknames" : dict()
     }
 
-    current_id_tournament = id_tournament
-    print("WS : User", my_id, "Tournament", id_tournament, "create !", error,
-          file=sys.stderr)
+    print("WS : User", my_id, "Tournament create !",file=sys.stderr)
     str_msg = create_tournament_state_msg()
     await send_msg_to_id(my_id, connected_users, str_msg)
 
 
 async def switch_tournament_power_up(my_id:int,
                                      connected_users:dict):
-    global current_id_tournament, tournament
+    global tournament
 
     # Check if user is an admin
     if not await check_user_admin(my_id, connected_users):
@@ -218,25 +182,11 @@ async def switch_tournament_power_up(my_id:int,
                                "Tournament must be in creation to be modified")
         return
 
-    # Get the tournament in db
-    db_tournament = await get_db_tournament(my_id, connected_users)
-    if db_tournament == None:
-        return
-
     # Switch power up
     tournament["powerUp"] = not tournament["powerUp"]
 
-    try:
-        db_tournament.powerUp = tournament["powerUp"]
-        db_tournament.save()
-    except Exception as error:
-        print("WS : User", my_id, "Tournament db error :", error, file=sys.stderr)
-        await send_error_to_id(my_id, connected_users, "Tournament db error")
-        return
-
     # Update message
-    print("WS : User", my_id, "Tournament", current_id_tournament,
-          "switch power up", error, file=sys.stderr)
+    print("WS : User", my_id, "Tournament switch power up", file=sys.stderr)
     str_msg = create_tournament_state_msg()
     await send_msg_to_id(my_id, connected_users, str_msg)
     for user_id in tournament["players"]:
@@ -246,7 +196,7 @@ async def switch_tournament_power_up(my_id:int,
 async def modify_tournament_map_id(my_id:int,
                                      connected_users:dict,
                                      data:dict):
-    global current_id_tournament, tournament
+    global tournament
 
     # Check if user is an admin
     if not await check_user_admin(my_id, connected_users):
@@ -283,25 +233,12 @@ async def modify_tournament_map_id(my_id:int,
                                "Tournament must be in creation to be modified")
         return
 
-    # Get the tournament in db
-    db_tournament = await get_db_tournament(my_id, connected_users)
-    if db_tournament == None:
-        return
-
     # Change map id
     tournament["mapId"] = map_id
 
-    try:
-        db_tournament.idMap = tournament["mapId"]
-        db_tournament.save()
-    except Exception as error:
-        print("WS : User", my_id, "Tournament db error :", error, file=sys.stderr)
-        await send_error_to_id(my_id, connected_users, "Tournament db error")
-        return
-
     # Update message
-    print("WS : User", my_id, "Tournament", current_id_tournament,
-          "switch power up", error, file=sys.stderr)
+    print("WS : User", my_id, "Tournament change map id to", map_id,
+          file=sys.stderr)
     str_msg = create_tournament_state_msg()
     await send_msg_to_id(my_id, connected_users, str_msg)
     for user_id in tournament["players"]:
@@ -322,11 +259,6 @@ async def start_tournament(my_id:int,
               file=sys.stderr)
         await send_error_to_id(my_id, connected_users,
                                "Tournament must be in creation to be start")
-        return
-
-    # Get the tournament in db
-    db_tournament = await get_db_tournament(my_id, connected_users)
-    if db_tournament == None:
         return
 
     # Check if threre is less than 2 players
@@ -375,26 +307,12 @@ async def joinTournament(my_id:int,
                                "Tournament must be in creation to join it")
         return
 
-    # Get the tournament in db
-    db_tournament = await get_db_tournament(my_id, connected_users)
-    if db_tournament == None:
-        return
-
     user = get_user_by_id(my_id)
     # Check if user exist
     if user == None:
         print("WS : User", my_id, "didn't exist", file=sys.stderr)
         await send_error_to_id(my_id, connected_users, "User didn t exist")
         return False
-
-    # Check if the user is already in tournament
-    test = UserTournament.objects.all().filter(idTournament=current_id_tournament,
-                                               idUser=my_id)
-    if len(test) > 0:
-        print("WS : User", my_id, "User already in tournament", file=sys.stderr)
-        await send_error_to_id(my_id, connected_users,
-                               "User already in tournament")
-        return
 
     # Check if the tournament is full
     if len(tournament["players"]) >= 8:
@@ -417,33 +335,15 @@ async def joinTournament(my_id:int,
         return
 
     # Check if nickname is unique
-    test = UserTournament.objects.all().filter(idTournament=current_id_tournament,
-                                               nickname=nickname)
-    if len(test) != 0:
+    if nickname in tournament["nicknames"]:
         print("WS : User", my_id, "Nickname is already used", file=sys.stderr)
         await send_error_to_id(my_id, connected_users, "Nickname is already used")
         return
 
-    # Add user in db
-    try :
-        userT = UserTournament.objects.create(id=idUserTournament,
-                                            idTournament=db_tournament,
-                                            idUser=user,
-                                            nickname="",
-                                            rank=-1)
-        userT.save()
-    except Exception as error:
-        print("WS : User", my_id, "db user tournament error :", error,
-              file=sys.stderr)
-        await send_error_to_id(my_id, connected_users, "db user tournament error")
-        return
-
-    idUserTournament += 1
-
     tournament["players"].append(my_id)
+    tournament["nicknames"][my_id] = nickname
 
-    print("WS : User", my_id, "join tournament", current_id_tournament, "as userT",
-          userT.id, file=sys.stderr)
+    print("WS : User", my_id, "join tournament", file=sys.stderr)
     str_msg = str({"type" : "joinReply",
                    "powerUp" : str(tournament['powerUp']).lower(),
                    "mapId" : tournament["mapId"],
@@ -464,11 +364,6 @@ async def quit_tournament(my_id:int,
                                "Tournament must be in creation to join it")
         return
 
-    # Get the tournament in db
-    db_tournament = await get_db_tournament(my_id, connected_users)
-    if db_tournament == None:
-        return
-
     user = get_user_by_id(my_id)
     # Check if user exist
     if user == None:
@@ -476,29 +371,6 @@ async def quit_tournament(my_id:int,
         await send_error_to_id(my_id, connected_users, "User didn t exist")
         return False
 
-    # Check if the user is already in tournament
-    test = UserTournament.objects.all().filter(idTournament=current_id_tournament,
-                                               idUser=my_id)
-    if len(test) == 0:
-        print("WS : User", my_id, "User already isn't in tournament",
-              file=sys.stderr)
-        await send_error_to_id(my_id, connected_users,
-                               "User already isn t in tournament")
-        return
-
-    userT = test[0]
-
-    id =  userT.id
-
-    try:
-        userT.delete()
-        # userT.save()
-    except Exception as error:
-        print("WS : User", my_id, "db userT error :", error,
-              file=sys.stderr)
-        await send_error_to_id(my_id, connected_users, "db userT error")
-        return
-
     tournament["players"].remove(my_id)
-    print("WS : User", my_id, "quit tournament", current_id_tournament, "as userT",
-          userT.id, file=sys.stderr)
+    tournament["nicknames"].pop(my_id)
+    print("WS : User", my_id, "quit tournament", file=sys.stderr)
