@@ -278,7 +278,9 @@ async def game_server_manager():
     await asyncio.sleep(0.1)
     start_game_msg = {"type" : "startInfo",
                     "obstacles": lstObstacle ,
-                    'powerUp' : str(power_up).lower()
+                    'powerUp' : str(power_up).lower(),
+                    'nbPlayerTeamLeft' : len(team_left),
+                    'nbPlayerTeamRight' : len(team_right)
                     }
     str_msg = str(start_game_msg)
     str_msg = str_msg.replace("'", '"')
@@ -296,8 +298,8 @@ async def game_server_manager():
     print("\nGWS : END GAME (not the movie)", file=sys.stderr)
 
     end_game_msg = {"type" : "endGame",
-                    "leftTeamScore" : 0,
-                    "rightTeamScore" : 0}
+                    "leftTeamScore" : game.teamLeft.score,
+                    "rightTeamScore" : game.teamRight.score}
     str_msg = str(end_game_msg)
     str_msg = str_msg.replace("'", '"')
 

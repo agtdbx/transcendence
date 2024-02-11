@@ -238,6 +238,8 @@ GAME
         'type' : 'startInfo'
         'obstacles' : [<obstacles>, ...]
         'powerUp' : true | false
+		'nbPlayerTeamLeft' : int
+		'nbPlayerTeamRight' : int
 
     => start info
         'type' : 'startCount'

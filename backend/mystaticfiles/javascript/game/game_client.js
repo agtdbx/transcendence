@@ -110,19 +110,9 @@ export class GameClient {
 		this.paddlesKeyState =  [...d.PADDLES_KEYS_STATE]
 
 		// Team creation
-		this.teamLeft = new team.Team(1, d.TEAM_LEFT)
-		this.teamRight = new team.Team(1, d.TEAM_RIGHT)
-		let nbPlayerOfTeam = 1;
-		for (let nbplayer = 0; nbplayer < nbPlayerOfTeam; nbplayer++) {
-			this.win.insertBefore(this.teamLeft.paddles[nbplayer].htmlObject, null);
-
-			
-		}
-		for (let nbplayer = 0; nbplayer < nbPlayerOfTeam; nbplayer++) {
-			this.win.insertBefore(this.teamRight.paddles[nbplayer].htmlObject, null);
-
-			
-		}
+		this.teamLeft = null
+		this.teamRight = null
+		
 
 		this.balls = []
 		// Ball creation
@@ -533,13 +523,44 @@ export class GameClient {
 		}
 		else if (type === "endGame") // Not the movie !
 		{
-			let but = document.createElement("button");
-			but.classList = "btn-drg";
-			but.textContent = "Return to main page";
-			but.onclick = function(){
+			document.getElementById("body").onclick = function(){
+				document.getElementById("body").onclick = null;
 				changePage('3');
 			};
-			document.getElementById("content").appendChild(but);
+			document.getElementById("endGameVS").setAttribute("visibility", "visible")
+			document.getElementById("endGameScreen").setAttribute("visibility", "visible")
+			document.getElementById("EndStatusGame").setAttribute("visibility", "visible")
+			document.getElementById("endGameRightTeam").setAttribute("visibility", "visible");
+			document.getElementById("endGameLeftTeam").setAttribute("visibility", "visible");
+			document.getElementById("endClickToContinue").setAttribute("visibility", "visible");
+			document.getElementById("endGameLeftTeam").textContent = data['leftTeamScore']
+			document.getElementById("endGameRightTeam").textContent = data['rightTeamScore']
+			if (paddleInfoUser[1] == 0)
+			{
+				if (data['leftTeamScore'] > data['rightTeamScore'])
+				{
+					document.getElementById("EndStatusGame").textContent = "You  Win"
+					document.getElementById("EndStatusGame").setAttributeNS(null,"fill", "#00FF00")
+				}
+				else
+				{
+					document.getElementById("EndStatusGame").textContent = "You Lose"
+					document.getElementById("EndStatusGame").setAttributeNS(null,"fill", "#FF0000")	
+				}
+			}
+			else
+			{
+				if (data['leftTeamScore'] < data['rightTeamScore'])
+				{
+					document.getElementById("EndStatusGame").textContent = "You  Win"
+					document.getElementById("EndStatusGame").setAttributeNS(null,"fill", "#00FF00")
+				}
+				else
+				{
+					document.getElementById("EndStatusGame").textContent = "You Lose"
+					document.getElementById("EndStatusGame").setAttributeNS(null,"fill", "#FF0000")	
+				}
+			}
 			ws_game.onclose = {};
 			ws_game.close();
 			ws_game = null;
@@ -551,6 +572,16 @@ export class GameClient {
 		{
 			console.log("Starting info received");
 			this.createObstaclesOnMap(data['obstacles'])
+			this.teamLeft = new team.Team(parseInt(data['nbPlayerTeamLeft']), d.TEAM_LEFT)
+			this.teamRight = new team.Team(parseInt(data['nbPlayerTeamRight']), d.TEAM_RIGHT)
+			for (let nbplayer = 0; nbplayer < parseInt(data['nbPlayerTeamLeft']); nbplayer++)
+			{
+				this.win.insertBefore(this.teamLeft.paddles[nbplayer].htmlObject, null);
+			}
+			for (let nbplayer = 0; nbplayer < parseInt(data['nbPlayerTeamRight']); nbplayer++)
+			{
+				this.win.insertBefore(this.teamRight.paddles[nbplayer].htmlObject, null);
+			}
 		}
 		else if (type === "startCount")
 		{

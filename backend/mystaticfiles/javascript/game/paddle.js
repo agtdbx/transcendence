@@ -18,6 +18,10 @@ export class Paddle {
 		this.htmlObject.setAttribute('y',  y - this.halfH);
 		this.htmlObject.setAttribute('width', this.w);
 		this.htmlObject.setAttribute('height',  this.h);
+		if (team === paddleInfoUser[1])
+			this.htmlObject.setAttributeNS(null, 'fill',  "#0000FF");
+		else
+			this.htmlObject.setAttributeNS(null, 'fill',  "#FF0000");
 		// this.htmlObject.setAttribute('transform-origin', "center");
 
 
