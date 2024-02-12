@@ -1,3 +1,12 @@
+#erorCreate{
+	position: absolute;
+	-ms-transform: translate(-50%, -50%);
+	transform: translate(-50%, -50%);
+	color: red;
+	top: 80%;
+	left: 50%;
+}
+
 .tournament-page{
 	cursor: url("cursor1.png"), auto;
 	background-attachment: auto;

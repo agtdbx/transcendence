@@ -246,63 +246,54 @@ function checkSignin(data)
 		.catch(error => console.log("checkSignin error :", error))
 	}
 
-	function changePassword(data)
+function changePassword(data)
+{
+	fetch("changePassword",
 	{
-		fetch("changePassword",
+		method: 'POST',
+		body: data,
+		cache: "default"
+	})
+	.then(response => response.json())
+	.then(jsonData => {
+
+		if (jsonData["success"] != true)
 		{
-			method: 'POST',
-			body: data,
-			cache: "default"
-		})
-		.then(response => response.json())
-		.then(jsonData => {
+			errorSign = document.getElementById("errorPopPassword")
+			errorSign.innerHTML=jsonData["error"]
+			return ;
+		}
+		remove_pop()
+	})
+	.catch(error => console.log("checkSignin error :", error))
+}
 
-			if (jsonData["success"] != true)
-			{
-				errorSign = document.getElementById("errorPopPassword")
-				errorSign.innerHTML=jsonData["error"]
-				return ;
-			}
-			remove_pop()
-		})
-		.catch(error => console.log("checkSignin error :", error))
-	}
-
-	function changeUsername(data)
-    {
-        fetch("changeUsername",
-        {
-            method: 'POST',
-            body: data,
-            cache: "default"
-        })
-        .then(response => response.json())
-        .then(jsonData => {
-
-            if (jsonData["success"] != true)
-            {
-                errorSign = document.getElementById("errorPopUsername")
-				errorSign.innerHTML=jsonData["error"]
-                return ;
-            }
-			let name = document.getElementById("pseudo_profil_page");
-			name.textContent = document.getElementById("newName").value;
-
-			let name2 = document.getElementById("NavUserName");
-			name2.textContent = document.getElementById("newName").value;
-            remove_pop()
-        })
-        .catch(error => console.log("changeUsername error :", error))
-    }
-
-	function createTournament()
+function changeUsername(data)
+{
+	fetch("changeUsername",
 	{
-		fetch("createTournament",
-        {
-            method: 'POST',
-            cache: "default"
-        })
-	}
+		method: 'POST',
+		body: data,
+		cache: "default"
+	})
+	.then(response => response.json())
+	.then(jsonData => {
+
+		if (jsonData["success"] != true)
+		{
+			errorSign = document.getElementById("errorPopUsername")
+			errorSign.innerHTML=jsonData["error"]
+			return ;
+		}
+		let name = document.getElementById("pseudo_profil_page");
+		name.textContent = document.getElementById("newName").value;
+
+		let name2 = document.getElementById("NavUserName");
+		name2.textContent = document.getElementById("newName").value;
+		remove_pop()
+	})
+	.catch(error => console.log("changeUsername error :", error))
+}
 
 function disconnection()
 {
