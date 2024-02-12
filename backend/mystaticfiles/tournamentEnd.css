@@ -1,0 +1,32 @@
+#tournamentProgress{
+    position: absolute;
+	top: 40%;
+	left: 10%;
+	width: 30%;
+	height: 40%;
+	overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+	background: rgba(40,35,23,0.5);
+}
+
+#title{
+    text-align : center;
+	margin-top : 2%;
+	font-size: 700%;
+	color: #ff9c00;
+	-webkit-text-stroke: 2px #fd4c00;
+	font-family: "KhazadDum", sans-serif;
+}
+
+#tournamentPodium{
+    position: absolute;
+	top: 40%;
+	left: 60%;
+	width: 30%;
+	height: 40%;
+	overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+	background: rgba(40,35,23,0.5);
+}

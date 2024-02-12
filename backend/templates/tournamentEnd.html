@@ -1,0 +1,23 @@
+{% load static %}
+<link rel="stylesheet" href="{% static 'tournamentEnd.css' %}">
+<div id = "Page">
+
+    <h1 id="title">Tournament Result</h1>
+    <div class ="tournamentProgress" id = "tournamentProgress">
+        <div class ="greyRect">
+            <svg  viewBox="0, 0, 800, 300" style="width:100%; height:100%;" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                <g id="graphe" style="fill:none;stroke-width:4px;">
+
+
+                </g>
+            </svg>
+            <script src="{% static 'javascript/tournament/tournament_tree.js' %}" ></script>\
+        </div>
+    </div>
+
+    <div class ="tournamentPodium" id = "tournamentPodium">
+        <div class ="greyRect">
+            
+        </div>
+    </div>
+</div>
