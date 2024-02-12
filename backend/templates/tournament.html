@@ -23,39 +23,32 @@
 			</div>
 		</div>
 	</form>
-
+	<p id="erorCreate"></p>
 
 	<div class ="tournamentProgress" id = "tournamentProgress">
-		<div class ="tournamentrect3" id = "tournamentrect3">
-			<svg  viewBox="0, 0, 800, 300" style="width:100%; height:100%;" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-				<g id="graphe" style="fill:none;stroke-width:4px;">
-
-
-				</g>
-			</svg>
-			<script src="{% static 'javascript/tournament/tournament_tree.js' %}" ></script>\
+		<div class ="tournamentrectUserList" id = "tournamentrect3">
 		</div>
 	</div>
 
 
 	<div class="changeTournament">
 		<div class="CustomPowerUp">
-			<p id="customPTxt">Power Up</p>
+			<p id="customPTxt" style="color: white;">Power Up</p>
 			<button type="button" class ="btn-drg" id="btnStatusPowerUp">OFF</button>
 		</div>
 
 		<div class="CustomMap">
-			<p id="customMTxt">Map</p>
-			<button type="button" class ="btn-drg btn-map" id="btnMap1">map 1 cave is wierd i guess</button><br><br>
-			<button type="button" class ="btn-drg btn-map" id="btnMap2">map 2 cave is wierd i guess</button><br><br>
-			<button type="button" class ="btn-drg btn-map" id="btnMap3">map 3 cave is wierd i guess</button><br><br>
-			<button type="button" class ="btn-drg btn-map" id="btnMap4">map 4 cave is wierd i guess</button><br><br>
-			<button type="button" class ="btn-drg btn-map" id="btnMap5">map 5 cave is wierd i guess</button>
+				<p id="customMTxt">Map</p>
+				<button type="button" class ="btn-drg btn-map" id="btnMap1">map 1 cave is wierd i guess</button><br><br>
+				<button type="button" class ="btn-drg btn-map" id="btnMap2">map 2 cave is wierd i guess</button><br><br>
+				<button type="button" class ="btn-drg btn-map" id="btnMap3">map 3 cave is wierd i guess</button><br><br>
+				<button type="button" class ="btn-drg btn-map" id="btnMap4">map 4 cave is wierd i guess</button><br><br>
+				<button type="button" class ="btn-drg btn-map" id="btnMap5">map 5 cave is wierd i guess</button>
 		</div>
 	</div>
 
-	<button type="button" class ="btn-drg" id="btnTournamentStartGame">Start Tournament</button>
+	<button type="button" class ="btn-drg" id="btnTournamentCreate">Create Tournament</button>
 	<button type="button" class ="btn-drg" id="btnTournamentQuit" onclick="changePage('3')">quit</button>
-	<button type="button" class ="btn-drg" id="btnTournamentShuffle">Shuffle</button>
+	<button type="button" class ="btn-drg" id="btnTournamentLaunch">Launch tournament</button>
 
 </div>

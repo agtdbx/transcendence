@@ -102,3 +102,29 @@
 	height: 2.5em;
 	font-size: 200%;
 }
+
+#adminTournament{
+	-ms-transform: translate(-50%, -50%);
+	transform: translate(-50%, -50%);
+	position: absolute;
+	background-color: transparent;
+	left: 50%;
+	top: 30%;
+	width: 10%;
+	height: 10%;
+}
+
+#mainBtnAdmin{
+	position: absolute;
+	-ms-transform: translate(-50%, -50%);
+	transform: translate(-50%, -50%);
+	top: 75%;
+	left: 50%;
+	visibility: visible;
+	margin-top: 1%;
+	width: 60%;
+	height: 25%;
+	font-size: 150%;
+	overflow: hidden;
+    text-overflow: ellipsis;
+}

@@ -6,6 +6,9 @@
 		<div class="greyRect">
 			<p id="mainPageTxtTournament">TOURNAMENT</p>
 			<button data-section="14" type="button" class ="changePage btn-drg" id="mainBtnJoin" onclick="changePage(this.dataset.section)">JOIN</button>
+				{% if idType == 2 %}
+					<button data-section="8" type="button" class ="changePage btn-drg" id="mainBtnAdmin" onclick="changePage(this.dataset.section)">organize tournament</button>
+				{% endif %}
 		</div>
 	</div>
 
@@ -30,7 +33,6 @@
 			</div>
 		</div>
 	</form>
-
 
 	<button data-section="4" type="button" class ="changePage btn-drg" id = "mainPageBtnQuick" onclick="changePage(this.dataset.section)">QUICK GAME</button>
 	<button data-section="5" type="button" class ="changePage btn-drg" id = "mainPageBtnCustom" onclick="changePage(this.dataset.section)">CUSTOM GAME</button>
