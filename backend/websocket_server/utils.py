@@ -1,3 +1,4 @@
+import sys
 from db_test.models import User
 
 def set_user_status(myid, status):
@@ -25,3 +26,52 @@ def get_user_by_username(username : str):
     if len(users) != 1:
         return None
     return users[0]
+
+
+async def send_msg_to_id(my_id:int,
+                         connected_users:dict,
+                         msg:str):
+    for websocket in connected_users.get(my_id, []):
+        try:
+            await websocket.send(msg)
+        except:
+            pass
+
+
+async def send_error_to_id(my_id:int,
+                           connected_users:dict,
+                           error:str):
+    for websocket in connected_users.get(my_id, []):
+        try:
+            await send_error(websocket, error)
+        except:
+            pass
+
+
+async def check_user_admin(my_id:int,
+                           connected_users:dict) -> bool:
+    user = get_user_by_id(my_id)
+    # Check if user exist
+    if user == None:
+        print("WS : User", my_id, "didn't exist", file=sys.stderr)
+        await send_error_to_id(my_id, connected_users, "User didn t exist")
+        return False
+
+    # Check if user is an admin
+    if user.type != 2:
+        print("WS : User", my_id, "Isn't an admin", file=sys.stderr)
+        await send_error_to_id(my_id, connected_users,
+                               "You need to be an administator")
+        return False
+
+    return True
+
+
+async def check_user_exist(my_id:int,
+                           connected_users:dict) -> bool:
+    user = get_user_by_id(my_id)
+    # Check if user exist
+    if user == None:
+        print("WS : User", my_id, "didn't exist", file=sys.stderr)
+        await send_error_to_id(my_id, connected_users, "User didn t exist")
+        return False

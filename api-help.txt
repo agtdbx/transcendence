@@ -224,23 +224,52 @@ TOURNAMENT
         'cmd' : 'quit'
         -> No more field
         
-	/!\ Only work if the tournament has begin /!\   
-    get next match of user
-        'type' : 'tournament'
-        'cmd' : 'myNextMatch'
-        'userId' = <user id>
-        -> 'type' : 'myNextMatch'
-           'playerLeft' : <user view> | null # null = no future match (loser)
-           'playerRight' : <user view> | null
+    get tournament info
+    	'type' : 'tournament'
+        'cmd' : 'getInfo'
+        -> 'type' : 'tournamentInfo'
+           'status' : 'nothing' | 'create' | 'start' | 'finish'
+           'mapId' : <map id>
+           'powerUp' : true | false
+     
+    get user of tournament
+    	'type' : 'tournament'
+        'cmd' : 'getUserTournament'
+        -> 'type' : 'tournamentPlayersList'
+    	   'players' : [<user view>] 
+        
+    get if the user is in tournament
+    	'type' : 'tournament'
+        'cmd' : 'IsUserInTournament'
+        -> 'type' : 'InTournament'
+           'inTournament' : true | false
+        
+    get tournament tree
+    	'type' : 'tournament'
+        'cmd' : 'getTournamentTree'
+		-> type' : 'tournamentTreeUpdate'
+    	   'winner' : <user view> | null			# null for empty
+		   'final' : (<user view> | null) * 2
+    	   'half' : (<user view> | null) * 4
+    	   'quarter' : (<user view> | null) * 8
         
 	/!\ Only work if the tournament has begin /!\   
     get next match of tournament
         'type' : 'tournament'
         'cmd' : 'nextMatch'
-        'userId' = <user id>
         -> 'type' : 'nextMatch'
-           'playerLeft' : <user view> | null # null = no future match (loser)
-           'playerRight' : <user view> | null
+           'match' : [<user view> | null, <user view> | null] | null
+           # null in user = user not know
+           # all null = no future match (end of tournament)
+        
+	/!\ Only work if the tournament has begin /!\   
+    get next match of user
+        'type' : 'tournament'
+        'cmd' : 'myNextMatch'
+        -> 'type' : 'myNextMatch'
+           'match' : [<user view> | null, <user view> | null] | null
+           # null in user = user not know
+           # all null = no future match (loser)
 
 	=> {{tournament state}}
 
@@ -250,17 +279,16 @@ TOURNAMENT
         'paddleId' : <paddle id>
         'teamId' : <team id>
         
+    => update list users
+    	'type' : 'tournamentPlayersList'
+    	'players' : [<user view>] 
+        
     => update tournament tree
         'type' : 'tournamentTreeUpdate'
     	'winner' : <user view> | null			# null for empty
     	'final' : (<user view> | null) * 2
     	'half' : (<user view> | null) * 4
     	'quarter' : (<user view> | null) * 8
-
-    => match result
-        'type' : 'matchResult'
-        'winner' : <tournament user id>
-        'loser' : <tournament user id>
 
     => nextMatch
         'type' : 'nextMatch'
@@ -269,7 +297,7 @@ TOURNAMENT
 
     => end tournament
         'type' : 'endTournament'
-        'onePongMan' : <tournament user id>
+        'onePongMan' : <user id>
 
 	{{tournament state}}
 		'type' : 'tournamentState'

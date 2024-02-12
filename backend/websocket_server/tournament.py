@@ -1,8 +1,8 @@
 import sys
 import random
-from websocket_server.utils import get_user_by_id
-from websocket_server.game_room import send_error_to_id, send_msg_to_id, \
-                                        NUMBER_OF_MAP, IA_ID
+from websocket_server.utils import get_user_by_id, send_error_to_id, \
+                                   send_msg_to_id, check_user_admin
+from websocket_server.game_room import NUMBER_OF_MAP, IA_ID
 from websocket_server.message import message_in_general
 
 MISSION_CONTROL = get_user_by_id(-2)
@@ -23,6 +23,29 @@ tournament = {
     "players" : [],
     "nicknames" : dict()
 }
+
+def get_user_view(user_id:int) -> list[int, str, str]:
+    global tournament
+    user = get_user_by_id(user_id)
+
+    if user_id == -1:
+        nickname = "bosco"
+    else:
+        nickname = tournament["nicknames"][user_id]
+
+    return [user_id, user.profilPicture.name, nickname]
+
+
+def get_lst_users_view() -> list:
+    global tournament
+
+    lst = []
+
+    for id in tournament["players"]:
+        lst.append(get_user_view(id))
+
+    return lst
+
 
 def get_next_match_tournament() -> tuple[int, int] | None:
     global tournament
@@ -54,7 +77,7 @@ def get_next_match_tournament() -> tuple[int, int] | None:
     return (final[0], final[1])
 
 
-def get_next_match_userT(user_id:int) -> tuple[int, int] | None:
+def get_next_match_user(user_id:int) -> tuple[int, int] | None:
     global tournament
 
     winner = tournament["winner"]
@@ -95,31 +118,12 @@ def get_next_match_userT(user_id:int) -> tuple[int, int] | None:
     return (final[0], final[1])
 
 
-async def check_user_admin(my_id:int,
-                            connected_users:dict) -> bool:
-    user = get_user_by_id(my_id)
-    # Check if user exist
-    if user == None:
-        print("WS : User", my_id, "didn't exist", file=sys.stderr)
-        await send_error_to_id(my_id, connected_users, "User didn t exist")
-        return False
-
-    # Check if user is an admin
-    if user.type != 2:
-        print("WS : User", my_id, "Isn't an admin", file=sys.stderr)
-        await send_error_to_id(my_id, connected_users,
-                               "You need to be an administator")
-        return False
-
-    return True
-
-
 def create_tournament_state_msg():
     global tournament
     msg = {"type" : "tournamentState",
            "powerUp" : str(tournament["powerUp"]).lower(),
            "mapId" : tournament["mapId"],
-           "player" : tournament["players"]}
+           "players" : get_lst_users_view()}
     return str(msg).replace("'", '"')
 
 
@@ -158,7 +162,7 @@ async def create_tournament(my_id:int,
         "final" : [None] * 2,
         "half" : [None] * 4,
         "quarter" : [None] * 8,
-        "player" : [],
+        "players" : [],
         "nicknames" : dict()
     }
 
@@ -294,10 +298,15 @@ async def start_tournament(my_id:int,
     #        SUR LES QUICK GAMES !
 
 
-async def joinTournament(my_id:int,
+async def tounament_next_start_match(connected_users:dict) -> bool:pass
+
+async def tounament_end_match(connected_users:dict):pass
+
+
+async def join_tournament(my_id:int,
                          connected_users:dict,
                          data:dict):
-    global idUserTournament, tournament
+    global tournament
 
     # Check if the tournament isn't in creation
     if tournament["state"] != STATE_CREATE_TOURNAMENT:
@@ -307,13 +316,6 @@ async def joinTournament(my_id:int,
                                "Tournament must be in creation to join it")
         return
 
-    user = get_user_by_id(my_id)
-    # Check if user exist
-    if user == None:
-        print("WS : User", my_id, "didn't exist", file=sys.stderr)
-        await send_error_to_id(my_id, connected_users, "User didn t exist")
-        return False
-
     # Check if the tournament is full
     if len(tournament["players"]) >= 8:
         print("WS : User", my_id, "Tournament is full", file=sys.stderr)
@@ -321,7 +323,7 @@ async def joinTournament(my_id:int,
         return
 
     # get nickname field
-    nickname = data.get("nickname", None)
+    nickname : str = data.get("nickname", None)
     if nickname == None:
         print("WS : User", my_id, "Missing nickname field", file=sys.stderr)
         await send_error_to_id(my_id, connected_users, "Missing nickname field")
@@ -334,8 +336,20 @@ async def joinTournament(my_id:int,
                                "Nickname need to be between 2 and 15 characters")
         return
 
+    # Check if nickname haven't bad caracters
+    nickname = nickname.lower()
+    good_chars = "abcdefghijklmnoprstuvwxyz0123456789_"
+    for c in nickname:
+        if c not in good_chars:
+            print("WS : User", my_id, "Bad nickname. Only alphanum and "
+                  + "underscore autorised", file=sys.stderr)
+            await send_error_to_id(my_id, connected_users,
+                                   "Bad nickname. Only alphanum and "
+                                   + "underscore autorised")
+            return
+
     # Check if nickname is unique
-    if nickname in tournament["nicknames"]:
+    if nickname in tournament["nicknames"] or nickname == "bosco":
         print("WS : User", my_id, "Nickname is already used", file=sys.stderr)
         await send_error_to_id(my_id, connected_users, "Nickname is already used")
         return
@@ -347,9 +361,16 @@ async def joinTournament(my_id:int,
     str_msg = str({"type" : "joinReply",
                    "powerUp" : str(tournament['powerUp']).lower(),
                    "mapId" : tournament["mapId"],
-                   "players" : tournament["players"]
+                   "players" : get_lst_users_view()
                  }).replace("'", '"')
     await send_msg_to_id(my_id, connected_users, str_msg)
+
+    # Update player list for other user
+    str_msg = str({"type" : "tournamentPlayersList",
+                   "players" : get_lst_users_view()}).replace("'", '"')
+    for id in tournament["players"]:
+        if id != my_id:
+            await send_msg_to_id(id, connected_users, str_msg)
 
 
 async def quit_tournament(my_id:int,
@@ -364,13 +385,65 @@ async def quit_tournament(my_id:int,
                                "Tournament must be in creation to join it")
         return
 
-    user = get_user_by_id(my_id)
-    # Check if user exist
-    if user == None:
-        print("WS : User", my_id, "didn't exist", file=sys.stderr)
-        await send_error_to_id(my_id, connected_users, "User didn t exist")
-        return False
-
     tournament["players"].remove(my_id)
     tournament["nicknames"].pop(my_id)
     print("WS : User", my_id, "quit tournament", file=sys.stderr)
+
+    # Update player list for other user
+    str_msg = str({"type" : "tournamentPlayersList",
+                   "players" : get_lst_users_view()}).replace("'", '"')
+    for id in tournament["players"]:
+        if id != my_id:
+            await send_msg_to_id(id, connected_users, str_msg)
+
+
+async def get_tournament_info(my_id:int,
+                                connected_users:dict):
+    global tournament
+
+    status = ['nothing', 'create', 'start', 'finish']
+    str_msg = str({"type" : "tournamentInfo",
+                   "status" : status[tournament["state"]],
+                   "mapId" : tournament["mapId"],
+                   "powerUp" : str(tournament["powerUp"]).lower()
+                   }).replace("'", '"')
+    await send_msg_to_id(my_id, connected_users, str_msg)
+
+
+async def get_users_tournament(my_id:int,
+                                connected_users:dict):
+    global tournament
+
+    str_msg = str({"type" : "tournamentPlayersList",
+                   "players" : get_lst_users_view()}).replace("'", '"')
+    await send_msg_to_id(my_id, connected_users, str_msg)
+
+
+async def is_user_in_tournament(my_id:int,
+                                connected_users:dict):
+    global tournament
+
+    str_msg = str({"type" : "InTournament",
+                   "inTournament" : str(my_id in tournament["player"]).lower()
+                   }).replace("'", '"')
+    await send_msg_to_id(my_id, connected_users, str_msg)
+
+
+async def next_match_tournament(my_id:int,
+                                connected_users:dict):
+    next_match = get_next_match_tournament()
+
+    str_msg = str({"type" : "nextMatch",
+                   "match" : next_match
+                   }).replace("'", '"').replace("None", "null")
+    await send_msg_to_id(my_id, connected_users, str_msg)
+
+
+async def next_match_user(my_id:int,
+                          connected_users:dict):
+    next_match = get_next_match_user(my_id)
+
+    str_msg = str({"type" : "myNextMatch",
+                   "match" : next_match
+                   }).replace("'", '"').replace("None", "null")
+    await send_msg_to_id(my_id, connected_users, str_msg)

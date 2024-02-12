@@ -18,8 +18,11 @@ from websocket_server.game_room import create_game_room, join_game_room, \
 from websocket_server.tournament import create_tournament, \
                                         switch_tournament_power_up, \
                                         modify_tournament_map_id, \
-                                        start_tournament , joinTournament, \
-                                        quit_tournament
+                                        start_tournament , join_tournament, \
+                                        quit_tournament, get_tournament_info, \
+                                        get_users_tournament, \
+                                        is_user_in_tournament, \
+                                        next_match_tournament, next_match_user
 
 
 
@@ -176,9 +179,19 @@ async def handle_client(websocket : websockets.WebSocketServerProtocol, path):
                 elif request_cmd == "start":
                     await start_tournament(my_id, connected_users)
                 elif request_cmd == "join":
-                    await joinTournament(my_id, connected_users, data)
-                elif request_cmd == "join":
+                    await join_tournament(my_id, connected_users, data)
+                elif request_cmd == "quit":
                     await quit_tournament(my_id, connected_users)
+                elif request_cmd == "getInfo":
+                    await get_tournament_info(my_id, connected_users)
+                elif request_cmd == "getUserTournament":
+                    await get_users_tournament(my_id, connected_users)
+                elif request_cmd == "IsUserInTournament":
+                    await is_user_in_tournament(my_id, connected_users)
+                elif request_cmd == "nextMatch":
+                    await next_match_tournament(my_id, connected_users)
+                elif request_cmd == "myNextMatch":
+                    await next_match_user(my_id, connected_users)
                 else:
                     await send_error(websocket, "Request cmd unkown")
                 continue

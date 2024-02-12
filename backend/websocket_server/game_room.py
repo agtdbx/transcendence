@@ -1,5 +1,7 @@
 import sys
-from websocket_server.utils import send_error, get_user_by_id, set_user_status
+from websocket_server.utils import send_error_to_id, send_msg_to_id, \
+                                   get_user_by_id, set_user_status, \
+                                   check_user_exist
 from websocket_server.quick_room import create_game_start_message
 from websocket_server.game_server_manager import create_new_game, \
                                                  is_game_server_free
@@ -15,26 +17,6 @@ from websocket_server.game_server_manager import create_new_game, \
 MAX_PLAYER_PER_TEAM = 2
 NUMBER_OF_MAP = 5
 IA_ID = -1
-
-
-async def send_msg_to_id(my_id:int,
-                         connected_users:dict,
-                         msg:str):
-    for websocket in connected_users.get(my_id, []):
-        try:
-            await websocket.send(msg)
-        except:
-            pass
-
-
-async def send_error_to_id(my_id:int,
-                           connected_users:dict,
-                           error:str):
-    for websocket in connected_users.get(my_id, []):
-        try:
-            await send_error(websocket, error)
-        except:
-            pass
 
 
 def create_game_room_status_message(type, game_room:dict):
