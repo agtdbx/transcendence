@@ -263,12 +263,6 @@ def section(request, num):
             return render(request, "joinTournament_full.html")
         else:
             return render(request,"joinTournament.html")
-<<<<<<< HEAD
-
-    elif num == 14:
-        if fullPage:
-            return render(request, "tournamentInscription_full.html")
-=======
         
     elif num == 14: #check if user is register or if tournament is full if not register
         if UserTournament.objects.all().filter(idUser=user.idUser):     #already join tournament
@@ -281,7 +275,6 @@ def section(request, num):
                 return render(request, "tournamentSpectate_full.html")
             else:
                 return render(request,"tournamentSpectate.html")
->>>>>>> tournament
         else:
             if fullPage:
                 return render(request, "tournamentInscription_full.html")   #subscribe to tournament
