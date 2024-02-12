@@ -72,12 +72,11 @@ class Map(models.Model):
 
 class Match(models.Model):
     idMatch         = models.IntegerField(primary_key=True)                                                     #[primary key]
+    type            = models.IntegerField()
     matchDate       = models.TimeField()
     matchDuration   = models.TimeField()
     idMap           = models.ForeignKey(Map, on_delete=models.PROTECT)
     powerUp         = models.BooleanField()
-    cursed          = models.BooleanField()
-    tournament      = models.BooleanField()
 
 
 class MatchUser(models.Model):
@@ -85,7 +84,6 @@ class MatchUser(models.Model):
     idMatch         = models.ForeignKey(Match, on_delete=models.PROTECT)                                        #[primary key]
     idUser          = models.ForeignKey(User, on_delete=models.PROTECT)                                         #[primary key]
     score           = models.IntegerField()
-    powerUp         = models.IntegerField()
 
 
 class Goal(models.Model):
