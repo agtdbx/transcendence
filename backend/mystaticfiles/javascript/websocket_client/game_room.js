@@ -178,7 +178,7 @@ function addBotToElement(element, team)
 	pp.style.height = "2em";
 
 	let username = document.createElement("p");
-	username.textContent = "Bot - Bosco";
+	username.textContent = "bosco";
 	username.style.color = "white";
 
 	let div = document.createElement("div");

@@ -102,7 +102,8 @@ function onRecieveData(event)
 		let port = data["gamePort"];
 		let id_paddle = data["paddleId"];
 		let id_team = data["teamId"];
-		startGameClient(port, id_paddle, id_team);
+		let get_game_type = data["type"];
+		startGameClient(port, id_paddle, id_team, get_game_type);
 	}
 	else
 		console.error("Unkown data recieved :", data);

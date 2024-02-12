@@ -1,5 +1,5 @@
 import sys
-from websocket_server.utils import set_user_status
+from websocket_server.utils import set_user_status, create_game_start_message, GAME_TYPE_QUICK
 from websocket_server.game_server_manager import create_new_game, is_game_server_free
 
 
@@ -19,19 +19,6 @@ async def waitlist_message(type:str,
     str_msg = str(msg).replace("'", '"')
     for websocket in connected_users.get(user_id, []):
         await websocket.send(str_msg)
-
-
-def create_game_start_message(port, paddle_id, team_id):
-    message : dict = {
-        "type" : "gameStart",
-        "gamePort" : str(port),
-        "paddleId" : str(paddle_id),
-        "teamId" : str(team_id)
-    }
-    str_message = str(message)
-    str_message = str_message.replace("'", '"')
-
-    return str_message
 
 
 async def join_quick_room(my_id : int,
@@ -74,12 +61,12 @@ async def join_quick_room(my_id : int,
     set_user_status(my_id, 2)
 
     # Send start game message to first player in waitlist
-    first_player_msg = create_game_start_message(ret[1], 0, 0)
+    first_player_msg = create_game_start_message(ret[1], 0, 0, GAME_TYPE_QUICK)
     for websocket in connected_users.get(first_player_id, []):
         await websocket.send(first_player_msg)
 
     # Send start game message to current player
-    current_player_msg = create_game_start_message(ret[1], 0, 1)
+    current_player_msg = create_game_start_message(ret[1], 0, 1, GAME_TYPE_QUICK)
     for websocket in connected_users.get(my_id, []):
         await websocket.send(current_player_msg)
 
@@ -135,11 +122,11 @@ async def check_if_can_start_new_game(data:dict,
     in_game_list.append(second_player_id)
 
     # Send start game message to first player in waitlist
-    first_player_msg = create_game_start_message(ret[1], 0, 0)
+    first_player_msg = create_game_start_message(ret[1], 0, 0, GAME_TYPE_QUICK)
     for websocket in connected_users.get(first_player_id, []):
         await websocket.send(first_player_msg)
 
     # Send start game message to current player
-    current_player_msg = create_game_start_message(ret[1], 0, 1)
+    current_player_msg = create_game_start_message(ret[1], 0, 1, GAME_TYPE_QUICK)
     for websocket in connected_users.get(second_player_id, []):
         await websocket.send(current_player_msg)

@@ -1,8 +1,8 @@
 import sys
 from websocket_server.utils import send_error_to_id, send_msg_to_id, \
                                    get_user_by_id, set_user_status, \
-                                   check_user_exist
-from websocket_server.quick_room import create_game_start_message
+                                   create_game_start_message, GAME_TYPE_CUSTOM, \
+                                   NUMBER_OF_MAP, IA_ID
 from websocket_server.game_server_manager import create_new_game, \
                                                  is_game_server_free
 
@@ -15,8 +15,6 @@ from websocket_server.game_server_manager import create_new_game, \
 # If you add an ia, the id will be -1
 
 MAX_PLAYER_PER_TEAM = 2
-NUMBER_OF_MAP = 5
-IA_ID = -1
 
 
 def create_game_room_status_message(type, game_room:dict):
@@ -649,7 +647,8 @@ async def game_room_start_game(my_id:int,
     for user_id, paddle_id, team_id in paddles:
         set_user_status(user_id, 2)
         in_game_list.append(user_id)
-        str_msg = create_game_start_message(ret[1], paddle_id, team_id)
+        str_msg = create_game_start_message(ret[1], paddle_id, team_id,
+                                            GAME_TYPE_CUSTOM)
         await send_msg_to_id(user_id, connected_users, str_msg)
 
     return True

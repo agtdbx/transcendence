@@ -22,6 +22,7 @@ team_right_ready = []
 map_id = 0
 power_up = False
 users_id = []
+game_type = 0
 
 websocketPaddleLink = {}
 
@@ -49,7 +50,7 @@ def remove_user_connected(myid, websocket):
 
 
 async def handle_client(websocket : websockets.WebSocketServerProtocol, path):
-    global map_id, power_up, team_left_ready, team_right_ready, connected_player, users_id
+    global map_id, power_up, team_left_ready, team_right_ready, connected_player, users_id, game_type
     # None | (id paddle, id team)
     myid = None
     id_paddle = None
@@ -110,14 +111,16 @@ async def handle_client(websocket : websockets.WebSocketServerProtocol, path):
                 teamLeft = data.get("teamLeft", None)
                 teamRight = data.get("teamRight", None)
                 usersId = data.get("usersId", None)
+                gameType = data.get("type", None)
                 if mapId == None or powerUp == None or teamLeft == None or\
-                    teamRight == None or usersId == None:
+                    teamRight == None or usersId == None or gameType == None:
                     await send_error(websocket,
                                      "Missing info")
                 else:
                     map_id = mapId
                     power_up = powerUp
                     users_id = usersId
+                    game_type = gameType
                     size = len(teamLeft)
                     team_left_ready = [False] * size
                     for i in range(size):
@@ -137,12 +140,12 @@ async def handle_client(websocket : websockets.WebSocketServerProtocol, path):
                         else:
                             team_right.append(PADDLE_PLAYER)
                 continue
-            
+
             # Check if client is connected
             if myid == None:
                 await send_error(websocket, "Need to be connected")
                 continue
-            
+
             if request_type == "userInput" and data.get("key", None) != None and data.get("value", None) != None:
                 game.messageFromClients.append([CLIENT_MSG_TYPE_USER_EVENT, {"id_paddle":id_paddle_with_team, "id_key":controleDictConvertion[data.get("key", None)],
                                                                              "key_action": data.get("value", None) == "press"}])
@@ -204,7 +207,7 @@ async def sendGlobalMessage(updateObstacles='null', updatePaddles='null',updateB
             str_msg = str_msg.replace("False", 'false')
             str_msg = str_msg.replace("True", 'true')
             await websocket.send(str_msg)
-            
+
 def parsingGlobalMessage():
     updateObstacles='null'
     updatePaddles='null'
@@ -261,7 +264,7 @@ async def game_server_manager():
     lstObstacle = []
     for wall in game.walls :
         lstObstacle.append(wall.hitbox.getPoints())
-    
+
     await asyncio.sleep(3)
     end_game_msg = {"type" : "startInfo",
                     "obstacles": lstObstacle ,
@@ -308,7 +311,8 @@ async def start_server():
     # TODO : Need to return all statistique of the game !
     msg = {"type":"gws",
             "cmd" : "definitelyNotTheMovie(endGame)",
-            "port" : int(sys.argv[1]),
+            "port" : sys.argv[1],
+            "type" : game_type,
             "usersId" : users_id}
     str_msg = str(msg).replace("'", '"')
     await ws.send(str_msg)

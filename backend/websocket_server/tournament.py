@@ -1,8 +1,8 @@
 import sys
 import random
 from websocket_server.utils import get_user_by_id, send_error_to_id, \
-                                   send_msg_to_id, check_user_admin
-from websocket_server.game_room import NUMBER_OF_MAP, IA_ID
+                                   send_msg_to_id, check_user_admin, \
+                                   NUMBER_OF_MAP, IA_ID
 from websocket_server.message import message_in_general
 
 MISSION_CONTROL = get_user_by_id(-2)
@@ -298,9 +298,14 @@ async def start_tournament(my_id:int,
     #        SUR LES QUICK GAMES !
 
 
-async def tounament_next_start_match(connected_users:dict) -> bool:pass
+async def tournament_next_start_match(connected_users:dict):
+    global tournament
 
-async def tounament_end_match(connected_users:dict):pass
+    # Check is the tournament is running
+    if tournament["state"] != STATE_START_TOURNAMENT:pass
+
+
+async def tournament_end_match(connected_users:dict):pass
 
 
 async def join_tournament(my_id:int,

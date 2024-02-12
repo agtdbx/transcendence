@@ -75,3 +75,27 @@ async def check_user_exist(my_id:int,
         print("WS : User", my_id, "didn't exist", file=sys.stderr)
         await send_error_to_id(my_id, connected_users, "User didn t exist")
         return False
+
+
+GAME_TYPE_QUICK = 0
+GAME_TYPE_CUSTOM = 1
+GAME_TYPE_TOURNAMENT = 2
+
+NUMBER_OF_MAP = 5
+IA_ID = -1
+
+def create_game_start_message(port:int,
+                              paddle_id:int,
+                              team_id:int,
+                              type:int):
+    message : dict = {
+        "type" : "gameStart",
+        "gamePort" : port,
+        "paddleId" : paddle_id,
+        "teamId" : team_id,
+        "type" : type
+    }
+    str_message = str(message)
+    str_message = str_message.replace("'", '"')
+
+    return str_message

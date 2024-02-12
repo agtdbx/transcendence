@@ -31,17 +31,20 @@ async def start_game_websocket(port:int,
                          power_up_enable : bool,
                          team_left:list[int],
                          team_right:list[int],
-                         users_id:list[int]):
+                         users_id:list[int],
+                         type:int):
     os.system("python3 pong_server/ws_game_server.py " + str(port) + "&")
     await asyncio.sleep(2)
-    os.system("echo; echo WS : websocket now running on ws://localhost:" + str(port))
+    os.system("echo; echo WS : websocket now running on ws://localhost:" +
+              str(port))
     ws = await websockets.connect("ws://localhost:" + str(port))
     msg = {"type":"info",
-        "mapId" : map_id,
-        "powerUp" : str(power_up_enable).lower(),
-        "teamLeft" : team_left,
-        "teamRight" : team_right,
-        "usersId" : users_id}
+           "mapId" : map_id,
+           "powerUp" : str(power_up_enable).lower(),
+           "teamLeft" : team_left,
+           "teamRight" : team_right,
+           "usersId" : users_id,
+           "type" : type}
     str_msg = str(msg).replace("'", '"')
     await ws.send(str_msg)
     await ws.close()
@@ -52,7 +55,8 @@ async def create_new_game(map_id : int,
                           power_up_enable : bool,
                           team_left:list[int],
                           team_right:list[int],
-                          users_id:list[int]):
+                          users_id:list[int],
+                          type:int):
     global number_game_servers_free
 
     print("\nWS : ALL SERVER :", game_servers, file=sys.stderr)
@@ -63,7 +67,7 @@ async def create_new_game(map_id : int,
 
             await start_game_websocket(game_servers[i][1],
                                        map_id, power_up_enable,
-                                       team_left, team_right, users_id)
+                                       team_left, team_right, users_id, type)
 
             return i, game_servers[i][1]
 
@@ -72,8 +76,9 @@ async def create_new_game(map_id : int,
 
 def end_game(data):
     global game_servers
-    port = data.get("port", None)
 
+    # Get port info
+    port = data.get("port", None)
     if port == None:
         print("\nWS : MISSING PORT :", data, file=sys.stderr)
         return
@@ -84,3 +89,12 @@ def end_game(data):
             print("\nWS : SERVER ON PORT", port, "IS NOW FREE", file=sys.stderr)
             print("\nWS : ALL SERVER :", game_servers, file=sys.stderr)
 
+    # Get type info
+    type = data.get("type", None)
+    if type == None:
+        print("\nWS : MISSING TYPE :", data, file=sys.stderr)
+        return
+
+    # If the type is quick game, modify money of users
+    if type == 0:
+        pass

@@ -4,8 +4,9 @@
 let ws_game = null;
 let id_paddle = null;
 let id_team = null;
+let game_type = null
 
-function startGameClient(server_port, idPaddle, idTeam)
+function startGameClient(server_port, idPaddle, idTeam, get_game_type)
 {
 	if (ws_game != null)
 		return ;
@@ -31,6 +32,7 @@ function startGameClient(server_port, idPaddle, idTeam)
 			'idPaddle' : idPaddle,
 			'idTeam': idTeam
 		}));
+		game_type = get_game_type;
 	}
 
 	ws_game.onerror = function(e) {console.error("GWS ERROR :", e)};

@@ -6,7 +6,7 @@
 #    By: aderouba <aderouba@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/23 19:48:51 by aderouba          #+#    #+#              #
-#    Updated: 2024/02/10 17:05:21 by aderouba         ###   ########.fr        #
+#    Updated: 2024/02/12 18:36:40 by aderouba         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -49,6 +49,13 @@ def checkLogin(request):
     username = request.POST.get('login')
     password = request.POST.get('password')
 
+    # Check if username haven't bad caracters
+    username = username.lower()
+    good_chars = "abcdefghijklmnoprstuvwxyz0123456789_"
+    for c in username:
+        if c not in good_chars:
+            return JsonResponse({"success" : False, "error" : "Only alphanum and underscore autorised"})
+
     username_check = User.objects.all().filter(username=username)
     if len(username_check) == 0:
         return JsonResponse({"success" : False,
@@ -81,6 +88,13 @@ def checkSignin(request):
     if not username or password == "" or passwordconfirm == "":
         return JsonResponse({"success" : False,
                              "error" : "Empty field aren't accept"})
+
+    # Check if username haven't bad caracters
+    username = username.lower()
+    good_chars = "abcdefghijklmnoprstuvwxyz0123456789_"
+    for c in username:
+        if c not in good_chars:
+            return JsonResponse({"success" : False, "error" : "Only alphanum and underscore autorised"})
 
     test = User.objects.all().filter(username=username)
     if len(test):
