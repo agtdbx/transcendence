@@ -540,6 +540,54 @@ class GameServer:
 
 		self.quit()
 
+	def getFinalStat(self):
+		# GAME STATS
+		game_stats = []
+		game_stats.append(self.teamLeft.score) # Team left score
+		game_stats.append(self.teamRight.score) # Team right score
+		game_stats.append(self.ballNumber) # Number of ball
+		game_stats.append(self.time) # Duration of match
+
+		# LEFT TEAM STATS
+		left_team_stats = []
+		for p in self.teamLeft.paddles:
+			paddle_stats = []
+			paddle_stats.append(p.id) # Paddle id
+			paddle_stats.append(p.numberOfGoal) # Number of goal
+			paddle_stats.append(p.maxSpeedBallTouch) # Max speed ball touch
+			paddle_stats.append(p.maxBounceBallGoal) # Max bounce of goal ball
+			paddle_stats.append(p.numberOfContreCamp) # Number of CC
+			paddle_stats.append(p.numberOfPerfectShoot) # Number of perfect shoot
+			left_team_stats.append(paddle_stats)
+
+		# RIGHT TEAM STATS
+		right_team_stats = []
+		for p in self.teamRight.paddles:
+			paddle_stats = []
+			paddle_stats.append(p.id) # Paddle id
+			paddle_stats.append(p.numberOfGoal) # Number of goal
+			paddle_stats.append(p.maxSpeedBallTouch) # Max speed ball touch
+			paddle_stats.append(p.maxBounceBallGoal) # Max bounce of goal ball
+			paddle_stats.append(p.numberOfContreCamp) # Number of CC
+			paddle_stats.append(p.numberOfPerfectShoot) # Number of perfect shoot
+			right_team_stats.append(paddle_stats)
+
+		# BALLS STATS
+		balls_stats = []
+		# idPaddle, paddleTeam, Ball speed, Number of bounce, CC, Perfect shoot, time of goal
+		for goal in self.goals:
+			ball_stats = []
+			ball_stats.append(goal[0]) # Paddle id
+			ball_stats.append(goal[1]) # Paddle team
+			ball_stats.append(goal[2]) # Ball speed ball
+			ball_stats.append(goal[3]) # Number of bounce
+			ball_stats.append(goal[4]) # Is CC
+			ball_stats.append(goal[5]) # Is Perfect Shoot
+			ball_stats.append(goal[6]) # Time
+			balls_stats.append(ball_stats)
+
+		return [game_stats, left_team_stats, right_team_stats, balls_stats]
+
 
 	def createMessageStartInfo(self):
 		# Content of obstacles :

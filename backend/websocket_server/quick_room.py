@@ -1,5 +1,5 @@
 import sys
-from websocket_server.utils import set_user_status, create_game_start_message, GAME_TYPE_QUICK
+from websocket_server.utils import create_game_start_message, GAME_TYPE_QUICK
 from websocket_server.game_server_manager import create_new_game, is_game_server_free
 
 
@@ -45,7 +45,8 @@ async def join_quick_room(my_id : int,
 
     # team [int, int]
     # int per paddle, 0 for player, 1 for ia
-    ret = await create_new_game(0, False, [0], [0], [my_id, first_player_id])
+    ret = await create_new_game(in_game_list, 0, False, [first_player_id], [my_id],
+                                GAME_TYPE_QUICK)
 
     if ret == None:
         waitlist.append(first_player_id)
@@ -53,12 +54,6 @@ async def join_quick_room(my_id : int,
         print("\nWS : ERROR : No game server free, put user", my_id, "in waitlist",
               file=sys.stderr)
         return
-
-    in_game_list.append(first_player_id)
-    in_game_list.append(my_id)
-
-    set_user_status(first_player_id, 2)
-    set_user_status(my_id, 2)
 
     # Send start game message to first player in waitlist
     first_player_msg = create_game_start_message(ret[1], 0, 0, GAME_TYPE_QUICK)
@@ -81,20 +76,9 @@ async def leave_quick_room(user_id:int,
             pass
 
 
-async def check_if_can_start_new_game(data:dict,
-                                      waitlist : list,
+async def check_if_can_start_new_game(waitlist : list,
                                       in_game_list: list,
                                       connected_users:dict):
-    users_id = data.get("usersId", None)
-    if users_id == None:
-        print("\nWS : Missing info which user was in game :", data,
-              file=sys.stderr)
-
-    for id in users_id:
-        set_user_status(id, 1)
-        if id in in_game_list:
-            in_game_list.remove(id)
-
     if len(waitlist) <= 1:
         print("\nWS : No enough users in wait to start a game", file=sys.stderr)
         return
@@ -108,8 +92,8 @@ async def check_if_can_start_new_game(data:dict,
     print("\nWS : Start game beetween", first_player_id, "and", second_player_id,
           file=sys.stderr)
 
-    ret = await create_new_game(0, False, [0], [0],
-                                [first_player_id, second_player_id])
+    ret = await create_new_game(in_game_list, 0, False, [first_player_id],
+                                [second_player_id], GAME_TYPE_QUICK)
 
     if ret == None:
         waitlist.append(first_player_id)

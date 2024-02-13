@@ -3,6 +3,7 @@ import asyncio
 import sys
 import time
 import websockets
+from websocket_server.utils import set_user_status
 # from pong_server.ws_game_server import start_game_thread
 
 # List of game server
@@ -31,7 +32,6 @@ async def start_game_websocket(port:int,
                          power_up_enable : bool,
                          team_left:list[int],
                          team_right:list[int],
-                         users_id:list[int],
                          type:int):
     os.system("python3 pong_server/ws_game_server.py " + str(port) + "&")
     await asyncio.sleep(2)
@@ -43,7 +43,6 @@ async def start_game_websocket(port:int,
            "powerUp" : str(power_up_enable).lower(),
            "teamLeft" : team_left,
            "teamRight" : team_right,
-           "usersId" : users_id,
            "type" : type}
     str_msg = str(msg).replace("'", '"')
     await ws.send(str_msg)
@@ -51,14 +50,12 @@ async def start_game_websocket(port:int,
     print("\nWS : all info go to game server", file=sys.stderr)
 
 
-async def create_new_game(map_id : int,
+async def create_new_game(in_game_list : list,
+                          map_id : int,
                           power_up_enable : bool,
                           team_left:list[int],
                           team_right:list[int],
-                          users_id:list[int],
                           type:int):
-    global number_game_servers_free
-
     print("\nWS : ALL SERVER :", game_servers, file=sys.stderr)
 
     for i in range(len(game_servers)):
@@ -67,14 +64,24 @@ async def create_new_game(map_id : int,
 
             await start_game_websocket(game_servers[i][1],
                                        map_id, power_up_enable,
-                                       team_left, team_right, users_id, type)
+                                       team_left, team_right, type)
+
+            for id in team_left:
+                if id != -1:
+                    in_game_list.append(id)
+                    set_user_status(id, 2)
+            for id in team_right:
+                if id != -1:
+                    in_game_list.append(id)
+                    set_user_status(id, 2)
 
             return i, game_servers[i][1]
 
     return None
 
 
-def end_game(data):
+def end_game(data:dict,
+             in_game_list: list,):
     global game_servers
 
     # Get port info
@@ -89,6 +96,31 @@ def end_game(data):
             print("\nWS : SERVER ON PORT", port, "IS NOW FREE", file=sys.stderr)
             print("\nWS : ALL SERVER :", game_servers, file=sys.stderr)
 
+    # Get users fielfs
+    team_left = data.get("teamLeft", None)
+    if team_left == None:
+        print("\nWS : Missing info team_left was in game :", data,
+              file=sys.stderr)
+
+     # Get users fielfs
+    team_right = data.get("teamRight", None)
+    if team_right == None:
+        print("\nWS : Missing info team_left was in game :", data,
+              file=sys.stderr)
+
+    # Set status of users and remove them from in game list
+    for id in team_left:
+        if id != -1:
+            set_user_status(id, 1)
+            if id in in_game_list:
+                in_game_list.remove(id)
+
+    for id in team_right:
+        if id != -1:
+            set_user_status(id, 1)
+            if id in in_game_list:
+                in_game_list.remove(id)
+
     # Get type info
     type = data.get("type", None)
     if type == None:
@@ -98,3 +130,24 @@ def end_game(data):
     # If the type is quick game, modify money of users
     if type == 0:
         pass
+
+    # Get stats info
+    stats = data.get("stats", None)
+    if stats == None:
+        print("\nWS : MISSING STATS :", data, file=sys.stderr)
+        return
+
+    # PUT MATCH IN DB
+    # PUT USER MATCH IN DB
+
+    # GAME STATS
+    stats[0]
+
+    # TEAM LEFT STATS
+    stats[1]
+
+    # TEAM RIGHT STATS
+    stats[2]
+
+    # BALLS STATS
+    stats[3]

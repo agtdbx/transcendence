@@ -1,6 +1,6 @@
 import sys
 from websocket_server.utils import send_error_to_id, send_msg_to_id, \
-                                   get_user_by_id, set_user_status, \
+                                   get_user_by_id, \
                                    create_game_start_message, GAME_TYPE_CUSTOM, \
                                    NUMBER_OF_MAP, IA_ID
 from websocket_server.game_server_manager import create_new_game, \
@@ -607,34 +607,24 @@ async def game_room_start_game(my_id:int,
         return False
     print("\nWS : User", my_id, "game server free", file=sys.stderr)
 
-    users_id = []
     paddles = []
-    # Create left team info for game creation
-    team_left = list()
+    # Create paddle info from left team for client
     for i in range(len(game_room["team_left"])):
         id = game_room["team_left"][i]
-        if id == IA_ID:
-            team_left.append(1)
-        else:
-            users_id.append(id)
+        if id != IA_ID:
             paddles.append((id, i, 0))
-            team_left.append(0)
 
-    # Same for right team
-    team_right = list()
+    # Create paddle info from right team for client
     for i in range(len(game_room["team_right"])):
         id = game_room["team_right"][i]
-        if id == IA_ID:
-            team_right.append(1)
-        else:
-            users_id.append(id)
+        if id != IA_ID:
             paddles.append((id, i, 1))
-            team_right.append(0)
 
     # team [int, int]
     # int per paddle, 0 for player, 1 for ia
-    ret = await create_new_game(game_room["map_id"], game_room["power_up"],
-                                team_left, team_right, users_id)
+    ret = await create_new_game(in_game_list, game_room["map_id"],
+                                game_room["power_up"], game_room["team_left"],
+                                game_room["team_right"], GAME_TYPE_CUSTOM)
 
     if ret == None:
         print("\nWS : ERROR : No game server free, put user", my_id, "in waitlist",
@@ -645,8 +635,6 @@ async def game_room_start_game(my_id:int,
     game_rooms.pop(game_room_id)
 
     for user_id, paddle_id, team_id in paddles:
-        set_user_status(user_id, 2)
-        in_game_list.append(user_id)
         str_msg = create_game_start_message(ret[1], paddle_id, team_id,
                                             GAME_TYPE_CUSTOM)
         await send_msg_to_id(user_id, connected_users, str_msg)
