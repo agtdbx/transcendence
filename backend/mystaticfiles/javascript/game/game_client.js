@@ -615,7 +615,7 @@ export class GameClient {
 		for (const obstables of lstObstacle)
 		{
 			this.walls.push(createObstacle(0, 0, obstables))
-			this.wallsHtmlObjects.push(addPolygon(this.win, 0, 0, obstables, "#101010"))
+			this.wallsHtmlObjects.push(addPolygon(this.win, 0, 0, obstables, "#DDDDDD"))
 		}
 	}
 
@@ -724,15 +724,16 @@ export class GameClient {
 				b.direction = new Vec2(content[1][0], content[1][1])
 				b.speed = content[3]
 				b.radius = content[2]
+				b.setModifierByState(content[5])
 				if (b.state != content[4] && content[4] != 0)
 				{
 					b.htmlObject.setAttribute("display", "None");
 					for (let index = 0; index < b.shadowBalls.length; index++)
 					{
 						b.shadowBalls[index][0].setAttribute("display", "None");
-						b.shadowBalls[index][1] = [(b.pos.x - (b.radius / 2)), (b.pos.y - (b.radius / 2))]
-						b.shadowBalls[index][0].setAttribute('x', "" +  (b.pos.x - (b.radius / 2)));
-						b.shadowBalls[index][0].setAttribute('y', "" +  (b.pos.y - (b.radius / 2)));
+						b.shadowBalls[index][1] = [(b.pos.x - (b.radius * b.modifierSize)), (b.pos.y - (b.radius * b.modifierSize))]
+						b.shadowBalls[index][0].setAttribute('x', "" +  (b.pos.x - (b.radius * b.modifierSize)));
+						b.shadowBalls[index][0].setAttribute('y', "" +  (b.pos.y - (b.radius * b.modifierSize)));
 					}
 				}
 				else if (b.state != content[4] && content[4] == 0)
@@ -744,11 +745,8 @@ export class GameClient {
 					}
 				}
 				b.state = content[4]
-				b.htmlObject.setAttribute('width', b.radius * 2)
-				b.htmlObject.setAttribute('height', b.radius * 2)
-				// b.lastPaddleHitId = content["last_paddle_hit_info"][0]
-				// b.lastPaddleTeam = content["last_paddle_hit_info"][1]
-				b.setModifierByState(content[5])
+				b.htmlObject.setAttribute('width', b.radius * 2 * b.modifierSize)
+				b.htmlObject.setAttribute('height', b.radius * 2 * b.modifierSize)
 			}
 
 			// Create a new one instead
@@ -763,13 +761,16 @@ export class GameClient {
 				// b.lastPaddleTeam = content["last_paddle_hit_info"][1]
 				b.setModifierByState(content[5])
 				this.balls.push(b)
-				this.win.insertBefore(b.htmlObject, null);
 				b.htmlObject.setAttribute('width', b.radius * 2)
 				b.htmlObject.setAttribute('height', b.radius * 2)
 				for (let index = 0; index < b.shadowBalls.length; index++) {
 					this.win.insertBefore(b.shadowBalls[index][0], null);
 				}
+				this.win.insertBefore(b.htmlObject, null);
 			}
+
+
+
 			i += 1;
 		}
 	}

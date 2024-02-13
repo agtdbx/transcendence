@@ -250,7 +250,8 @@ def parsingGlobalMessage():
             updateScore.append(content['leftTeam'])
             updateScore.append(content['rightTeam'])
     # print("\nGWS : SEND data to client : ", [updateObstacles, updatePaddles,updateBalls,deleteBall,changeUserPowerUp,updatePowerUpInGame,updateScore], file=sys.stderr)
-    print("\nGWS : SEND updatePowerUpInGame to client : ", updatePowerUpInGame, file=sys.stderr)
+    # print("\nGWS : SEND updatePowerUpInGame to client : ", updatePowerUpInGame, file=sys.stderr)
+    # print("\nGWS : SEND updateBalls to client : ", updateBalls, file=sys.stderr)
     asyncio.create_task(sendGlobalMessage(updateObstacles, updatePaddles,updateBalls,deleteBall,changeUserPowerUp,updatePowerUpInGame,updateScore))
 
 async def countBeforeStart():

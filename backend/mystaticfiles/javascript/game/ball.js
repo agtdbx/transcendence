@@ -38,26 +38,27 @@ export class Ball {
 		// this.htmlObject.setAttribute('transform-origin', "center");
 		console.log("create ball at : " + x + "," + y)
 		this.shadowBalls = []
+		this.modifierSize = 1
 		for (let index = 0; index < NB_SHADOW_BALL; index++)
 		{
 			let array = []
 			let newShadowBall = document.createElementNS('http://www.w3.org/2000/svg', 'image')
 			newShadowBall.setAttributeNS('http://www.w3.org/1999/xlink','href', "/static/image/game/ball.png");
 			newShadowBall.style.opacity = "" + (1 / (NB_SHADOW_BALL - index))
-			newShadowBall.setAttribute('x',  x - (this.radius / 2));
-			newShadowBall.setAttribute('y',  y - (this.radius / 2));
+			newShadowBall.setAttribute('x',  x - (this.radius * this.modifierSize));
+			newShadowBall.setAttribute('y',  y - (this.radius * this.modifierSize));
 			array.push(newShadowBall)
-			array.push([x - (this.radius / 2), y - (this.radius / 2)])
+			array.push([x - (this.radius  * this.modifierSize), y - (this.radius  * this.modifierSize)])
 			this.shadowBalls.push(array)
 			
 			
 		}
 		this.htmlObject = document.createElementNS('http://www.w3.org/2000/svg', 'image')
 		this.htmlObject.setAttributeNS('http://www.w3.org/1999/xlink','href', "/static/image/game/ball.png");
-		this.htmlObject.setAttribute('width', this.radius * 2)
-		this.htmlObject.setAttribute('height', this.radius * 2)
-		this.htmlObject.setAttribute('x',  x - (this.radius / 2));
-		this.htmlObject.setAttribute('y',  y - (this.radius / 2));
+		this.htmlObject.setAttribute('x', "" + (this.pos.x - ((this.radius   * this.modifierSize))));
+		this.htmlObject.setAttribute('y', "" + (this.pos.y - ((this.radius   * this.modifierSize))));
+		this.htmlObject.setAttribute('width', this.radius * this.modifierSize)
+		this.htmlObject.setAttribute('height', this.radius * this.modifierSize)
 		// console.log(this.shadowBalls)
 
 
@@ -80,7 +81,7 @@ export class Ball {
 
 		// Modifier
 		this.modifierSpeed = 1
-		this.modifierSize = 1
+
 		this.modifierSkipCollision = false
 		this.modifierInvisibleBall = false
 		this.modifierInvisibleBallTimer = 0
@@ -212,12 +213,15 @@ export class Ball {
 					else if (powerUpEffect[0] == d.POWER_UP_BALL_BIG){
 						this.modifierSize /= d.POWER_UP_BALL_BIG_SIZE_FACTOR
 						this.modifySize(this.modifierSize)
+						console.log("NOT SUPPOSED 1");
 					}
 
 					else if (powerUpEffect[0] == d.POWER_UP_BALL_LITTLE)
 					{
 						this.modifierSize *= d.POWER_UP_BALL_LITTLE_SIZE_FACTOR
 						this.modifySize(this.modifierSize)
+						console.log("NOT SUPPOSED 2");
+
 					}
 				}
 			}
@@ -252,18 +256,32 @@ export class Ball {
 		//TODO add change trainer ici
 		for (let index = 0; index < NB_SHADOW_BALL - 1; index++)
 		{
-			this.shadowBalls[index][1] = this.shadowBalls[index + 1][1]
-			// console.log(this.shadowBalls[index])
+
+			if ((! (this.modifierInvisibleBall)) || (parseInt(this.modifierInvisibleBallTimer * 5) % 2) && this.state === 0)
+				this.shadowBalls[index][0].setAttribute("display", "block");
+			else
+				this.shadowBalls[index][0].setAttribute("display", "None");
+			this.shadowBalls[index][1] = this.shadowBalls[index + 1][1];
 			this.shadowBalls[index][0].setAttribute('x', "" +  this.shadowBalls[index + 1][1][0]);
 			this.shadowBalls[index][0].setAttribute('y', "" +  this.shadowBalls[index + 1][1][1]);
-			this.shadowBalls[index][0].setAttribute('width', this.radius * 2)
-			this.shadowBalls[index][0].setAttribute('height', this.radius * 2)
+			this.shadowBalls[index][0].setAttribute('width', this.radius * 2 * this.modifierSize);
+			this.shadowBalls[index][0].setAttribute('height', this.radius * 2 * this.modifierSize);
+
 		}
-		this.shadowBalls[NB_SHADOW_BALL - 1][1] = [(this.pos.x - (this.radius / 2)), (this.pos.y - (this.radius / 2))]
-		this.shadowBalls[NB_SHADOW_BALL - 1][0].setAttribute('x', "" +  (this.pos.x - (this.radius / 2)));
-		this.shadowBalls[NB_SHADOW_BALL - 1][0].setAttribute('y', "" +  (this.pos.y - (this.radius / 2)));
-		this.shadowBalls[NB_SHADOW_BALL - 1][0].setAttribute('width', this.radius * 2)
-		this.shadowBalls[NB_SHADOW_BALL - 1][0].setAttribute('height', this.radius * 2)
+
+			
+		if ((! (this.modifierInvisibleBall)) || (parseInt(this.modifierInvisibleBallTimer * 5) % 2) && this.state === 0)
+			this.shadowBalls[NB_SHADOW_BALL - 1][0].setAttribute("display", "block");
+		else
+			this.shadowBalls[NB_SHADOW_BALL - 1][0].setAttribute("display", "None");
+		this.shadowBalls[NB_SHADOW_BALL - 1][1] = [this.pos.x - (this.radius * this.modifierSize), this.pos.y - (this.radius * this.modifierSize)];
+		this.shadowBalls[NB_SHADOW_BALL - 1][0].setAttribute('x', "" +  (this.pos.x - (this.radius * this.modifierSize)));
+		this.shadowBalls[NB_SHADOW_BALL - 1][0].setAttribute('y', "" +  (this.pos.y - (this.radius * this.modifierSize)));
+		this.shadowBalls[NB_SHADOW_BALL - 1][0].setAttribute('width', this.radius * 2 * this.modifierSize);
+		this.shadowBalls[NB_SHADOW_BALL - 1][0].setAttribute('height', this.radius * 2 * this.modifierSize);
+
+		// console.log("Shadow ball : " );
+		// console.log(this.shadowBalls);
 
 
 		// Store last positions
@@ -393,9 +411,15 @@ export class Ball {
 
 
 			this.pos = newpos.dup()
-			this.htmlObject.setAttribute('x', "" + (this.pos.x - (this.radius / 2)));
-			this.htmlObject.setAttribute('y', "" + (this.pos.y - (this.radius / 2)));
+			this.htmlObject.setAttribute('x', "" + (this.pos.x - ((this.radius ) * this.modifierSize)));
+			this.htmlObject.setAttribute('y', "" + (this.pos.y - ((this.radius ) * this.modifierSize)));
+			this.htmlObject.setAttribute('width', this.radius * 2 * this.modifierSize)
+			this.htmlObject.setAttribute('height', this.radius * 2 * this.modifierSize)
 			this.hitbox.setPos(this.pos)
+			if ((! (this.modifierInvisibleBall)) || (parseInt(this.modifierInvisibleBallTimer * 5) % 2) && this.state === 0)
+				this.htmlObject.setAttribute("display", "block");
+			else
+				this.htmlObject.setAttribute("display", "None");
 		}
 		// console.log("after :")
 		// this.pos.print()
@@ -448,8 +472,8 @@ export class Ball {
 	setPos( pos)
 	{
 		this.pos = pos
-		this.htmlObject.setAttribute('x', "" + this.pos.x);
-		this.htmlObject.setAttribute('y', "" + this.pos.y);
+		this.htmlObject.setAttribute('x', "" + (this.pos.x - (this.radius  * this.modifierSize)));
+		this.htmlObject.setAttribute('y', "" + (this.pos.y - (this.radius  * this.modifierSize)));
 		for (let i = 0; i < BALL_TRAIL_LENGTH; i++)
 		{
 			this.lastColors[i] = this.color

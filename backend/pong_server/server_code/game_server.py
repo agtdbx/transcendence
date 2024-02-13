@@ -432,8 +432,8 @@ class GameServer:
 
         if self.powerUpEnable:
             for p in self.teamLeft.paddles:
-                # p.powerUp = random.randint(0, 12)
-                p.powerUp = 6
+                p.powerUp = random.randint(0, 12)
+                # p.powerUp = 12
 
         if len(self.balls) - len(ballToDelete) > 1:
             ballToDelete.append(i)

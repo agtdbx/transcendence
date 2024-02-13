@@ -157,7 +157,7 @@ export class Paddle {
 		}
 		// this.htmlObject.setAttribute('x',  this.pos.x - (this.halfW * this.modifierSize));
 		this.htmlObject.setAttribute('y',  this.pos.y - (this.halfH * this.modifierSize));
-		this.htmlObject.setAttribute('width', this.w * this.modifierSize);
+		// this.htmlObject.setAttribute('width', this.w * this.modifierSize);
 		this.htmlObject.setAttribute('height',  this.h * this.modifierSize);
 
 		if (modifier != 1)
@@ -186,9 +186,9 @@ export class Paddle {
 	{
 		this.pos = new Vec2(x, y)
 		this.hitbox.setPos(new Vec2(x, y))
-		this.htmlObject.setAttribute('x',  x - (this.halfW * this.modifierSize));
+		// this.htmlObject.setAttribute('x',  x - (this.halfW * this.modifierSize));
 		this.htmlObject.setAttribute('y',  y - (this.halfH * this.modifierSize));
-		this.htmlObject.setAttribute('width', this.w * this.modifierSize);
+		// this.htmlObject.setAttribute('width', this.w * this.modifierSize);
 		this.htmlObject.setAttribute('height',  this.h * this.modifierSize);
 	}
 }
