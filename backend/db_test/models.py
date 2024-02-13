@@ -74,24 +74,30 @@ class Match(models.Model):
     idMatch         = models.IntegerField(primary_key=True)                                                     #[primary key]
     type            = models.IntegerField()
     matchDate       = models.TimeField()
-    matchDuration   = models.TimeField()
+    matchDuration   = models.IntegerField()
     idMap           = models.ForeignKey(Map, on_delete=models.PROTECT)
     powerUp         = models.BooleanField()
+    scoreLeft       = models.IntegerField(default=0)
+    scoreRight      = models.IntegerField(default=0)
 
 
 class MatchUser(models.Model):
     id              = models.IntegerField(primary_key=True)                                                     # TRUE [primary key]
     idMatch         = models.ForeignKey(Match, on_delete=models.PROTECT)                                        #[primary key]
     idUser          = models.ForeignKey(User, on_delete=models.PROTECT)                                         #[primary key]
-    score           = models.IntegerField()
+    nbGoal          = models.IntegerField(default=0)
+    maxBallSpeed    = models.IntegerField(default=0)
+    maxBallBounce   = models.IntegerField(default=0)
+    nbCC            = models.IntegerField(default=0)
+    nbPerfectShot   = models.IntegerField(default=0)
 
 
 class Goal(models.Model):
     id              = models.IntegerField(primary_key=True)                                                     # TRUE [primary key]
     idUser          = models.ForeignKey(User, on_delete=models.PROTECT)                                         #[primary key]
-    goalTimer       = models.TimeField()                                                                        #[primary key]
+    goalTime        = models.IntegerField(default=0)                                                            #[primary key]
     idMatch         = models.ForeignKey(Match, on_delete=models.PROTECT)                                        #[primary key]
-    nbBounce        = models.IntegerField()
-    perfectedShot   = models.BooleanField()
-    ballSpeed       = models.IntegerField()
-    ownGoal         = models.BooleanField()
+    nbBounce        = models.IntegerField(default=0)
+    perfectedShot   = models.BooleanField(default=0)
+    ballSpeed       = models.IntegerField(default=0)
+    ownGoal         = models.BooleanField(default=False)

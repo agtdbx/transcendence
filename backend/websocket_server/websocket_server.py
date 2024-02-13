@@ -66,6 +66,7 @@ async def handle_client(websocket : websockets.WebSocketServerProtocol, path):
         async for data in websocket:
             print("\nWS : DATA RECIEVED :", data, file=sys.stderr)
             data : dict = json.loads(data)
+            print("WS : Json ok", file=sys.stderr)
 
             request_type = data.get("type", None)
             request_cmd = data.get("cmd", None)

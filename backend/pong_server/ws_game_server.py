@@ -88,11 +88,20 @@ async def handle_client(websocket : websockets.WebSocketServerProtocol, path):
                     myid = (id_paddle, id_team)
                     add_user_connected(myid, websocket)
                     id_paddle_with_team = id_paddle + (id_team * TEAM_MAX_PLAYER)
+                    print("GWS : TEST 1", file=sys.stderr)
                     websocketPaddleLink[websocket] = id_paddle_with_team
+                    print("GWS : TEST 2", file=sys.stderr)
                     if id_team == 0:
+                        print("GWS : TEST 31", file=sys.stderr)
+                        print("GWS : TEAM LEFT READY", team_left_ready, file=sys.stderr)
+                        print("GWS : ID PADDLE", id_paddle, file=sys.stderr)
                         team_left_ready[id_paddle] = True
                     elif id_team == 1:
+                        print("GWS : TEST 32", file=sys.stderr)
+                        print("GWS : TEAM RIGHT READY", team_right_ready, file=sys.stderr)
+                        print("GWS : ID PADDLE", id_paddle, file=sys.stderr)
                         team_right_ready[id_paddle] = True
+                    print("GWS : TEST 4", file=sys.stderr)
                     print("\nGWS : TEST IF EVERYONE READY", file=sys.stderr)
                     print("GWS : LTEAM :", team_left_ready, file=sys.stderr)
                     print("GWS : RTEAM :", team_right_ready, file=sys.stderr)
@@ -108,33 +117,32 @@ async def handle_client(websocket : websockets.WebSocketServerProtocol, path):
                 powerUp = data.get("powerUp", None)
                 teamLeft = data.get("teamLeft", None)
                 teamRight = data.get("teamRight", None)
-                gameType = data.get("type", None)
+                gameType = data.get("gameType", None)
                 if mapId == None or powerUp == None or teamLeft == None or\
                     teamRight == None or gameType == None:
+                    print("GWS : MISSING INFO", file=sys.stderr)
                     await send_error(websocket,
                                      "Missing info")
                 else:
                     map_id = mapId
                     power_up = powerUp
                     game_type = gameType
-                    size = len(teamLeft)
-                    team_left_ready = [False] * size
-                    for i in range(size):
+                    for id in teamLeft:
                         # If it's an ia, it's ready
-                        if teamLeft[i] == 1:
-                            team_left_ready[i] = True
-                            team_left.append(PADDLE_IA)
+                        if id == -1:
+                            team_left_ready.append(True)
                         else:
-                            team_left.append(PADDLE_PLAYER)
-                    size = len(teamRight)
-                    team_right_ready = [False] * size
-                    for i in range(size):
+                            team_left_ready.append(False)
+                        team_left.append(id)
+                    print("GWS : LTEAM :", team_left_ready, file=sys.stderr)
+                    for id in teamRight:
                         # If it's an ia, it's ready
-                        if teamRight[i] == 1:
-                            team_right_ready[i] = True
-                            team_right.append(PADDLE_IA)
+                        if id == -1:
+                            team_right_ready.append(True)
                         else:
-                            team_right.append(PADDLE_PLAYER)
+                            team_right_ready.append(False)
+                        team_right.append(id)
+                    print("GWS : RTEAM :", team_right_ready, file=sys.stderr)
                 continue
 
             # Check if client is connected
@@ -310,7 +318,7 @@ async def start_server():
             "port" : sys.argv[1],
             "teamLeft" : team_left,
             "teamRight" : team_right,
-            "type" : game_type,
+            "gameType" : game_type,
             "stats" : game.getFinalStat()}
     str_msg = str(msg).replace("'", '"')
     await ws.send(str_msg)

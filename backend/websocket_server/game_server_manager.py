@@ -1,8 +1,10 @@
 import os
-import asyncio
 import sys
+import asyncio
+import datetime
 import websockets
 from websocket_server.utils import set_user_status, get_user_by_id
+from db_test.models import Match, MatchUser, Goal, Map
 # from pong_server.ws_game_server import start_game_thread
 
 # List of game server
@@ -42,7 +44,7 @@ async def start_game_websocket(port:int,
            "powerUp" : str(power_up_enable).lower(),
            "teamLeft" : team_left,
            "teamRight" : team_right,
-           "type" : type}
+           "gameType" : type}
     str_msg = str(msg).replace("'", '"')
     await ws.send(str_msg)
     await ws.close()
@@ -139,20 +141,20 @@ async def end_game(data:dict,
     balls_stats = stats[3]
 
     # Get type info
-    type = data.get("type", None)
-    if type == None:
+    game_type = data.get("gameType", None)
+    if game_type == None:
         print("\nWS : MISSING TYPE :", data, file=sys.stderr)
         return None
 
     # If the type is quick game, modify money of users
-    if type == 0:
+    if game_type == 0:
         # Get winner and loser
         if game_stats[0] > game_stats[1]:
-            user_winner = get_user_by_id(left_team_stats[0][0])
-            user_loser = get_user_by_id(right_team_stats[0][0])
+            user_winner = get_user_by_id(team_left[left_team_stats[0][0]])
+            user_loser = get_user_by_id(team_right[right_team_stats[0][0]])
         else:
-            user_winner = get_user_by_id(right_team_stats[0][0])
-            user_loser = get_user_by_id(left_team_stats[0][0])
+            user_winner = get_user_by_id(team_right[right_team_stats[0][0]])
+            user_loser = get_user_by_id(team_left[left_team_stats[0][0]])
 
         print("\nWS : Winner :", user_winner.username, "-", user_winner.money,
               file=sys.stderr)
@@ -162,17 +164,17 @@ async def end_game(data:dict,
         # Update money
         diff = user_winner.money - user_loser.money
         if diff >= 5:
-            print("\nWS : +1 -1:", data, file=sys.stderr)
+            print("\nWS : +1 -1", file=sys.stderr)
             user_winner.money += 1
             user_loser.money -= 1
         elif diff <= -5:
-            print("\nWS : +4 -3:", data, file=sys.stderr)
-            user_winner += 4
-            user_loser -= 3
+            print("\nWS : +4 -3", file=sys.stderr)
+            user_winner.money += 4
+            user_loser.money -= 3
         else:
-            print("\nWS : +2 -1:", data, file=sys.stderr)
-            user_winner += 2
-            user_loser -= 1
+            print("\nWS : +2 -1", file=sys.stderr)
+            user_winner.money += 2
+            user_loser.money -= 1
 
         if user_loser.money < 0:
             user_loser.money = 0
@@ -183,13 +185,78 @@ async def end_game(data:dict,
     winner = None
 
     # If the type is tournament
-    if type == 2:
+    if game_type == 2:
         if game_stats[0] > game_stats[1]:
             winner = left_team_stats[0][0]
         else:
             winner = right_team_stats[0][0]
 
     # PUT MATCH IN DB
-    # PUT USER MATCH IN DB
+    match_id = Match.objects.all().count()
+    match_date = datetime.datetime.now()
+    match_time = int(game_stats[3]) + 1
+    test_map = Map.objects.all().filter(idMap=game_stats[4])
+    if len(test_map) != 1:
+        print("\nWS : MAP NOT FOUND", file=sys.stderr)
+        return
+    map = test_map[0]
+
+    power_up = False
+    if game_stats[5] == "true":
+        power_up = True
+
+    match = Match.objects.create(idMatch=match_id, type=game_type, matchDate=match_date,
+                                 matchDuration=match_time, idMap=map,
+                                 powerUp=power_up, scoreLeft=game_stats[0],
+                                 scoreRight=game_stats[1])
+
+    match.save()
+
+    # PUT USERS MATCH IN DB
+    for paddle_stats in left_team_stats:
+        user_match_id = MatchUser.objects.all().count()
+        user = get_user_by_id(team_left[paddle_stats[0]])
+
+        match_user = MatchUser.objects.create(id=user_match_id, idMatch=match,
+                                              idUser=user, nbGoal=paddle_stats[1],
+                                              maxBallSpeed=paddle_stats[2],
+                                              mabBallBounce=paddle_stats[3],
+                                              nbCC=paddle_stats[4],
+                                              nbPerfectShot=paddle_stats[5])
+        match_user.save()
+
+    for paddle_stats in right_team_stats:
+        user_match_id = MatchUser.objects.all().count()
+        user = get_user_by_id(team_right[paddle_stats[0]])
+
+        match_user = MatchUser.objects.create(id=user_match_id, idMatch=match,
+                                              idUser=user, nbGoal=paddle_stats[1],
+                                              maxBallSpeed=paddle_stats[2],
+                                              maxBallBounce=paddle_stats[3],
+                                              nbCC=paddle_stats[4],
+                                              nbPerfectShot=paddle_stats[5])
+        match_user.save()
+
+    # PUT GOAL STATS IN DB
+    for goal_stats in balls_stats:
+        id_goal = Goal.objects.all().count()
+        if goal_stats[1] == 0:
+            user = get_user_by_id(team_left[goal_stats[0]])
+        else:
+            user = get_user_by_id(team_right[goal_stats[0]])
+
+        perfect_shot = False
+        if goal_stats[5] == "true":
+            perfect_shot = True
+
+        own_goal = False
+        if goal_stats[4] == "true":
+            own_goal = True
+
+        goal = Goal.objects.create(id=id_goal, idUser=user, goalTime=goal_stats[6],
+                                   idMatch=match, nbBounce=goal_stats[3],
+                                   perfectedShot=perfect_shot,
+                                   ballSpeed=goal_stats[2], ownGoal=own_goal)
+        goal.save()
 
     return winner

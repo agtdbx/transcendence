@@ -87,7 +87,8 @@ class GameServer:
 			self.powerUp["hitbox"].addPoint(p[0], p[1])
 
 		# Walls creation
-		self.createMap(idMap)
+		self.idMap = idMap
+		self.createMap()
 
 		# idPaddle, paddleTeam, Ball speed, Number of bounce, CC, Perfect shoot, time of goal
 		self.goals = []
@@ -485,58 +486,58 @@ class GameServer:
 
 
 	def printFinalStat(self):
-		if self.teamLeft.score > self.teamRight.score:
-			print("Team left win !")
-		else:
-			print("Team right win !")
+		# if self.teamLeft.score > self.teamRight.score:
+		# 	print("Team left win !")
+		# else:
+		# 	print("Team right win !")
 
-		print("=====================================")
-		print("|             GAME STATS            |")
-		print("=====================================")
-		print("Team left score :", self.teamLeft.score)
-		print("Team right score :", self.teamRight.score)
-		print("Team left number of player :", len(self.teamLeft.paddles))
-		print("Team right number of player :", len(self.teamRight.paddles))
-		print("Number of ball :", self.ballNumber)
-		print("Duration of match :", self.time)
-		print()
-		print("=====================================")
-		print("|           PADDLES STATS           |")
-		print("=====================================")
-		print("Team left players :")
-		print("\t----------------------------")
-		for p in self.teamLeft.paddles:
-			print("\tPaddle id :", p.id)
-			print("\tNumber of goal :", p.numberOfGoal)
-			print("\tMax speed ball touch :", p.maxSpeedBallTouch)
-			print("\tMax bounce of goal ball :", p.maxBounceBallGoal)
-			print("\tNumber of CC :", p.numberOfContreCamp)
-			print("\tNumber of perfect shoot :", p.numberOfPerfectShoot)
-			print("\t----------------------------")
-		print("Team right players :")
-		print("\t----------------------------")
-		for p in self.teamRight.paddles:
-			print("\tPaddle id :", p.id)
-			print("\tNumber of goal :", p.numberOfGoal)
-			print("\tMax speed ball touch :", p.maxSpeedBallTouch)
-			print("\tMax bounce of goal ball :", p.maxBounceBallGoal)
-			print("\tNumber of CC :", p.numberOfContreCamp)
-			print("\tNumber of perfect shoot :", p.numberOfPerfectShoot)
-			print("\t----------------------------")
-		print()
-		print("=====================================")
-		print("|            BALLS STATS            |")
-		print("=====================================")
-		# idPaddle, paddleTeam, Ball speed, Number of bounce, CC, Perfect shoot, time of goal
-		for goal in self.goals:
-			print("Paddle id :", goal[0])
-			print("Paddle team :", goal[1])
-			print("Ball speed ball :", goal[2])
-			print("Number of bounce :", goal[3])
-			print("Is CC :", goal[4])
-			print("Is Perfect Shoot :", goal[5])
-			print("Time :", goal[6])
-			print("----------------------------")
+		# print("=====================================")
+		# print("|             GAME STATS            |")
+		# print("=====================================")
+		# print("Team left score :", self.teamLeft.score)
+		# print("Team right score :", self.teamRight.score)
+		# print("Team left number of player :", len(self.teamLeft.paddles))
+		# print("Team right number of player :", len(self.teamRight.paddles))
+		# print("Number of ball :", self.ballNumber)
+		# print("Duration of match :", self.time)
+		# print()
+		# print("=====================================")
+		# print("|           PADDLES STATS           |")
+		# print("=====================================")
+		# print("Team left players :")
+		# print("\t----------------------------")
+		# for p in self.teamLeft.paddles:
+		# 	print("\tPaddle id :", p.id)
+		# 	print("\tNumber of goal :", p.numberOfGoal)
+		# 	print("\tMax speed ball touch :", p.maxSpeedBallTouch)
+		# 	print("\tMax bounce of goal ball :", p.maxBounceBallGoal)
+		# 	print("\tNumber of CC :", p.numberOfContreCamp)
+		# 	print("\tNumber of perfect shoot :", p.numberOfPerfectShoot)
+		# 	print("\t----------------------------")
+		# print("Team right players :")
+		# print("\t----------------------------")
+		# for p in self.teamRight.paddles:
+		# 	print("\tPaddle id :", p.id)
+		# 	print("\tNumber of goal :", p.numberOfGoal)
+		# 	print("\tMax speed ball touch :", p.maxSpeedBallTouch)
+		# 	print("\tMax bounce of goal ball :", p.maxBounceBallGoal)
+		# 	print("\tNumber of CC :", p.numberOfContreCamp)
+		# 	print("\tNumber of perfect shoot :", p.numberOfPerfectShoot)
+		# 	print("\t----------------------------")
+		# print()
+		# print("=====================================")
+		# print("|            BALLS STATS            |")
+		# print("=====================================")
+		# # idPaddle, paddleTeam, Ball speed, Number of bounce, CC, Perfect shoot, time of goal
+		# for goal in self.goals:
+		# 	print("Paddle id :", goal[0])
+		# 	print("Paddle team :", goal[1])
+		# 	print("Ball speed ball :", goal[2])
+		# 	print("Number of bounce :", goal[3])
+		# 	print("Is CC :", goal[4])
+		# 	print("Is Perfect Shoot :", goal[5])
+		# 	print("Time :", goal[6])
+		# 	print("----------------------------")
 
 		self.quit()
 
@@ -547,6 +548,8 @@ class GameServer:
 		game_stats.append(self.teamRight.score) # Team right score
 		game_stats.append(self.ballNumber) # Number of ball
 		game_stats.append(self.time) # Duration of match
+		game_stats.append(self.idMap) # Id of the map
+		game_stats.append(str(self.powerUpEnable).lower()) # Power enable or not
 
 		# LEFT TEAM STATS
 		left_team_stats = []
@@ -581,8 +584,8 @@ class GameServer:
 			ball_stats.append(goal[1]) # Paddle team
 			ball_stats.append(goal[2]) # Ball speed ball
 			ball_stats.append(goal[3]) # Number of bounce
-			ball_stats.append(goal[4]) # Is CC
-			ball_stats.append(goal[5]) # Is Perfect Shoot
+			ball_stats.append(str(goal[4]).lower()) # Is CC
+			ball_stats.append(str(goal[5]).lower()) # Is Perfect Shoot
 			ball_stats.append(goal[6]) # Time
 			balls_stats.append(ball_stats)
 
@@ -697,7 +700,7 @@ class GameServer:
 		self.messageForClients.append(message)
 
 
-	def createMap(self, idMap:int):
+	def createMap(self):
 		# Basic map
 		self.walls = [
 			# Wall up
@@ -721,7 +724,7 @@ class GameServer:
 		#TODO removed at the end
 		# idMap = 2
 
-		if idMap == 1:
+		if self.idMap == 1:
 			self.walls.append(createPolygonObstacle(
 								AREA_SIZE[0] / 2,
 								0,
@@ -742,7 +745,7 @@ class GameServer:
 								(200, 0, 200)
 							))
 
-		elif idMap == 2:
+		elif self.idMap == 2:
 			self.walls.append(createPolygonObstacle(
 								AREA_SIZE[0] / 2,
 								0,
@@ -840,7 +843,7 @@ class GameServer:
 										"effect" : Vec2(0, 168)}
 								]
 							))
-		elif idMap == 3:
+		elif self.idMap == 3:
 			self.walls.append(createPolygonObstacle(
 								1400,
 								399,

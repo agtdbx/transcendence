@@ -1,5 +1,5 @@
 import os, hashlib, jwt
-from db_test.models import User, connectionPassword
+from db_test.models import User, connectionPassword, Map
 import backend.settings as settings
 
 test = User.objects.all().filter(username="Karl")
@@ -45,4 +45,17 @@ if len(test) == 0:
              money=0, status=0)
     user.save()
 
+
 # Create maps
+test = Map.objects.all().count()
+if test == 0:
+    map = Map.objects.create(idMap=0, name="Default Map")
+    map.save()
+    map = Map.objects.create(idMap=1, name="Map 1")
+    map.save()
+    map = Map.objects.create(idMap=2, name="Map 2")
+    map.save()
+    map = Map.objects.create(idMap=3, name="Map 3")
+    map.save()
+    map = Map.objects.create(idMap=4, name="Map 4")
+    map.save()
