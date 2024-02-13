@@ -2,8 +2,10 @@ import sys
 import random
 from websocket_server.utils import get_user_by_id, send_error_to_id, \
                                    send_msg_to_id, check_user_admin, \
+                                   create_game_start_message, GAME_TYPE_TOURNAMENT, \
                                    NUMBER_OF_MAP, IA_ID
 from websocket_server.message import message_in_general
+from websocket_server.game_server_manager import create_new_game, is_game_server_free
 
 MISSION_CONTROL = get_user_by_id(-2)
 
@@ -21,7 +23,8 @@ tournament = {
     "half" : [None] * 4,
     "quarter" : [None] * 8,
     "players" : [],
-    "nicknames" : dict()
+    "nicknames" : dict(),
+    "matchRunning" : False
 }
 
 def get_user_view(user_id:int) -> list[int, str, str]:
@@ -163,7 +166,8 @@ async def create_tournament(my_id:int,
         "half" : [None] * 4,
         "quarter" : [None] * 8,
         "players" : [],
-        "nicknames" : dict()
+        "nicknames" : dict(),
+        "matchRunning" : False
     }
 
     print("WS : User", my_id, "Tournament create !",file=sys.stderr)
@@ -250,8 +254,9 @@ async def modify_tournament_map_id(my_id:int,
 
 
 async def start_tournament(my_id:int,
-                           connected_users:dict):
-    global current_id_tournament, tournament
+                           connected_users:dict,
+                           in_game_list:list):
+    global tournament
 
     # Check if user is an admin
     if not await check_user_admin(my_id, connected_users):
@@ -288,24 +293,115 @@ async def start_tournament(my_id:int,
     random.shuffle(tournament["quarter"])
 
     # Server message to inform users that the tournament begin
-    await message_in_general("The " + (current_id_tournament + 1) +
-                             " Tournament start !",
-                             MISSION_CONTROL, connected_users)
-
-    # TODO : CONTINUEZ ! FAIRE UNE FONCTION QUI AVANCE L'ETAT DU TOURNOIS A CHAQUE
-    #        FIN DE MATCH QUI EST UN MATCH DE TOURNOIS. DONC FAIRE EN SORTE DE
-    #        DIFFÉRENCIER LES MATCHS DE TOURNOIS DES AUTRES ! PRIORITÉ AU TOURNOIS
-    #        SUR LES QUICK GAMES !
+    await message_in_general("The Tournament start !", MISSION_CONTROL,
+                             connected_users)
+    await tournament_next_start_match(connected_users, in_game_list)
 
 
-async def tournament_next_start_match(connected_users:dict):
+async def tournament_next_start_match(connected_users:dict,
+                                      in_game_list:list):
     global tournament
 
     # Check is the tournament is running
-    if tournament["state"] != STATE_START_TOURNAMENT:pass
+    if tournament["state"] != STATE_START_TOURNAMENT:
+        print("WS : Tournament must be in running to launch a match",
+              file=sys.stderr)
+        return
+
+    # Check if a macth is running
+    if tournament["matchRunning"]:
+        print("WS : Tournament can't run only one match at same time",
+              file=sys.stderr)
+        return
+
+    # Get next match
+    next_match = get_next_match_tournament()
+
+    # Check if there is a next match
+    if next_match == None:
+        print("WS : No next match", file=sys.stderr)
+        return
+
+    # Check if we know the 2 player of next match
+    if next_match[0] == None or next_match[1] == None:
+        print("WS : At least one user", file=sys.stderr)
+        return
+
+    # Check if is a server free
+    if not is_game_server_free():
+        print("WS : No server free", file=sys.stderr)
+        return
+
+    # Create the game
+    ret = await create_new_game(in_game_list, 0, False, [next_match[0]],
+                                [next_match[1]], GAME_TYPE_TOURNAMENT)
+
+    if ret == None:
+        print("\nWS : ERROR : No game server free, put users", file=sys.stderr)
+        return
+
+    p1 = get_user_view(next_match[0])[2]
+    p2 = get_user_view(next_match[1])[2]
+
+    await message_in_general("New match beetwen " + p1 + " and " + p2,
+                             MISSION_CONTROL, connected_users)
+
+    tournament["matchRunning"] = True
+
+    # Send start game message to first player in waitlist
+    first_player_msg = create_game_start_message(ret[1], 0, 0, GAME_TYPE_TOURNAMENT)
+    for websocket in connected_users.get(next_match[0], []):
+        await websocket.send(first_player_msg)
+
+    # Send start game message to current player
+    current_player_msg = create_game_start_message(ret[1], 0, 1,
+                                                   GAME_TYPE_TOURNAMENT)
+    for websocket in connected_users.get(next_match[1], []):
+        await websocket.send(current_player_msg)
 
 
-async def tournament_end_match(connected_users:dict):pass
+async def tournament_end_match(winner:int,
+                               connected_users:dict):
+    global tournament
+
+    # Check is the tournament is running
+    if tournament["state"] != STATE_START_TOURNAMENT:
+        print("WS : Tournament must be in running to end a match",
+              file=sys.stderr)
+        return
+
+    nickname = get_user_view(winner)[2]
+
+    if winner in tournament["final"]:
+        tournament["matchRunning"] = False
+        tournament["winner"] = winner
+        tournament["state"] = STATE_FINISH_TOURNAMENT
+        print("WS : Tournament end ! Winner is", winner, file=sys.stderr)
+        await message_in_general("The winner of tournament is " + nickname,
+                             MISSION_CONTROL, connected_users)
+        return
+
+    if winner in tournament["half"]:
+        tournament["matchRunning"] = False
+        index = tournament["half"].index(winner)
+        index //= 2
+        tournament["final"][index] = winner
+        print("WS :", winner, " win the match !", file=sys.stderr)
+        await message_in_general(nickname + "win the match !",
+                             MISSION_CONTROL, connected_users)
+        return
+
+    if winner in tournament["quarter"]:
+        tournament["matchRunning"] = False
+        index = tournament["quarter"].index(winner)
+        index //= 2
+        tournament["half"][index] = winner
+        print("WS :", winner, " win the match !", file=sys.stderr)
+        await message_in_general(nickname + "win the match !",
+                             MISSION_CONTROL, connected_users)
+        return
+
+    print("WS :", winner, "wtf who are you ?!", file=sys.stderr)
 
 
 async def join_tournament(my_id:int,
@@ -438,9 +534,19 @@ async def next_match_tournament(my_id:int,
                                 connected_users:dict):
     next_match = get_next_match_tournament()
 
+    if next_match == None:
+        match = "null"
+    else:
+        match = []
+        for i in range(2):
+            if next_match[i] == None:
+                match.append("null")
+            else:
+                match.append(get_user_view(next_match[i]))
+
     str_msg = str({"type" : "nextMatch",
-                   "match" : next_match
-                   }).replace("'", '"').replace("None", "null")
+                "match" : match
+                }).replace("'", '"')
     await send_msg_to_id(my_id, connected_users, str_msg)
 
 
@@ -448,7 +554,17 @@ async def next_match_user(my_id:int,
                           connected_users:dict):
     next_match = get_next_match_user(my_id)
 
-    str_msg = str({"type" : "myNextMatch",
-                   "match" : next_match
-                   }).replace("'", '"').replace("None", "null")
+    if next_match == None:
+        match = "null"
+    else:
+        match = []
+        for i in range(2):
+            if next_match[i] == None:
+                match.append("null")
+            else:
+                match.append(get_user_view(next_match[i]))
+
+    str_msg = str({"type" : "nextMatch",
+                "match" : match
+                }).replace("'", '"')
     await send_msg_to_id(my_id, connected_users, str_msg)

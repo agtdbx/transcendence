@@ -22,7 +22,7 @@ async def waitlist_message(type:str,
 
 
 async def join_quick_room(my_id : int,
-                          waitlist,
+                          waitlist:list,
                           in_game_list: list,
                           connected_users : dict):
     # If the user is already in waitlist or in game, don't pu it in waitlist
@@ -101,9 +101,6 @@ async def check_if_can_start_new_game(waitlist : list,
         print("\nWS : ERROR : No game server free, put users",
               [first_player_id, second_player_id], "in waitlist", file=sys.stderr)
         return
-
-    in_game_list.append(first_player_id)
-    in_game_list.append(second_player_id)
 
     # Send start game message to first player in waitlist
     first_player_msg = create_game_start_message(ret[1], 0, 0, GAME_TYPE_QUICK)

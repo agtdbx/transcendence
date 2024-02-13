@@ -20,6 +20,8 @@ from websocket_server.tournament import create_tournament, \
                                         modify_tournament_map_id, \
                                         start_tournament , join_tournament, \
                                         quit_tournament, get_tournament_info, \
+                                        tournament_next_start_match, \
+                                        tournament_end_match, \
                                         get_users_tournament, \
                                         is_user_in_tournament, \
                                         next_match_tournament, next_match_user
@@ -90,8 +92,11 @@ async def handle_client(websocket : websockets.WebSocketServerProtocol, path):
 
             elif request_type == "gws":
                 if request_cmd == 'definitelyNotTheMovie(endGame)':
-                    end_game(data)
-                    await check_if_can_start_new_game(data, waitlist, in_game_list,
+                    winner = await end_game(data, in_game_list)
+                    if winner != None:
+                        await tournament_end_match(winner, connected_users)
+                    await tournament_next_start_match(connected_users, in_game_list)
+                    await check_if_can_start_new_game(waitlist, in_game_list,
                                                       connected_users)
                 else:
                     await send_error("Request cmd unkown")

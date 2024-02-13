@@ -1,7 +1,6 @@
 import os
 import asyncio
 import sys
-import time
 import websockets
 from websocket_server.utils import set_user_status
 # from pong_server.ws_game_server import start_game_thread
@@ -80,15 +79,15 @@ async def create_new_game(in_game_list : list,
     return None
 
 
-def end_game(data:dict,
-             in_game_list: list,):
+async def end_game(data:dict,
+                   in_game_list: list) -> bool:
     global game_servers
 
     # Get port info
     port = data.get("port", None)
     if port == None:
         print("\nWS : MISSING PORT :", data, file=sys.stderr)
-        return
+        return None
 
     for i in range(len(game_servers)):
         if game_servers[i][1] == port:
@@ -121,33 +120,44 @@ def end_game(data:dict,
             if id in in_game_list:
                 in_game_list.remove(id)
 
+    # Get stats info
+    stats = data.get("stats", None)
+    if stats == None:
+        print("\nWS : MISSING STATS :", data, file=sys.stderr)
+        return None
+
+    # GAME STATS
+    game_stats = stats[0]
+
+    # TEAM LEFT STATS
+    left_team_stats = stats[1]
+
+    # TEAM RIGHT STATS
+    right_team_stats = stats[2]
+
+    # BALLS STATS
+    balls_stats = stats[3]
+
     # Get type info
     type = data.get("type", None)
     if type == None:
         print("\nWS : MISSING TYPE :", data, file=sys.stderr)
-        return
+        return None
 
     # If the type is quick game, modify money of users
     if type == 0:
         pass
 
-    # Get stats info
-    stats = data.get("stats", None)
-    if stats == None:
-        print("\nWS : MISSING STATS :", data, file=sys.stderr)
-        return
+    winner = None
+
+    # If the type is tournament
+    if type == 2:
+        if game_stats[0] > game_stats[1]:
+            winner = left_team_stats[0][0]
+        else:
+            winner = right_team_stats[0][0]
 
     # PUT MATCH IN DB
     # PUT USER MATCH IN DB
 
-    # GAME STATS
-    stats[0]
-
-    # TEAM LEFT STATS
-    stats[1]
-
-    # TEAM RIGHT STATS
-    stats[2]
-
-    # BALLS STATS
-    stats[3]
+    return winner
