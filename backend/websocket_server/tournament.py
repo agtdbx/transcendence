@@ -324,8 +324,65 @@ async def tournament_next_start_match(connected_users:dict,
 
     # Check if we know the 2 player of next match
     if next_match[0] == None or next_match[1] == None:
-        print("WS : At least one user", file=sys.stderr)
+        print("WS : At least one user is unkown", file=sys.stderr)
         return
+
+    # If all participant are ia, end instantly the match
+    if next_match[0] == IA_ID and next_match[1] == IA_ID:
+        await tournament_end_match(IA_ID, connected_users)
+        await tournament_next_start_match(connected_users, in_game_list)
+        return
+
+    if next_match[0] == IA_ID:
+        user_right = get_user_by_id(next_match[1])
+        # Check if the user if connected
+        if user_right.status != 1:
+            print("WS : User", user_right.username, "isn't connected",
+                  file=sys.stderr)
+            await tournament_end_match(IA_ID, connected_users)
+            await tournament_next_start_match(connected_users, in_game_list)
+            return
+
+    elif next_match[1] == IA_ID:
+        user_left = get_user_by_id(next_match[0])
+        # Check if the user if connected
+        if user_left.status != 1:
+            print("WS : User", user_left.username, "isn't connected",
+                  file=sys.stderr)
+            await tournament_end_match(IA_ID, connected_users)
+            await tournament_next_start_match(connected_users, in_game_list)
+            return
+
+    else:
+        user_left = get_user_by_id(next_match[0])
+        user_right = get_user_by_id(next_match[1])
+
+        # If both user aren't connected, the winner is random
+        if user_left.status != 1 and user_right.status != 1:
+            print("WS : Both users aren't connected", file=sys.stderr)
+            if random.randint(0, 1) == 0:
+                await tournament_end_match(user_left.idUser, connected_users)
+                await tournament_next_start_match(connected_users, in_game_list)
+                return
+            else:
+                await tournament_end_match(user_right.idUser, connected_users)
+                await tournament_next_start_match(connected_users, in_game_list)
+                return
+
+        # User left not conneted
+        elif user_left.status != 1:
+            print("WS : User", user_left.username, "isn't connected",
+                  file=sys.stderr)
+            await tournament_end_match(user_right.idUser, connected_users)
+            await tournament_next_start_match(connected_users, in_game_list)
+            return
+
+        elif user_right.status != 1:
+            print("WS : User", user_right.username, "isn't connected",
+                  file=sys.stderr)
+            await tournament_end_match(user_left.idUser, connected_users)
+            await tournament_next_start_match(connected_users, in_game_list)
+            return
 
     # Check if is a server free
     if not is_game_server_free():
