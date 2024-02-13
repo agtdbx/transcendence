@@ -19,9 +19,15 @@ export class Paddle {
 		this.htmlObject.setAttribute('width', this.w);
 		this.htmlObject.setAttribute('height',  this.h);
 		if (team === paddleInfoUser[1])
+		{
 			this.htmlObject.setAttributeNS(null, 'fill',  "#0000FF");
+			this.color = "#0000FF";
+		}
 		else
+		{
+			this.color = "#FF0000";
 			this.htmlObject.setAttributeNS(null, 'fill',  "#FF0000");
+		}
 		// this.htmlObject.setAttribute('transform-origin', "center");
 
 
@@ -149,7 +155,7 @@ export class Paddle {
 			this.pos.y = dc.AREA_RECT[1] + dc.AREA_RECT[3] - d.PERFECT_SHOOT_SIZE - (this.halfH * this.modifierSize)
 			this.hitbox.setPos(this.pos.dup())
 		}
-		this.htmlObject.setAttribute('x',  this.pos.x - (this.halfW * this.modifierSize));
+		// this.htmlObject.setAttribute('x',  this.pos.x - (this.halfW * this.modifierSize));
 		this.htmlObject.setAttribute('y',  this.pos.y - (this.halfH * this.modifierSize));
 		this.htmlObject.setAttribute('width', this.w * this.modifierSize);
 		this.htmlObject.setAttribute('height',  this.h * this.modifierSize);
@@ -159,22 +165,20 @@ export class Paddle {
 	}
 
 
-	draw( win)
+	draw( )
 	{
 		if (this.powerUpInCharge.length > 0)
 		{
 			if (this.powerUpInCharge[0] == d.POWER_UP_BALL_FAST)
-				this.hitbox.fillColor = dc.POWER_UP_BALL_FAST_COLOR
+				this.htmlObject.setAttributeNS(null,'fill', dc.POWER_UP_BALL_FAST_COLOR)
 			else if (this.powerUpInCharge[0] == d.POWER_UP_BALL_WAVE)
-				this.hitbox.fillColor = dc.POWER_UP_BALL_WAVE_COLOR
+				this.htmlObject.setAttributeNS(null,'fill', dc.POWER_UP_BALL_WAVE_COLOR)
 			else if (this.powerUpInCharge[0] == d.POWER_UP_BALL_INVISIBLE)
-				this.hitbox.fillColor = dc.POWER_UP_BALL_INVISIBLE_COLOR
+				this.htmlObject.setAttributeNS(null,'fill', dc.POWER_UP_BALL_INVISIBLE_COLOR)
+			
 		}
 		else
-			this.hitbox.fillColor = d.PADDLE_COLOR
-		this.hitbox.drawFill(win)
-		if (d.DRAW_HITBOX)
-			this.hitbox.draw(win)
+			this.htmlObject.setAttributeNS(null,'fill', this.color)
 	}
 
 

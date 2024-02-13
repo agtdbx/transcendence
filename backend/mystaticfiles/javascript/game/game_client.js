@@ -679,6 +679,7 @@ export class GameClient {
 					this.teamLeft.paddles[content[3]].modifySize(content[1])
 				//this.teamLeft.paddles[content[3]].powerUp = content["powerUp"]
 				this.teamLeft.paddles[content[3]].powerUpInCharge = content[4]
+				this.teamLeft.paddles[content[3]].draw();
 			}
 			else
 			{
@@ -693,7 +694,9 @@ export class GameClient {
 					this.teamRight.paddles[content[3]].modifySize(content[1])
 				//this.teamRight.paddles[content[3]].powerUp = content["powerUp"]
 				this.teamRight.paddles[content[3]].powerUpInCharge = content[4]
+				this.teamRight.paddles[content[3]].draw();
 			}
+			
 		}
 	}
 
