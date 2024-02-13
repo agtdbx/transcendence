@@ -34,7 +34,7 @@ function changeBackground(num)
 }
 
 function addHeader(){
-	let header = document.getElementById("header");
+	let header = document.getElementById("NavHeader");
 	if (header === null)
 	{
 		try
@@ -66,10 +66,10 @@ function addHeader(){
 
 function removeHeader()
 {
-	let header = document.getElementById("header");
+	let header = document.getElementById("NavHeader");
 	if (header === null)
 		return ;
-	document.getElementById("header").remove();
+	document.getElementById("NavHeader").remove();
 }
 
 

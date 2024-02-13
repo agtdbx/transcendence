@@ -601,6 +601,17 @@ export class Ball {
 			this.modifierSize = state["modifierSize"]
 			this.modifySize(this.modifierSize)
 		}
+		if (this.modifierStopBallTimer == 0 && state["modifierStopBallTimer"] > 2)
+		{
+			document.getElementById("gameGifPop").src = "/static/image/game/other/dio.gif"
+			let audio = new Audio("/static/sound/zaowlrd.mp3");
+			audio.play();
+		}
+		else if (this.modifierStopBallTimer == 0 || state["modifierStopBallTimer"] == 0)
+		{
+			document.getElementById("gameGifPop").src = "";
+		}
+
 		this.modifierStopBallTimer = state["modifierStopBallTimer"]
 		this.modifierSkipCollision = state["modifierSkipCollision"]
 		this.modifierInvisibleBall = state["modifierInvisibleBall"]

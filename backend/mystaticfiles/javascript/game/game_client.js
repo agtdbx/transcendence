@@ -110,19 +110,9 @@ export class GameClient {
 		this.paddlesKeyState =  [...d.PADDLES_KEYS_STATE]
 
 		// Team creation
-		this.teamLeft = new team.Team(1, d.TEAM_LEFT)
-		this.teamRight = new team.Team(1, d.TEAM_RIGHT)
-		let nbPlayerOfTeam = 1;
-		for (let nbplayer = 0; nbplayer < nbPlayerOfTeam; nbplayer++) {
-			this.win.insertBefore(this.teamLeft.paddles[nbplayer].htmlObject, null);
-
-			
-		}
-		for (let nbplayer = 0; nbplayer < nbPlayerOfTeam; nbplayer++) {
-			this.win.insertBefore(this.teamRight.paddles[nbplayer].htmlObject, null);
-
-			
-		}
+		this.teamLeft = null
+		this.teamRight = null
+		
 
 		this.balls = []
 		// Ball creation
@@ -531,29 +521,46 @@ export class GameClient {
 		{
 			console.error("GWS :Error :", data['error']);
 		}
-		// else if (type == SERVER_MSG_TYPE_CREATE_START_INFO)
-		// 	this.parseMessageStartInfo(message[1])
-		// else if (type == SERVER_MSG_TYPE_UPDATE_OBSTACLE)
-		// 	this.parseMessageForObstacle(message[1])
-		// else if (type == SERVER_MSG_TYPE_UPDATE_PADDLES)
-		// 	this.parseMessageForPaddles(message[1])
-		// else if (type == SERVER_MSG_TYPE_UPDATE_BALLS)
-		// 	this.parseMessageForBalls(message[1])
-		// else if (type == SERVER_MSG_TYPE_DELETE_BALLS)
-		// 	this.parseMessageForDeleteBalls(message[1])
-		// else if (type == SERVER_MSG_TYPE_UPDATE_POWER_UP)
-		// 	this.parseMessageForPowerUp(message[1])
-		// else if (type == SERVER_MSG_TYPE_SCORE_UPDATE)
-		// 	this.parseMessageForScore(message[1])
 		else if (type === "endGame") // Not the movie !
 		{
-			let but = document.createElement("button");
-			but.classList = "btn-drg";
-			but.textContent = "Return to main page";
-			but.onclick = function(){
+			document.getElementById("body").onclick = function(){
+				document.getElementById("body").onclick = null;
 				changePage('3');
 			};
-			document.getElementById("content").appendChild(but);
+			document.getElementById("endGameVS").setAttribute("visibility", "visible")
+			document.getElementById("endGameScreen").setAttribute("visibility", "visible")
+			document.getElementById("EndStatusGame").setAttribute("visibility", "visible")
+			document.getElementById("endGameRightTeam").setAttribute("visibility", "visible");
+			document.getElementById("endGameLeftTeam").setAttribute("visibility", "visible");
+			document.getElementById("endClickToContinue").setAttribute("visibility", "visible");
+			document.getElementById("endGameLeftTeam").textContent = data['leftTeamScore']
+			document.getElementById("endGameRightTeam").textContent = data['rightTeamScore']
+			if (paddleInfoUser[1] == 0)
+			{
+				if (data['leftTeamScore'] > data['rightTeamScore'])
+				{
+					document.getElementById("EndStatusGame").textContent = "You  Win"
+					document.getElementById("EndStatusGame").setAttributeNS(null,"fill", "#00FF00")
+				}
+				else
+				{
+					document.getElementById("EndStatusGame").textContent = "You Lose"
+					document.getElementById("EndStatusGame").setAttributeNS(null,"fill", "#FF0000")	
+				}
+			}
+			else
+			{
+				if (data['leftTeamScore'] < data['rightTeamScore'])
+				{
+					document.getElementById("EndStatusGame").textContent = "You  Win"
+					document.getElementById("EndStatusGame").setAttributeNS(null,"fill", "#00FF00")
+				}
+				else
+				{
+					document.getElementById("EndStatusGame").textContent = "You Lose"
+					document.getElementById("EndStatusGame").setAttributeNS(null,"fill", "#FF0000")	
+				}
+			}
 			ws_game.onclose = {};
 			ws_game.close();
 			ws_game = null;
@@ -564,8 +571,29 @@ export class GameClient {
 		else if (type === "startInfo")
 		{
 			console.log("Starting info received");
-			this.runMainLoop = true
 			this.createObstaclesOnMap(data['obstacles'])
+			this.teamLeft = new team.Team(parseInt(data['nbPlayerTeamLeft']), d.TEAM_LEFT)
+			this.teamRight = new team.Team(parseInt(data['nbPlayerTeamRight']), d.TEAM_RIGHT)
+			for (let nbplayer = 0; nbplayer < parseInt(data['nbPlayerTeamLeft']); nbplayer++)
+			{
+				this.win.insertBefore(this.teamLeft.paddles[nbplayer].htmlObject, null);
+			}
+			for (let nbplayer = 0; nbplayer < parseInt(data['nbPlayerTeamRight']); nbplayer++)
+			{
+				this.win.insertBefore(this.teamRight.paddles[nbplayer].htmlObject, null);
+			}
+		}
+		else if (type === "startCount")
+		{
+			console.log("Starting in " + data['number']);
+			document.getElementById("startCounter").textContent = "" + data['number'];
+			if (data['number'] == 0)
+			{	
+				this.runMainLoop = true;
+				document.getElementById("divStartCounter").remove();
+				document.getElementById("startStartingIn").remove();
+				document.getElementById("startCounter").remove();
+			}
 		}
 		else if (type === "serverInfo") // Not the movie !
 		{
@@ -587,7 +615,7 @@ export class GameClient {
 		for (const obstables of lstObstacle)
 		{
 			this.walls.push(createObstacle(0, 0, obstables))
-			this.wallsHtmlObjects.push(addPolygon(this.win, 0, 0, obstables, "#FF00FF"))
+			this.wallsHtmlObjects.push(addPolygon(this.win, 0, 0, obstables, "#101010"))
 		}
 	}
 
@@ -651,6 +679,7 @@ export class GameClient {
 					this.teamLeft.paddles[content[3]].modifySize(content[1])
 				//this.teamLeft.paddles[content[3]].powerUp = content["powerUp"]
 				this.teamLeft.paddles[content[3]].powerUpInCharge = content[4]
+				this.teamLeft.paddles[content[3]].draw();
 			}
 			else
 			{
@@ -665,7 +694,9 @@ export class GameClient {
 					this.teamRight.paddles[content[3]].modifySize(content[1])
 				//this.teamRight.paddles[content[3]].powerUp = content["powerUp"]
 				this.teamRight.paddles[content[3]].powerUpInCharge = content[4]
+				this.teamRight.paddles[content[3]].draw();
 			}
+			
 		}
 	}
 
@@ -693,6 +724,25 @@ export class GameClient {
 				b.direction = new Vec2(content[1][0], content[1][1])
 				b.speed = content[3]
 				b.radius = content[2]
+				if (b.state != content[4] && content[4] != 0)
+				{
+					b.htmlObject.setAttribute("display", "None");
+					for (let index = 0; index < b.shadowBalls.length; index++)
+					{
+						b.shadowBalls[index][0].setAttribute("display", "None");
+						b.shadowBalls[index][1] = [(b.pos.x - (b.radius / 2)), (b.pos.y - (b.radius / 2))]
+						b.shadowBalls[index][0].setAttribute('x', "" +  (b.pos.x - (b.radius / 2)));
+						b.shadowBalls[index][0].setAttribute('y', "" +  (b.pos.y - (b.radius / 2)));
+					}
+				}
+				else if (b.state != content[4] && content[4] == 0)
+				{
+					b.htmlObject.setAttribute("display", "block");
+					for (let index = 0; index < b.shadowBalls.length; index++)
+					{
+						b.shadowBalls[index][0].setAttribute("display", "block");
+					}
+				}
 				b.state = content[4]
 				b.htmlObject.setAttribute('width', b.radius * 2)
 				b.htmlObject.setAttribute('height', b.radius * 2)

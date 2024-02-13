@@ -53,9 +53,9 @@ export const HITBOX_PADDLE_COLOR = (0, 0, 255) // (r, g, b), channel int [0, 255
 export const POWER_UP_HITBOX_COLOR = (200, 100, 100) // (r, g, b), channell int [0, 255]
 
 // Power up list and effects define
-export const POWER_UP_BALL_FAST_COLOR = (200, 0, 200) // in seconds
-export const POWER_UP_BALL_WAVE_COLOR = (0, 200, 200) // in seconds
-export const POWER_UP_BALL_INVISIBLE_COLOR = (200, 200, 0) // in seconds
+export const POWER_UP_BALL_FAST_COLOR = "#FF00FF" // in seconds
+export const POWER_UP_BALL_WAVE_COLOR = "#00FFFF" // in seconds
+export const POWER_UP_BALL_INVISIBLE_COLOR = "FFFF00" // in seconds
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

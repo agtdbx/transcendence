@@ -253,6 +253,19 @@ def parsingGlobalMessage():
     print("\nGWS : SEND updatePowerUpInGame to client : ", updatePowerUpInGame, file=sys.stderr)
     asyncio.create_task(sendGlobalMessage(updateObstacles, updatePaddles,updateBalls,deleteBall,changeUserPowerUp,updatePowerUpInGame,updateScore))
 
+async def countBeforeStart():
+    for i in range(6):
+        countMsg = {"type" : "startCount",
+                    "number": 5 - i,
+                    }
+        str_msg = str(countMsg)
+        str_msg = str_msg.replace("'", '"')
+
+        for websockets in connected_player.values():
+            for websocket in websockets:
+                await websocket.send(str_msg)
+        if (i != 5):
+            await asyncio.sleep(1)
 
 async def game_server_manager():
     global game, can_shutdown
@@ -262,18 +275,20 @@ async def game_server_manager():
     for wall in game.walls :
         lstObstacle.append(wall.hitbox.getPoints())
     
-    await asyncio.sleep(3)
-    end_game_msg = {"type" : "startInfo",
+    await asyncio.sleep(0.1)
+    start_game_msg = {"type" : "startInfo",
                     "obstacles": lstObstacle ,
-                    'powerUp' : str(power_up).lower()
+                    'powerUp' : str(power_up).lower(),
+                    'nbPlayerTeamLeft' : len(team_left),
+                    'nbPlayerTeamRight' : len(team_right)
                     }
-    str_msg = str(end_game_msg)
+    str_msg = str(start_game_msg)
     str_msg = str_msg.replace("'", '"')
 
     for websockets in connected_player.values():
         for websocket in websockets:
             await websocket.send(str_msg)
-
+    await countBeforeStart()
 
     while game.runMainLoop and (len(connected_player.values()) > 1):
         print("\nGWS : GAME STEP", file=sys.stderr)
@@ -283,8 +298,8 @@ async def game_server_manager():
     print("\nGWS : END GAME (not the movie)", file=sys.stderr)
 
     end_game_msg = {"type" : "endGame",
-                    "leftTeamScore" : 0,
-                    "rightTeamScore" : 0}
+                    "leftTeamScore" : game.teamLeft.score,
+                    "rightTeamScore" : game.teamRight.score}
     str_msg = str(end_game_msg)
     str_msg = str_msg.replace("'", '"')
 
