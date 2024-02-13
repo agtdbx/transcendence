@@ -6,7 +6,7 @@
 #    By: aderouba <aderouba@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/08 14:00:09 by lflandri          #+#    #+#              #
-#    Updated: 2024/02/09 14:47:27 by aderouba         ###   ########.fr        #
+#    Updated: 2024/02/13 20:16:07 by aderouba         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,6 @@ from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
 from django.shortcuts import render
 
-from db_test.models import UserTournament
 from db_test.models import User
 import datetime
 
@@ -145,31 +144,31 @@ def section(request, num):
 
     if num == 3:
         if fullPage:
-            return render(request, "mainpage_full.html", {'idType': user.idType})
+            return render(request, "mainpage_full.html", {'idType': user.type})
         else:
-            return render(request, "mainpage.html", {'idType': user.idType})
+            return render(request, "mainpage.html", {'idType': user.type})
 
     elif num == 4:
         if fullPage:
-            return render(request, "mainpage_full.html")
+            return render(request, "mainpage_full.html", {'idType': user.type})
         else:
             return render(request,"waitpage.html")
 
     elif num == 5:
         if fullPage:
-            return render(request, "mainpage_full.html")
+            return render(request, "mainpage_full.html", {'idType': user.type})
         else:
             return render(request,"createGameRoom.html")
 
     elif num == 51:
         if fullPage:
-            return render(request, "mainpage_full.html")
+            return render(request, "mainpage_full.html", {'idType': user.type})
         else:
             return render(request,"joinGameRoom.html")
 
     elif num == 6:
         if fullPage:
-            return render(request, "mainpage_full.html")
+            return render(request, "mainpage_full.html", {'idType': user.type})
         else:
             return render(request,"game.html")
 
@@ -180,8 +179,8 @@ def section(request, num):
             return render(request,"tournament.html")
 
     elif num == 8: #admin page where you can create tournament if you are admin and start them
-        if(user.idType != 2):
-            return render(request, "mainpage_full.html")
+        if(user.type != 2):
+            return render(request, "mainpage_full.html", {'idType': user.type})
         if fullPage:
             return render(request, "tournament_full.html")
         else:
@@ -203,10 +202,10 @@ def section(request, num):
             return render(request,"profil_content.html", {'user': user, 'pos': i, '42urllink' : os.getenv('WEBSITE_URL')})
 
     elif num == 10:
-        ListUser = list(User.objects.all().order_by("-money"))
+        ListUser = list(User.objects.all().filter(idUser__gt=0).order_by("-money"))
         ListUser = ListUser[:18]
 
-        Void = User(idUser=0, idType=0, username="", profilPicture="images/default/void.png", tokenJWT="", money=0, idStatus=0)
+        Void = User(idUser=0, type=0, username="", profilPicture="images/default/void.png", tokenJWT="", money=0, status=0)
 
         j = len(ListUser)
         while j < 18:
@@ -255,7 +254,7 @@ def section(request, num):
             return render(request, "beer_full.html")
         else:
             return render(request,"beer.html")
-        
+
     elif num == 13:                 # inscription page
         #need to register USER and check if tournament is full or not
         #save user
@@ -263,19 +262,19 @@ def section(request, num):
             return render(request, "joinTournament_full.html")
         else:
             return render(request,"joinTournament.html")
-        
+
     elif num == 14: #check if user is register or if tournament is full if not register
-        if UserTournament.objects.all().filter(idUser=user.idUser):     #already join tournament
-            if fullPage:        
-                return render(request, "joinTournament_full.html")
-            else:
-                return render(request,"joinTournament.html")
-        if len(UserTournament.objects.all()) == 8:  #tournament full -> join spectate
-            if fullPage:
-                return render(request, "tournamentSpectate_full.html")
-            else:
-                return render(request,"tournamentSpectate.html")
-        else:
+        # if UserTournament.objects.all().filter(idUser=user.idUser):     #already join tournament
+        #     if fullPage:
+        #         return render(request, "joinTournament_full.html")
+        #     else:
+        #         return render(request,"joinTournament.html")
+        # if len(UserTournament.objects.all()) == 8:  #tournament full -> join spectate
+        #     if fullPage:
+        #         return render(request, "tournamentSpectate_full.html")
+        #     else:
+        #         return render(request,"tournamentSpectate.html")
+        # else:
             if fullPage:
                 return render(request, "tournamentInscription_full.html")   #subscribe to tournament
             else:

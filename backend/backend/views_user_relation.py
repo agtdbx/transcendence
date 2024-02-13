@@ -6,7 +6,7 @@
 #    By: aderouba <aderouba@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/23 19:48:59 by aderouba          #+#    #+#              #
-#    Updated: 2024/02/06 18:36:35 by aderouba         ###   ########.fr        #
+#    Updated: 2024/02/10 17:22:21 by aderouba         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -256,7 +256,7 @@ def getlistefriend(request):
     for link in linkFriendRequestList :
         try:
             friend = User.objects.all().filter(idUser=link.idTarget)[0]
-            listeRequest.append({"name": friend.username, "pp" : "/static/" + friend.profilPicture.name, "status" : friend.idStatus, "id" : friend.idUser})
+            listeRequest.append({"name": friend.username, "pp" : "/static/" + friend.profilPicture.name, "status" : friend.status, "id" : friend.idUser})
         except:
             continue
     return JsonResponse({"success": True, "content" : "", "listcontact" : listeRequest })
@@ -274,7 +274,7 @@ def getlisteblocked(request):
     for link in linkFriendRequestList :
         try:
             friend = User.objects.all().filter(idUser=link.idTarget)[0]
-            listeRequest.append({"name": friend.username, "pp" : "/static/" + friend.profilPicture.name, "status" : friend.idStatus })
+            listeRequest.append({"name": friend.username, "pp" : "/static/" + friend.profilPicture.name, "status" : friend.status })
         except:
             continue
     return JsonResponse({"success": True, "content" : "", "listcontact" : listeRequest })
@@ -293,8 +293,10 @@ def get_can_be_invited(request):
     for link in linkFriendRequestList :
         try:
             friend = User.objects.all().filter(idUser=link.idTarget)[0]
-            if friend.idStatus == 1:
-                listeRequest.append({"name": friend.username, "pp" : "/static/" + friend.profilPicture.name, "status" : friend.idStatus, "id" : friend.idUser})
+            if friend.status == 1:
+                listeRequest.append({"name": friend.username,
+                                     "pp" : "/static/" + friend.profilPicture.name,
+                                     "status" : friend.status, "id" : friend.idUser})
         except:
             continue
     return JsonResponse({"success": True, "content" : "", "listcontact" : listeRequest })

@@ -57,7 +57,7 @@ TEAM_LEFT = 0
 TEAM_RIGHT = 1
 
 PADDLE_PLAYER = 0
-PADDLE_IA = 1
+PADDLE_IA = -1
 
 ############################################################################################
 #                                       PADDLE DEFINE                                      #

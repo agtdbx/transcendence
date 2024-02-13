@@ -42,11 +42,6 @@ MESSAGE
     => Message recieved
         {{message}}
 
-    => Server message recieved
-        'type' : 'serverMessage'
-        'message' : <message>
-        'date' : <date>
-
     => Invite recieved
         'type' : 'invite'
         'username' : <username>
@@ -56,7 +51,7 @@ MESSAGE
     {{message}} :
         'type' : 'message'
         'message' : <message>
-        'username' : <username>
+        'username' : <username> # if it's "Mission Control", it's a server message
         'pp' : <profile picture link>
         'date' : <date>
         'channel' : 'general' | <user id>
@@ -193,31 +188,125 @@ TOURNAMENT
     create tournament
         'type' : 'tournament'
         'cmd' : 'create'
-        'start' : <start date>
         'powerUp' : true | false
         'mapId' : <map id>
-        -> No more field
+        -> {{tournament state}}
+
+    /!\ Only the administrator can modify tournament /!\
+    switch tournament power up
+        'type' : 'tournament'
+        'cmd' : 'modifyPowerUp'
+        -> {{tournament state}}
+
+    /!\ Only the administrator can modify tournament /!\
+    modify tournament map id
+        'type' : 'tournament'
+        'cmd' : 'modifyMapId'
+        'mapId' : <map id>
+        -> {{tournament state}}
+        
+    /!\ Only the administrator can start tournament /!\
+    start tournament
+        'type' : 'tournament'
+        'cmd' : 'start'
+        -> 'type' : 'tournamentStart'
 
     join tournament
         'type' : 'tournament'
         'cmd' : 'join'
+        'nickname' : <nickname>
         -> 'type' : 'joinReply'
-           'tournamentUserId' : <tournament user id>
+		   'powerUp' : true | false
+		   'mapId' : <map id>
+		   'players' : [<user view>]
+           
+	quit tournament # if the tournament has begun, it will not work
+        'cmd' : 'quit'
+        -> No more field
+        
+    get tournament info
+    	'type' : 'tournament'
+        'cmd' : 'getInfo'
+        -> 'type' : 'tournamentInfo'
+           'status' : 'nothing' | 'create' | 'start' | 'finish'
+           'mapId' : <map id>
+           'powerUp' : true | false
+     
+    get user of tournament
+    	'type' : 'tournament'
+        'cmd' : 'getUserTournament'
+        -> 'type' : 'tournamentPlayersList'
+    	   'players' : [<user view>] 
+        
+    get if the user is in tournament
+    	'type' : 'tournament'
+        'cmd' : 'IsUserInTournament'
+        -> 'type' : 'InTournament'
+           'inTournament' : true | false
+        
+    get tournament tree
+    	'type' : 'tournament'
+        'cmd' : 'getTournamentTree'
+		-> type' : 'tournamentTreeUpdate'
+    	   'winner' : <user view> | null			# null for empty
+		   'final' : (<user view> | null) * 2
+    	   'half' : (<user view> | null) * 4
+    	   'quarter' : (<user view> | null) * 8
+        
+	/!\ Only work if the tournament has begin /!\   
+    get next match of tournament
+        'type' : 'tournament'
+        'cmd' : 'nextMatch'
+        -> 'type' : 'nextMatch'
+           'match' : [<user view> | null, <user view> | null] | null
+           # null in user = user not know
+           # all null = no future match (end of tournament)
+        
+	/!\ Only work if the tournament has begin /!\   
+    get next match of user
+        'type' : 'tournament'
+        'cmd' : 'myNextMatch'
+        -> 'type' : 'myNextMatch'
+           'match' : [<user view> | null, <user view> | null] | null
+           # null in user = user not know
+           # all null = no future match (loser)
+
+	=> {{tournament state}}
 
     => Game start
         'type' : 'gameStart'
         'gamePort' : <port> # port of the websocket for game
         'paddleId' : <paddle id>
         'teamId' : <team id>
+        
+    => update list users
+    	'type' : 'tournamentPlayersList'
+    	'players' : [<user view>] 
+        
+    => update tournament tree
+        'type' : 'tournamentTreeUpdate'
+    	'winner' : <user view> | null			# null for empty
+    	'final' : (<user view> | null) * 2
+    	'half' : (<user view> | null) * 4
+    	'quarter' : (<user view> | null) * 8
 
-    => match result
-        'type' : 'matchResult'
-        'winner' : <tournament user id>
-        'loser' : <tournament user id>
+    => nextMatch
+        'type' : 'nextMatch'
+        'playerLeft' : <user view>
+        'playerRight' : <user view>
 
     => end tournament
         'type' : 'endTournament'
-        'onePongMan' : <tournament user id>
+        'onePongMan' : <user id>
+
+	{{tournament state}}
+		'type' : 'tournamentState'
+		'powerUp' : true | false
+        'mapId' : <map id>
+        'players' : [<user view>]
+
+    <user view>
+    	[<user id>, <user pp>, <tournament user nickmane>] # -1 id for bot
 
 
 /!\ All messages for and from game are in it's websocket /!\

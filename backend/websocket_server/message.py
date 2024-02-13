@@ -1,5 +1,6 @@
 import asyncio
-import sys, datetime
+import sys
+import datetime
 from websocket_server.utils import send_error, get_user_by_id
 from db_test.models import User, Message, PrivMessage
 

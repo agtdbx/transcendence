@@ -11,9 +11,22 @@ from websocket_server.game_server_manager import end_game
 from websocket_server.game_room import create_game_room, join_game_room, \
                                        quit_game_room, send_game_room_invite, \
                                        game_room_quick_user, game_room_add_bot, \
-                                       game_room_remove_bot, game_room_change_team, \
+                                       game_room_remove_bot, \
+                                       game_room_change_team, \
                                        game_room_change_power_up, \
                                        game_room_change_map, game_room_start_game
+from websocket_server.tournament import create_tournament, \
+                                        switch_tournament_power_up, \
+                                        modify_tournament_map_id, \
+                                        start_tournament , join_tournament, \
+                                        quit_tournament, get_tournament_info, \
+                                        tournament_next_start_match, \
+                                        tournament_end_match, \
+                                        get_users_tournament, \
+                                        is_user_in_tournament, \
+                                        next_match_tournament, next_match_user
+
+
 
 # Dict to save the actives connections
 connected_users = dict()
@@ -40,7 +53,8 @@ async def remove_user_connected(my_id, websocket, my_game_room_id):
         set_user_status(my_id, 0)
         await leave_quick_room(my_id, waitlist, connected_users)
         if my_game_room_id != None:
-            await quit_game_room(my_id, connected_users, my_game_room_id, game_rooms)
+            await quit_game_room(my_id, connected_users, my_game_room_id,
+                                 game_rooms)
 
 
 async def handle_client(websocket : websockets.WebSocketServerProtocol, path):
@@ -52,6 +66,7 @@ async def handle_client(websocket : websockets.WebSocketServerProtocol, path):
         async for data in websocket:
             print("\nWS : DATA RECIEVED :", data, file=sys.stderr)
             data : dict = json.loads(data)
+            print("WS : Json ok", file=sys.stderr)
 
             request_type = data.get("type", None)
             request_cmd = data.get("cmd", None)
@@ -78,8 +93,11 @@ async def handle_client(websocket : websockets.WebSocketServerProtocol, path):
 
             elif request_type == "gws":
                 if request_cmd == 'definitelyNotTheMovie(endGame)':
-                    end_game(data)
-                    await check_if_can_start_new_game(data, waitlist, in_game_list,
+                    winner = await end_game(data, in_game_list)
+                    if winner != None:
+                        await tournament_end_match(winner, connected_users)
+                    await tournament_next_start_match(connected_users, in_game_list)
+                    await check_if_can_start_new_game(waitlist, in_game_list,
                                                       connected_users)
                 else:
                     await send_error("Request cmd unkown")
@@ -152,6 +170,34 @@ async def handle_client(websocket : websockets.WebSocketServerProtocol, path):
                     # If the creation of the game succeed, remove game id
                     if ret:
                         my_game_room_id = None
+                else:
+                    await send_error(websocket, "Request cmd unkown")
+                continue
+
+            # Tournament gestion
+            if request_type == "tournament":
+                if request_cmd == "create":
+                    await create_tournament(my_id, connected_users)
+                elif request_cmd == "modifyPowerUp":
+                    await switch_tournament_power_up(my_id, connected_users)
+                elif request_cmd == "modifyMapId":
+                    await modify_tournament_map_id(my_id, connected_users, data)
+                elif request_cmd == "start":
+                    await start_tournament(my_id, connected_users)
+                elif request_cmd == "join":
+                    await join_tournament(my_id, connected_users, data)
+                elif request_cmd == "quit":
+                    await quit_tournament(my_id, connected_users)
+                elif request_cmd == "getInfo":
+                    await get_tournament_info(my_id, connected_users)
+                elif request_cmd == "getUserTournament":
+                    await get_users_tournament(my_id, connected_users)
+                elif request_cmd == "IsUserInTournament":
+                    await is_user_in_tournament(my_id, connected_users)
+                elif request_cmd == "nextMatch":
+                    await next_match_tournament(my_id, connected_users)
+                elif request_cmd == "myNextMatch":
+                    await next_match_user(my_id, connected_users)
                 else:
                     await send_error(websocket, "Request cmd unkown")
                 continue

@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    views_achievement.py                               :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: lflandri <lflandri@student.42.fr>          +#+  +:+       +#+         #
+#    By: aderouba <aderouba@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/17 15:33:50 by lflandri          #+#    #+#              #
-#    Updated: 2024/01/26 20:12:43 by lflandri         ###   ########.fr        #
+#    Updated: 2024/02/10 17:07:05 by aderouba         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,7 +28,8 @@ from .views import *
 
 def createAchievementIfNot(user):
     """
-    Return True if achievement existe or if it has been correctly created, return False else.
+    Return True if achievement existe or if it has been correctly created,
+    return False else.
     """
     if len(Achivement.objects.all().filter(idUser=user.idUser)) > 0 :
         return True;
@@ -52,76 +53,76 @@ def listAchievement(user, isself):
     {
         "title" : "Winner" if (achievement.winner > 0) else errorName,
         "description" :  (errorDescription if (achievement.winner == 0) else "win " + "inserte the number here" + "/" + ( '1' if (achievement.winner == 1) else ( '21' if (achievement.winner == 2) else '42')) + " game."),
-	    "grade" : achievement.winner,
-		"img" : imgPath + ("Winner.webp" if (achievement.winner > 0) else "Error.webp")
-	},
+        "grade" : achievement.winner,
+        "img" : imgPath + ("Winner.webp" if (achievement.winner > 0) else "Error.webp")
+    },
     {
         "title" :  "Perfect Shoot" if achievement.perfectShoot > 0   else errorName,
         "description" :  (errorDescription  if (achievement.perfectShoot == 0) else "Do " + "inserte the number here" + "/" + ( '1' if (achievement.perfectShoot == 1) else ( '5' if (achievement.perfectShoot == 2) else '10')) + " perfect shoot"),
-	    "grade" : achievement.perfectShoot,
-		"img" : imgPath + ( "PerfectShoot.webp" if achievement.perfectShoot > 0  else "Error.webp")
-	},
+        "grade" : achievement.perfectShoot,
+        "img" : imgPath + ( "PerfectShoot.webp" if achievement.perfectShoot > 0  else "Error.webp")
+    },
     {
         "title" : "Bosco is your friend" if achievement.boscoFriend > 0 else errorName,
         "description" : "Find bosco." if achievement.boscoFriend > 0 else errorDescription,
-	    "grade" : achievement.boscoFriend,
-		"img" : imgPath + ("bosco_move.gif" if achievement.boscoFriend > 0  else "Error.webp")
-	},
+        "grade" : achievement.boscoFriend,
+        "img" : imgPath + ("bosco_move.gif" if achievement.boscoFriend > 0  else "Error.webp")
+    },
     {
         "title" : "Dig your own grave" if achievement.digGrave > 0 else errorName,
         "description" :"Scored an own goal." if achievement.boscoFriend  > 0 else errorDescription,
-	    "grade" : achievement.digGrave,
-		"img" : imgPath + ("GraveDig.webp" if achievement.digGrave > 0  else "Error.webp")
-	},
+        "grade" : achievement.digGrave,
+        "img" : imgPath + ("GraveDig.webp" if achievement.digGrave > 0  else "Error.webp")
+    },
     {
         "title" : "To the fallen" if achievement.fallen > 0 else errorName,
         "description" :  "Pray for the fallen." if achievement.boscoFriend > 0 else errorDescription,
-	    "grade" : achievement.fallen,
-		"img" : imgPath + ( "Fallen.webp" if achievement.fallen > 0 else "Error.webp")
-	},
+        "grade" : achievement.fallen,
+        "img" : imgPath + ( "Fallen.webp" if achievement.fallen > 0 else "Error.webp")
+    },
     {
         "title" : "Unpredictable" if achievement.unpredictable > 0 else errorName,
         "description" : (errorDescription if (achievement.unpredictable == 0) else "Scored goal with " + "inserte the number here" + "/" +  ( '10' if (achievement.unpredictable == 1) else ( '21' if (achievement.unpredictable == 2) else '42')) + " bound."),
-	    "grade" : achievement.unpredictable,
-		"img" : imgPath + ("Unpredictable.webp" if achievement.unpredictable > 0  else "Error.webp")
-	},
+        "grade" : achievement.unpredictable,
+        "img" : imgPath + ("Unpredictable.webp" if achievement.unpredictable > 0  else "Error.webp")
+    },
     {
         "title" : "Faster than Shadow" if achievement.faster > 0 else errorName,
         "description" :  (errorDescription if (achievement.faster == 0) else "Parer une balle plus vite que " + "inserte the number here" + "/" + ('2' if (achievement.faster == 1) else ('3' if (achievement.faster == 2) else '4')) + "."),
-	    "grade" : achievement.faster,
-		"img" : imgPath + ("Faster.webp" if achievement.faster > 0 else "Error.webp")
-	},
+        "grade" : achievement.faster,
+        "img" : imgPath + ("Faster.webp" if achievement.faster > 0 else "Error.webp")
+    },
     {
         "title" : "A wave is in comming" if achievement.waveComming > 0 else errorName,
         "description" :  (errorDescription if (achievement.waveComming == 0) else "Play with " + "inserte the number here" + "/" + ('2' if (achievement.waveComming == 1) else ('3' if (achievement.waveComming == 2) else '4')) + " ball at the ame time."),
-	    "grade" : achievement.waveComming,
-		"img" : imgPath + ("WaveCommig.webp" if  achievement.waveComming > 0 else "Error.webp")
-	},
+        "grade" : achievement.waveComming,
+        "img" : imgPath + ("WaveCommig.webp" if  achievement.waveComming > 0 else "Error.webp")
+    },
     {
         "title" : "You shall not passed" if achievement.notPassed > 0 else errorName,
         "description" :  (errorDescription if (achievement.notPassed == 0) else "Win " + "inserte the number here" + "/" + ('1' if (achievement.notPassed == 1) else ('21' if (achievement.notPassed == 2) else '42')) + " without taking a goal."),
-	    "grade" : achievement.notPassed,
-		"img" : imgPath + ("NotPassed.webp" if achievement.notPassed > 0  else "Error.webp")
-	},
+        "grade" : achievement.notPassed,
+        "img" : imgPath + ("NotPassed.webp" if achievement.notPassed > 0  else "Error.webp")
+    },
     {
         "title" : "You finaly find a friend !" if achievement.friend > 0 else errorName,
         "description" : "Have one friends." if achievement.boscoFriend > 0 else errorDescription,
-	    "grade" : achievement.friend,
-		"img" : imgPath + ("Friend.webp" if achievement.friend > 0  else "Error.webp")
-	},
+        "grade" : achievement.friend,
+        "img" : imgPath + ("Friend.webp" if achievement.friend > 0  else "Error.webp")
+    },
     {
         "title" : "Welcom to the party" if achievement.party > 0 else errorName,
         "description" :  (errorDescription if (achievement.party == 0) else "Play " + "inserte the number here" + "/" + ('1' if (achievement.party == 1) else ('21' if (achievement.party == 2) else '42')) + " match in team."),
-	    "grade" : achievement.party,
-		"img" : imgPath + ("Party.webp" if achievement.party > 0 else "Error.webp")
-	},
+        "grade" : achievement.party,
+        "img" : imgPath + ("Party.webp" if achievement.party > 0 else "Error.webp")
+    },
     {
-        "title" : "Minecart on Legs" if achievement.molyBatle > 0 else errorName,
-        "description" :  (errorDescription if (achievement.molyBatle == 0) else "Win over moly " + "inserte the number here" + "/" + ('1' if (achievement.molyBatle == 1) else ('21' if (achievement.molyBatle == 2) else '42'))) + " times.",
-	    "grade" : achievement.molyBatle,
-		"img" : imgPath + ("Molly.webp" if achievement.molyBatle > 0  else "Error.webp")
-	}
-	]
+        "title" : "Minecart on Legs" if achievement.molyBattle > 0 else errorName,
+        "description" :  (errorDescription if (achievement.molyBattle == 0) else "Win over moly " + "inserte the number here" + "/" + ('1' if (achievement.molyBattle == 1) else ('21' if (achievement.molyBattle == 2) else '42'))) + " times.",
+        "grade" : achievement.molyBattle,
+        "img" : imgPath + ("Molly.webp" if achievement.molyBattle > 0  else "Error.webp")
+    }
+    ]
     return returnListe
 
 

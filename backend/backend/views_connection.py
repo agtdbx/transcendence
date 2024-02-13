@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    views_connection.py                                :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: auguste <auguste@student.42.fr>            +#+  +:+       +#+         #
+#    By: aderouba <aderouba@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/23 19:48:51 by aderouba          #+#    #+#              #
-#    Updated: 2024/02/07 17:07:16 by auguste          ###   ########.fr        #
+#    Updated: 2024/02/12 18:36:40 by aderouba         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -49,9 +49,17 @@ def checkLogin(request):
     username = request.POST.get('login')
     password = request.POST.get('password')
 
+    # Check if username haven't bad caracters
+    username = username.lower()
+    good_chars = "abcdefghijklmnoprstuvwxyz0123456789_"
+    for c in username:
+        if c not in good_chars:
+            return JsonResponse({"success" : False, "error" : "Only alphanum and underscore autorised"})
+
     username_check = User.objects.all().filter(username=username)
     if len(username_check) == 0:
-        return JsonResponse({"success" : False, "error" : "Username does not exist"})
+        return JsonResponse({"success" : False,
+                             "error" : "Username does not exist"})
 
     password_check = connectionPassword.objects.all()\
                         .filter(idUser=username_check[0].idUser)
@@ -81,6 +89,13 @@ def checkSignin(request):
         return JsonResponse({"success" : False,
                              "error" : "Empty field aren't accept"})
 
+    # Check if username haven't bad caracters
+    username = username.lower()
+    good_chars = "abcdefghijklmnoprstuvwxyz0123456789_"
+    for c in username:
+        if c not in good_chars:
+            return JsonResponse({"success" : False, "error" : "Only alphanum and underscore autorised"})
+
     test = User.objects.all().filter(username=username)
     if len(test):
         return JsonResponse({"success" : False, "error" : "Username already use"})
@@ -91,19 +106,20 @@ def checkSignin(request):
 
     hashPwd = hashlib.sha512(password.encode(), usedforsecurity=True)
 
-    id = User.objects.all().count() + 1
+    id = User.objects.all().count() - 1
     idType = 1
 
     token = jwt.encode({"userId": id}, settings.SECRET_KEY, algorithm="HS256")
     try:
         str = ["images/default/Scout.png", "images/default/Driller.png",
                "images/default/Engineer.png", "images/default/Soldier.png"]
-        user = User(idUser=id, idType=idType, username=username,
+        user = User(idUser=id, type=idType, username=username,
                     profilPicture=str[random.randint(0,3)], tokenJWT=token,
-                    money=id, idStatus=0)
+                    money=10, status=0)
         user.save()
     except:
-        return JsonResponse({"success" : False, "error" : "Error on user creation"})
+        return JsonResponse({"success" : False,
+                             "error" : "Error on user creation"})
 
     try:
         password = connectionPassword(idPassword=id, password=hashPwd.hexdigest(),
@@ -135,7 +151,7 @@ def changePassword(request):
         if hash.hexdigest() != password_check.password:
             return JsonResponse({"success" : False, "error" :
                                     "Wrong account password, please try again !"})
-    else :			#if user hasn't a password
+    else :            #if user hasn't a password
         password_check = connectionPassword(idPassword=user.idUser, password="",
                                             idUser=user)
     if newPassword != newPasswordComfirm:
@@ -150,8 +166,8 @@ def changePassword(request):
             password_check.save()
         except:
             return JsonResponse({"success" : False,
-                                 "error" : "Somethink very wrong appened, please " +
-                                 "try again !"})
+                                 "error" : "Somethink very wrong appened, please "
+                                 + "try again !"})
     return JsonResponse({"success" : True})
 
 
@@ -182,8 +198,8 @@ def changeUsername(request):
             user.save()
         except:
             return JsonResponse({"success" : False,
-                                 "error" : "Somethink very wrong appened, please " +
-                                 "try again !"})
+                                 "error" : "Somethink very wrong appened, please "
+                                 + "try again !"})
         return JsonResponse({"success" : True})
 
 
@@ -213,9 +229,9 @@ def checkToken(request):
     return {"success" : True, "userId" : userId}
 
 
-def checkApi42Request(request, islogin, user):
+def checkApi42Request(request, islogin, user:User):
     code = request.GET.get('code')
-	# First request : get an users tocken
+    # First request : get an users tocken
     i = 1
     j = 0
     if not islogin :
@@ -228,27 +244,34 @@ def checkApi42Request(request, islogin, user):
     params = \
     {
         "grant_type": "authorization_code",
-		"client_id": "u-s4t2ud-1b900294f4f0042d646cdbafdf98a5fe9216f3efd76b592e56b7ae3a18a43bd1",
-		"client_secret": os.getenv('API_KEY'),
-		"code": code,
-		"redirect_uri": websiteUrl + "/3" if islogin else websiteUrl + "/9",
+        "client_id": "u-s4t2ud-1b900294f4f0042d646cdbafdf98a5fe9216f3ef" +
+                     "d76b592e56b7ae3a18a43bd1",
+        "client_secret": os.getenv('API_KEY'),
+        "code": code,
+        "redirect_uri": websiteUrl + "/3" if islogin else websiteUrl + "/9",
 
     }
     response = requests.post("https://api.intra.42.fr/oauth/token", params=params)
     if response.status_code != 200:
         if not islogin :
-            return render(request, "profil_content_full.html", {'user': user, 'pos': i, '42urllink' : os.getenv('WEBSITE_URL')})
+            return render(request, "profil_content_full.html",
+                          {'user': user, 'pos': i,
+                           '42urllink' : os.getenv('WEBSITE_URL')})
         else :
-            return render(request, "signin_full.html",{'42urllink' : os.getenv('WEBSITE_URL')})
+            return render(request, "signin_full.html",
+                          {'42urllink' : os.getenv('WEBSITE_URL')})
     response = response.json()
     tocken = response["access_token"]
     headers= {'Authorization': 'Bearer {}'.format(tocken)}
     response = requests.get("https://api.intra.42.fr/v2/me", headers=headers)
     if response.status_code != 200:
         if not islogin :
-            return render(request, "profil_content_full.html", {'user': user, 'pos': i, '42urllink' : os.getenv('WEBSITE_URL')})
+            return render(request, "profil_content_full.html",
+                          {'user': user, 'pos': i,
+                           '42urllink' : os.getenv('WEBSITE_URL')})
         else :
-            return render(request, "signin_full.html",{'42urllink' : os.getenv('WEBSITE_URL')})
+            return render(request, "signin_full.html",
+                          {'42urllink' : os.getenv('WEBSITE_URL')})
     response = response.json()
     test = connection42.objects.all().filter(login=response["id"])
     if (not islogin) :
@@ -258,10 +281,12 @@ def checkApi42Request(request, islogin, user):
                 password42.save()
             except:
                 user = user
-        return render(request, "profil_content_full.html", {'user': user, 'pos': i, '42urllink' : os.getenv('WEBSITE_URL')})
-	#not already log
+        return render(request, "profil_content_full.html",
+                      {'user': user, 'pos': i,
+                       '42urllink' : os.getenv('WEBSITE_URL')})
+    #not already log
     if len(test) == 0:
-        id = User.objects.all().count() + 1
+        id = User.objects.all().count() - 1
         idType = 1
 
         token = jwt.encode({"userId": id}, settings.SECRET_KEY, algorithm="HS256")
@@ -273,18 +298,23 @@ def checkApi42Request(request, islogin, user):
             if number > 99 :
                 response["login"] = ""
         try:
-            imgpath = ["images/default/Scout.png", "images/default/Driller.png", "images/default/Engineer.png", "images/default/Soldier.png"]
-            user = User(idUser=id, idType=idType, username=username, profilPicture=imgpath[random.randint(0,3)], tokenJWT=token, money=0, idStatus=0)
+            imgpath = ["images/default/Scout.png", "images/default/Driller.png",
+                       "images/default/Engineer.png", "images/default/Soldier.png"]
+            user = User(idUser=id, type=idType, username=username,
+                        profilPicture=imgpath[random.randint(0,3)], tokenJWT=token,
+                        money=10, status=0)
             user.save()
             password42 = connection42(login=response["id"], idUser=user)
             password42.save()
         except:
-            return render(request, "login_full.html",{'42urllink' : os.getenv('WEBSITE_URL')})
+            return render(request, "login_full.html",
+                          {'42urllink' : os.getenv('WEBSITE_URL')})
         return render(request, "mainpage_full_tocken42.html", {'user': user})
-	#not already log
+    #not already log
     else:
         try:
             user = User.objects.all().filter(connection42=test[0])[0]
         except:
-            return render(request, "login_full.html",{'42urllink' : os.getenv('WEBSITE_URL')})
+            return render(request, "login_full.html",
+                          {'42urllink' : os.getenv('WEBSITE_URL')})
         return render(request, "mainpage_full_tocken42.html", {'user': user})
