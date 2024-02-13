@@ -2,17 +2,17 @@ import os
 import asyncio
 import sys
 import websockets
-from websocket_server.utils import set_user_status
+from websocket_server.utils import set_user_status, get_user_by_id
 # from pong_server.ws_game_server import start_game_thread
 
 # List of game server
 # List : [server running, port] ; if thread is False, the server is unused
 game_servers = [
     [False, 8766],
-    # [False, 8767],
-    # [False, 8768],
-    # [False, 8769],
-    # [False, 8770]
+    [False, 8767],
+    [False, 8768],
+    [False, 8769],
+    [False, 8770]
 ]
 
 
@@ -146,7 +146,39 @@ async def end_game(data:dict,
 
     # If the type is quick game, modify money of users
     if type == 0:
-        pass
+        # Get winner and loser
+        if game_stats[0] > game_stats[1]:
+            user_winner = get_user_by_id(left_team_stats[0][0])
+            user_loser = get_user_by_id(right_team_stats[0][0])
+        else:
+            user_winner = get_user_by_id(right_team_stats[0][0])
+            user_loser = get_user_by_id(left_team_stats[0][0])
+
+        print("\nWS : Winner :", user_winner.username, "-", user_winner.money,
+              file=sys.stderr)
+        print("WS : Loser :", user_loser.username, "-", user_loser.money,
+              file=sys.stderr)
+
+        # Update money
+        diff = user_winner.money - user_loser.money
+        if diff >= 5:
+            print("\nWS : +1 -1:", data, file=sys.stderr)
+            user_winner.money += 1
+            user_loser.money -= 1
+        elif diff <= -5:
+            print("\nWS : +4 -3:", data, file=sys.stderr)
+            user_winner += 4
+            user_loser -= 3
+        else:
+            print("\nWS : +2 -1:", data, file=sys.stderr)
+            user_winner += 2
+            user_loser -= 1
+
+        if user_loser.money < 0:
+            user_loser.money = 0
+
+        user_winner.save()
+        user_loser.save()
 
     winner = None
 

@@ -102,7 +102,7 @@ function onRecieveData(event)
 		let port = data["gamePort"];
 		let id_paddle = data["paddleId"];
 		let id_team = data["teamId"];
-		let get_game_type = data["type"];
+		let get_game_type = data["gameType"];
 		startGameClient(port, id_paddle, id_team, get_game_type);
 	}
 	else

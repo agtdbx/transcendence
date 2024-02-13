@@ -93,7 +93,7 @@ def create_game_start_message(port:int,
         "gamePort" : port,
         "paddleId" : paddle_id,
         "teamId" : team_id,
-        "type" : type
+        "gameType" : type
     }
     str_message = str(message)
     str_message = str_message.replace("'", '"')
