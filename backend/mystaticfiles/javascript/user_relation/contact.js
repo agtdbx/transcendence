@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   contact.js                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aderouba <aderouba@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hde-min <hde-min@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/23 15:27:08 by lflandri          #+#    #+#             */
-/*   Updated: 2024/02/06 19:10:19 by aderouba         ###   ########.fr       */
+/*   Updated: 2024/02/14 14:22:05 by hde-min          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,14 +97,17 @@ function contactPop(type, listContact)
 	contentSuccesBlock.style.margin = "auto";
 	succesBlock.id = "successBlock";
 	succesBlock.style.margin = "auto";
-	succesBlock.style.backgroundColor = "rgba(40, 35, 23, 0.75)" ;
+	succesBlock.style.backgroundColor = "rgba(18, 16, 11, 0.9)" ;
+	succesBlock.style.borderRadius= "30px";
+	succesBlock.style.border= "solid #ff9c00";
+	containerContentSuccesBlock.style.top = "15%";
 	succesBlock.style.borderCollapse = "separate";
 	succesBlock.style.textAlign = "center";
 	succesBlock.style.padding = "0%"
 	succesBlock.style.width = "50%";
 	succesBlock.style.maxWidth = "400px";
 	succesBlock.style.height = "500px";
-	succesBlock.style.overflowY = "scroll";
+	succesBlock.style.overflowY = "auto";
 	containerContentSuccesBlock.style.zIndex = "1000";
 	title.textContent = type;
 	title.style.backgroundColor = "black";

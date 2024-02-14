@@ -6,7 +6,7 @@
 /*   By: hde-min <hde-min@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/23 15:24:40 by lflandri          #+#    #+#             */
-/*   Updated: 2024/02/14 13:58:29 by hde-min          ###   ########.fr       */
+/*   Updated: 2024/02/14 14:19:44 by hde-min          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,7 +127,10 @@ function createSuccess(listeAchievement)
 	contentSuccesBlock.style.margin = "auto";
 	succesBlock.id = "successBlock";
 	succesBlock.style.margin = "auto";
-	succesBlock.style.backgroundColor = "rgba(40, 35, 23, 0.75)" ;
+	succesBlock.style.backgroundColor = "rgba(18, 16, 11, 0.9)" ;
+	succesBlock.style.borderRadius= "30px";
+	succesBlock.style.border= "solid #ff9c00";
+	containerContentSuccesBlock.style.top = "15%";
 	succesBlock.classList.add("row");
 	succesBlock.style.borderCollapse = "separate";
 	succesBlock.style.textAlign = "center";
@@ -220,7 +223,10 @@ function createStats()
 	contentSuccesBlock.style.margin = "auto";
 	succesBlock.id = "successBlock";
 	succesBlock.style.margin = "auto";
-	succesBlock.style.backgroundColor = "rgba(40, 35, 23, 0.75)" ;
+	succesBlock.style.backgroundColor = "rgba(18, 16, 11, 0.9)" ;
+	succesBlock.style.borderRadius= "30px";
+	succesBlock.style.border= "solid #ff9c00";
+	containerContentSuccesBlock.style.top = "15%";
 	succesBlock.classList.add("row");
 	succesBlock.style.borderCollapse = "separate";
 	succesBlock.style.textAlign = "center";
