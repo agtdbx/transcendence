@@ -110,7 +110,8 @@ async def handle_client(websocket : websockets.WebSocketServerProtocol, path):
             # Message gestion
             if request_type == "message":
                 if request_cmd == 'sendMessage':
-                    await recieved_message(data, connected_users, websocket, my_id)
+                    await recieved_message(data, connected_users, websocket, my_id,
+                                           my_game_room_id, game_rooms)
                 else:
                     await send_error(websocket,
                                      "Request cmd unkown")

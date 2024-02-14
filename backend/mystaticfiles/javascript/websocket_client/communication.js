@@ -76,6 +76,8 @@ function onRecieveData(event)
 	}
 	else if (type == 'invite')
 	{
+		if (current_page != 3 && current_page != 4 && current_page != 5 && current_page != 14)
+			return ;
 		const pp = data["pp"];
 		const username = data["username"];
 		const roomId = data["roomId"];

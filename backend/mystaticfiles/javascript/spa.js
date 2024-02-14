@@ -2,6 +2,7 @@ let current_page = null;
 
 function changeBackground(num)
 {
+	current_page = num;
 	let body = document.getElementById('body');
 
 	if (num == "3")
@@ -174,10 +175,10 @@ function changePage(num, byArrow=false)
 		// Update the content of the page
 		document.querySelector('#content').innerHTML = htmlText;
 
-		changeBackground(num);
 		manageHeader(num);
 		manageChat(num);
 		manageAPI(num);
+		changeBackground(num);
 
 		current_page = num;
 

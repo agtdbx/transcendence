@@ -246,6 +246,7 @@ async def send_game_room_invite(my_id:int,
                        "pp" : str(user.profilPicture),
                        "roomId" : game_room_id}).replace("'", '"')
         await send_msg_to_id(target, connected_users, str_msg)
+        print("\nWS : User", my_id, "send invite to", target, file=sys.stderr)
         return
 
     # User can't join
