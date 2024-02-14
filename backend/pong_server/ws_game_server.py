@@ -125,7 +125,8 @@ async def handle_client(websocket : websockets.WebSocketServerProtocol, path):
                                      "Missing info")
                 else:
                     map_id = mapId
-                    power_up = powerUp
+                    if powerUp == "true":
+                    	power_up = True
                     game_type = gameType
                     for id in teamLeft:
                         # If it's an ia, it's ready
@@ -298,7 +299,7 @@ async def game_server_manager():
             await websocket.send(str_msg)
     await countBeforeStart()
 
-    while game.runMainLoop and (len(connected_player.values()) > 1):
+    while game.runMainLoop : #and (len(connected_player.values()) > 1)
         print("\nGWS : GAME STEP", file=sys.stderr)
         game.step()
         parsingGlobalMessage()
