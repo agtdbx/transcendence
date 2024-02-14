@@ -1,4 +1,5 @@
 let current_page = null;
+let pageInLoad = false;
 
 function changeBackground(num)
 {
@@ -148,22 +149,23 @@ function changePage(num, byArrow=false)
 {
 	if (num == current_page)
 		return ;
-	try
-	{
-		remove_pop();
-		let id = 0;
-		while (document.getElementById("grapheMatch" + id))
+		try
 		{
-			document.getElementById("grapheMatch" + id).remove();
-			id++;
+			remove_pop();
+			let id = 0;
+			while (document.getElementById("grapheMatch" + id))
+			{
+				document.getElementById("grapheMatch" + id).remove();
+				id++;
+			}
+
+		}
+		catch (error)
+		{
+			console.error(error)
 		}
 
-	}
-	catch (error)
-	{
-		console.error(error)
-	}
-
+	pageInLoad = true;
 	fetch("/" + `${num}`,
 	{
 		method: 'POST',
@@ -186,6 +188,7 @@ function changePage(num, byArrow=false)
 		// Set the new page in the browser history if the page isn't load by arrow, or not the wait and game page.
 		if (!byArrow && num != 4 && num != 5 && num != 51 && num != 6)
 			history.pushState({section: num}, "", "/" + num);
+		pageInLoad = false;
 	})
 	.catch(error => console.log("CHANGE PAGE ERROR FETCH :", error, '\n'))
 }

@@ -124,6 +124,7 @@ def get_next_match_user(user_id:int) -> tuple[int, int] | None:
 def create_tournament_state_msg():
     global tournament
     msg = {"type" : "tournamentState",
+           "status" : tournament["state"],
            "powerUp" : str(tournament["powerUp"]).lower(),
            "mapId" : tournament["mapId"],
            "players" : get_lst_users_view()}
@@ -150,7 +151,7 @@ async def create_tournament(my_id:int,
         return
 
     # Check if there is a tournament not finish
-    if tournament['state'] != STATE_NO_TOURNAMENT or \
+    if tournament['state'] != STATE_NO_TOURNAMENT and \
         tournament['state'] != STATE_FINISH_TOURNAMENT:
         print("WS : User", my_id, "Tournament already create and not finish")
         await send_error_to_id(my_id, connected_users,
@@ -158,7 +159,7 @@ async def create_tournament(my_id:int,
         return
 
     tournament = {
-        "state" : STATE_NO_TOURNAMENT,
+        "state" : STATE_CREATE_TOURNAMENT,
         "mapId" : 0,
         "powerUp" : 0,
         "winner" : None,
@@ -557,14 +558,7 @@ async def quit_tournament(my_id:int,
 
 async def get_tournament_info(my_id:int,
                                 connected_users:dict):
-    global tournament
-
-    status = ['nothing', 'create', 'start', 'finish']
-    str_msg = str({"type" : "tournamentInfo",
-                   "status" : status[tournament["state"]],
-                   "mapId" : tournament["mapId"],
-                   "powerUp" : str(tournament["powerUp"]).lower()
-                   }).replace("'", '"')
+    str_msg = create_tournament_state_msg()
     await send_msg_to_id(my_id, connected_users, str_msg)
 
 

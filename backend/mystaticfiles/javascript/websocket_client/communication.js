@@ -56,13 +56,19 @@ function onRecieveData(event)
 		if (current_page != 51)
 			changePage('51');
 
-		setTimeout(function(){
-			const map_id = data["mapId"];
-			const power_up = data["powerUpActivate"];
-			const team_left = data["teamLeft"];
-			const team_right = data["teamRight"];
-			updateGameRoomInfo(map_id, power_up, team_left, team_right);
-		}, 100);
+		let inter = setInterval(function () {
+			if (pageInLoad == false)
+			{
+				const map_id = data["mapId"];
+				const power_up = data["powerUpActivate"];
+				const team_left = data["teamLeft"];
+				const team_right = data["teamRight"];
+				updateGameRoomInfo(map_id, power_up, team_left, team_right);
+				clearInterval(inter);
+			}
+			else
+				console.log("wait");
+		}, 10);
 	}
 	else if (type == 'updateRoomInfo')
 	{
@@ -104,6 +110,18 @@ function onRecieveData(event)
 		let id_team = data["teamId"];
 		let get_game_type = data["gameType"];
 		startGameClient(port, id_paddle, id_team, get_game_type);
+	}
+	else if (type == 'tournamentState')
+	{
+		let status = data["status"];
+		let mapId = data["mapId"];
+		let powerUp = data["powerUp"];
+		let listPlayers = data["players"];
+		if (pageForTournamentStatus == "create" || current_page == 8)
+		{
+			pageForTournamentStatus = null;
+			assignTournamentStatusOnCreatePage(status, mapId, powerUp, listPlayers);
+		}
 	}
 	else
 		console.error("Unkown data recieved :", data);

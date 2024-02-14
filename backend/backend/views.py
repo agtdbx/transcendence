@@ -6,7 +6,7 @@
 #    By: aderouba <aderouba@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/08 14:00:09 by lflandri          #+#    #+#              #
-#    Updated: 2024/02/13 20:16:07 by aderouba         ###   ########.fr        #
+#    Updated: 2024/02/14 16:14:22 by aderouba         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -171,12 +171,6 @@ def section(request, num):
             return render(request, "mainpage_full.html", {'idType': user.type})
         else:
             return render(request,"game.html")
-
-    elif num == 7:   #do nothing problably best to kill it
-        if fullPage:
-            return render(request, "tournament_full.html")
-        else:
-            return render(request,"tournament.html")
 
     elif num == 8: #admin page where you can create tournament if you are admin and start them
         if(user.type != 2):

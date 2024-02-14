@@ -227,10 +227,7 @@ TOURNAMENT
     get tournament info
     	'type' : 'tournament'
         'cmd' : 'getInfo'
-        -> 'type' : 'tournamentInfo'
-           'status' : 'nothing' | 'create' | 'start' | 'finish'
-           'mapId' : <map id>
-           'powerUp' : true | false
+        -> '{{tournament state}}
      
     get user of tournament
     	'type' : 'tournament'
@@ -301,6 +298,8 @@ TOURNAMENT
 
 	{{tournament state}}
 		'type' : 'tournamentState'
+		'status' : 0 | 1 | 2 | 3
+		# 0 = nothing, 1 = create, 2 = start, 3 = finish
 		'powerUp' : true | false
         'mapId' : <map id>
         'players' : [<user view>]
