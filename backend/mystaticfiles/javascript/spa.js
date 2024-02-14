@@ -106,7 +106,12 @@ function manageAPI(num)
 		quitGameRoom();
 	}
 
-	if (num == 4)
+	if (num == 3)
+	{
+		pageForTournamentStatus = "mainpage";
+		getTournamentStatus();
+	}
+	else if (num == 4)
 	{
 		join_request_quick_game();
 	}

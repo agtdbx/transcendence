@@ -117,11 +117,12 @@ function onRecieveData(event)
 		let mapId = data["mapId"];
 		let powerUp = data["powerUp"];
 		let listPlayers = data["players"];
-		if (pageForTournamentStatus == "create" || current_page == 8)
-		{
-			pageForTournamentStatus = null;
+		let youInTournament = data["youAreInTournament"];
+		if (pageForTournamentStatus == "mainpage" || current_page == 3)
+			manageMainpageButton(status, listPlayers, youInTournament);
+		else if (pageForTournamentStatus == "create" || current_page == 8)
 			assignTournamentStatusOnCreatePage(status, mapId, powerUp, listPlayers);
-		}
+		pageForTournamentStatus = null;
 	}
 	else
 		console.error("Unkown data recieved :", data);

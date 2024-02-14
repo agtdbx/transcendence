@@ -303,6 +303,7 @@ TOURNAMENT
 		'powerUp' : true | false
         'mapId' : <map id>
         'players' : [<user view>]
+        'youAreInTournament' : true | false
 
     <user view>
     	[<user id>, <user pp>, <tournament user nickmane>] # -1 id for bot

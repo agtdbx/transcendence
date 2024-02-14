@@ -121,13 +121,14 @@ def get_next_match_user(user_id:int) -> tuple[int, int] | None:
     return (final[0], final[1])
 
 
-def create_tournament_state_msg():
+def create_tournament_state_msg(my_id):
     global tournament
     msg = {"type" : "tournamentState",
            "status" : tournament["state"],
            "powerUp" : str(tournament["powerUp"]).lower(),
            "mapId" : tournament["mapId"],
-           "players" : get_lst_users_view()}
+           "players" : get_lst_users_view(),
+           "youAreInTournament" : str(my_id in tournament["players"]).lower()}
     return str(msg).replace("'", '"')
 
 
