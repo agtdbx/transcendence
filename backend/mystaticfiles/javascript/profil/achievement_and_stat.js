@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   achievement_and_stat.js                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lflandri <lflandri@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hde-min <hde-min@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/23 15:24:40 by lflandri          #+#    #+#             */
-/*   Updated: 2024/02/09 16:42:42 by lflandri         ###   ########.fr       */
+/*   Updated: 2024/02/14 13:58:29 by hde-min          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -302,22 +302,25 @@ function createPass()
 	contentSuccesBlock.style.margin = "auto";
 	succesBlock.id = "successBlock";
 	succesBlock.style.margin = "auto";
-	succesBlock.style.backgroundColor = "rgba(40, 35, 23, 1)" ;
+	succesBlock.style.backgroundColor = "rgba(18, 16, 11, 0.9)" ;
 	succesBlock.classList.add("row");
 	succesBlock.style.borderCollapse = "separate";
 	succesBlock.style.textAlign = "center";
 	succesBlock.style.padding = "4%"
-	succesBlock.style.width = "70%";
+	succesBlock.style.width = "40%";
+	succesBlock.style.borderRadius= "30px";
+	succesBlock.style.border= "solid #ff9c00";
+	containerContentSuccesBlock.style.top = "25%";
 	containerContentSuccesBlock.style.zIndex = "1000";
 	succesBlock.innerHTML = '<form id="form_newPass" method="post">\
-	<p id="passPopCurrent">Current password <input type="password" id="currentPass" name="currentPass" required></p><br>\
-	<p id="passPopNew">New password <input type="password" id="newPass" name="newPass" required></p><br>\
+	<p id="passPopCurrent">Current password&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="password" id="currentPass" name="currentPass" required></p><br>\
+	<p id="passPopNew">New password&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="password" id="newPass" name="newPass" required></p><br>\
 	<p id="passPopConfirm">Confirm new password <input type="password" id="newPassConfirm" name="newPassConfirm" required></p><br>\
 	<button type="submit" class ="btn-drg" id="btnNewPass">Change Password</button>\
 	</form>\
 	<p id="errorPopPassword" style="color:red;"></p>\
-	<br><br><br><br><br><br><br><br><br><br><br>\
-	<button class ="btn-drg" style="width:15%; margin:auto;" id="btnQuitPop" onclick="remove_pop()">Go Back</button>';
+	<br>\
+	<button class ="btn-drg" style="width:25%; margin:auto;" id="btnQuitPop" onclick="remove_pop()">Go Back</button>';
 	const form = document.getElementById('form_newPass');
 					form.addEventListener('submit', async event => {
 					event.preventDefault();
@@ -351,10 +354,12 @@ function createName()
 	succesBlock.style.borderCollapse = "separate";
 	succesBlock.style.textAlign = "center";
 	succesBlock.style.padding = "4%"
-	succesBlock.style.width = "70%";
+	succesBlock.style.width = "40%";
+	succesBlock.style.borderRadius= "30px";
+	succesBlock.style.border= "solid #ff9c00";
 	containerContentSuccesBlock.style.zIndex = "1000";
-
-
+	succesBlock.style.backgroundColor = "rgba(18, 16, 11, 0.9)" ;
+	containerContentSuccesBlock.style.top = "25%";
 	succesBlock.style.backgroundImage="url(/static/image/background/ecran.png)";
 	succesBlock.style.backgroundAttachment= "fixed";
 	succesBlock.style.backgroundRepeat="no-repeat";
@@ -365,8 +370,8 @@ function createName()
 	<button type="submit" class ="btn-drg" id="btnNewName">Change Username</button>\
 	</form>\
 	<p id="errorPopUsername" style="color:red;"></p>\
-	<br><br><br><br><br><br><br><br><br><br><br>\
-	<button class ="btn-drg" style="width:15%; margin:auto;" id="btnQuitPop" onclick="remove_pop()">Go Back</button>';
+	<br><br><br>\
+	<button class ="btn-drg" style="width:25%; margin:auto;" id="btnQuitPop" onclick="remove_pop()">Go Back</button>';
 	const form = document.getElementById('form_newName');
 					form.addEventListener('submit', async event => {
 					event.preventDefault();
