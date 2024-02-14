@@ -256,7 +256,7 @@ async def end_game(data:dict,
         goal = Goal.objects.create(id=id_goal, idUser=user, goalTime=goal_stats[6],
                                    idMatch=match, nbBounce=goal_stats[3],
                                    perfectedShot=perfect_shot,
-                                   ballSpeed=goal_stats[2], ownGoal=own_goal)
+                                   ballSpeed=goal_stats[2], ownGoal=own_goal, idTeam=goal_stats[1])
         goal.save()
 
     return winner
