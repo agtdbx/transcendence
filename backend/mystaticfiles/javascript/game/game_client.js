@@ -725,9 +725,9 @@ export class GameClient {
 				b.speed = content[3]
 				b.radius = content[2]
 				b.setModifierByState(content[5])
-				if (b.state != content[4] && content[4] != 0)
+				if (content[4] != 0) //b.state != content[4] &&
 				{
-					b.htmlObject.setAttribute("display", "None");
+					// b.htmlObject.setAttribute("display", "None");
 					for (let index = 0; index < b.shadowBalls.length; index++)
 					{
 						b.shadowBalls[index][0].setAttribute("display", "None");
@@ -747,6 +747,8 @@ export class GameClient {
 				b.state = content[4]
 				b.htmlObject.setAttribute('width', b.radius * 2 * b.modifierSize)
 				b.htmlObject.setAttribute('height', b.radius * 2 * b.modifierSize)
+				b.htmlObject.setAttribute('x', (b.pos.x - (b.radius * b.modifierSize)))
+				b.htmlObject.setAttribute('y', (b.pos.y - (b.radius * b.modifierSize)))
 			}
 
 			// Create a new one instead

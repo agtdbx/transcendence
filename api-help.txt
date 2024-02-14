@@ -360,7 +360,7 @@ GAME
 		0 | 1 {=} left | right
 
     <ball> :
-		[<point>, <point>, int, int, int, int] {=} ['position', 'direction', 'radius', 'speed', 'status', 'modifier_state']
+		[<point>, <point>, int, int, int, int, <paddle id>] {=} ['position', 'direction', 'radius', 'speed', 'status', 'modifier_state']
 
     <point> :
 		[float, float] {=} ['x', 'y']
