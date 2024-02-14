@@ -6,7 +6,7 @@
 /*   By: hde-min <hde-min@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/23 15:24:40 by lflandri          #+#    #+#             */
-/*   Updated: 2024/02/14 14:19:44 by hde-min          ###   ########.fr       */
+/*   Updated: 2024/02/14 14:51:28 by hde-min          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -321,7 +321,7 @@ function createPass()
 	succesBlock.innerHTML = '<form id="form_newPass" method="post">\
 	<p id="passPopCurrent">Current password&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="password" id="currentPass" name="currentPass" required></p><br>\
 	<p id="passPopNew">New password&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="password" id="newPass" name="newPass" required></p><br>\
-	<p id="passPopConfirm">Confirm new password <input type="password" id="newPassConfirm" name="newPassConfirm" required></p><br>\
+	<p id="passPopConfirm">Confirm new password <input type="password" style="font-family: "KhazadDum", sans-serif;"id="newPassConfirm" name="newPassConfirm" required></p><br>\
 	<button type="submit" class ="btn-drg" id="btnNewPass">Change Password</button>\
 	</form>\
 	<p id="errorPopPassword" style="color:red;"></p>\
