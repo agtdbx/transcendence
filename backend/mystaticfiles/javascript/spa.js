@@ -13,7 +13,7 @@ function changeBackground(num)
 		body.style.backgroundImage = 'url(/static/image/background/waitpage.png)';
 	else if (num == "6")
 		body.style.backgroundImage = 'url(/static/image/background/game.png)';
-	else if (num == "7")
+	else if (num == "7" || num == "71" || num == "72" || num == "73")
 		body.style.backgroundImage = 'url(/static/image/background/tournament.jpg)';
 	else if (num == "8")
 		body.style.backgroundImage = 'url(/static/image/background/create_tournament.png)';
@@ -85,7 +85,7 @@ function manageHeader(num)
 
 function manageChat(num)
 {
-	if (num == 3 || num == 4 || num == 5 || num == 51 || num == 7)
+	if (num == 3 || num == 4 || num == 5 || num == 51 || num == 71 || num == 72)
 	{
 		setChannelTarget("general");
 		displayFiends();

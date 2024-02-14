@@ -34,19 +34,49 @@ function manageMainpageButton(status, listPlayers, youInTournament)
 			else if (status == 1)
 			{
 				if (youInTournament == "true")
+				{
 					butJoinTournament.textContent = "View";
+					butJoinTournament.onclick = function () {
+						changePage("71");
+					}
+				}
 				else if (listPlayers.length == 8)
+				{
 					butJoinTournament.textContent = "Spectate";
+					butJoinTournament.onclick = function () {
+						changePage("72");
+					}
+				}
 				else
+				{
 					butJoinTournament.textContent = "Register";
+					butJoinTournament.onclick = function () {
+						changePage("7");
+					}
+				}
 			}
 			else if (status == 2)
 				if (youInTournament == "true")
+				{
 					butJoinTournament.textContent = "View";
+					butJoinTournament.onclick = function () {
+						changePage("71");
+					}
+				}
 				else
+				{
 					butJoinTournament.textContent = "Spectate";
+					butJoinTournament.onclick = function () {
+						changePage("72");
+					}
+				}
 			else
+			{
 				butJoinTournament.textContent = "Result";
+				butJoinTournament.onclick = function () {
+					changePage("73");
+				}
+			}
 
 			let butCreateTournament = document.getElementById("mainBtnAdmin");
 
@@ -55,9 +85,9 @@ function manageMainpageButton(status, listPlayers, youInTournament)
 
 			butCreateTournament.hidden = false;
 			if (status == 0 || status == 3)
-				butJoinTournament.textContent = "Create tournament";
+				butCreateTournament.textContent = "Create tournament";
 			else if (status == 1)
-				butJoinTournament.textContent = "Modify tournament";
+				butCreateTournament.textContent = "Modify tournament";
 			else
 				butCreateTournament.hidden = true;
 		}
@@ -67,3 +97,7 @@ function manageMainpageButton(status, listPlayers, youInTournament)
 }
 
 
+function joinTournament(data)
+{
+
+}

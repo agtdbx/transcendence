@@ -5,9 +5,9 @@
 	<div id="mainPageTournament">
 		<div class="greyRect">
 			<p id="mainPageTxtTournament">TOURNAMENT</p>
-			<button data-section="14" type="button" class ="changePage btn-drg" id="mainBtnJoin" onclick="changePage(this.dataset.section)">JOIN</button>
+			<button type="button" class ="changePage btn-drg" id="mainBtnJoin">JOIN</button>
 				{% if idType == 2 %}
-					<button data-section="8" type="button" class ="changePage btn-drg" id="mainBtnAdmin" onclick="goToCreateTournament()">Create tournament</button>
+					<button type="button" class ="changePage btn-drg" id="mainBtnAdmin" onclick="goToCreateTournament()">Create tournament</button>
 				{% endif %}
 		</div>
 	</div>

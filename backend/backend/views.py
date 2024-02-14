@@ -6,7 +6,7 @@
 #    By: aderouba <aderouba@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/08 14:00:09 by lflandri          #+#    #+#              #
-#    Updated: 2024/02/14 18:01:26 by aderouba         ###   ########.fr        #
+#    Updated: 2024/02/14 20:11:41 by aderouba         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -172,6 +172,34 @@ def section(request, num):
         else:
             return render(request,"game.html")
 
+    # Subcsribe to tournament
+    elif num == 7:
+        if fullPage:
+            return render(request, "tournamentInscription_full.html")
+        else:
+            return render(request,"tournamentInscription.html")
+
+    # In tournament if you are subscribe
+    elif num == 71:
+        if fullPage:
+            return render(request, "joinTournament_full.html")
+        else:
+            return render(request,"joinTournament.html")
+
+    # In tournament if you spectate
+    elif num == 72:
+        if fullPage:
+            return render(request, "tournamentSpectate_full.html")
+        else:
+            return render(request,"tournamentSpectate.html")
+
+    # Tournament result
+    elif num == 73:
+        if fullPage:
+            return render(request, "tournamentEnd_full.html")
+        else:
+            return render(request,"tournamentEnd.html")
+
     elif num == 8: #admin page where you can create tournament if you are admin and start them
         if(user.type != 2):
             return render(request, "mainpage_full.html", {'idType': user.type})
@@ -248,31 +276,6 @@ def section(request, num):
             return render(request, "beer_full.html")
         else:
             return render(request,"beer.html")
-
-    elif num == 13:                 # inscription page
-        #need to register USER and check if tournament is full or not
-        #save user
-        if fullPage:
-            return render(request, "joinTournament_full.html")
-        else:
-            return render(request,"joinTournament.html")
-
-    elif num == 14: #check if user is register or if tournament is full if not register
-        # if UserTournament.objects.all().filter(idUser=user.idUser):     #already join tournament
-            # if fullPage:
-            #     return render(request, "joinTournament_full.html")
-            # else:
-            #     return render(request,"joinTournament.html")
-        # if len(UserTournament.objects.all()) == 8:  #tournament full -> join spectate
-            # if fullPage:
-            #     return render(request, "tournamentSpectate_full.html")
-            # else:
-            #     return render(request,"tournamentSpectate.html")
-        # else:
-            if fullPage:
-                return render(request, "tournamentInscription_full.html")   #subscribe to tournament
-            else:
-                return render(request,"tournamentInscription.html")
 
     else:
         if fullPage:
