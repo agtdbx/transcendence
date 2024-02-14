@@ -3,7 +3,7 @@ import sys
 import datetime
 from websocket_server.utils import send_error, get_user_by_id, get_user_by_username
 from websocket_server.game_room import send_game_room_invite
-from db_test.models import User, Message, PrivMessage
+from db_test.models import User, Message, PrivMessage, Link
 
 
 def create_str_message(message, username, pp, date, channel):
@@ -20,6 +20,21 @@ def create_str_message(message, username, pp, date, channel):
 
     return str_message
 
+def isBlocked(user_id:int, user:User):
+    linkFriendRequestList = Link.objects.all().filter(idUser=user_id, idTarget=user.idUser)
+    if (len(linkFriendRequestList) < 1):
+        return False
+    return (linkFriendRequestList[0].link == 3)
+    # blockedUsers = []
+    # for link in linkFriendRequestList :
+    #     try:
+    #         friend = User.objects.all().filter(idUser=link.idTarget)[0]
+    #         blockedUsers.append(friend.idUser)
+    #     except:
+    #         continue
+    # for user.idUser in blockedUsers:
+    #     return True
+    # return False
 
 async def message_in_general(message:str, user:User, connected_users:dict):
     id_msg = Message.objects.count()
@@ -32,9 +47,10 @@ async def message_in_general(message:str, user:User, connected_users:dict):
                                      date, "general")
 
     print("\nclient states :", connected_users, file=sys.stderr)
-    for _, websockets in connected_users.items():
+    for user_id, websockets in connected_users.items():
         for i in range(len(websockets)):
-            websocket = websockets[i]
+            if isBlocked(user_id, user) == False:
+                websocket = websockets[i]
             try:
                 await websocket.send(str_message)
                 print("MSG SEND", file=sys.stderr)
