@@ -1,7 +1,8 @@
 import asyncio
 import sys
 import datetime
-from websocket_server.utils import send_error, get_user_by_id
+from websocket_server.utils import send_error, get_user_by_id, get_user_by_username
+from websocket_server.game_room import send_game_room_invite
 from db_test.models import User, Message, PrivMessage
 
 
@@ -79,8 +80,10 @@ async def message_in_private(message:str,
 async def recieved_message(data : dict,
                            connected_users : dict,
                            websocket,
-                           myid : int):
-    message = data.get("message", None)
+                           myid : int,
+                           game_room_id:int,
+                           game_rooms:dict):
+    message : str = data.get("message", None)
     channel = data.get("channel", None)
 
     if message == None or channel == None:
@@ -91,10 +94,24 @@ async def recieved_message(data : dict,
     if user == None:
         await send_error(websocket, "Error when get user")
         return
+    
+    if message[0:8] == "/invite ":
+        print("\nWS : /invite detected", file=sys.stderr)
+        username = message[8:]
+        username = username.lower()
+        print("WS : username :", username, file=sys.stderr)
+        # check if username exist
+        userTarget = get_user_by_username(username)
+        if userTarget != None:
+            print("WS : username ok, send invite", file=sys.stderr)
+            # appeller invite de gameroom
+            data = {"targetId" : userTarget.idUser}
+            await send_game_room_invite(myid, connected_users, data,
+                                        game_room_id, game_rooms)
+        return
 
     if channel == "general":
-        asyncio.create_task(message_in_general(message, user, connected_users))
-        # await message_in_general(message, user, connected_users)
+        await message_in_general(message, user, connected_users)
         return
 
     try:

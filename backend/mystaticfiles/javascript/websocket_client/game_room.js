@@ -374,15 +374,16 @@ function createInvitePopup(pp_data, username_data, roomId)
 
 	// Create text
 	let text = document.createElement("p");
-	text.textContent = "Invited you to a pong game";
+	text.textContent = "Invited you to play a game of pong at the abyss bar !";
 	text.style.color = "white";
-	text.style.width = "11em";
+	text.style.width = "100%";
 	text.style.textAlign = "center";
 
 	// Create reply buttons
 	let accept = document.createElement("button");
 	accept.textContent = "Accept";
 	accept.classList = "btn-drg";
+	accept.style.marginLeft = "20%";
 	accept.onclick = function () {
 		joinGameRoom(roomId);
 		deleteInvitePopup();
@@ -391,6 +392,7 @@ function createInvitePopup(pp_data, username_data, roomId)
 	let refuse = document.createElement("button");
 	refuse.textContent = "Refuse";
 	refuse.classList = "btn-drg";
+	refuse.style.marginLeft = "20%";
 	refuse.onclick = function () {
 		deleteInvitePopup();
 	}
@@ -398,6 +400,7 @@ function createInvitePopup(pp_data, username_data, roomId)
 	let butDiv = document.createElement("div");
 	butDiv.style.display = "flex";
 	butDiv.style.flexDirection = "row";
+	butDiv.style.marginBottom = "2%";
 	butDiv.appendChild(accept);
 	butDiv.appendChild(refuse);
 
@@ -405,9 +408,14 @@ function createInvitePopup(pp_data, username_data, roomId)
 	popup = document.createElement("div");
 	popup.style.width = "15em";
 	popup.style.display = "absolute";
+	popup.style.textAlign = "center";
 	popup.style.top = "20em";
 	popup.style.left = "4em";
-	popup.style.backgroundColor = "rgba(18, 16, 11, 0.8)";
+	popup.style.backgroundColor = "rgba(18, 16, 11, 0.9)" ;
+	popup.style.borderRadius= "30px";
+	popup.style.border= "solid #ff9c00";
+	popup.style.marginTop= "1%";
+	popup.style.marginLeft= "1%";
 	popup.appendChild(userField);
 	popup.appendChild(text);
 	popup.appendChild(butDiv);

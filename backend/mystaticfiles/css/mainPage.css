@@ -53,6 +53,7 @@
 	background: 	rgba(18, 16, 11, 0.8);
 	overflow-y: auto;
 	overflow-wrap: anywhere;
+	font-family: "KhazadDum", sans-serif;
 }
 
 #mainPageChatInput{
@@ -63,6 +64,7 @@
 	color: white;
 	background-color: rgba(207,188,188,0.5);
 	font-size: 1vw;
+	font-family: "KhazadDum", sans-serif;
 }
 
 #SwitchChannel{
