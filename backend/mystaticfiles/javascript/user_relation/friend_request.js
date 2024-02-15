@@ -6,14 +6,14 @@
 /*   By: lflandri <lflandri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 22:32:37 by lflandri          #+#    #+#             */
-/*   Updated: 2024/01/30 18:58:25 by lflandri         ###   ########.fr       */
+/*   Updated: 2024/02/15 15:32:58 by lflandri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 
 var popupCreatedCount = 0;
 
-function comfirmFriendRequest(user)
+function comfirmFriendRequest(user, first_value)
 {
 	let body = document.getElementById('body');
 	document.getElementById("Page").classList.add("blur");
@@ -75,6 +75,7 @@ function comfirmFriendRequest(user)
 					console.log("erreur from getlistefriendrequest : ")
 					console.error(error)
 				})
+		document.getElementById("data-request-relation-input").value = first_value;
 	};
 	refusedBtn.onclick = function ()
 	{
@@ -105,6 +106,7 @@ function comfirmFriendRequest(user)
 						console.log("erreur from getlistefriendrequest : ")
 						console.error(error)
 					})
+		document.getElementById("data-request-relation-input").value = first_value;
 	};
 	body.appendChild(container);
 	container.appendChild(popup);
@@ -115,6 +117,7 @@ function comfirmFriendRequest(user)
 
 async function sendRequestToClient(jsonData)
 {
+	let first_value = document.getElementById("data-request-relation-input").value;
 	for (const user of jsonData["listRequest"])
 	{
 		document.getElementById("data-request-relation-input").value = user;
@@ -126,7 +129,7 @@ async function sendRequestToClient(jsonData)
 			{	if (popupCreatedCount === 0)
 				{
 					popupCreatedCount++;
-					comfirmFriendRequest(user);
+					comfirmFriendRequest(user, first_value);
 					clearInterval(popupInterval);
 				}
 			},

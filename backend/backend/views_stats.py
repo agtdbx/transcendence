@@ -6,7 +6,7 @@
 #    By: lflandri <lflandri@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/14 16:40:22 by lflandri          #+#    #+#              #
-#    Updated: 2024/02/14 17:47:49 by lflandri         ###   ########.fr        #
+#    Updated: 2024/02/15 16:48:53 by lflandri         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,14 +27,19 @@ from . import views
 from .views import *
 
 def getWinRate(user):
-    matchList = Match.objects.all().filter(idUser=user.idUser)
+    matchUserList = MatchUser.objects.all().filter(idUser=user.idUser)
+    matchList = []
+    for usermatch in matchUserList :
+        matchList += Match.objects.all().filter(matchuser=usermatch)
+    if len(matchList) == 0:
+        return None
     win = 0
     for match in matchList :
-        if MatchUser.objects.all().filter(idUser=user.idUser,idMatch=matchList)[0].idTeam == 1:
-            if match.scoreLeft > match.scoreLeft :
+        if MatchUser.objects.all().filter(idUser=user.idUser,idMatch=match.idMatch)[0].idTeam == 1:
+            if match.scoreRight > match.scoreLeft :
                 win+=1
         else :
-            if match.scoreLeft < match.scoreLeft :
+            if match.scoreRight < match.scoreLeft :
                 win+=1
     return win / len(matchList)
                 
@@ -43,15 +48,15 @@ def getWinRate(user):
 
 def listStat(user):
     matchUserList = MatchUser.objects.all().filter(idUser=user.idUser)
-    matchList = Match.objects.all().filter(idUser=user.idUser)
-    matchListWithPowerUp = Match.objects.all().filter(idUser=user.idUser, powerUp=True)
-    nbGoal = 0
-    nbGoalCC = 0
+    # matchList = Match.objects.all().filter(idUser=user.idUser)
+    matchList = []
+    matchListWithPowerUp = []
+    for usermatch in matchUserList :
+        matchList += Match.objects.all().filter(matchuser=usermatch)
+        matchListWithPowerUp += Match.objects.all().filter(matchuser=usermatch, powerUp=True)
     nbGoalWithoutBounce = 0
     nbMaxBallOnGame = 0
     for m in matchList:
-        nbGoal += m.nbGoal
-        nbGoalCC += m.nbCC
         if m.nbMaxBallOnGame > nbMaxBallOnGame :
             nbMaxBallOnGame = m.nbMaxBallOnGame    
     goalList = Goal.objects.all().filter(idUser=user.idUser)
@@ -60,57 +65,73 @@ def listStat(user):
             nbGoalWithoutBounce+=1
     maxBallSpeed = 0
     maxBallBounce = 0
+    nbGoal = 0
+    nbGoalCC = 0
     for u in matchUserList :
+        nbGoal += u.nbGoal
+        nbGoalCC += u.nbCC
         if u.maxBallSpeed > maxBallSpeed :
             maxBallSpeed =u.maxBallSpeed
         if u.maxBallBounce > maxBallBounce :
             maxBallBounce = u.maxBallBounce  
-    return {
-		"nbMatchPlayed":
+    return [
         {
-		  "nb":len(matchUserList),
+		  "description":"number of match played :" + str(len(matchUserList)),
 		  "img": ""
 	    },
-		"nbMatchPlayedWithPowerUp":
         {
-		  "nb":len(matchListWithPowerUp),
+		  "description":"number of match played with power up :" + str(len(matchListWithPowerUp)),
 		  "img": ""
 	    },
-        "nbTournamentWin":
         {
-		  "nb":user.nbTournamentWin,
+		  "description":"number of tournament win :" + str(user.nbTournamentWin),
+		  "img": ""
+	    },
+        {
+		  "description":"number of goals scored : " + str(nbGoal),
+		  "img": ""
+	    },
+        {
+		  "description":"number of goals scored against yourself : " + str(nbGoalCC),
+		  "img": ""
+	    },
+        {
+		  "description":"number of goals scored without bounce : " + str(nbGoalWithoutBounce),
+		  "img": ""
+	    },
+        {
+		  "description":"maximum ball speed parried : " + str(maxBallSpeed),
+		  "img": ""
+	    },
+        {
+		  "description":"record of bounce before a goal : " + str(maxBallBounce),
+		  "img": ""
+	    },
+        {
+		  "description":"maximun ball on the field : " + str(nbMaxBallOnGame),
 		  "img": ""
 	    }
-        "nbGoal":
-        {
-		  "nb":nbGoal,
-		  "img": ""
-	    }
-        "nbGoalCC":
-        {
-		  "nb":nbGoalCC,
-		  "img": ""
-	    }
-        "nbGoalWithoutBounce":
-        {
-		  "nb":nbGoalWithoutBounce,
-		  "img": ""
-	    }
-        "maxBallSpeed":
-        {
-		  "nb":maxBallSpeed,
-		  "img": ""
-	    }
-        "maxBallBounce":
-        {
-		  "nb":maxBallBounce,
-		  "img": ""
-	    }
-        "nbMaxBallOnGame":
-        {
-		  "nb":nbMaxBallOnGame,
-		  "img": ""
-	    }
-	}
-    
-    
+	]
+
+@csrf_exempt
+def getwinrate(request):
+    check = views.checkToken(request)
+    if check["success"] == False:
+        return JsonResponse(check)
+    target = getTarget(request.POST.get('friend'))
+    if target == None:
+        return JsonResponse({"success": False, "content" : "Inexistant user." })
+    return JsonResponse({"success": True, "content" : getWinRate(target)})
+
+def getuserstat(request):
+    check = views.checkToken(request)
+    if check["success"] == False:
+        return JsonResponse(check)
+    target = getTarget(request.POST.get('friend'))
+    # print("\getuserstat : Target", file=sys.stderr)
+    # print(request.POST, file=sys.stderr)
+    # print(request.POST.get('friend'), file=sys.stderr)
+    # print(target, file=sys.stderr)
+    if target == None:
+        return JsonResponse({"success": False, "content" : "Inexistant user." })
+    return JsonResponse({"success": True, "content" : listStat(target)})
