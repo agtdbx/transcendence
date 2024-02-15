@@ -249,10 +249,9 @@ TOURNAMENT
         'type' : 'tournament'
         'cmd' : 'getTournamentTree'
         -> type' : 'tournamentTreeUpdate'
-           'winner' : <user view> | null            # null for empty
-           'final' : (<user view> | null) * 2
-           'half' : (<user view> | null) * 4
-           'quarter' : (<user view> | null) * 8
+           'playersGrade' : [[<user nickname>, <user grade>]]
+           # Grade if for placement in tournament.
+           # 0 for quarters, 1 for half final, 2 final and 3 winner
 
     /!\ Only work if the tournament has begin /!\
     get next match of tournament

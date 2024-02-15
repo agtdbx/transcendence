@@ -3,56 +3,12 @@
 /*                                                        :::      ::::::::   */
 /*   tournament_tree.js                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: auguste <auguste@student.42.fr>            +#+  +:+       +#+        */
+/*   By: aderouba <aderouba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 14:56:17 by lflandri          #+#    #+#             */
-/*   Updated: 2024/02/15 04:32:58 by auguste          ###   ########.fr       */
+/*   Updated: 2024/02/15 23:37:57 by aderouba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-let graphe = document.getElementById("graphe");
-
-
-const playerList = [
-					{
-						"grade":0,
-						"img": "https://static.wikia.nocookie.net/deeprockgalactic_gamepedia_en/images/c/c5/Mining_expedition_icon.png/revision/latest/scale-to-width-down/40?cb=20220313105613"
-					},
-					{
-						"grade":1,
-						"img": "https://static.wikia.nocookie.net/deeprockgalactic_gamepedia_en/images/8/89/Unknown_lightgray.png/revision/latest/scale-to-width-down/250?cb=20210416205542"
-					},
-					{
-						"grade":3,
-						"img": "https://static.wikia.nocookie.net/deeprockgalactic_gamepedia_en/images/8/89/Unknown_lightgray.png/revision/latest/scale-to-width-down/250?cb=20210416205542"
-					},
-					{
-						"grade":0,
-						"img": "https://static.wikia.nocookie.net/deeprockgalactic_gamepedia_en/images/8/89/Unknown_lightgray.png/revision/latest/scale-to-width-down/250?cb=20210416205542"
-					},
-					{
-						"grade":1,
-						"img": "https://static.wikia.nocookie.net/deeprockgalactic_gamepedia_en/images/8/89/Unknown_lightgray.png/revision/latest/scale-to-width-down/250?cb=20210416205542"
-					},
-					{
-						"grade":0,
-						"img": "https://static.wikia.nocookie.net/deeprockgalactic_gamepedia_en/images/8/89/Unknown_lightgray.png/revision/latest/scale-to-width-down/250?cb=20210416205542"
-					},
-					{
-						"grade":0,
-						"img": "https://static.wikia.nocookie.net/deeprockgalactic_gamepedia_en/images/8/89/Unknown_lightgray.png/revision/latest/scale-to-width-down/250?cb=20210416205542"
-					},
-					{
-						"grade":2,
-						"img": "https://static.wikia.nocookie.net/deeprockgalactic_gamepedia_en/images/8/89/Unknown_lightgray.png/revision/latest/scale-to-width-down/250?cb=20210416205542"
-					},
-					// {
-					// 	"grade":0,
-					// 	"img": "https://static.wikia.nocookie.net/deeprockgalactic_gamepedia_en/images/8/89/Unknown_lightgray.png/revision/latest/scale-to-width-down/250?cb=20210416205542"
-					// },
-
-
-				]
 
 const lenthVertBar = 450
 
@@ -179,5 +135,3 @@ function createTournamentTree(content, list)
 	drawTree(content, listFloor);
 	addPlayerTournamentTree(content, listFloor, list, nb_player_max);
 }
-
-createTournamentTree(graphe, playerList);

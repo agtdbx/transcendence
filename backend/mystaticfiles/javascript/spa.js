@@ -130,6 +130,7 @@ function manageAPI(num)
 	}
 	else if (num == 73)
 	{
+		getTournamentTree();
 		getTournamentResult();
 	}
 }

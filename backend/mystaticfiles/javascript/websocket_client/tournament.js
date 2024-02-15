@@ -200,12 +200,12 @@ function getTournamentTree()
 }
 
 
-function waitTournamentTree(winner, final, half, quarter)
+function waitTournamentTree(playersGrade)
 {
 	let inter = setInterval(function () {
 		if (pageInLoad == false)
 		{
-			setTournamentTree(winner, final, half, quarter);
+			setTournamentTree(playersGrade);
 			clearInterval(inter);
 		}
 		else
@@ -214,9 +214,61 @@ function waitTournamentTree(winner, final, half, quarter)
 }
 
 
-function setTournamentTree(winner, final, half, quarter)
+function setTournamentTree(playersGrade)
 {
 	console.log("TOURNAMENT TREE SET");
+
+	let graphe = document.getElementById("graphe");
+
+	if (graphe == null)
+	{
+		console.log("No graph found");
+		return ;
+	}
+
+	let playerList = [];
+
+	for (let i = 0; i < playersGrade.length; i++)
+	{
+		playerList.push({
+			"grade" : playersGrade[i][1],
+			"img": "https://static.wikia.nocookie.net/deeprockgalactic_gamepedia_en/images/c/c5/Mining_expedition_icon.png/revision/latest/scale-to-width-down/40?cb=20220313105613"
+		});
+	}
+	// {
+	// 	"grade":0,
+	// 	"img": "https://static.wikia.nocookie.net/deeprockgalactic_gamepedia_en/images/c/c5/Mining_expedition_icon.png/revision/latest/scale-to-width-down/40?cb=20220313105613"
+	// },
+	// {
+	// 	"grade":0,
+	// 	"img": "https://static.wikia.nocookie.net/deeprockgalactic_gamepedia_en/images/8/89/Unknown_lightgray.png/revision/latest/scale-to-width-down/250?cb=20210416205542"
+	// },
+	// {
+	// 	"grade":0,
+	// 	"img": "https://static.wikia.nocookie.net/deeprockgalactic_gamepedia_en/images/8/89/Unknown_lightgray.png/revision/latest/scale-to-width-down/250?cb=20210416205542"
+	// },
+	// {
+	// 	"grade":0,
+	// 	"img": "https://static.wikia.nocookie.net/deeprockgalactic_gamepedia_en/images/8/89/Unknown_lightgray.png/revision/latest/scale-to-width-down/250?cb=20210416205542"
+	// },
+	// {
+	// 	"grade":0,
+	// 	"img": "https://static.wikia.nocookie.net/deeprockgalactic_gamepedia_en/images/8/89/Unknown_lightgray.png/revision/latest/scale-to-width-down/250?cb=20210416205542"
+	// },
+	// {
+	// 	"grade":0,
+	// 	"img": "https://static.wikia.nocookie.net/deeprockgalactic_gamepedia_en/images/8/89/Unknown_lightgray.png/revision/latest/scale-to-width-down/250?cb=20210416205542"
+	// },
+	// {
+	// 	"grade":0,
+	// 	"img": "https://static.wikia.nocookie.net/deeprockgalactic_gamepedia_en/images/8/89/Unknown_lightgray.png/revision/latest/scale-to-width-down/250?cb=20210416205542"
+	// },
+	// {
+	// 	"grade":0,
+	// 	"img": "https://static.wikia.nocookie.net/deeprockgalactic_gamepedia_en/images/8/89/Unknown_lightgray.png/revision/latest/scale-to-width-down/250?cb=20210416205542"
+	// }
+
+	// createTournamentTree(graphe, playerList);
 }
 
 

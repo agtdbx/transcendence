@@ -148,11 +148,8 @@ function onRecieveData(event)
 	}
 	else if (type == 'tournamentTreeUpdate')
 	{
-		let winner = data['winner'];
-		let final = data['final'];
-		let half = data['half'];
-		let quarter = data['quarter'];
-		waitTournamentTree(winner, final, half, quarter)
+		let playersGrade = data['playersGrade'];
+		waitTournamentTree(playersGrade)
 	}
 	else if (type == 'nextMatch')
 	{

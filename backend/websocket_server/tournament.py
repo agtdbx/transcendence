@@ -180,12 +180,20 @@ def create_tournament_state_msg(my_id):
 
 def create_tournament_tree_msg():
     global tournament
+
+    players_grade = []
+    for user_id in tournament["quarter"]:
+        if user_id in tournament["winner"]:
+            players_grade.append((tournament["nicknames"][user_id], 3))
+        elif user_id in tournament["final"]:
+            players_grade.append((tournament["nicknames"][user_id], 2))
+        elif user_id in tournament["half"]:
+            players_grade.append((tournament["nicknames"][user_id], 1))
+        else:
+            players_grade.append((tournament["nicknames"][user_id], 0))
+
     msg = {"type" : "tournamentTreeUpdate",
-           "winner" : str(tournament["winner"]),
-           "final" : str(tournament["final"]),
-           "half" : str(tournament["half"]),
-           "quarter" : str(tournament["quarter"]),
-           }
+           "playersGrade" : players_grade}
     return str(msg).replace("None", "null").replace("'", '"')
 
 
@@ -779,7 +787,8 @@ async def getTournamentTree(my_id:int,
     global tournament
 
     # check if tournament is started
-    if tournament['state'] != STATE_START_TOURNAMENT:
+    if tournament['state'] != STATE_START_TOURNAMENT and \
+        tournament['state'] != STATE_FINISH_TOURNAMENT:
         print("WS : User", my_id, "Tournament must be started to have a tree",
               file=sys.stderr)
         await send_error_to_id(my_id, connected_users,
