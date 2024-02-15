@@ -59,106 +59,67 @@ def get_lst_users_view() -> list:
 def get_next_match_tournament() -> tuple[int, int] | None:
     global tournament
 
-    print("\nGW : GET TREE FOR NEXT MATCH :", file=sys.stderr)
-    print("WS :", tournament["winner"], file=sys.stderr)
-    print("WS :", tournament["final"], file=sys.stderr)
-    print("WS :", tournament["half"], file=sys.stderr)
-    print("WS :", tournament["quarter"], file=sys.stderr)
     winner = tournament["winner"]
     final = tournament["final"]
     half = tournament["half"]
     quarter = tournament["quarter"]
 
-    print("\nGW : WINNER ?", file=sys.stderr)
     # Check if the tournament in finish
     if winner != None:
         return None
-    print("GW : Nope", file=sys.stderr)
 
-    print("\nGW : QUARTER ?", file=sys.stderr)
     # Check if next match is a quarter
     for i in range(len(half)):
-        print("GW : TEST", i, file=sys.stderr)
         if half[i] == None:
             id_quarter_1 = i * 2
             id_quarter_2 = (i * 2) + 1
-            print("GW : iq1", id_quarter_1, file=sys.stderr)
-            print("GW : iq2", id_quarter_2, file=sys.stderr)
-            res = (quarter[id_quarter_1], quarter[id_quarter_2])
-            print("GW : res ok", res, file=sys.stderr)
-            return res
+            return (quarter[id_quarter_1], quarter[id_quarter_2])
 
-    print("\nGW : HALF ?", file=sys.stderr)
     # Check if next match is an half final
     for i in range(len(final)):
-        print("GW : TEST", i, file=sys.stderr)
         if final[i] == None:
             id_half_1 = i * 2
             id_half_2 = (i * 2) + 1
-            print("GW : ih1", id_half_1, file=sys.stderr)
-            print("GW : ih2", id_half_2, file=sys.stderr)
-            res = (half[id_half_1], half[id_half_2])
-            print("GW : res ok", res, file=sys.stderr)
-            return res
+            return (half[id_half_1], half[id_half_2])
 
-    print("\nGW : FINAL !", file=sys.stderr)
-    res = (final[0], final[1])
-    print("GW : res ok", res, file=sys.stderr)
     # Check if next match is the final
-    return res
+    return (final[0], final[1])
 
 
 def get_next_match_user(user_id:int) -> tuple[int, int] | None:
     global tournament
 
-    print("\nGW : GET TREE :", user_id, file=sys.stderr)
-    print("WS :", tournament["winner"], file=sys.stderr)
-    print("WS :", tournament["final"], file=sys.stderr)
-    print("WS :", tournament["half"], file=sys.stderr)
-    print("WS :", tournament["quarter"], file=sys.stderr)
     winner = tournament["winner"]
     final:list = tournament["final"]
     half:list = tournament["half"]
     quarter:list = tournament["quarter"]
 
-    print("\nGW : CHECK WINNER", file=sys.stderr)
     # Check if the tournament in finish
     if winner != None:
         return None
 
-    print("GW : BEFORE INDEX", file=sys.stderr)
     quarter_index = quarter.index(user_id)
-    print("GW : INDEX :", quarter_index, file=sys.stderr)
     half_index = quarter_index // 2
-    print("GW : NEW INDEX :", half_index, file=sys.stderr)
 
-    print("\nGW : CHECK QUARTER", file=sys.stderr)
     # Next match is quarter
     if half[half_index] == None:
         quarter_index_1 = half_index * 2
         quarter_index_2 = (half_index * 2) + 1
         return (quarter[quarter_index_1], quarter[quarter_index_2])
 
-    print("GW : CHECK QUARTER LOOSE", file=sys.stderr)
     # If quarter match if lose
     if half[half_index] != user_id:
         return None
 
     final_index = half_index // 2
 
-    print("\nGW : CHECK HALF", file=sys.stderr)
     # Next match is half final
     if final[final_index] == None:
-        print("GW : CHECK HALF OK, final index :", final_index, file=sys.stderr)
         half_index_1 = final_index * 2
         half_index_2 = (final_index * 2) + 1
-        print("GW : hi1 :", half_index_1, file=sys.stderr)
-        print("GW : hi2 :", half_index_2, file=sys.stderr)
         res = (half[half_index_1], half[half_index_2])
-        print("GW : res ok :", res, file=sys.stderr)
         return res
 
-    print("GW : CHECK HALF LOOSE", file=sys.stderr)
     # If half final match is lose
     if final[final_index] != user_id:
         return None
@@ -400,8 +361,7 @@ async def start_tournament(my_id:int,
         tournament["quarter"].append(-len(tournament["quarter"]))
 
     # shuffle this step
-    # TODO : REMETTRE LE SHUFFLE
-    # random.shuffle(tournament["quarter"])
+    random.shuffle(tournament["quarter"])
 
     # Send to everyone that tournament begin
     str_msg = str({"type" : "tournamentStart",
@@ -428,15 +388,6 @@ async def start_tournament(my_id:int,
 async def tournament_next_start_match(connected_users:dict,
                                       in_game_list:list):
     global tournament
-
-    print("\nWS : Tournament try to launch a match", file=sys.stderr)
-    print("\nWS : Tournament tree", file=sys.stderr)
-    print("WS :", tournament["winner"], file=sys.stderr)
-    print("WS :", tournament["final"], file=sys.stderr)
-    print("WS :", tournament["half"], file=sys.stderr)
-    print("WS :", tournament["quarter"], file=sys.stderr)
-    print("\nWS : Players", tournament["players"], file=sys.stderr)
-    print("\nWS : Nicknames", tournament["nicknames"], file=sys.stderr)
 
     # Check is the tournament is running
     if tournament["state"] != STATE_START_TOURNAMENT:
@@ -535,17 +486,13 @@ async def tournament_next_start_match(connected_users:dict,
     # Create the game
     ret = await create_new_game(in_game_list, 0, False, [next_match[0]],
                                 [next_match[1]], GAME_TYPE_TOURNAMENT)
-    print("\nWS : CREATION IF", file=sys.stderr)
 
     if ret == None:
         print("\nWS : ERROR : No game server free, put users", file=sys.stderr)
         return
-    print("\nWS : CREATION OK", file=sys.stderr)
 
     p1 = get_user_view(next_match[0])[2]
-    print("\nWS : VIEW 1 OK", file=sys.stderr)
     p2 = get_user_view(next_match[1])[2]
-    print("\nWS : VIEW 2 OK", file=sys.stderr)
 
     await message_in_general("New match beetwen " + p1 + " and " + p2,
                              MISSION_CONTROL, connected_users)
@@ -579,9 +526,7 @@ async def tournament_next_start_match(connected_users:dict,
         if user_id <= IA_ID:
             continue
 
-        print("\nWS : BEFORE NEXT USER MATCH", user_id, file=sys.stderr)
         next_match_test = get_next_match_user(user_id)
-        print("\nWS : AFTER NEXT USER MATCH", user_id, file=sys.stderr)
 
         if next_match_test == None:
             match = "null"
@@ -613,7 +558,6 @@ async def tournament_next_start_match(connected_users:dict,
                                                    GAME_TYPE_TOURNAMENT)
     for websocket in connected_users.get(next_match[1], []):
         await websocket.send(current_player_msg)
-    print("\nWS : TOURNAMENT MATCH BETWEEN", next_match, " START !", file=sys.stderr)
 
 
 async def tournament_end_match(winner:int,
@@ -644,7 +588,6 @@ async def tournament_end_match(winner:int,
             await send_msg_to_id(user_id, connected_users, str_msg)
         return
 
-    print("WS : TEST 3", file=sys.stderr)
     if winner in tournament["half"]:
         tournament["matchRunning"] = False
         index = tournament["half"].index(winner)
@@ -655,7 +598,6 @@ async def tournament_end_match(winner:int,
                              MISSION_CONTROL, connected_users)
         return
 
-    print("WS : TEST 4", file=sys.stderr)
     if winner in tournament["quarter"]:
         tournament["matchRunning"] = False
         index = tournament["quarter"].index(winner)
@@ -856,15 +798,11 @@ async def next_match_user(my_id:int,
         await send_error_to_id(my_id, connected_users, "You are not in tournament")
         return
 
-    print("WS : Test myNextMatch", file=sys.stderr)
     next_match = get_next_match_user(my_id)
-    print("WS : Test2 myNextMatch :", next_match, file=sys.stderr)
 
     if next_match == None:
         match = "null"
-        print("WS : Test3 tyui :", next_match, file=sys.stderr)
     else:
-        print("WS : Test4 tyui :", next_match, file=sys.stderr)
         match = []
         for i in range(2):
             if next_match[i] == None:
@@ -875,9 +813,7 @@ async def next_match_user(my_id:int,
     str_msg = str({"type" : "myNextMatch",
                    "match" : match
                    }).replace("'", '"')
-    print("WS : Test5 :", str_msg, file=sys.stderr)
     await send_msg_to_id(my_id, connected_users, str_msg)
-    print("WS : Test6 :", str_msg, file=sys.stderr)
 
 
 async def getTournamentWinners(my_id:int,

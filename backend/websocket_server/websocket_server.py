@@ -213,8 +213,8 @@ async def handle_client(websocket : websockets.WebSocketServerProtocol, path):
     except websockets.exceptions.ConnectionClosedOK:
         print("\nWS : DECONNECTION :", file=sys.stderr)
 
-    # except Exception as error:
-    #     print("\nWS : CRITICAL ERROR :", error, type(error), file=sys.stderr)
+    except Exception as error:
+        print("\nWS : CRITICAL ERROR :", error, type(error), file=sys.stderr)
 
     finally:
         # Delete the connection when the client disconnect

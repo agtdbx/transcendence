@@ -6,7 +6,7 @@
 /*   By: aderouba <aderouba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 14:56:17 by lflandri          #+#    #+#             */
-/*   Updated: 2024/02/15 23:37:57 by aderouba         ###   ########.fr       */
+/*   Updated: 2024/02/16 00:37:56 by aderouba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,8 @@ function addPlayerTournamentTree(content, mapPoint, listPlayer, nb_player_max)
 		//console.log("mod :" + mod);
 		//console.log("index :" + index);
 
-		let newPoint = document.createElementNS('http://www.w3.org/2000/svg', 'image');
+		let newPoint = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+		console.log("point", newPoint);
 		if (grade === 0)
 		{
 			newPoint.setAttribute('y', "" + ((grade) * lenthVertBar / (mapPoint.length + 1)));
@@ -94,7 +95,10 @@ function addPlayerTournamentTree(content, mapPoint, listPlayer, nb_player_max)
 		newPoint.setAttribute('x', "" + mapPoint[grade][ Math.floor(index / mod)] - 15);
 		newPoint.setAttribute('width', "30");
 		newPoint.setAttribute('height', "30");
-		newPoint.setAttributeNS('http://www.w3.org/1999/xlink','href', listPlayer[index]["img"]);
+		newPoint.setAttribute('fill', "white");
+		newPoint.textContent = listPlayer[index]["nickname"];
+		newPoint.style.color = "white";
+		newPoint.style.opacity = "1";
 		content.insertBefore(newPoint, null);
 	}
 }
