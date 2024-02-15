@@ -183,14 +183,19 @@ def create_tournament_tree_msg():
 
     players_grade = []
     for user_id in tournament["quarter"]:
-        if user_id in tournament["winner"]:
-            players_grade.append((tournament["nicknames"][user_id], 3))
-        elif user_id in tournament["final"]:
-            players_grade.append((tournament["nicknames"][user_id], 2))
-        elif user_id in tournament["half"]:
-            players_grade.append((tournament["nicknames"][user_id], 1))
+        if user_id <= IA_ID:
+            nickname = "bosco " + str(-user_id)
         else:
-            players_grade.append((tournament["nicknames"][user_id], 0))
+            nickname = tournament["nicknames"][user_id]
+
+        if user_id == tournament["winner"]:
+            players_grade.append([nickname, 3])
+        elif user_id in tournament["final"]:
+            players_grade.append([nickname, 2])
+        elif user_id in tournament["half"]:
+            players_grade.append([nickname, 1])
+        else:
+            players_grade.append([nickname, 0])
 
     msg = {"type" : "tournamentTreeUpdate",
            "playersGrade" : players_grade}
@@ -408,6 +413,11 @@ async def start_tournament(my_id:int,
     for user_id in connected_users.keys():
         await send_msg_to_id(user_id, connected_users, str_msg)
 
+    # Update tournament tree
+    str_msg = create_tournament_tree_msg()
+    for user_id in connected_users.keys():
+        await send_msg_to_id(user_id, connected_users, str_msg)
+
     print("WS : User", my_id, "Tournament start !!", file=sys.stderr)
     # Server message to inform users that the tournament begin
     await message_in_general("The Tournament start !", MISSION_CONTROL,
@@ -540,6 +550,11 @@ async def tournament_next_start_match(connected_users:dict,
     await message_in_general("New match beetwen " + p1 + " and " + p2,
                              MISSION_CONTROL, connected_users)
 
+    # Update tournament tree
+    str_msg = create_tournament_tree_msg()
+    for user_id in connected_users.keys():
+        await send_msg_to_id(user_id, connected_users, str_msg)
+
     # Send next match to everyone
     next_match_test = get_next_match_tournament()
 
@@ -615,10 +630,8 @@ async def tournament_end_match(winner:int,
             await send_msg_to_id(user_id, connected_users, str_msg)
         return
 
-    print("WS : TEST 1", file=sys.stderr)
     nickname = get_user_view(winner)[2]
 
-    print("WS : TEST 2", file=sys.stderr)
     if winner in tournament["final"]:
         tournament["matchRunning"] = False
         tournament["winner"] = winner
@@ -634,11 +647,8 @@ async def tournament_end_match(winner:int,
     print("WS : TEST 3", file=sys.stderr)
     if winner in tournament["half"]:
         tournament["matchRunning"] = False
-        print("WS : TEST 31", file=sys.stderr)
         index = tournament["half"].index(winner)
-        print("WS : TEST 32", file=sys.stderr)
         index //= 2
-        print("WS : TEST 33", file=sys.stderr)
         tournament["final"][index] = winner
         print("WS :", winner, " win the match !", file=sys.stderr)
         await message_in_general(nickname + " win the match !",
@@ -648,11 +658,8 @@ async def tournament_end_match(winner:int,
     print("WS : TEST 4", file=sys.stderr)
     if winner in tournament["quarter"]:
         tournament["matchRunning"] = False
-        print("WS : TEST 41", file=sys.stderr)
         index = tournament["quarter"].index(winner)
-        print("WS : TEST 42", file=sys.stderr)
         index //= 2
-        print("WS : TEST 43", file=sys.stderr)
         tournament["half"][index] = winner
         print("WS :", winner, " win the match !", file=sys.stderr)
         await message_in_general(nickname + " win the match !",

@@ -226,6 +226,8 @@ function setTournamentTree(playersGrade)
 		return ;
 	}
 
+	graphe.innerHTML = "";
+
 	let playerList = [];
 
 	for (let i = 0; i < playersGrade.length; i++)
@@ -235,6 +237,7 @@ function setTournamentTree(playersGrade)
 			"img": "https://static.wikia.nocookie.net/deeprockgalactic_gamepedia_en/images/c/c5/Mining_expedition_icon.png/revision/latest/scale-to-width-down/40?cb=20220313105613"
 		});
 	}
+	console.log("playerList", playerList);
 	// {
 	// 	"grade":0,
 	// 	"img": "https://static.wikia.nocookie.net/deeprockgalactic_gamepedia_en/images/c/c5/Mining_expedition_icon.png/revision/latest/scale-to-width-down/40?cb=20220313105613"
@@ -268,7 +271,7 @@ function setTournamentTree(playersGrade)
 	// 	"img": "https://static.wikia.nocookie.net/deeprockgalactic_gamepedia_en/images/8/89/Unknown_lightgray.png/revision/latest/scale-to-width-down/250?cb=20210416205542"
 	// }
 
-	// createTournamentTree(graphe, playerList);
+	createTournamentTree(graphe, playerList);
 }
 
 
@@ -425,6 +428,8 @@ function setTournamentResult(winner, second, third)
 	console.log("TOURNAMENT WINNERS SET");
 
 	let winnerPP = document.getElementById("podiumPp1");
+	if (winnerPP == null)
+		return ;
 	winnerPP.src = winner[1];
 	winnerPP.style.width = "100%";
 
