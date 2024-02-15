@@ -266,8 +266,12 @@ function setTournamentNextMatch(match)
 	let p1Div = document.getElementById("tournamentPlayer1");
 	let p2Div = document.getElementById("tournamentPlayer2");
 
-	p1Div.innerHTML = "<p>player1</p>";
-	p2Div.innerHTML = "<p>player2</p>";
+	p1Div.innerHTML = "";
+	if (match[0] != "null")
+		addPlayerViewsTournament(match[0], p1Div);
+	p2Div.innerHTML = "";
+	if (match[1] != "null")
+		addPlayerViewsTournament(match[1], p1Div);
 }
 
 
@@ -322,8 +326,13 @@ function setTournamentMyNextMatch(match)
 		return ;
 	}
 
-	p1Div.innerHTML = "<p>player1</p>";
-	p2Div.innerHTML = "<p>player2</p>";
+
+	p1Div.innerHTML = "";
+	if (match[0] != "null")
+		addPlayerViewsTournament(match[0], p1Div);
+	p2Div.innerHTML = "";
+	if (match[1] != "null")
+		addPlayerViewsTournament(match[1], p1Div);
 }
 
 

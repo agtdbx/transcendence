@@ -6,7 +6,7 @@
 #    By: aderouba <aderouba@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/08 14:00:09 by lflandri          #+#    #+#              #
-#    Updated: 2024/02/14 20:11:41 by aderouba         ###   ########.fr        #
+#    Updated: 2024/02/15 19:50:56 by aderouba         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -175,9 +175,9 @@ def section(request, num):
     # Subcsribe to tournament
     elif num == 7:
         if fullPage:
-            return render(request, "tournamentInscription_full.html")
+            return render(request, "tournamentInscription_full.html", {'username': user.username})
         else:
-            return render(request,"tournamentInscription.html")
+            return render(request,"tournamentInscription.html", {'username': user.username})
 
     # In tournament if you are subscribe
     elif num == 71:

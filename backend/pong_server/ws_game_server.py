@@ -59,7 +59,7 @@ async def handle_client(websocket : websockets.WebSocketServerProtocol, path):
 
     try:
         async for data in websocket:
-            print("\nGWS : DATA RECIEVED :", data, file=sys.stderr)
+            # print("\nGWS : DATA RECIEVED :", data, file=sys.stderr)
             data : dict = json.loads(data)
 
             request_type = data.get("type", None)
@@ -126,7 +126,7 @@ async def handle_client(websocket : websockets.WebSocketServerProtocol, path):
                 else:
                     map_id = mapId
                     if powerUp == "true":
-                    	power_up = True
+                        power_up = True
                     game_type = gameType
                     for id in teamLeft:
                         # If it's an ia, it's ready
@@ -300,7 +300,7 @@ async def game_server_manager():
     await countBeforeStart()
 
     while game.runMainLoop : #and (len(connected_player.values()) > 1)
-        print("\nGWS : GAME STEP", file=sys.stderr)
+        # print("\nGWS : GAME STEP", file=sys.stderr)
         game.step()
         parsingGlobalMessage()
         await asyncio.sleep(0.01)

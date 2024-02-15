@@ -187,9 +187,9 @@ async def end_game(data:dict,
     # If the type is tournament
     if game_type == 2:
         if game_stats[0] > game_stats[1]:
-            winner = left_team_stats[0][0]
+            winner = team_left[left_team_stats[0][0]]
         else:
-            winner = right_team_stats[0][0]
+            winner = team_right[right_team_stats[0][0]]
 
     # PUT MATCH IN DB
     match_id = Match.objects.all().count()

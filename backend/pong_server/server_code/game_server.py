@@ -64,10 +64,10 @@ class GameServer:
         self.iaTimer = 0
         self.iaList = []
         for i in range(len(paddles_left)):
-            if paddles_left[i] == PADDLE_IA:
+            if paddles_left[i] <= PADDLE_IA:
                 self.iaList.append(ia.Ia(TEAM_LEFT, i))
         for i in range(len(paddles_right)):
-            if paddles_right[i] == PADDLE_IA:
+            if paddles_right[i] <= PADDLE_IA:
                 self.iaList.append(ia.Ia(TEAM_RIGHT, i))
 
         # Ball begin left side

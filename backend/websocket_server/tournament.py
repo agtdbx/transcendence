@@ -31,9 +31,13 @@ tournament = {
 
 def get_user_view(user_id:int) -> list[int, str, str]:
     global tournament
-    user = get_user_by_id(user_id)
 
-    if user_id == -1:
+    if user_id <= IA_ID:
+        user = get_user_by_id(IA_ID)
+    else:
+        user = get_user_by_id(user_id)
+
+    if user_id <= IA_ID:
         nickname = "bosco"
     else:
         nickname = tournament["nicknames"][user_id]
@@ -342,10 +346,11 @@ async def start_tournament(my_id:int,
         tournament["quarter"].append(player_id)
 
     while len(tournament["quarter"]) < 8:
-        tournament["quarter"].append(IA_ID)
+        tournament["quarter"].append(-len(tournament["quarter"]))
 
     # shuffle this step
-    random.shuffle(tournament["quarter"])
+    # TODO : REMETTRE LE SHUFFLE
+    # random.shuffle(tournament["quarter"])
 
     # Send to everyone that tournament begin
     str_msg = str({"type" : "tournamentStart",
@@ -367,6 +372,15 @@ async def start_tournament(my_id:int,
 async def tournament_next_start_match(connected_users:dict,
                                       in_game_list:list):
     global tournament
+
+    print("\nWS : Tournament try to launch a match", file=sys.stderr)
+    print("\nWS : Tournament tree", file=sys.stderr)
+    print("WS :", tournament["winner"], file=sys.stderr)
+    print("WS :", tournament["final"], file=sys.stderr)
+    print("WS :", tournament["half"], file=sys.stderr)
+    print("WS :", tournament["quarter"], file=sys.stderr)
+    print("\nWS : Players", tournament["players"], file=sys.stderr)
+    print("\nWS : Nicknames", tournament["nicknames"], file=sys.stderr)
 
     # Check is the tournament is running
     if tournament["state"] != STATE_START_TOURNAMENT:
@@ -394,32 +408,37 @@ async def tournament_next_start_match(connected_users:dict,
         return
 
     # If all participant are ia, end instantly the match
-    if next_match[0] == IA_ID and next_match[1] == IA_ID:
-        await tournament_end_match(IA_ID, connected_users)
+    if next_match[0] <= IA_ID and next_match[1] <= IA_ID:
+        print("\nWS : Tournament BOT vs BOT", file=sys.stderr)
+        if random.randint(0, 1) == 0:
+            await tournament_end_match(next_match[0], connected_users)
+        else:
+            await tournament_end_match(next_match[1], connected_users)
         await tournament_next_start_match(connected_users, in_game_list)
         return
 
-    if next_match[0] == IA_ID:
+    if next_match[0] <= IA_ID:
         user_right = get_user_by_id(next_match[1])
         # Check if the user if connected
         if user_right.status != 1:
             print("WS : User", user_right.username, "isn't connected",
                   file=sys.stderr)
-            await tournament_end_match(IA_ID, connected_users)
+            await tournament_end_match(next_match[0], connected_users)
             await tournament_next_start_match(connected_users, in_game_list)
             return
 
-    elif next_match[1] == IA_ID:
+    elif next_match[1] <= IA_ID:
         user_left = get_user_by_id(next_match[0])
         # Check if the user if connected
         if user_left.status != 1:
             print("WS : User", user_left.username, "isn't connected",
                   file=sys.stderr)
-            await tournament_end_match(IA_ID, connected_users)
+            await tournament_end_match(next_match[1], connected_users)
             await tournament_next_start_match(connected_users, in_game_list)
             return
 
     else:
+        print("\nWS : Tournament match ready", file=sys.stderr)
         user_left = get_user_by_id(next_match[0])
         user_right = get_user_by_id(next_match[1])
 
@@ -471,7 +490,7 @@ async def tournament_next_start_match(connected_users:dict,
 
     tournament["matchRunning"] = True
 
-    asyncio.sleep(5)
+    await asyncio.sleep(5)
 
     # Send start game message to first player in waitlist
     first_player_msg = create_game_start_message(ret[1], 0, 0, GAME_TYPE_TOURNAMENT)
@@ -489,6 +508,7 @@ async def tournament_end_match(winner:int,
                                connected_users:dict):
     global tournament
 
+    print("\nWS : Tournament end match with winner :", winner, file=sys.stderr)
     # Check is the tournament is running
     if tournament["state"] != STATE_START_TOURNAMENT:
         print("WS : Tournament must be in running to end a match",
@@ -498,8 +518,10 @@ async def tournament_end_match(winner:int,
             await send_msg_to_id(user_id, connected_users, str_msg)
         return
 
+    print("WS : TEST 1", file=sys.stderr)
     nickname = get_user_view(winner)[2]
 
+    print("WS : TEST 2", file=sys.stderr)
     if winner in tournament["final"]:
         tournament["matchRunning"] = False
         tournament["winner"] = winner
@@ -512,23 +534,31 @@ async def tournament_end_match(winner:int,
             await send_msg_to_id(user_id, connected_users, str_msg)
         return
 
+    print("WS : TEST 3", file=sys.stderr)
     if winner in tournament["half"]:
         tournament["matchRunning"] = False
+        print("WS : TEST 31", file=sys.stderr)
         index = tournament["half"].index(winner)
+        print("WS : TEST 32", file=sys.stderr)
         index //= 2
+        print("WS : TEST 33", file=sys.stderr)
         tournament["final"][index] = winner
         print("WS :", winner, " win the match !", file=sys.stderr)
-        await message_in_general(nickname + "win the match !",
+        await message_in_general(nickname + " win the match !",
                              MISSION_CONTROL, connected_users)
         return
 
+    print("WS : TEST 4", file=sys.stderr)
     if winner in tournament["quarter"]:
         tournament["matchRunning"] = False
+        print("WS : TEST 41", file=sys.stderr)
         index = tournament["quarter"].index(winner)
+        print("WS : TEST 42", file=sys.stderr)
         index //= 2
+        print("WS : TEST 43", file=sys.stderr)
         tournament["half"][index] = winner
         print("WS :", winner, " win the match !", file=sys.stderr)
-        await message_in_general(nickname + "win the match !",
+        await message_in_general(nickname + " win the match !",
                              MISSION_CONTROL, connected_users)
         return
 
@@ -715,7 +745,7 @@ async def next_match_user(my_id:int,
         return
 
     # If user not in player
-    if my_id not in tournament["players"].values():
+    if my_id not in tournament["players"]:
         print("WS : User", my_id, "You are not in tournament", file=sys.stderr)
         await send_error_to_id(my_id, connected_users, "You are not in tournament")
         return
