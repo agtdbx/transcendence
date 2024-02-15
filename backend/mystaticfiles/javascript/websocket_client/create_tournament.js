@@ -22,7 +22,7 @@ function addPlayerViewsTournament(player, div)
 	pp.style.height = "3em";
 
 	let nickname = document.createElement("p");
-	nickname.textContent = player[2];
+	nickname.textContent = player[2]
 	nickname.style.color = "white";
 
 	let playerDiv = document.createElement("div");

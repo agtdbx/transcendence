@@ -5,7 +5,9 @@
 		<div id="greyRect" class="greyRect">
 			<form id="form_tournamentName" method="post">
 			<p id="tournamentUsername">Tournament nickname</p>
-			<input type="text" id="tournamentNewName" name="tournamentNewName" required>
+			{% block content %}
+			<input type="text" id="tournamentNewName" name="tournamentNewName" value="{{ username }}" required>
+			{% endblock content %}
 			<br>
 			<button type="submit" class ="btn-drg" id="Participate">Participate</button>
 			</form>

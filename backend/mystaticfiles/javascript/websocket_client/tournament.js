@@ -200,12 +200,12 @@ function getTournamentTree()
 }
 
 
-function waitTournamentTree(winner, final, half, quarter)
+function waitTournamentTree(playersGrade)
 {
 	let inter = setInterval(function () {
 		if (pageInLoad == false)
 		{
-			setTournamentTree(winner, final, half, quarter);
+			setTournamentTree(playersGrade);
 			clearInterval(inter);
 		}
 		else
@@ -214,9 +214,65 @@ function waitTournamentTree(winner, final, half, quarter)
 }
 
 
-function setTournamentTree(winner, final, half, quarter)
+function setTournamentTree(playersGrade)
 {
 	console.log("TOURNAMENT TREE SET");
+
+	let graphe = document.getElementById("graphe");
+
+	if (graphe == null)
+	{
+		console.log("No graph found");
+		return ;
+	}
+
+	graphe.innerHTML = "";
+
+	let playerList = [];
+
+	for (let i = 0; i < playersGrade.length; i++)
+	{
+		playerList.push({
+			"grade" : playersGrade[i][1],
+			"nickname" : playersGrade[i][0]
+			// "img": "https://static.wikia.nocookie.net/deeprockgalactic_gamepedia_en/images/c/c5/Mining_expedition_icon.png/revision/latest/scale-to-width-down/40?cb=20220313105613"
+		});
+	}
+	console.log("playerList", playerList);
+	// {
+	// 	"grade":0,
+	// 	"img": "https://static.wikia.nocookie.net/deeprockgalactic_gamepedia_en/images/c/c5/Mining_expedition_icon.png/revision/latest/scale-to-width-down/40?cb=20220313105613"
+	// },
+	// {
+	// 	"grade":0,
+	// 	"img": "https://static.wikia.nocookie.net/deeprockgalactic_gamepedia_en/images/8/89/Unknown_lightgray.png/revision/latest/scale-to-width-down/250?cb=20210416205542"
+	// },
+	// {
+	// 	"grade":0,
+	// 	"img": "https://static.wikia.nocookie.net/deeprockgalactic_gamepedia_en/images/8/89/Unknown_lightgray.png/revision/latest/scale-to-width-down/250?cb=20210416205542"
+	// },
+	// {
+	// 	"grade":0,
+	// 	"img": "https://static.wikia.nocookie.net/deeprockgalactic_gamepedia_en/images/8/89/Unknown_lightgray.png/revision/latest/scale-to-width-down/250?cb=20210416205542"
+	// },
+	// {
+	// 	"grade":0,
+	// 	"img": "https://static.wikia.nocookie.net/deeprockgalactic_gamepedia_en/images/8/89/Unknown_lightgray.png/revision/latest/scale-to-width-down/250?cb=20210416205542"
+	// },
+	// {
+	// 	"grade":0,
+	// 	"img": "https://static.wikia.nocookie.net/deeprockgalactic_gamepedia_en/images/8/89/Unknown_lightgray.png/revision/latest/scale-to-width-down/250?cb=20210416205542"
+	// },
+	// {
+	// 	"grade":0,
+	// 	"img": "https://static.wikia.nocookie.net/deeprockgalactic_gamepedia_en/images/8/89/Unknown_lightgray.png/revision/latest/scale-to-width-down/250?cb=20210416205542"
+	// },
+	// {
+	// 	"grade":0,
+	// 	"img": "https://static.wikia.nocookie.net/deeprockgalactic_gamepedia_en/images/8/89/Unknown_lightgray.png/revision/latest/scale-to-width-down/250?cb=20210416205542"
+	// }
+
+	createTournamentTree(graphe, playerList);
 }
 
 
@@ -266,8 +322,15 @@ function setTournamentNextMatch(match)
 	let p1Div = document.getElementById("tournamentPlayer1");
 	let p2Div = document.getElementById("tournamentPlayer2");
 
-	p1Div.innerHTML = "<p>player1</p>";
-	p2Div.innerHTML = "<p>player2</p>";
+	if (p1Div == null)
+		return ;
+
+	p1Div.innerHTML = "";
+	if (match[0] != "null")
+		addPlayerViewsTournament(match[0], p1Div);
+	p2Div.innerHTML = "";
+	if (match[1] != "null")
+		addPlayerViewsTournament(match[1], p1Div);
 }
 
 
@@ -305,9 +368,9 @@ function waitTournamentMyNextMatch(match)
 
 function setTournamentMyNextMatch(match)
 {
-	console.log("MY NEXT MATCH SET");
+	console.log("MY NEXT MATCH SET :", match, typeof(match));
 
-	if (match == null)
+	if (match == "null")
 	{
 		console.log("THERE IS NO NEXT MATCH");
 		return ;
@@ -316,14 +379,22 @@ function setTournamentMyNextMatch(match)
 	let p1Div = document.getElementById("tournamentPlayer3");
 	let p2Div = document.getElementById("tournamentPlayer4");
 
-	if (p1Div == null || p2Div == null)
+	if (p1Div == null)
+		return ;
+
+	if (p1Div == "null" || p2Div == "null")
 	{
 		console.log("NO MY NEXT MATCH HERE");
 		return ;
 	}
 
-	p1Div.innerHTML = "<p>player1</p>";
-	p2Div.innerHTML = "<p>player2</p>";
+
+	p1Div.innerHTML = "";
+	if (match[0] != "null")
+		addPlayerViewsTournament(match[0], p1Div);
+	p2Div.innerHTML = "";
+	if (match[1] != "null")
+		addPlayerViewsTournament(match[1], p1Div);
 }
 
 
@@ -351,7 +422,7 @@ function waitTournamentResult(winner, second, third)
 	let inter = setInterval(function () {
 		if (pageInLoad == false)
 		{
-			setTournamentMyNextMatch(winner, second, third);
+			setTournamentResult(winner, second, third);
 			clearInterval(inter);
 		}
 		else
@@ -362,4 +433,27 @@ function waitTournamentResult(winner, second, third)
 function setTournamentResult(winner, second, third)
 {
 	console.log("TOURNAMENT WINNERS SET");
+
+	let winnerPP = document.getElementById("podiumPp1");
+	if (winnerPP == null)
+		return ;
+	winnerPP.src = winner[1];
+	winnerPP.style.width = "100%";
+
+	let winnerNickname = document.getElementById("usernamePodium1");
+	winnerNickname.textContent = winner[2];
+
+	let secondPP = document.getElementById("podiumPp2");
+	secondPP.src = second[1];
+	secondPP.style.width = "100%";
+
+	let secondNickname = document.getElementById("usernamePodium2");
+	secondNickname.textContent = second[2];
+
+	let thirdPP = document.getElementById("podiumPp3");
+	thirdPP.src = third[1];
+	thirdPP.style.width = "100%";
+
+	let thirdNickname = document.getElementById("usernamePodium3");
+	thirdNickname.textContent = third[2];
 }

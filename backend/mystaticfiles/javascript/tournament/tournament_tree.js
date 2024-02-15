@@ -3,56 +3,12 @@
 /*                                                        :::      ::::::::   */
 /*   tournament_tree.js                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: auguste <auguste@student.42.fr>            +#+  +:+       +#+        */
+/*   By: aderouba <aderouba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 14:56:17 by lflandri          #+#    #+#             */
-/*   Updated: 2024/02/15 04:32:58 by auguste          ###   ########.fr       */
+/*   Updated: 2024/02/16 00:37:56 by aderouba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-let graphe = document.getElementById("graphe");
-
-
-const playerList = [
-					{
-						"grade":0,
-						"img": "https://static.wikia.nocookie.net/deeprockgalactic_gamepedia_en/images/c/c5/Mining_expedition_icon.png/revision/latest/scale-to-width-down/40?cb=20220313105613"
-					},
-					{
-						"grade":1,
-						"img": "https://static.wikia.nocookie.net/deeprockgalactic_gamepedia_en/images/8/89/Unknown_lightgray.png/revision/latest/scale-to-width-down/250?cb=20210416205542"
-					},
-					{
-						"grade":3,
-						"img": "https://static.wikia.nocookie.net/deeprockgalactic_gamepedia_en/images/8/89/Unknown_lightgray.png/revision/latest/scale-to-width-down/250?cb=20210416205542"
-					},
-					{
-						"grade":0,
-						"img": "https://static.wikia.nocookie.net/deeprockgalactic_gamepedia_en/images/8/89/Unknown_lightgray.png/revision/latest/scale-to-width-down/250?cb=20210416205542"
-					},
-					{
-						"grade":1,
-						"img": "https://static.wikia.nocookie.net/deeprockgalactic_gamepedia_en/images/8/89/Unknown_lightgray.png/revision/latest/scale-to-width-down/250?cb=20210416205542"
-					},
-					{
-						"grade":0,
-						"img": "https://static.wikia.nocookie.net/deeprockgalactic_gamepedia_en/images/8/89/Unknown_lightgray.png/revision/latest/scale-to-width-down/250?cb=20210416205542"
-					},
-					{
-						"grade":0,
-						"img": "https://static.wikia.nocookie.net/deeprockgalactic_gamepedia_en/images/8/89/Unknown_lightgray.png/revision/latest/scale-to-width-down/250?cb=20210416205542"
-					},
-					{
-						"grade":2,
-						"img": "https://static.wikia.nocookie.net/deeprockgalactic_gamepedia_en/images/8/89/Unknown_lightgray.png/revision/latest/scale-to-width-down/250?cb=20210416205542"
-					},
-					// {
-					// 	"grade":0,
-					// 	"img": "https://static.wikia.nocookie.net/deeprockgalactic_gamepedia_en/images/8/89/Unknown_lightgray.png/revision/latest/scale-to-width-down/250?cb=20210416205542"
-					// },
-
-
-				]
 
 const lenthVertBar = 450
 
@@ -122,7 +78,8 @@ function addPlayerTournamentTree(content, mapPoint, listPlayer, nb_player_max)
 		//console.log("mod :" + mod);
 		//console.log("index :" + index);
 
-		let newPoint = document.createElementNS('http://www.w3.org/2000/svg', 'image');
+		let newPoint = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+		console.log("point", newPoint);
 		if (grade === 0)
 		{
 			newPoint.setAttribute('y', "" + ((grade) * lenthVertBar / (mapPoint.length + 1)));
@@ -138,7 +95,10 @@ function addPlayerTournamentTree(content, mapPoint, listPlayer, nb_player_max)
 		newPoint.setAttribute('x', "" + mapPoint[grade][ Math.floor(index / mod)] - 15);
 		newPoint.setAttribute('width', "30");
 		newPoint.setAttribute('height', "30");
-		newPoint.setAttributeNS('http://www.w3.org/1999/xlink','href', listPlayer[index]["img"]);
+		newPoint.setAttribute('fill', "white");
+		newPoint.textContent = listPlayer[index]["nickname"];
+		newPoint.style.color = "white";
+		newPoint.style.opacity = "1";
 		content.insertBefore(newPoint, null);
 	}
 }
@@ -179,5 +139,3 @@ function createTournamentTree(content, list)
 	drawTree(content, listFloor);
 	addPlayerTournamentTree(content, listFloor, list, nb_player_max);
 }
-
-createTournamentTree(graphe, playerList);

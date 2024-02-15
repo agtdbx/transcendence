@@ -148,11 +148,8 @@ function onRecieveData(event)
 	}
 	else if (type == 'tournamentTreeUpdate')
 	{
-		let winner = data['winner'];
-		let final = data['final'];
-		let half = data['half'];
-		let quarter = data['quarter'];
-		waitTournamentTree(winner, final, half, quarter)
+		let playersGrade = data['playersGrade'];
+		waitTournamentTree(playersGrade)
 	}
 	else if (type == 'nextMatch')
 	{
@@ -186,7 +183,26 @@ function onRecieveData(event)
 	}
 	else if (type == 'endTournament')
 	{
-		changePage('73');
+		if (current_page == 70 || current_page == 71 || current_page == 72)
+		{
+			changePage('73');
+			let winner = data['onePongMan'];
+			let second = data['second'];
+			let third = data['third'];
+			waitTournamentResult(winner, second, third);
+		}
+		else if (current_page == 3)
+		{
+			manageMainpageButton(3, 0, "false", [], "false");
+		}
+		else if (current_page == 8)
+		{
+			assignTournamentStatusOnCreatePage(3, 0, "false", []);
+		}
+
+	}
+	else if (type == 'winnersTournament')
+	{
 		let winner = data['onePongMan'];
 		let second = data['second'];
 		let third = data['third'];

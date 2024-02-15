@@ -37,7 +37,7 @@ test = User.objects.all().filter(username="Mission Control")
 # If MissionControl doesn't exist, create it
 if len(test) == 0:
     username = "mission control"
-    id = -2
+    id = 0
     idType = 2
     token = jwt.encode({"userId": id}, settings.SECRET_KEY, algorithm="HS256")
     user = User(idUser=id, type=idType, username=username,

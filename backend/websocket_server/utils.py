@@ -15,6 +15,8 @@ async def send_error(websocket, error_explaination):
 
 
 def get_user_by_id(user_id : int):
+    if user_id <= IA_ID:
+        user_id = IA_ID
     users = User.objects.all().filter(idUser=user_id)
     if len(users) != 1:
         return None
