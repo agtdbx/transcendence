@@ -130,7 +130,7 @@ async def handle_client(websocket : websockets.WebSocketServerProtocol, path):
                     game_type = gameType
                     for id in teamLeft:
                         # If it's an ia, it's ready
-                        if id == -1:
+                        if id <= -1:
                             team_left_ready.append(True)
                         else:
                             team_left_ready.append(False)
@@ -138,7 +138,7 @@ async def handle_client(websocket : websockets.WebSocketServerProtocol, path):
                     print("GWS : LTEAM :", team_left_ready, file=sys.stderr)
                     for id in teamRight:
                         # If it's an ia, it's ready
-                        if id == -1:
+                        if id <= -1:
                             team_right_ready.append(True)
                         else:
                             team_right_ready.append(False)
@@ -158,7 +158,10 @@ async def handle_client(websocket : websockets.WebSocketServerProtocol, path):
                 await send_error(websocket, "Request type unkown")
 
     except Exception as error:
-        print("\nGWS : CRITICAL ERROR :", error, file=sys.stderr)
+        if type(error) != websockets.exceptions.ConnectionClosedOK:
+            print("\nGWS : CRITICAL ERROR :", error, type(error), file=sys.stderr)
+        else:
+            print("\nGWS : DECONNECTION :", file=sys.stderr)
 
     finally:
         # Delete the connection when the client disconnect

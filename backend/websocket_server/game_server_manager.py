@@ -63,18 +63,22 @@ async def create_new_game(in_game_list : list,
         if game_servers[i][0] == False:
             game_servers[i][0] = True
 
+            print("\nWS : START GAME ON SERVER :", i, file=sys.stderr)
             await start_game_websocket(game_servers[i][1],
                                        map_id, power_up_enable,
                                        team_left, team_right, type)
 
+            print("\nWS : SERVER CREATED", file=sys.stderr)
             for id in team_left:
-                if id != -1:
+                if id >= 0:
                     in_game_list.append(id)
                     set_user_status(id, 2)
+            print("\nWS : SET MID STATUS OK", file=sys.stderr)
             for id in team_right:
-                if id != -1:
+                if id >= 0:
                     in_game_list.append(id)
                     set_user_status(id, 2)
+            print("\nWS : SET STATUS OK", file=sys.stderr)
 
             return i, game_servers[i][1]
 
@@ -90,6 +94,14 @@ async def end_game(data:dict,
     if port == None:
         print("\nWS : MISSING PORT :", data, file=sys.stderr)
         return None
+
+    try:
+        port = int(port)
+    except:
+        print("\nWS : PORT ISN'T AN INT:", data, file=sys.stderr)
+        return None
+
+    print("\nWS : PORT :", port, file=sys.stderr)
 
     for i in range(len(game_servers)):
         if game_servers[i][1] == port:
@@ -111,13 +123,13 @@ async def end_game(data:dict,
 
     # Set status of users and remove them from in game list
     for id in team_left:
-        if id != -1:
+        if id >= 0:
             set_user_status(id, 1)
             if id in in_game_list:
                 in_game_list.remove(id)
 
     for id in team_right:
-        if id != -1:
+        if id >= 0:
             set_user_status(id, 1)
             if id in in_game_list:
                 in_game_list.remove(id)

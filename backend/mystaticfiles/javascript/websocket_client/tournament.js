@@ -360,7 +360,7 @@ function waitTournamentResult(winner, second, third)
 	let inter = setInterval(function () {
 		if (pageInLoad == false)
 		{
-			setTournamentMyNextMatch(winner, second, third);
+			setTournamentResult(winner, second, third);
 			clearInterval(inter);
 		}
 		else
@@ -371,4 +371,25 @@ function waitTournamentResult(winner, second, third)
 function setTournamentResult(winner, second, third)
 {
 	console.log("TOURNAMENT WINNERS SET");
+
+	let winnerPP = document.getElementById("podiumPp1");
+	winnerPP.src = winner[1];
+	winnerPP.style.width = "100%";
+
+	let winnerNickname = document.getElementById("usernamePodium1");
+	winnerNickname.textContent = winner[2];
+
+	let secondPP = document.getElementById("podiumPp2");
+	secondPP.src = second[1];
+	secondPP.style.width = "100%";
+
+	let secondNickname = document.getElementById("usernamePodium2");
+	secondNickname.textContent = second[2];
+
+	let thirdPP = document.getElementById("podiumPp3");
+	thirdPP.src = third[1];
+	thirdPP.style.width = "100%";
+
+	let thirdNickname = document.getElementById("usernamePodium3");
+	thirdNickname.textContent = third[2];
 }

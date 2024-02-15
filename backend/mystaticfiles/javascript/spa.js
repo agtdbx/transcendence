@@ -128,6 +128,10 @@ function manageAPI(num)
 		getTournamentNextMatch();
 		getTournamentMyNextMatch();
 	}
+	else if (num == 73)
+	{
+		getTournamentResult();
+	}
 }
 
 
