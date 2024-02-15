@@ -9,7 +9,7 @@
 
 		<script>
 			const form = document.getElementById('tournamentChat');
-			messageInput = document.getElementById('tournament-chat');
+			let messageInput = document.getElementById('tournament-chat');
 			form.addEventListener('submit', async event => {
 				event.preventDefault();
 				sendMessage(messageInput);
@@ -33,7 +33,7 @@
 
 				</g>
 			</svg>
-			<script src="{% static 'javascript/tournament/tournament_tree.js' %}" ></script>\
+			<script src="{% static 'javascript/tournament/tournament_tree.js' %}" ></script>
 		</div>
 	</div>
 
@@ -45,7 +45,7 @@
 	</div>
 
 
-	<button type="button" class ="btn-drg" id="btnTournamentQuit" onclick="changePage('3')">quit</button>
+	<button type="button" class ="btn-drg" id="btnTournamentQuit">quit</button>
 
 	<div id="joinTournamentVSrect">
 		<div id="joinTournamentVSrect1">

@@ -36,7 +36,7 @@ def get_user_view(user_id:int) -> list[int, str, str]:
     else:
         nickname = tournament["nicknames"][user_id]
 
-    return [user_id, user.profilPicture.name, nickname]
+    return [user_id, "/static/" + user.profilPicture.name, nickname]
 
 
 def get_lst_users_view() -> list:
@@ -173,8 +173,9 @@ async def create_tournament(my_id:int,
     }
 
     print("WS : User", my_id, "Tournament create !",file=sys.stderr)
-    str_msg = create_tournament_state_msg()
-    await send_msg_to_id(my_id, connected_users, str_msg)
+    for user_id in connected_users.keys():
+        str_msg = create_tournament_state_msg(user_id)
+        await send_msg_to_id(user_id, connected_users, str_msg)
 
 
 async def switch_tournament_power_up(my_id:int,
@@ -197,9 +198,8 @@ async def switch_tournament_power_up(my_id:int,
 
     # Update message
     print("WS : User", my_id, "Tournament switch power up", file=sys.stderr)
-    str_msg = create_tournament_state_msg()
-    await send_msg_to_id(my_id, connected_users, str_msg)
-    for user_id in tournament["players"]:
+    for user_id in connected_users.keys():
+        str_msg = create_tournament_state_msg(user_id)
         await send_msg_to_id(user_id, connected_users, str_msg)
 
 
@@ -249,9 +249,8 @@ async def modify_tournament_map_id(my_id:int,
     # Update message
     print("WS : User", my_id, "Tournament change map id to", map_id,
           file=sys.stderr)
-    str_msg = create_tournament_state_msg()
-    await send_msg_to_id(my_id, connected_users, str_msg)
-    for user_id in tournament["players"]:
+    for user_id in connected_users.keys():
+        str_msg = create_tournament_state_msg(user_id)
         await send_msg_to_id(user_id, connected_users, str_msg)
 
 
@@ -427,6 +426,9 @@ async def tournament_end_match(winner:int,
     if tournament["state"] != STATE_START_TOURNAMENT:
         print("WS : Tournament must be in running to end a match",
               file=sys.stderr)
+        for user_id in connected_users.keys():
+            str_msg = create_tournament_state_msg(user_id)
+            await send_msg_to_id(user_id, connected_users, str_msg)
         return
 
     nickname = get_user_view(winner)[2]
@@ -438,6 +440,9 @@ async def tournament_end_match(winner:int,
         print("WS : Tournament end ! Winner is", winner, file=sys.stderr)
         await message_in_general("The winner of tournament is " + nickname,
                              MISSION_CONTROL, connected_users)
+        str_msg = create_tournament_tree_msg()
+        for user_id in connected_users.keys():
+            await send_msg_to_id(user_id, connected_users, str_msg)
         return
 
     if winner in tournament["half"]:
@@ -528,9 +533,9 @@ async def join_tournament(my_id:int,
     # Update player list for other user
     str_msg = str({"type" : "tournamentPlayersList",
                    "players" : get_lst_users_view()}).replace("'", '"')
-    for id in tournament["players"]:
-        if id != my_id:
-            await send_msg_to_id(id, connected_users, str_msg)
+    for user_id in connected_users.keys():
+        if user_id != my_id:
+            await send_msg_to_id(user_id, connected_users, str_msg)
 
 
 async def quit_tournament(my_id:int,
@@ -550,16 +555,19 @@ async def quit_tournament(my_id:int,
     print("WS : User", my_id, "quit tournament", file=sys.stderr)
 
     # Update player list for other user
+    str_msg = str({"type" : "quitReply"}).replace("'", '"')
+    await send_msg_to_id(my_id, connected_users, str_msg)
+
     str_msg = str({"type" : "tournamentPlayersList",
                    "players" : get_lst_users_view()}).replace("'", '"')
-    for id in tournament["players"]:
-        if id != my_id:
-            await send_msg_to_id(id, connected_users, str_msg)
+    for user_id in connected_users.keys():
+        if user_id != my_id:
+            await send_msg_to_id(user_id, connected_users, str_msg)
 
 
 async def get_tournament_info(my_id:int,
                                 connected_users:dict):
-    str_msg = create_tournament_state_msg()
+    str_msg = create_tournament_state_msg(my_id)
     await send_msg_to_id(my_id, connected_users, str_msg)
 
 

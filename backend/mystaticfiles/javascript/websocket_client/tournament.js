@@ -12,14 +12,12 @@ function getTournamentStatus()
 			clearInterval(inter);
 		}
 		else
-			console.log("wait");
+			console.log("wait connection");
 	}, 10);
-
-
 }
 
 
-function manageMainpageButton(status, listPlayers, youInTournament)
+function manageMainpageButton(status, mapId, powerUp, listPlayers, youInTournament)
 {
 	let inter = setInterval(function () {
 		if (pageInLoad == false)
@@ -38,6 +36,7 @@ function manageMainpageButton(status, listPlayers, youInTournament)
 					butJoinTournament.textContent = "View";
 					butJoinTournament.onclick = function () {
 						changePage("71");
+						waitTournamentState(status, mapId, powerUp, listPlayers, youInTournament);
 					}
 				}
 				else if (listPlayers.length == 8)
@@ -45,6 +44,7 @@ function manageMainpageButton(status, listPlayers, youInTournament)
 					butJoinTournament.textContent = "Spectate";
 					butJoinTournament.onclick = function () {
 						changePage("72");
+						waitTournamentState(status, mapId, powerUp, listPlayers, youInTournament);
 					}
 				}
 				else
@@ -61,6 +61,7 @@ function manageMainpageButton(status, listPlayers, youInTournament)
 					butJoinTournament.textContent = "View";
 					butJoinTournament.onclick = function () {
 						changePage("71");
+						waitTournamentState(status, mapId, powerUp, listPlayers, youInTournament);
 					}
 				}
 				else
@@ -68,6 +69,7 @@ function manageMainpageButton(status, listPlayers, youInTournament)
 					butJoinTournament.textContent = "Spectate";
 					butJoinTournament.onclick = function () {
 						changePage("72");
+						waitTournamentState(status, mapId, powerUp, listPlayers, youInTournament);
 					}
 				}
 			else
@@ -97,7 +99,113 @@ function manageMainpageButton(status, listPlayers, youInTournament)
 }
 
 
-function joinTournament(data)
+function joinTournament(nickname)
+{
+	console.log('Join tournament with nickname', nickname);
+	webSocket.send(JSON.stringify({
+		'type' : 'tournament',
+		'cmd' : 'join',
+		'nickname' : nickname
+	}));
+}
+
+
+function quitTournament()
+{
+	console.log('Quick tournament');
+	webSocket.send(JSON.stringify({
+		'type' : 'tournament',
+		'cmd' : 'quit'
+	}));
+}
+
+
+function getTournamentTree()
+{
+	console.log('Get tree tournament');
+	webSocket.send(JSON.stringify({
+		'type' : 'tournament',
+		'cmd' : 'getTournamentTree'
+	}));
+}
+
+
+function waitTournamentState(state, mapId, powerUp, listPlayers, youInTournament)
+{
+	getTournamentTree();
+	let inter = setInterval(function () {
+		if (pageInLoad == false)
+		{
+			applyTournamentState(state, mapId, powerUp, listPlayers, youInTournament);
+			clearInterval(inter);
+		}
+		else
+			console.log("wait");
+	}, 10);
+}
+
+
+function applyTournamentState(state, mapId, powerUp, listPlayers, youInTournament)
+{
+	let quitBut = document.getElementById("btnTournamentQuit");
+
+	if (state == 1 && youInTournament == 'true')
+	{
+		quitBut.textContent = "Quit";
+		quitBut.onclick = function () {
+			quitTournament();
+		};
+	}
+	else
+	{
+		quitBut.textContent = "Return";
+		quitBut.onclick = function () {
+			changePage('3');
+		};
+	}
+
+	let playersDiv = document.getElementById("UserList");
+
+	if (playersDiv != null)
+	{
+		for (let i = 0; i < listPlayers.length; i++)
+		{
+			addPlayerViewsTournament(listPlayers[i], playersDiv);
+		}
+	}
+
+	let powerUpP = document.getElementById("powerUpTournamentJoin");
+	if (powerUp == 'true')
+		powerUpP.textContent = "Power up : on";
+	else
+		powerUpP.textContent = "Power up : off";
+
+	let mapP = document.getElementById("powerUpTournamentMap");
+	mapP.textContent = "Map : map " + mapId;
+
+	if (state != 2)
+		return ;
+
+	// Get next match !
+}
+
+
+function waitTournamentTree()
+{
+	getTournamentTree();
+	let inter = setInterval(function () {
+		if (pageInLoad == false)
+		{
+			setTournamentTree();
+			clearInterval(inter);
+		}
+		else
+			console.log("wait");
+	}, 10);
+}
+
+
+function setTournamentTree()
 {
 
 }

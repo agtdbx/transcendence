@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tournament_tree.js                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lflandri <lflandri@student.42.fr>          +#+  +:+       +#+        */
+/*   By: auguste <auguste@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 14:56:17 by lflandri          #+#    #+#             */
-/*   Updated: 2024/02/01 16:24:00 by lflandri         ###   ########.fr       */
+/*   Updated: 2024/02/15 04:32:58 by auguste          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ function drawTree(content, mapPoint)
 {
 	for (let floor = 0; floor < mapPoint.length - 1; floor++)
 	{
-		console.log(mapPoint[floor]);
+		//console.log(mapPoint[floor]);
 		for (let index = 0; index < mapPoint[floor + 1].length; index+=2)
 		{
 			let newPath1 = document.createElementNS('http://www.w3.org/2000/svg', 'path');
@@ -69,10 +69,10 @@ function drawTree(content, mapPoint)
 			d1 +=  " H " + mapPoint[floor + 1][index];
 			newPath1.style.stroke = "white";
 			newPath1.style.strokeWidth = "2px";
-			console.log(mapPoint[floor][index / 2]);
+			//console.log(mapPoint[floor][index / 2]);
 			newPath1.setAttribute('d', d1);
 			content.insertBefore(newPath1, null);
-			
+
 			let newPath2 = document.createElementNS('http://www.w3.org/2000/svg', 'path');
 			let d2 = "M" + mapPoint[floor][index / 2] + " " + ((floor) * lenthVertBar / (mapPoint.length + 1));
 			d2 +=  " V " + ((floor + 1) * lenthVertBar / (mapPoint.length + 1));
@@ -83,7 +83,7 @@ function drawTree(content, mapPoint)
 			content.insertBefore(newPath2, null);
 
 		}
-		
+
 	}
 	for (let index = 0; index < mapPoint[mapPoint.length - 1].length; index+=2)
 	{
@@ -92,10 +92,10 @@ function drawTree(content, mapPoint)
 			d1 +=  " V " + ((mapPoint.length) * lenthVertBar / (mapPoint.length + 1));
 			newPath1.style.stroke = "white";
 			newPath1.style.strokeWidth = "2px";
-			console.log(mapPoint[mapPoint.length - 1][index]);
+			//console.log(mapPoint[mapPoint.length - 1][index]);
 			newPath1.setAttribute('d', d1);
 			content.insertBefore(newPath1, null);
-			
+
 			let newPath2 = document.createElementNS('http://www.w3.org/2000/svg', 'path');
 			let d2 = "M" + mapPoint[mapPoint.length - 1][index + 1] + " " + ((mapPoint.length - 1) * lenthVertBar / (mapPoint.length + 1));
 			d2 +=  " V " + ((mapPoint.length) * lenthVertBar / (mapPoint.length + 1));
@@ -113,14 +113,14 @@ function addPlayerTournamentTree(content, mapPoint, listPlayer, nb_player_max)
 		const element = listPlayer[index];
 		let grade = mapPoint.length - 1 - element["grade"];
 
-		console.log("grade : " + grade);
+		//console.log("grade : " + grade);
 		let mod = 2**(element["grade"]);
 		if (mod === 0)
 		{
 			mod++;
 		}
-		console.log("mod :" + mod);
-		console.log("index :" + index);
+		//console.log("mod :" + mod);
+		//console.log("index :" + index);
 
 		let newPoint = document.createElementNS('http://www.w3.org/2000/svg', 'image');
 		if (grade === 0)
@@ -154,8 +154,8 @@ function createTournamentTree(content, list)
 	{
 		nb_player_max+=nb_player_max;
 	}
-	
-	console.log(nb_player_max);
+
+	//console.log(nb_player_max);
 
 	for (let nb_player = 1; nb_player < nb_player_max + 1 ; nb_player+=nb_player)
 	{
@@ -174,7 +174,7 @@ function createTournamentTree(content, list)
 			listFloor[floorNb] = listPoint;
 		}
 		floorNb++;
-		
+
 	}
 	drawTree(content, listFloor);
 	addPlayerTournamentTree(content, listFloor, list, nb_player_max);

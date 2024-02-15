@@ -32,6 +32,7 @@ function changeBackground(num)
 		else
 			body.style.backgroundImage = 'url(/static/image/background/index.png)';
 	}
+	current_page = num;
 }
 
 function addHeader(){
@@ -119,6 +120,11 @@ function manageAPI(num)
 	{
 		createGameRoom();
 	}
+	else if (num == 71 || num == 72)
+	{
+		getTournamentStatus();
+		getTournamentTree();
+	}
 }
 
 
@@ -180,11 +186,10 @@ function changePage(num, byArrow=false)
 	.then (htmlText => {
 		// Update the content of the page
 		document.querySelector('#content').innerHTML = htmlText;
-
-		changeBackground(num);
 		manageHeader(num);
 		manageChat(num);
 		manageAPI(num);
+		changeBackground(num);
 
 		current_page = num;
 

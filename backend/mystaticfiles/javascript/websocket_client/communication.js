@@ -113,16 +113,35 @@ function onRecieveData(event)
 	}
 	else if (type == 'tournamentState')
 	{
+		console.log("tournament state", current_page);
 		let status = data["status"];
 		let mapId = data["mapId"];
 		let powerUp = data["powerUp"];
 		let listPlayers = data["players"];
 		let youInTournament = data["youAreInTournament"];
 		if (pageForTournamentStatus == "mainpage" || current_page == 3)
-			manageMainpageButton(status, listPlayers, youInTournament);
+			manageMainpageButton(status, mapId, powerUp, listPlayers, youInTournament);
 		else if (pageForTournamentStatus == "create" || current_page == 8)
 			assignTournamentStatusOnCreatePage(status, mapId, powerUp, listPlayers);
+		else if (current_page == 71 || current_page == 72)
+			applyTournamentState(status, mapId, powerUp, listPlayers, youInTournament);
 		pageForTournamentStatus = null;
+	}
+	else if (type == 'joinReply')
+	{
+		console.log("Tournament join succeed");
+
+		let powerUp = data["powerUp"];
+		let mapId = data["mapId"];
+		let players = data["players"];
+
+		changePage('71');
+		waitTournamentState(1, mapId, powerUp, players, 'true');
+	}
+	else if (type == 'quitReply')
+	{
+		console.log("Tournament quit succeed");
+		changePage('3');
 	}
 	else
 		console.error("Unkown data recieved :", data);
