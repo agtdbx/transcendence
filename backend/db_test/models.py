@@ -90,6 +90,7 @@ class MatchUser(models.Model):
     maxBallBounce   = models.IntegerField(default=0)
     nbCC            = models.IntegerField(default=0)
     nbPerfectShot   = models.IntegerField(default=0)
+    idTeam          = models.IntegerField(default=0)
 
 
 class Goal(models.Model):

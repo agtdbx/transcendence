@@ -120,16 +120,6 @@ function quitTournament()
 }
 
 
-function getTournamentTree()
-{
-	console.log('Get tree tournament');
-	webSocket.send(JSON.stringify({
-		'type' : 'tournament',
-		'cmd' : 'getTournamentTree'
-	}));
-}
-
-
 function waitTournamentState(state, mapId, powerUp, listPlayers, youInTournament)
 {
 	getTournamentTree();
@@ -151,26 +141,28 @@ function applyTournamentState(state, mapId, powerUp, listPlayers, youInTournamen
 
 	if (state == 1 && youInTournament == 'true')
 	{
-		quitBut.textContent = "Quit";
+		quitBut.hidden = false;
 		quitBut.onclick = function () {
 			quitTournament();
 		};
 	}
 	else
 	{
-		quitBut.textContent = "Return";
-		quitBut.onclick = function () {
-			changePage('3');
-		};
+		quitBut.hidden = true;
+		quitBut.onclick = null;
 	}
 
 	let playersDiv = document.getElementById("UserList");
 
 	if (playersDiv != null)
 	{
-		for (let i = 0; i < listPlayers.length; i++)
+		playersDiv.innerHTML = "";
+		if (playersDiv != null)
 		{
-			addPlayerViewsTournament(listPlayers[i], playersDiv);
+			for (let i = 0; i < listPlayers.length; i++)
+			{
+				addPlayerViewsTournament(listPlayers[i], playersDiv);
+			}
 		}
 	}
 
@@ -185,18 +177,35 @@ function applyTournamentState(state, mapId, powerUp, listPlayers, youInTournamen
 
 	if (state != 2)
 		return ;
-
-	// Get next match !
 }
 
 
-function waitTournamentTree()
+// TOURNAMENT TREE
+function getTournamentTree()
 {
-	getTournamentTree();
+	console.log('Get tree tournament');
+
+	let inter = setInterval(function () {
+		if (webSocket.readyState != WebSocket.CONNECTING)
+		{
+			webSocket.send(JSON.stringify({
+				'type' : 'tournament',
+				'cmd' : 'getTournamentTree'
+			}));
+			clearInterval(inter);
+		}
+		else
+			console.log("wait connection");
+	}, 10);
+}
+
+
+function waitTournamentTree(winner, final, half, quarter)
+{
 	let inter = setInterval(function () {
 		if (pageInLoad == false)
 		{
-			setTournamentTree();
+			setTournamentTree(winner, final, half, quarter);
 			clearInterval(inter);
 		}
 		else
@@ -205,7 +214,114 @@ function waitTournamentTree()
 }
 
 
-function setTournamentTree()
+function setTournamentTree(winner, final, half, quarter)
 {
+	console.log("TOURNAMENT TREE SET");
+}
 
+
+// NEXT MATCH
+function getTournamentNextMatch()
+{
+	console.log('Get next match tournament');
+
+	let inter = setInterval(function () {
+		if (webSocket.readyState != WebSocket.CONNECTING)
+		{
+			webSocket.send(JSON.stringify({
+				'type' : 'tournament',
+				'cmd' : 'nextMatch'
+			}));
+			clearInterval(inter);
+		}
+		else
+			console.log("wait connection");
+	}, 10);
+}
+
+
+function waitTournamentNextMatch(match)
+{
+	let inter = setInterval(function () {
+		if (pageInLoad == false)
+		{
+			setTournamentNextMatch(match);
+			clearInterval(inter);
+		}
+		else
+			console.log("wait");
+	}, 10);
+}
+
+function setTournamentNextMatch(match)
+{
+	console.log("NEXT MATCH SET");
+
+	if (match == null)
+	{
+		console.log("THERE IS NO NEXT MATCH");
+		return ;
+	}
+
+	let p1Div = document.getElementById("tournamentPlayer1");
+	let p2Div = document.getElementById("tournamentPlayer2");
+
+	p1Div.innerHTML = "<p>player1</p>";
+	p2Div.innerHTML = "<p>player2</p>";
+}
+
+
+// MY NEXT MATCH
+function getTournamentMyNextMatch()
+{
+	console.log('Get my next match tournament');
+
+	let inter = setInterval(function () {
+		if (webSocket.readyState != WebSocket.CONNECTING)
+		{
+			webSocket.send(JSON.stringify({
+				'type' : 'tournament',
+				'cmd' : 'myNextMatch'
+			}));
+			clearInterval(inter);
+		}
+		else
+			console.log("wait connection");
+	}, 10);
+}
+
+function waitTournamentMyNextMatch(match)
+{
+	let inter = setInterval(function () {
+		if (pageInLoad == false)
+		{
+			setTournamentMyNextMatch(match);
+			clearInterval(inter);
+		}
+		else
+			console.log("wait");
+	}, 10);
+}
+
+function setTournamentMyNextMatch(match)
+{
+	console.log("MY NEXT MATCH SET");
+
+	if (match == null)
+	{
+		console.log("THERE IS NO NEXT MATCH");
+		return ;
+	}
+
+	let p1Div = document.getElementById("tournamentPlayer3");
+	let p2Div = document.getElementById("tournamentPlayer4");
+
+	if (p1Div == null || p2Div == null)
+	{
+		console.log("NO MY NEXT MATCH HERE");
+		return ;
+	}
+
+	p1Div.innerHTML = "<p>player1</p>";
+	p2Div.innerHTML = "<p>player2</p>";
 }

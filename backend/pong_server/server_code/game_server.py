@@ -562,6 +562,7 @@ class GameServer:
             paddle_stats.append(p.maxBounceBallGoal) # Max bounce of goal ball
             paddle_stats.append(p.numberOfContreCamp) # Number of CC
             paddle_stats.append(p.numberOfPerfectShoot) # Number of perfect shoot
+            paddle_stats.append(p.team) # Team id
             left_team_stats.append(paddle_stats)
 
         # RIGHT TEAM STATS
@@ -574,6 +575,7 @@ class GameServer:
             paddle_stats.append(p.maxBounceBallGoal) # Max bounce of goal ball
             paddle_stats.append(p.numberOfContreCamp) # Number of CC
             paddle_stats.append(p.numberOfPerfectShoot) # Number of perfect shoot
+            paddle_stats.append(p.team) # Team id
             right_team_stats.append(paddle_stats)
 
         # BALLS STATS

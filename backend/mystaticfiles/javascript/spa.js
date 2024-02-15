@@ -86,7 +86,7 @@ function manageHeader(num)
 
 function manageChat(num)
 {
-	if (num == 3 || num == 4 || num == 5 || num == 51 || num == 71 || num == 72)
+	if (num == 3 || num == 4 || num == 5 || num == 51 || num == 71 || num == 72 || num == 8)
 	{
 		setChannelTarget("general");
 		displayFiends();
@@ -124,6 +124,8 @@ function manageAPI(num)
 	{
 		getTournamentStatus();
 		getTournamentTree();
+		getTournamentNextMatch();
+		getTournamentMyNextMatch();
 	}
 }
 

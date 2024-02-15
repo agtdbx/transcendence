@@ -267,6 +267,15 @@ TOURNAMENT
            'match' : [<user view> | null, <user view> | null] | null
            # null in user = user not know
            # all null = no future match (loser)
+           
+    /!\ Only work if the tournament is finish /!\
+	get winners
+        'type' : 'tournament'
+        'cmd' : 'winners'
+        -> 'type' : 'winnersTournament'
+           'onePongMan' : <user view>
+           'second' : <user view>
+           'third' : <user view>
 
     => {{tournament state}}
 
@@ -275,10 +284,6 @@ TOURNAMENT
         'gamePort' : <port> # port of the websocket for game
         'paddleId' : <paddle id>
         'teamId' : <team id>
-
-    => update list users
-        'type' : 'tournamentPlayersList'
-        'players' : [<user view>]
 
     => update tournament tree
         'type' : 'tournamentTreeUpdate'
@@ -294,7 +299,9 @@ TOURNAMENT
 
     => end tournament
         'type' : 'endTournament'
-        'onePongMan' : <user id>
+        'onePongMan' : <user view>
+        'second' : <user view>
+        'third' : <user view>
 
     {{tournament state}}
         'type' : 'tournamentState'

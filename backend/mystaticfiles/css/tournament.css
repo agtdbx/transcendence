@@ -99,6 +99,10 @@
 	height:98%;
 	text-align: center;
 	background: rgba(18,16,11, 0.8);
+	overflow-y: auto;
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
 }
 
 #tournament-chat{

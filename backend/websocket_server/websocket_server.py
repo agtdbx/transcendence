@@ -23,8 +23,9 @@ from websocket_server.tournament import create_tournament, \
                                         tournament_next_start_match, \
                                         tournament_end_match, \
                                         get_users_tournament, \
-                                        is_user_in_tournament, \
-                                        next_match_tournament, next_match_user
+                                        is_user_in_tournament, getTournamentTree,\
+                                        next_match_tournament, next_match_user, \
+                                        getTournamentWinners
 
 
 
@@ -194,10 +195,14 @@ async def handle_client(websocket : websockets.WebSocketServerProtocol, path):
                     await get_users_tournament(my_id, connected_users)
                 elif request_cmd == "IsUserInTournament":
                     await is_user_in_tournament(my_id, connected_users)
+                elif request_cmd == "getTournamentTree":
+                    await getTournamentTree(my_id, connected_users)
                 elif request_cmd == "nextMatch":
                     await next_match_tournament(my_id, connected_users)
                 elif request_cmd == "myNextMatch":
                     await next_match_user(my_id, connected_users)
+                elif request_cmd == "winners":
+                    await getTournamentWinners(my_id, connected_users)
                 else:
                     await send_error(websocket, "Request cmd unkown")
                 continue

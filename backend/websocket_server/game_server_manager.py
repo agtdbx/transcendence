@@ -222,7 +222,8 @@ async def end_game(data:dict,
                                               maxBallSpeed=paddle_stats[2],
                                               maxBallBounce=paddle_stats[3],
                                               nbCC=paddle_stats[4],
-                                              nbPerfectShot=paddle_stats[5])
+                                              nbPerfectShot=paddle_stats[5],
+                                              idTeam=paddle_stats[6])
         match_user.save()
 
     for paddle_stats in right_team_stats:
@@ -234,7 +235,8 @@ async def end_game(data:dict,
                                               maxBallSpeed=paddle_stats[2],
                                               maxBallBounce=paddle_stats[3],
                                               nbCC=paddle_stats[4],
-                                              nbPerfectShot=paddle_stats[5])
+                                              nbPerfectShot=paddle_stats[5],
+                                              idTeam=paddle_stats[6])
         match_user.save()
 
     # PUT GOAL STATS IN DB

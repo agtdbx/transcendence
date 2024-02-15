@@ -119,6 +119,7 @@ function onRecieveData(event)
 		let powerUp = data["powerUp"];
 		let listPlayers = data["players"];
 		let youInTournament = data["youAreInTournament"];
+		console.log("MSG RECIVIED ON PAGE", current_page);
 		if (pageForTournamentStatus == "mainpage" || current_page == 3)
 			manageMainpageButton(status, mapId, powerUp, listPlayers, youInTournament);
 		else if (pageForTournamentStatus == "create" || current_page == 8)
@@ -142,6 +143,24 @@ function onRecieveData(event)
 	{
 		console.log("Tournament quit succeed");
 		changePage('3');
+	}
+	else if (type == 'tournamentTreeUpdate')
+	{
+		let winner = data['winner'];
+		let final = data['final'];
+		let half = data['half'];
+		let quarter = data['quarter'];
+		waitTournamentTree(winner, final, half, quarter)
+	}
+	else if (type == 'nextMatch')
+	{
+		let match = data['match'];
+		waitTournamentNextMatch(match);
+	}
+	else if (type == 'myNextMatch')
+	{
+		let match = data['match'];
+		waitTournamentMyNextMatch(match);
 	}
 	else
 		console.error("Unkown data recieved :", data);
