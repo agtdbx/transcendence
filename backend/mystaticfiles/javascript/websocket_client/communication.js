@@ -198,6 +198,11 @@ function onRecieveData(event)
 		{
 			manageMainpageButton(3, 0, "false", [], "false");
 		}
+		else if (current_page == 8)
+		{
+			assignTournamentStatusOnCreatePage(3, 0, "false", []);
+		}
+
 	}
 	else if (type == 'winnersTournament')
 	{

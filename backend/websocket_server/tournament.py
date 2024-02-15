@@ -38,7 +38,7 @@ def get_user_view(user_id:int) -> list[int, str, str]:
         user = get_user_by_id(user_id)
 
     if user_id <= IA_ID:
-        nickname = "bosco"
+        nickname = "bosco " + str(-user_id)
     else:
         nickname = tournament["nicknames"][user_id]
 
@@ -198,13 +198,11 @@ def get_last_tournament_score(user_id:int) -> int:
     # For each user match, get it's match
     for i in range(len(tests) - 1, -1, -1):
         user_match = tests[i]
+
         # Get the match
-        matchs = Match.objects.all().filter(idMatch=user_match.idMatch)
-        if len(matchs) != 1:
-            continue
+        match = user_match.idMatch
 
         # Check if the match is a tournament one
-        match = matchs[0]
         if match.type != 2:
             continue
 
@@ -534,6 +532,50 @@ async def tournament_next_start_match(connected_users:dict,
     await message_in_general("New match beetwen " + p1 + " and " + p2,
                              MISSION_CONTROL, connected_users)
 
+    # Send next match to everyone
+    next_match_test = get_next_match_tournament()
+
+    if next_match_test == None:
+        match = "null"
+    else:
+        match = []
+        for i in range(2):
+            if next_match_test[i] == None:
+                match.append("null")
+            else:
+                match.append(get_user_view(next_match_test[i]))
+
+    str_msg = str({"type" : "nextMatch",
+                "match" : match
+                }).replace("'", '"')
+    for user_id in connected_users.keys():
+        await send_msg_to_id(user_id, connected_users, str_msg)
+
+    # Update your next match of players
+    for user_id in tournament["players"]:
+        if user_id <= IA_ID:
+            continue
+
+        print("\nWS : BEFORE NEXT USER MATCH", user_id, file=sys.stderr)
+        next_match_test = get_next_match_user(user_id)
+        print("\nWS : AFTER NEXT USER MATCH", user_id, file=sys.stderr)
+
+        if next_match_test == None:
+            match = "null"
+        else:
+            match = []
+            for i in range(2):
+                if next_match_test[i] == None:
+                    match.append("null")
+                else:
+                    match.append(get_user_view(next_match_test[i]))
+
+        str_msg = str({"type" : "myNextMatch",
+                    "match" : match
+                    }).replace("'", '"')
+        await send_msg_to_id(user_id, connected_users, str_msg)
+
+
     tournament["matchRunning"] = True
 
     await asyncio.sleep(5)
@@ -804,7 +846,9 @@ async def next_match_user(my_id:int,
 
     if next_match == None:
         match = "null"
+        print("WS : Test3 tyui :", next_match, file=sys.stderr)
     else:
+        print("WS : Test4 tyui :", next_match, file=sys.stderr)
         match = []
         for i in range(2):
             if next_match[i] == None:
@@ -815,7 +859,9 @@ async def next_match_user(my_id:int,
     str_msg = str({"type" : "myNextMatch",
                    "match" : match
                    }).replace("'", '"')
+    print("WS : Test5 :", str_msg, file=sys.stderr)
     await send_msg_to_id(my_id, connected_users, str_msg)
+    print("WS : Test6 :", str_msg, file=sys.stderr)
 
 
 async def getTournamentWinners(my_id:int,

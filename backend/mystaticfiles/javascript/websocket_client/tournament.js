@@ -309,9 +309,9 @@ function waitTournamentMyNextMatch(match)
 
 function setTournamentMyNextMatch(match)
 {
-	console.log("MY NEXT MATCH SET");
+	console.log("MY NEXT MATCH SET :", match, typeof(match));
 
-	if (match == null)
+	if (match == "null")
 	{
 		console.log("THERE IS NO NEXT MATCH");
 		return ;
@@ -320,7 +320,7 @@ function setTournamentMyNextMatch(match)
 	let p1Div = document.getElementById("tournamentPlayer3");
 	let p2Div = document.getElementById("tournamentPlayer4");
 
-	if (p1Div == null || p2Div == null)
+	if (p1Div == "null" || p2Div == "null")
 	{
 		console.log("NO MY NEXT MATCH HERE");
 		return ;
