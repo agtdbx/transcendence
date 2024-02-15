@@ -48,6 +48,16 @@ p {
 	font-family: "KhazadDum", sans-serif;
 }
 
+.btn-drg-dark {
+	color: black;
+	background: rgb(114, 73, 15);
+	background:linear-gradient(90deg,#865911 0% 2%,rgba(0,0,0,0) 0.1%,rgba(0,0,0,0) 2% 4%,#865911 0.1%,#865911 4% 96%,rgba(0,0,0,0) 0.1%,rgba(0,0,0,0) 96% 98%,#865911 0.1%, #865911 98% 100%);
+	border: none;
+	animation: animate 0.40s infinite;
+	font-family: "KhazadDum", sans-serif;
+}
+
+
 /* simple call to animation */
 
 .animation{

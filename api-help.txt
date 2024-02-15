@@ -145,7 +145,7 @@ GAME ROOM
         'cmd' : 'changeMap'
         'mapId' : <map id>
         -> 'type' : 'updateRoomInfo'
-    	   {{update room info}}
+           {{update room info}}
 
     /!\ Only the creator of the room can use it /!\
     start game
@@ -154,20 +154,20 @@ GAME ROOM
         -> 'type' : 'startGame'
            'success' : true | false
 
-	=> invite reply
-		'type' : 'ReplyGameRoom'
-		'targetId' : <user id> | 'ia'
-		'success' : true | false
+    => invite reply
+        'type' : 'ReplyGameRoom'
+        'targetId' : <user id> | 'ia'
+        'success' : true | false
 
-	=> someone quit game room
-		'type' : 'quitGameRoom'
-		{{update room info}}
+    => someone quit game room
+        'type' : 'quitGameRoom'
+        {{update room info}}
 
-	=> quick from game room # When the creator leave the game room
-		'type' : 'quickFromGameRoom'
+    => quick from game room # When the creator leave the game room
+        'type' : 'quickFromGameRoom'
 
     => update room info
-    	'type' : 'updateRoomInfo'
+        'type' : 'updateRoomInfo'
         {{update room info}}
 
     => Game start
@@ -204,56 +204,57 @@ TOURNAMENT
         'cmd' : 'modifyMapId'
         'mapId' : <map id>
         -> {{tournament state}}
-        
+
     /!\ Only the administrator can start tournament /!\
     start tournament
         'type' : 'tournament'
         'cmd' : 'start'
         -> 'type' : 'tournamentStart'
+           'powerUp' : true | false
+           'mapId' : <map id>
+           'players' : [<user view>]
+           'inTournament' : true | false
 
     join tournament
         'type' : 'tournament'
         'cmd' : 'join'
         'nickname' : <nickname>
         -> 'type' : 'joinReply'
-		   'powerUp' : true | false
-		   'mapId' : <map id>
-		   'players' : [<user view>]
-           
-	quit tournament # if the tournament has begun, it will not work
-        'cmd' : 'quit'
-        -> No more field
-        
-    get tournament info
-    	'type' : 'tournament'
-        'cmd' : 'getInfo'
-        -> 'type' : 'tournamentInfo'
-           'status' : 'nothing' | 'create' | 'start' | 'finish'
-           'mapId' : <map id>
            'powerUp' : true | false
-     
+           'mapId' : <map id>
+           'players' : [<user view>]
+
+    quit tournament # if the tournament has begun, it will not work
+        'cmd' : 'quit'
+        -> 'type' : 'quitReply'
+
+    get tournament info
+        'type' : 'tournament'
+        'cmd' : 'getInfo'
+        -> '{{tournament state}}
+
     get user of tournament
-    	'type' : 'tournament'
+        'type' : 'tournament'
         'cmd' : 'getUserTournament'
         -> 'type' : 'tournamentPlayersList'
-    	   'players' : [<user view>] 
-        
+           'players' : [<user view>]
+
     get if the user is in tournament
-    	'type' : 'tournament'
+        'type' : 'tournament'
         'cmd' : 'IsUserInTournament'
         -> 'type' : 'InTournament'
            'inTournament' : true | false
-        
+
     get tournament tree
-    	'type' : 'tournament'
+        'type' : 'tournament'
         'cmd' : 'getTournamentTree'
-		-> type' : 'tournamentTreeUpdate'
-    	   'winner' : <user view> | null			# null for empty
-		   'final' : (<user view> | null) * 2
-    	   'half' : (<user view> | null) * 4
-    	   'quarter' : (<user view> | null) * 8
-        
-	/!\ Only work if the tournament has begin /!\   
+        -> type' : 'tournamentTreeUpdate'
+           'winner' : <user view> | null            # null for empty
+           'final' : (<user view> | null) * 2
+           'half' : (<user view> | null) * 4
+           'quarter' : (<user view> | null) * 8
+
+    /!\ Only work if the tournament has begin /!\
     get next match of tournament
         'type' : 'tournament'
         'cmd' : 'nextMatch'
@@ -261,8 +262,8 @@ TOURNAMENT
            'match' : [<user view> | null, <user view> | null] | null
            # null in user = user not know
            # all null = no future match (end of tournament)
-        
-	/!\ Only work if the tournament has begin /!\   
+
+    /!\ Only work if the tournament has begin /!\
     get next match of user
         'type' : 'tournament'
         'cmd' : 'myNextMatch'
@@ -271,24 +272,29 @@ TOURNAMENT
            # null in user = user not know
            # all null = no future match (loser)
 
-	=> {{tournament state}}
+    /!\ Only work if the tournament is finish /!\
+	get winners
+        'type' : 'tournament'
+        'cmd' : 'winners'
+        -> 'type' : 'winnersTournament'
+           'onePongMan' : <user view>
+           'second' : <user view>
+           'third' : <user view>
+
+    => {{tournament state}}
 
     => Game start
         'type' : 'gameStart'
         'gamePort' : <port> # port of the websocket for game
         'paddleId' : <paddle id>
         'teamId' : <team id>
-        
-    => update list users
-    	'type' : 'tournamentPlayersList'
-    	'players' : [<user view>] 
-        
+
     => update tournament tree
         'type' : 'tournamentTreeUpdate'
-    	'winner' : <user view> | null			# null for empty
-    	'final' : (<user view> | null) * 2
-    	'half' : (<user view> | null) * 4
-    	'quarter' : (<user view> | null) * 8
+        'winner' : <user view> | null            # null for empty
+        'final' : (<user view> | null) * 2
+        'half' : (<user view> | null) * 4
+        'quarter' : (<user view> | null) * 8
 
     => nextMatch
         'type' : 'nextMatch'
@@ -297,25 +303,30 @@ TOURNAMENT
 
     => end tournament
         'type' : 'endTournament'
-        'onePongMan' : <user id>
+        'onePongMan' : <user view>
+        'second' : <user view>
+        'third' : <user view>
 
-	{{tournament state}}
-		'type' : 'tournamentState'
-		'powerUp' : true | false
+    {{tournament state}}
+        'type' : 'tournamentState'
+        'status' : 0 | 1 | 2 | 3
+        # 0 = nothing, 1 = create, 2 = start, 3 = finish
+        'powerUp' : true | false
         'mapId' : <map id>
         'players' : [<user view>]
+        'youAreInTournament' : true | false
 
     <user view>
-    	[<user id>, <user pp>, <tournament user nickmane>] # -1 id for bot
+        [<user id>, <user pp>, <tournament user nickmane>] # -1 id for bot
 
 
 /!\ All messages for and from game are in it's websocket /!\
 GAME
-	player identification
-		'type' : 'userIdentification'
-		'id_paddle' : <id paddle>
-		'id_team' : <id team>
-		-> No more field
+    player identification
+        'type' : 'userIdentification'
+        'id_paddle' : <id paddle>
+        'id_team' : <id team>
+        -> No more field
 
     player input
         'type' : 'userInput'
@@ -327,8 +338,8 @@ GAME
         'type' : 'startInfo'
         'obstacles' : [<obstacles>, ...]
         'powerUp' : true | false
-		'nbPlayerTeamLeft' : int
-		'nbPlayerTeamRight' : int
+        'nbPlayerTeamLeft' : int
+        'nbPlayerTeamRight' : int
 
     => start info
         'type' : 'startCount'
@@ -341,8 +352,8 @@ GAME
         'updatePaddles' : [<paddles>, ...]  | null
         'updateBalls' : [<ball>, ...] | null
         'deleteBall' : [<ball index>, ...]  | null
-        'changeUserPowerUp' :  <power up id> | null 					
-        'updatePowerUpInGame' : <powerUp> | null 
+        'changeUserPowerUp' :  <power up id> | null
+        'updatePowerUpInGame' : <powerUp> | null
         'updateScore' : [<score left, score right>]  | null
 
     => end game
@@ -350,17 +361,17 @@ GAME
         'leftTeamScore' : <left team score>
         'rightTeamScore' : <right team score>
 
-	<powerUp> :
-		[<point>, true | false] {=} ['coordonne', 'visible']
+    <powerUp> :
+        [<point>, true | false] {=} ['coordonne', 'visible']
 
     <paddles> :
-		[<point>, float, <team id>, <paddle id> , int] {=} ['position', 'modifiersize', 'teamId','paddleId', 'powerUpInCharge']
+        [<point>, float, <team id>, <paddle id> , int] {=} ['position', 'modifiersize', 'teamId','paddleId', 'powerUpInCharge']
 
-	<team id> :
-		0 | 1 {=} left | right
+    <team id> :
+        0 | 1 {=} left | right
 
     <ball> :
-		[<point>, <point>, int, int, int, int, <paddle id>] {=} ['position', 'direction', 'radius', 'speed', 'status', 'modifier_state']
+        [<point>, <point>, int, int, int, int, <paddle id>] {=} ['position', 'direction', 'radius', 'speed', 'status', 'modifier_state']
 
     <point> :
-		[float, float] {=} ['x', 'y']
+        [float, float] {=} ['x', 'y']

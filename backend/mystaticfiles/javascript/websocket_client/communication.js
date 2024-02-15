@@ -56,13 +56,19 @@ function onRecieveData(event)
 		if (current_page != 51)
 			changePage('51');
 
-		setTimeout(function(){
-			const map_id = data["mapId"];
-			const power_up = data["powerUpActivate"];
-			const team_left = data["teamLeft"];
-			const team_right = data["teamRight"];
-			updateGameRoomInfo(map_id, power_up, team_left, team_right);
-		}, 100);
+		let inter = setInterval(function () {
+			if (pageInLoad == false)
+			{
+				const map_id = data["mapId"];
+				const power_up = data["powerUpActivate"];
+				const team_left = data["teamLeft"];
+				const team_right = data["teamRight"];
+				updateGameRoomInfo(map_id, power_up, team_left, team_right);
+				clearInterval(inter);
+			}
+			else
+				console.log("wait");
+		}, 10);
 	}
 	else if (type == 'updateRoomInfo')
 	{
@@ -106,6 +112,85 @@ function onRecieveData(event)
 		let id_team = data["teamId"];
 		let get_game_type = data["gameType"];
 		startGameClient(port, id_paddle, id_team, get_game_type);
+	}
+	else if (type == 'tournamentState')
+	{
+		console.log("tournament state", current_page);
+		let status = data["status"];
+		let mapId = data["mapId"];
+		let powerUp = data["powerUp"];
+		let listPlayers = data["players"];
+		let youInTournament = data["youAreInTournament"];
+		console.log("MSG RECIVIED ON PAGE", current_page);
+		if (pageForTournamentStatus == "mainpage" || current_page == 3)
+			manageMainpageButton(status, mapId, powerUp, listPlayers, youInTournament);
+		else if (pageForTournamentStatus == "create" || current_page == 8)
+			assignTournamentStatusOnCreatePage(status, mapId, powerUp, listPlayers);
+		else if (current_page == 71 || current_page == 72)
+			applyTournamentState(status, mapId, powerUp, listPlayers, youInTournament);
+		pageForTournamentStatus = null;
+	}
+	else if (type == 'joinReply')
+	{
+		console.log("Tournament join succeed");
+
+		let powerUp = data["powerUp"];
+		let mapId = data["mapId"];
+		let players = data["players"];
+
+		changePage('71');
+		waitTournamentState(1, mapId, powerUp, players, 'true');
+	}
+	else if (type == 'quitReply')
+	{
+		console.log("Tournament quit succeed");
+		changePage('3');
+	}
+	else if (type == 'tournamentTreeUpdate')
+	{
+		let winner = data['winner'];
+		let final = data['final'];
+		let half = data['half'];
+		let quarter = data['quarter'];
+		waitTournamentTree(winner, final, half, quarter)
+	}
+	else if (type == 'nextMatch')
+	{
+		let match = data['match'];
+		waitTournamentNextMatch(match);
+	}
+	else if (type == 'myNextMatch')
+	{
+		let match = data['match'];
+		waitTournamentMyNextMatch(match);
+	}
+	else if (type == 'tournamentStart')
+	{
+		let powerUp = data["powerUp"];
+		let mapId = data["mapId"];
+		let listPlayers = data["players"];
+		let youInTournament = data["inTournament"];
+		if (current_page == 3)
+			manageMainpageButton(2, mapId, powerUp, listPlayers, youInTournament);
+		else if (current_page == 8)
+			assignTournamentStatusOnCreatePage(2, mapId, powerUp, listPlayers);
+		else if (current_page == 71 || current_page == 72)
+			applyTournamentState(2, mapId, powerUp, listPlayers, youInTournament);
+	}
+	else if (type == 'winners')
+	{
+		let winner = data['onePongMan'];
+		let second = data['second'];
+		let third = data['third'];
+		waitTournamentResult(winner, second, third);
+	}
+	else if (type == 'endTournament')
+	{
+		changePage('73');
+		let winner = data['onePongMan'];
+		let second = data['second'];
+		let third = data['third'];
+		waitTournamentResult(winner, second, third);
 	}
 	else
 		console.error("Unkown data recieved :", data);

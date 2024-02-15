@@ -1,4 +1,3 @@
-import asyncio
 import sys
 import datetime
 from websocket_server.utils import send_error, get_user_by_id, get_user_by_username
@@ -110,7 +109,7 @@ async def recieved_message(data : dict,
     if user == None:
         await send_error(websocket, "Error when get user")
         return
-    
+
     if message[0:8] == "/invite ":
         print("\nWS : /invite detected", file=sys.stderr)
         username = message[8:]

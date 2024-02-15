@@ -1,4 +1,5 @@
 let current_page = null;
+let pageInLoad = false;
 
 function changeBackground(num)
 {
@@ -13,7 +14,7 @@ function changeBackground(num)
 		body.style.backgroundImage = 'url(/static/image/background/waitpage.png)';
 	else if (num == "6")
 		body.style.backgroundImage = 'url(/static/image/background/game.png)';
-	else if (num == "7")
+	else if (num == "7" || num == "71" || num == "72" || num == "73")
 		body.style.backgroundImage = 'url(/static/image/background/tournament.jpg)';
 	else if (num == "8")
 		body.style.backgroundImage = 'url(/static/image/background/create_tournament.png)';
@@ -32,6 +33,7 @@ function changeBackground(num)
 		else
 			body.style.backgroundImage = 'url(/static/image/background/index.png)';
 	}
+	current_page = num;
 }
 
 function addHeader(){
@@ -85,7 +87,7 @@ function manageHeader(num)
 
 function manageChat(num)
 {
-	if (num == 3 || num == 4 || num == 5 || num == 51 || num == 7)
+	if (num == 3 || num == 4 || num == 5 || num == 51 || num == 71 || num == 72 || num == 8)
 	{
 		setChannelTarget("general");
 		displayFiends();
@@ -106,13 +108,25 @@ function manageAPI(num)
 		quitGameRoom();
 	}
 
-	if (num == 4)
+	if (num == 3)
+	{
+		pageForTournamentStatus = "mainpage";
+		getTournamentStatus();
+	}
+	else if (num == 4)
 	{
 		join_request_quick_game();
 	}
 	else if (num == 5)
 	{
 		createGameRoom();
+	}
+	else if (num == 71 || num == 72)
+	{
+		getTournamentStatus();
+		getTournamentTree();
+		getTournamentNextMatch();
+		getTournamentMyNextMatch();
 	}
 }
 
@@ -149,22 +163,23 @@ function changePage(num, byArrow=false)
 {
 	if (num == current_page)
 		return ;
-	try
-	{
-		remove_pop();
-		let id = 0;
-		while (document.getElementById("grapheMatch" + id))
+		try
 		{
-			document.getElementById("grapheMatch" + id).remove();
-			id++;
+			remove_pop();
+			let id = 0;
+			while (document.getElementById("grapheMatch" + id))
+			{
+				document.getElementById("grapheMatch" + id).remove();
+				id++;
+			}
+
+		}
+		catch (error)
+		{
+			console.error(error)
 		}
 
-	}
-	catch (error)
-	{
-		console.error(error)
-	}
-
+	pageInLoad = true;
 	fetch("/" + `${num}`,
 	{
 		method: 'POST',
@@ -187,6 +202,7 @@ function changePage(num, byArrow=false)
 		// Set the new page in the browser history if the page isn't load by arrow, or not the wait and game page.
 		if (!byArrow && num != 4 && num != 5 && num != 51 && num != 6)
 			history.pushState({section: num}, "", "/" + num);
+		pageInLoad = false;
 	})
 	.catch(error => console.log("CHANGE PAGE ERROR FETCH :", error, '\n'))
 }
