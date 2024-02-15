@@ -1,5 +1,6 @@
 import sys
 import random
+import asyncio
 from db_test.models import Match, MatchUser
 from websocket_server.utils import get_user_by_id, send_error_to_id, \
                                    send_msg_to_id, check_user_admin, \
@@ -346,6 +347,17 @@ async def start_tournament(my_id:int,
     # shuffle this step
     random.shuffle(tournament["quarter"])
 
+    # Send to everyone that tournament begin
+    str_msg = str({"type" : "tournamentStart",
+                   "powerUp" : str(tournament["powerUp"]).lower(),
+                   "mapId" : tournament["mapId"],
+                   "players" : get_lst_users_view(),
+                   "inTournament" : str(my_id in tournament["players"]).lower()
+                   }).replace("'", '"')
+    for user_id in connected_users.keys():
+        await send_msg_to_id(user_id, connected_users, str_msg)
+
+    print("WS : User", my_id, "Tournament start !!", file=sys.stderr)
     # Server message to inform users that the tournament begin
     await message_in_general("The Tournament start !", MISSION_CONTROL,
                              connected_users)
@@ -458,6 +470,8 @@ async def tournament_next_start_match(connected_users:dict,
                              MISSION_CONTROL, connected_users)
 
     tournament["matchRunning"] = True
+
+    asyncio.sleep(5)
 
     # Send start game message to first player in waitlist
     first_player_msg = create_game_start_message(ret[1], 0, 0, GAME_TYPE_TOURNAMENT)

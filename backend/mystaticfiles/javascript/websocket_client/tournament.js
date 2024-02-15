@@ -325,3 +325,41 @@ function setTournamentMyNextMatch(match)
 	p1Div.innerHTML = "<p>player1</p>";
 	p2Div.innerHTML = "<p>player2</p>";
 }
+
+
+// TOURNAMENT RESULT
+function getTournamentResult()
+{
+	console.log('Get result of tournament');
+
+	let inter = setInterval(function () {
+		if (webSocket.readyState != WebSocket.CONNECTING)
+		{
+			webSocket.send(JSON.stringify({
+				'type' : 'tournament',
+				'cmd' : 'winners'
+			}));
+			clearInterval(inter);
+		}
+		else
+			console.log("wait connection");
+	}, 10);
+}
+
+function waitTournamentResult(winner, second, third)
+{
+	let inter = setInterval(function () {
+		if (pageInLoad == false)
+		{
+			setTournamentMyNextMatch(winner, second, third);
+			clearInterval(inter);
+		}
+		else
+			console.log("wait");
+	}, 10);
+}
+
+function setTournamentResult(winner, second, third)
+{
+	console.log("TOURNAMENT WINNERS SET");
+}

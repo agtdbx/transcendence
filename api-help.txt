@@ -210,6 +210,10 @@ TOURNAMENT
         'type' : 'tournament'
         'cmd' : 'start'
         -> 'type' : 'tournamentStart'
+           'powerUp' : true | false
+           'mapId' : <map id>
+           'players' : [<user view>]
+           'inTournament' : true | false
 
     join tournament
         'type' : 'tournament'

@@ -184,7 +184,7 @@ async def handle_client(websocket : websockets.WebSocketServerProtocol, path):
                 elif request_cmd == "modifyMapId":
                     await modify_tournament_map_id(my_id, connected_users, data)
                 elif request_cmd == "start":
-                    await start_tournament(my_id, connected_users)
+                    await start_tournament(my_id, connected_users, in_game_list)
                 elif request_cmd == "join":
                     await join_tournament(my_id, connected_users, data)
                 elif request_cmd == "quit":

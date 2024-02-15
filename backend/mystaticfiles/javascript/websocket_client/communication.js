@@ -162,6 +162,34 @@ function onRecieveData(event)
 		let match = data['match'];
 		waitTournamentMyNextMatch(match);
 	}
+	else if (type == 'tournamentStart')
+	{
+		let powerUp = data["powerUp"];
+		let mapId = data["mapId"];
+		let listPlayers = data["players"];
+		let youInTournament = data["inTournament"];
+		if (current_page == 3)
+			manageMainpageButton(2, mapId, powerUp, listPlayers, youInTournament);
+		else if (current_page == 8)
+			assignTournamentStatusOnCreatePage(2, mapId, powerUp, listPlayers);
+		else if (current_page == 71 || current_page == 72)
+			applyTournamentState(2, mapId, powerUp, listPlayers, youInTournament);
+	}
+	else if (type == 'winners')
+	{
+		let winner = data['onePongMan'];
+		let second = data['second'];
+		let third = data['third'];
+		waitTournamentResult(winner, second, third);
+	}
+	else if (type == 'endTournament')
+	{
+		changePage('73');
+		let winner = data['onePongMan'];
+		let second = data['second'];
+		let third = data['third'];
+		waitTournamentResult(winner, second, third);
+	}
 	else
 		console.error("Unkown data recieved :", data);
 }

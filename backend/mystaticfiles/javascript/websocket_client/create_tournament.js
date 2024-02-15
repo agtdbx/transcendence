@@ -54,6 +54,9 @@ function assignTournamentStatusOnCreatePage(status, mapId, powerUp, listPlayers)
 	{
 		mainButton.textContent = "Start Tournament";
 		mainButton.hidden = false;
+		mainButton.onclick = function () {
+			startTournament();
+		}
 		allModiferDiv.hidden = false;
 	}
 	else
@@ -121,3 +124,12 @@ function createTournament()
 	}));
 }
 
+
+function startTournament()
+{
+	console.log("start tournament !!!");
+	webSocket.send(JSON.stringify({
+		'type' : 'tournament',
+		'cmd' : 'start'
+	}));
+}

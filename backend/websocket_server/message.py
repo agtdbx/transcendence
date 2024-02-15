@@ -1,4 +1,3 @@
-import asyncio
 import sys
 import datetime
 from websocket_server.utils import send_error, get_user_by_id
@@ -93,7 +92,7 @@ async def recieved_message(data : dict,
         return
 
     if channel == "general":
-        asyncio.create_task(message_in_general(message, user, connected_users))
+        await message_in_general(message, user, connected_users)
         # await message_in_general(message, user, connected_users)
         return
 
