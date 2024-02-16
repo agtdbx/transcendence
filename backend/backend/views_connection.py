@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    views_connection.py                                :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: hde-min <hde-min@student.42.fr>            +#+  +:+       +#+         #
+#    By: aderouba <aderouba@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/23 19:48:51 by aderouba          #+#    #+#              #
-#    Updated: 2024/02/16 18:15:45 by hde-min          ###   ########.fr        #
+#    Updated: 2024/02/16 18:55:41 by aderouba         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -51,7 +51,7 @@ def checkToken(request):
     userId = data.get("userId", None)
     creationStr = data.get("creation", None)
     timeoutStr = data.get("timeout", None)
-    
+
     if userId == None or creationStr == None or timeoutStr == None:
         return {"success" : False, "error" : "Token invalid"}
 
@@ -307,6 +307,7 @@ def checkApi42Request(request, islogin, user:User):
         return render(request, "profil_content_full.html",
                       {'user': user, 'pos': i,
                        '42urllink' : os.getenv('WEBSITE_URL')})
+
     #not already log
     if len(test) == 0:
         id = User.objects.all().count() - 1
@@ -332,12 +333,13 @@ def checkApi42Request(request, islogin, user:User):
         except:
             return render(request, "login_full.html",
                           {'42urllink' : os.getenv('WEBSITE_URL')})
-        return render(request, "mainpage_full_tocken42.html", {'user': user})
-    #not already log
+        return render(request, "mainpage_full_tocken42.html", {'idType': user.type, 'token' : generateToken(user.idUser)})
+
+    #already log
     else:
         try:
             user = User.objects.all().filter(connection42=test[0])[0]
         except:
             return render(request, "login_full.html",
                           {'42urllink' : os.getenv('WEBSITE_URL')})
-        return render(request, "mainpage_full_tocken42.html", {'user': user})
+        return render(request, "mainpage_full_tocken42.html", {'idType': user.type, 'token' : generateToken(user.idUser)})

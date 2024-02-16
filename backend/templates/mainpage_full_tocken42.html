@@ -1,10 +1,6 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en-US">
-	{% block content %}
-	<input type="hidden" name="achievement" value="{{ user.tokenJWT }}" id="input-token42">
-	{% endblock content %}
-
 
 {% include "head.html" %}
 
@@ -19,8 +15,9 @@
 
 </body>
 
+{% block content %}
 <script>
-	document.cookie = "token=" + document.getElementById('input-token42').value;
+	document.cookie = "token={{ token }}";
 	changeBackground("3");
 	manageHeader("3");
 	enableChatConnection();
@@ -28,5 +25,6 @@
 	manageAPI("3");
 	history.pushState({section: 3}, "", "/3");
 </script>
+{% endblock content %}
 
 </html>
