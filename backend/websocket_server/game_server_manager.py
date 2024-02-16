@@ -4,7 +4,8 @@ import asyncio
 import datetime
 import websockets
 from websocket_server.utils import set_user_status, get_user_by_id
-from db_test.models import Match, MatchUser, Goal, Map
+from db_test.models import Match, MatchUser, Goal, Map, Achivement, User
+from backend.views_achievement import createAchievementIfNot, getListeMatchDataForAchievement
 # from pong_server.ws_game_server import start_game_thread
 
 # List of game server
@@ -83,6 +84,25 @@ async def create_new_game(in_game_list : list,
             return i, game_servers[i][1]
 
     return None
+
+def modifyAchievement(user):
+    listData = getListeMatchDataForAchievement(user)
+    if (createAchievementIfNot(user)):
+        try :
+            achievement = Achivement.objects.all().filter(idUser=user.idUser)[0]
+            achievement.winner = 0 if (listData[0] == 0) else (1 if (listData[0] < 21) else ((2 if (listData[0] < 42) else 3)))
+            achievement.perfectShoot = 0 if (listData[1] == 0) else (1 if (listData[1] == 1) else ((2 if (listData[1] < 10) else 3)))
+            achievement.digGrave =  0 if (listData[2] == 0) else 4
+            achievement.unpredictable = 0 if (listData[3] < 10) else (1 if (listData[3] < 21) else ((2 if (listData[3] < 42) else 3)))
+            achievement.faster = 0 if (listData[4] < 1000) else (1 if (listData[4] < 1920) else ((2 if (listData[4] < 4242) else 3)))
+            achievement.waveComming = 0 if (listData[5] == 1) else (2 if (listData[5] == 2) else ((4 if (listData[5] < 8) else 8)))
+            achievement.notPassed = 0 if (listData[6] == 0) else (1 if (listData[6] < 21) else ((2 if (listData[6] < 42) else 3)))
+            achievement.party = 0 if (listData[7] == 0) else (1 if (listData[7] < 21) else ((2 if (listData[7] < 42) else 3)))
+            achievement.molyBattle  = 0 if (listData[8] == 0) else (1 if (listData[8] < 21) else ((2 if (listData[8] < 42) else 3)))
+            achievement.save()
+        except :
+            print("\nWS : Erreur while modifing achievement of  : ", user.username, file=sys.stderr)
+
 
 
 async def end_game(data:dict,
@@ -238,6 +258,7 @@ async def end_game(data:dict,
                                               nbPerfectShot=paddle_stats[5],
                                               idTeam=paddle_stats[6])
         match_user.save()
+        modifyAchievement(user)
 
     for paddle_stats in right_team_stats:
         user_match_id = MatchUser.objects.all().count()
@@ -251,6 +272,8 @@ async def end_game(data:dict,
                                               nbPerfectShot=paddle_stats[5],
                                               idTeam=paddle_stats[6])
         match_user.save()
+        modifyAchievement(user)
+        
 
     # PUT GOAL STATS IN DB
     for goal_stats in balls_stats:
