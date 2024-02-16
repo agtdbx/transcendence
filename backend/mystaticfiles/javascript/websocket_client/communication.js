@@ -62,11 +62,12 @@ function onRecieveData(event)
 		let inter = setInterval(function () {
 			if (pageInLoad == false)
 			{
+				const mapId = data["mapId"];
 				const mapName = data["mapName"];
 				const power_up = data["powerUpActivate"];
 				const team_left = data["teamLeft"];
 				const team_right = data["teamRight"];
-				updateGameRoomInfo(mapName, power_up, team_left, team_right);
+				updateGameRoomInfo(mapId, mapName, power_up, team_left, team_right);
 				clearInterval(inter);
 			}
 			else

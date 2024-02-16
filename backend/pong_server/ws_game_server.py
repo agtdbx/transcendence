@@ -350,7 +350,7 @@ async def game_server_manager():
     for wall in game.walls :
         lstObstacle.append(wall.hitbox.getPoints())
 
-    await asyncio.sleep(0.1)
+    await asyncio.sleep(0.3)
     start_game_msg = {"type" : "startInfo",
                     "obstacles": lstObstacle ,
                     'powerUp' : str(power_up).lower(),

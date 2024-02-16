@@ -212,6 +212,9 @@ function updateGameRoomInfo(map_id, map_name, power_up, team_left, team_right)
 	{
 		let mapBtn = document.getElementById("btnMap" + i);
 
+		if (mapBtn == null)
+			continue ;
+
 		if (i == map_id)
 			mapBtn.classList = "btn-drg btn-map";
 		else
