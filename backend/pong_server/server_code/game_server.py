@@ -729,7 +729,6 @@ class GameServer:
 
 
     def createMap(self):
-        # Basic map
         self.walls = [
             # Wall up
             createWallObstacle(
@@ -749,10 +748,7 @@ class GameServer:
             )
         ]
 
-        #TODO removed at the end
-        # idMap = 2
-
-        if self.idMap == 1:
+        if self.idMap == 1: # Sun quest
             self.walls.append(createPolygonObstacle(
                                 AREA_SIZE[0] / 2,
                                 0,
@@ -773,7 +769,312 @@ class GameServer:
                                 (200, 0, 200)
                             ))
 
-        elif self.idMap == 2:
+        elif self.idMap == 2: # Flipper, arrete de flipper
+            #colone middle pair
+            self.walls.append(createCircleObstacle(
+                                AREA_SIZE[0] / 2,
+                                225,
+                                30,
+                                32,
+                                (200, 0, 200)
+                            ))
+            self.walls.append(createCircleObstacle(
+                                AREA_SIZE[0] / 2,
+                                375,
+                                30,
+                                32,
+                                (200, 0, 200)
+                            ))
+            self.walls.append(createCircleObstacle(
+                                AREA_SIZE[0] / 2,
+                                525,
+                                30,
+                                32,
+                                (200, 0, 200)
+                            ))
+            self.walls.append(createCircleObstacle(
+                                AREA_SIZE[0] / 2,
+                                675,
+                                30,
+                                32,
+                                (200, 0, 200)
+                            ))
+            #colone left pair
+            self.walls.append(createCircleObstacle(
+                                600,
+                                375,
+                                30,
+                                32,
+                                (200, 0, 200)
+                            ))
+            self.walls.append(createCircleObstacle(
+                                600,
+                                525,
+                                30,
+                                32,
+                                (200, 0, 200)
+                            ))
+            self.walls.append(createCircleObstacle(
+                                600,
+                                675,
+                                30,
+                                32,
+                                (200, 0, 200)
+                            ))
+            self.walls.append(createCircleObstacle(
+                                600,
+                                225,
+                                30,
+                                32,
+                                (200, 0, 200)
+                            ))
+            #colone right pair
+            self.walls.append(createCircleObstacle(
+                                1200,
+                                375,
+                                30,
+                                32,
+                                (200, 0, 200)
+                            ))
+            self.walls.append(createCircleObstacle(
+                                1200,
+                                525,
+                                30,
+                                32,
+                                (200, 0, 200)
+                            ))
+            self.walls.append(createCircleObstacle(
+                                1200,
+                                675,
+                                30,
+                                32,
+                                (200, 0, 200)
+                            ))
+            self.walls.append(createCircleObstacle(
+                                1200,
+                                225,
+                                30,
+                                32,
+                                (200, 0, 200)
+                            ))
+
+            #colone left center pair
+            self.walls.append(createCircleObstacle(
+                                750,
+                                450,
+                                30,
+                                32,
+                                (200, 0, 200)
+                            ))
+            self.walls.append(createCircleObstacle(
+                                750,
+                                300,
+                                30,
+                                32,
+                                (200, 0, 200)
+                            ))
+            self.walls.append(createCircleObstacle(
+                                750,
+                                600,
+                                30,
+                                32,
+                                (200, 0, 200)
+                            ))
+            self.walls.append(createCircleObstacle(
+                                750,
+                                150,
+                                30,
+                                32,
+                                (200, 0, 200)
+                            ))
+            self.walls.append(createCircleObstacle(
+                                750,
+                                750,
+                                30,
+                                32,
+                                (200, 0, 200)
+                            ))
+
+            #colone left left pair
+            self.walls.append(createCircleObstacle(
+                                450,
+                                450,
+                                30,
+                                32,
+                                (200, 0, 200)
+                            ))
+            self.walls.append(createCircleObstacle(
+                                450,
+                                300,
+                                30,
+                                32,
+                                (200, 0, 200)
+                            ))
+            self.walls.append(createCircleObstacle(
+                                450,
+                                600,
+                                30,
+                                32,
+                                (200, 0, 200)
+                            ))
+            self.walls.append(createCircleObstacle(
+                                450,
+                                150,
+                                30,
+                                32,
+                                (200, 0, 200)
+                            ))
+            self.walls.append(createCircleObstacle(
+                                450,
+                                750,
+                                30,
+                                32,
+                                (200, 0, 200)
+                            ))
+
+
+
+            #colone right center pair
+            self.walls.append(createCircleObstacle(
+                                1050,
+                                450,
+                                30,
+                                32,
+                                (200, 0, 200)
+                            ))
+            self.walls.append(createCircleObstacle(
+                                1050,
+                                300,
+                                30,
+                                32,
+                                (200, 0, 200)
+                            ))
+            self.walls.append(createCircleObstacle(
+                                1050,
+                                600,
+                                30,
+                                32,
+                                (200, 0, 200)
+                            ))
+            self.walls.append(createCircleObstacle(
+                                1050,
+                                150,
+                                30,
+                                32,
+                                (200, 0, 200)
+                            ))
+            self.walls.append(createCircleObstacle(
+                                1050,
+                                750,
+                                30,
+                                32,
+                                (200, 0, 200)
+                            ))
+
+
+            self.walls.append(createCircleObstacle(
+                                1350,
+                                450,
+                                30,
+                                32,
+                                (200, 0, 200)
+                            ))
+            self.walls.append(createCircleObstacle(
+                                1350,
+                                300,
+                                30,
+                                32,
+                                (200, 0, 200)
+                            ))
+            self.walls.append(createCircleObstacle(
+                                1350,
+                                600,
+                                30,
+                                32,
+                                (200, 0, 200)
+                            ))
+            self.walls.append(createCircleObstacle(
+                                1350,
+                                150,
+                                30,
+                                32,
+                                (200, 0, 200)
+                            ))
+            self.walls.append(createCircleObstacle(
+                                1350,
+                                750,
+                                30,
+                                32,
+                                (200, 0, 200)
+                            ))
+        elif self.idMap == 3: # pickaxe dance
+            self.walls.append(createPolygonObstacle(
+                                AREA_SIZE[0],
+                                AREA_SIZE[1],
+                                [(10, 150), (-10, 150),(-10, -100),(-50, -90),(-100, -70),(-50, -120),(0, -140),(50, -120),(100, -70),(50, -90), (10, -100)],
+                                (200, 0, 200),
+                                [
+                                    {"type" : OBSTACLE_ROUTINE_TYPE_ROTATION,
+                                        "time" : OBSTACLE_ROUTINE_TIME_INFINITE,
+                                        "effect" : -360}
+                                ]
+                            ))
+            self.walls.append(createPolygonObstacle(
+                                AREA_SIZE[0],
+                                0,
+                                [(10, -150), (-10, -150),(-10, 100),(-50, 90),(-100, 70),(-50, 120),(0, 140),(50, 120),(100, 70),(50, 90), (10, 100)],
+                                (200, 0, 200),
+                                [
+                                    {"type" : OBSTACLE_ROUTINE_TYPE_ROTATION,
+                                        "time" : OBSTACLE_ROUTINE_TIME_INFINITE,
+                                        "effect" : 360}
+                                ]
+                            ))
+            self.walls.append(createPolygonObstacle(
+                                0,
+                                0,
+                                [(10, -150), (-10, -150),(-10, 100),(-50, 90),(-100, 70),(-50, 120),(0, 140),(50, 120),(100, 70),(50, 90), (10, 100)],
+                                (200, 0, 200),
+                                [
+                                    {"type" : OBSTACLE_ROUTINE_TYPE_ROTATION,
+                                        "time" : OBSTACLE_ROUTINE_TIME_INFINITE,
+                                        "effect" : -360}
+                                ]
+                            ))
+            self.walls.append(createPolygonObstacle(
+                                0,
+                                AREA_SIZE[1],
+                                [(10, 150), (-10, 150),(-10, -100),(-50, -90),(-100, -70),(-50, -120),(0, -140),(50, -120),(100, -70),(50, -90), (10, -100)],
+                                (200, 0, 200),
+                                [
+                                    {"type" : OBSTACLE_ROUTINE_TYPE_ROTATION,
+                                        "time" : OBSTACLE_ROUTINE_TIME_INFINITE,
+                                        "effect" : 360}
+                                ]
+                            ))
+            self.walls.append(createPolygonObstacle(
+                                AREA_SIZE[0] / 4,
+                                AREA_SIZE[1] / 2,
+                                [(10, -150), (-10, -150),(-10, 100),(-50, 90),(-100, 70),(-50, 120),(0, 140),(50, 120),(100, 70),(50, 90), (10, 100)],
+                                (200, 0, 200),
+                                [
+                                    {"type" : OBSTACLE_ROUTINE_TYPE_ROTATION,
+                                        "time" : OBSTACLE_ROUTINE_TIME_INFINITE,
+                                        "effect" : 360}
+                                ]
+                            ))
+            self.walls.append(createPolygonObstacle(
+                                AREA_SIZE[0] / 4 + AREA_SIZE[0] / 2,
+                                AREA_SIZE[1] / 2,
+                                [(10, -150), (-10, -150),(-10, 100),(-50, 90),(-100, 70),(-50, 120),(0, 140),(50, 120),(100, 70),(50, 90), (10, 100)],
+                                (200, 0, 200),
+                                [
+                                    {"type" : OBSTACLE_ROUTINE_TYPE_ROTATION,
+                                        "time" : OBSTACLE_ROUTINE_TIME_INFINITE,
+                                        "effect" : -360}
+                                ]
+                            ))
+        elif self.idMap == 4: # Dificulty 5, verminagedon, no shield
             self.walls.append(createPolygonObstacle(
                                 AREA_SIZE[0] / 2,
                                 0,
@@ -871,11 +1172,3 @@ class GameServer:
                                         "effect" : Vec2(0, 168)}
                                 ]
                             ))
-        elif self.idMap == 3:
-            self.walls.append(createPolygonObstacle(
-                                1400,
-                                399,
-                                [(-45, -45), (45, -45), (45, 45), (-45, 45)],
-                                (0, 200, 200)
-                            ))
-

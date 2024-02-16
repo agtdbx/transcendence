@@ -128,7 +128,8 @@ async def handle_client(websocket : websockets.WebSocketServerProtocol, path):
                     print("GWS : RTEAM :", team_right_ready, file=sys.stderr)
                     if can_start_game():
                         print("GWS : READY TO START : OK", file=sys.stderr)
-                        asyncio.create_task(game_server_manager())
+                        if (game == None):
+                            asyncio.create_task(game_server_manager())
                     else:
                         print("GWS : READY TO START : KO", file=sys.stderr)
                 continue
@@ -216,7 +217,6 @@ async def handle_client(websocket : websockets.WebSocketServerProtocol, path):
                 print("GWS : NO", file=sys.stderr)
 
 
-
 def can_start_game():
     for state in team_left_ready:
         if not state:
@@ -243,12 +243,15 @@ async def sendGlobalMessage(updateObstacles='null', updatePaddles='null',updateB
             # print("\nGWS : websocketPaddleLink : ", websocketPaddleLink, file=sys.stderr)
             # print("\nGWS : websockets : ", websockets, file=sys.stderr)
             # print("\nGWS : websocket to find : ", websocket, file=sys.stderr)
+            powerUp = changeUserPowerUp.get(websocketPaddleLink[websocket], None)
+            if powerUp == None:
+                continue
             end_game_msg = {"type" : "serverInfo",
                     "updateObstacles" : updateObstacles,
                     "updatePaddles" : updatePaddles,
                     'updateBalls' : updateBalls,
                     'deleteBall' : deleteBall,
-                    'changeUserPowerUp' : changeUserPowerUp[websocketPaddleLink[websocket]],
+                    'changeUserPowerUp' : powerUp,
                     'updatePowerUpInGame' : updatePowerUpInGame,
                     'updateScore' : updateScore}
             str_msg = str(end_game_msg)
@@ -338,6 +341,8 @@ async def game_server_manager():
                     }
     str_msg = str(start_game_msg)
     str_msg = str_msg.replace("'", '"')
+
+    print("\nGWS : MSG SENDDDDDDD", str_msg, file=sys.stderr)
 
     for websockets in connected_player.values():
         for websocket in websockets:

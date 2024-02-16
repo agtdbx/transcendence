@@ -16,6 +16,8 @@ function onRecieveData(event)
 	if (type === "error")
 	{
 		console.error("Error :", data['error']);
+		if (current_page == 5 || current_page == 8)
+			alert(data['error']);
 	}
 	else if (type == 'connectionReply')
 	{

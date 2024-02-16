@@ -125,6 +125,8 @@ function manageAPI(num)
 			document.removeEventListener("keyup", keyupListennerGame);
 			keyupListennerGame = null;
 		}
+		if (actuelGame != null)
+			actuelGame = null;
 	}
 
 	if (num == 3)
