@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    views.py                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: aderouba <aderouba@student.42.fr>          +#+  +:+       +#+         #
+#    By: hde-min <hde-min@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/08 14:00:09 by lflandri          #+#    #+#              #
-#    Updated: 2024/02/15 19:50:56 by aderouba         ###   ########.fr        #
+#    Updated: 2024/02/16 13:32:10 by hde-min          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -182,9 +182,9 @@ def section(request, num):
     # In tournament if you are subscribe
     elif num == 71:
         if fullPage:
-            return render(request, "joinTournament_full.html")
+            return render(request, "tournamentJoin_full.html")
         else:
-            return render(request,"joinTournament.html")
+            return render(request,"tournamentJoin.html")
 
     # In tournament if you spectate
     elif num == 72:

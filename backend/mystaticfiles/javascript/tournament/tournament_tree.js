@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tournament_tree.js                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aderouba <aderouba@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hde-min <hde-min@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 14:56:17 by lflandri          #+#    #+#             */
-/*   Updated: 2024/02/16 00:37:56 by aderouba         ###   ########.fr       */
+/*   Updated: 2024/02/16 14:59:17 by hde-min          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ function drawTree(content, mapPoint)
 			let newPath1 = document.createElementNS('http://www.w3.org/2000/svg', 'path');
 			let d1 = "M" + mapPoint[floor][index / 2] + " " + ((floor) * lenthVertBar / (mapPoint.length + 1));
 			d1 +=  " V " + ((floor + 1) * lenthVertBar / (mapPoint.length + 1));
-			d1 +=  " H " + mapPoint[floor + 1][index];
+			d1 +=  " H " + mapPoint[floor + 1][index]
 			newPath1.style.stroke = "white";
 			newPath1.style.strokeWidth = "2px";
 			//console.log(mapPoint[floor][index / 2]);
@@ -92,13 +92,14 @@ function addPlayerTournamentTree(content, mapPoint, listPlayer, nb_player_max)
 		{
 			newPoint.setAttribute('y', "" + ((grade + 1) * lenthVertBar / (mapPoint.length + 1) - 15));
 		}
-		newPoint.setAttribute('x', "" + mapPoint[grade][ Math.floor(index / mod)] - 15);
-		newPoint.setAttribute('width', "30");
-		newPoint.setAttribute('height', "30");
-		newPoint.setAttribute('fill', "white");
+		newPoint.setAttribute('x', "" + mapPoint[grade][ Math.floor(index / mod)] - 20);
+		newPoint.setAttribute('width', "10");
+		newPoint.setAttribute('height', "10");
+		newPoint.setAttribute('fill', "red");
 		newPoint.textContent = listPlayer[index]["nickname"];
-		newPoint.style.color = "white";
+		newPoint.style.color = "red";
 		newPoint.style.opacity = "1";
+		newPoint.style.fontSize= "10";
 		content.insertBefore(newPoint, null);
 	}
 }

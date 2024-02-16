@@ -76,9 +76,20 @@
 
 #btnTournamentQuit{
 	position: absolute;
-	top: 12%;
-	left: 0.5%;
+	-ms-transform: translate(-50%, -50%);
+	transform: translate(-50%, -50%);
+	top: 80%;
+	left: 50%;
+	width: 10%;
+	height: 5%;
+}
 
+#btnTournamentReturn{
+	position: absolute;
+	left: 0.5%;
+	margin-top: 1%;
+	width: 5%;
+	height: 4%;
 }
 
 #btnTournamentLaunch{
@@ -235,21 +246,45 @@
     text-overflow: ellipsis;
 }
 
-#tournamentPlayer1{
+#tournamentNamePlayer1{
 	position: absolute;
 	top: 1%;
 	left: 1%;
 	width: 30%;
-	height: 98%;
+	height: 32%;
+	text-align: center;
+	margin-top: 3%;
+	background-color: transparent;
+}
+
+#tournamentPlayer1{
+	position: absolute;
+	top: 34%;
+	left: 1%;
+	width: 30%;
+	height: 65%;
+	text-align: center;
+	background-color: transparent;
+	object-fit: contain;
+}
+
+#tournamentNamePlayer2{
+	position: absolute;
+	top: 1%;
+	left: 69%;
+	width: 30%;
+	height: 32%;
+	margin-top: 3%;
+	text-align: center;
 	background-color: transparent;
 }
 
 #tournamentPlayer2{
 	position: absolute;
-	top: 1%;
+	top: 34%;
 	left: 69%;
 	width: 30%;
-	height: 98%;
+	height: 65%;
 	background-color: transparent;
 }
 
@@ -310,21 +345,45 @@
     text-overflow: ellipsis;
 }
 
-#tournamentPlayer3{
+#tournamentNamePlayer3{
 	position: absolute;
 	top: 1%;
 	left: 1%;
 	width: 30%;
-	height: 98%;
+	height: 32%;
+	text-align: center;
+	margin-top: 3%;
+	background-color: transparent;
+}
+
+#tournamentPlayer3{
+	position: absolute;
+	top: 34%;
+	left: 1%;
+	width: 30%;
+	height: 65%;
+	text-align: center;
+	background-color: transparent;
+	object-fit: contain;
+}
+
+#tournamentNamePlayer4{
+	position: absolute;
+	top: 1%;
+	left: 69%;
+	width: 30%;
+	height: 32%;
+	margin-top: 3%;
+	text-align: center;
 	background-color: transparent;
 }
 
 #tournamentPlayer4{
 	position: absolute;
-	top: 1%;
+	top: 34%;
 	left: 69%;
 	width: 30%;
-	height: 98%;
+	height: 65%;
 	background-color: transparent;
 }
 

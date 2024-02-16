@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    views_connection.py                                :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: aderouba <aderouba@student.42.fr>          +#+  +:+       +#+         #
+#    By: hde-min <hde-min@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/23 19:48:51 by aderouba          #+#    #+#              #
-#    Updated: 2024/02/12 18:36:40 by aderouba         ###   ########.fr        #
+#    Updated: 2024/02/16 15:02:49 by hde-min          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -91,7 +91,7 @@ def checkSignin(request):
 
     # Check if username haven't bad caracters
     username = username.lower()
-    good_chars = "abcdefghijklmnoprstuvwxyz0123456789_"
+    good_chars = "abcdefghijklmnopqrstuvwxyz0123456789_"
     for c in username:
         if c not in good_chars:
             return JsonResponse({"success" : False, "error" : "Only alphanum and underscore autorised"})

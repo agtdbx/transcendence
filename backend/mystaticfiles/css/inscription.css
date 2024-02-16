@@ -25,6 +25,9 @@
 #tournamentNewName
 {
 	position: absolute;
+	-ms-transform: translate(-50%, -50%);
+	transform: translate(-50%, -50%);
+	left: 50%;
 	font-family: "KhazadDum", sans-serif;
 }
 
@@ -32,9 +35,9 @@
 {
 	-ms-transform: translate(-50%, -50%);
 	transform: translate(-50%, -50%);
-	position: relative;
-	top: 50%;
+	position: absolute;
 	left: 50%;
+	margin-top: 5%;
 	width: 25%;
 	overflow: hidden;
     white-space: nowrap;
@@ -46,11 +49,15 @@
 	-ms-transform: translate(-50%, -50%);
 	transform: translate(-50%, -50%);
 	position: absolute;
-	top: 70%;
+	margin-top: 5%;
 	left: 50%;
 	width: 25%;
 	height: 15%;
 	overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
+}
+
+#greyR{
+	text-align: center;
 }
