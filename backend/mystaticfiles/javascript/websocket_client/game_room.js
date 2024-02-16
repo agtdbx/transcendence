@@ -199,7 +199,7 @@ function addBotToElement(element, team)
 }
 
 
-function updateGameRoomInfo(map_name, power_up, team_left, team_right)
+function updateGameRoomInfo(map_id, map_name, power_up, team_left, team_right)
 {
 	let map_name_element = document.getElementById("gameCreateMapName");
 	let power_up_element = document.getElementById("gameCreatePowerStatus");
@@ -207,7 +207,16 @@ function updateGameRoomInfo(map_name, power_up, team_left, team_right)
 	let team_left_element = document.getElementById("team1Player");
 	let team_right_element = document.getElementById("team2Player");
 
-	console.log("PAGE", current_page);
+	// Hilight the map choose
+	for (let i = 0; i < 5; i++)
+	{
+		let mapBtn = document.getElementById("btnMap" + i);
+
+		if (i == map_id)
+			mapBtn.classList = "btn-drg btn-map";
+		else
+			mapBtn.classList = "btn-drg-dark btn-map";
+	}
 
 	if (map_name_element)
 		map_name_element.textContent = map_name;

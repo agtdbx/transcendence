@@ -360,10 +360,8 @@ async def start_tournament(my_id:int,
     for player_id in tournament["players"]:
         tournament["quarter"].append(player_id)
 
-    id = -1
     while len(tournament["quarter"]) < 8:
-        tournament["quarter"].append(id)
-        id -= 1
+        tournament["quarter"].append(-len(tournament["quarter"]))
 
     # shuffle this step
     random.shuffle(tournament["quarter"])
@@ -490,8 +488,9 @@ async def tournament_next_start_match(connected_users:dict,
     print("\nWS : Next match to start :", next_match, file=sys.stderr)
 
     # Create the game
-    ret = await create_new_game(in_game_list, 0, False, [next_match[0]],
-                                [next_match[1]], GAME_TYPE_TOURNAMENT)
+    ret = await create_new_game(in_game_list, 0, tournament["powerUp"],
+                                [next_match[0]], [next_match[1]],
+                                GAME_TYPE_TOURNAMENT)
 
     if ret == None:
         print("\nWS : ERROR : No game server free, put users", file=sys.stderr)
@@ -643,7 +642,7 @@ async def join_tournament(my_id:int,
         await send_error_to_id(my_id, connected_users, "Missing nickname field")
         return
 
-    if len(nickname) < 2 or len(nickname) > 15:
+    if len(nickname) < 1 or len(nickname) > 15:
         print("WS : User", my_id,
               "Nickname need to be between 2 and 15 characters", file=sys.stderr)
         await send_error_to_id(my_id, connected_users,
@@ -652,7 +651,7 @@ async def join_tournament(my_id:int,
 
     # Check if nickname haven't bad caracters
     nickname = nickname.lower()
-    good_chars = "abcdefghijklmnopqrstuvwxyz0123456789_"
+    good_chars = "abcdefghijklmnopqrstuvwxyz0123456789_-"
     for c in nickname:
         if c not in good_chars:
             print("WS : User", my_id, "Bad nickname. Only alphanum and "

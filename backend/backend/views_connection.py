@@ -6,7 +6,7 @@
 #    By: aderouba <aderouba@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/23 19:48:51 by aderouba          #+#    #+#              #
-#    Updated: 2024/02/16 19:04:06 by aderouba         ###   ########.fr        #
+#    Updated: 2024/02/16 21:28:14 by aderouba         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -143,7 +143,7 @@ def checkSignin(request):
 
     # Check if username haven't bad caracters
     username = username.lower()
-    good_chars = "abcdefghijklmnopqrstuvwxyz0123456789_"
+    good_chars = "abcdefghijklmnopqrstuvwxyz0123456789_-"
     for c in username:
         if c not in good_chars:
             return JsonResponse({"success" : False, "error" : "Only alphanum and underscore autorised"})
@@ -238,7 +238,7 @@ def changeUsername(request):
 
     # Check if newName haven't bad caracters
     newName = newName.lower()
-    good_chars = "abcdefghijklmnopqrstuvwxyz0123456789_"
+    good_chars = "abcdefghijklmnopqrstuvwxyz0123456789_-"
     for c in newName:
         if c not in good_chars:
             return JsonResponse({"success" : False, "error" : "Only alphanum and underscore autorised"})

@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    views_achievement.py                               :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: lflandri <lflandri@student.42.fr>          +#+  +:+       +#+         #
+#    By: aderouba <aderouba@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/17 15:33:50 by lflandri          #+#    #+#              #
-#    Updated: 2024/02/16 16:10:23 by lflandri         ###   ########.fr        #
+#    Updated: 2024/02/16 21:30:26 by aderouba         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -45,14 +45,14 @@ def getListeMatchDataForAchievement(user):
     win = 0
     nbMatchInTeam = 0
     nbBoscoBeDestroy = 0
-    
+
     matchUserList = MatchUser.objects.all().filter(idUser=user.idUser)
     matchList = []
     matchListWithPowerUp = []
     for usermatch in matchUserList :
         matchList += Match.objects.all().filter(matchuser=usermatch)
         matchListWithPowerUp += Match.objects.all().filter(matchuser=usermatch, powerUp=True)
-    
+
     for m in matchList: #get info from match
         if m.nbMaxBallOnGame > nbMaxBallOnGame :
             nbMaxBallOnGame = m.nbMaxBallOnGame
@@ -64,17 +64,17 @@ def getListeMatchDataForAchievement(user):
                 if len(MatchUser.objects.all().filter(idTeam=1,idMatch=m.idMatch)) > 1:
                    nbMatchInTeam+=1
                 if len(MatchUser.objects.all().filter(idTeam=0,idMatch=m.idMatch, idUser__lt=0)) > 0 :
-                    nbBoscoBeDestroy+=1 
+                    nbBoscoBeDestroy+=1
         else :
             if m.scoreRight < m.scoreLeft :
                 win+=1
                 if m.scoreRight == 0 :
                     nbwinWithoutTakeGoal+=1
                 if len(MatchUser.objects.all().filter(idTeam=0,idMatch=m.idMatch)) > 1:
-                   nbMatchInTeam+=1  
+                   nbMatchInTeam+=1
                 if len(MatchUser.objects.all().filter(idTeam=1,idMatch=m.idMatch, idUser__lt=0)) > 0 :
-                    nbBoscoBeDestroy+=1 
-            
+                    nbBoscoBeDestroy+=1
+
     for u in matchUserList : #get info from matchuser
         nbPerfectShoot += u.nbPerfectShot
         nbGoalCC += u.nbCC
@@ -82,7 +82,7 @@ def getListeMatchDataForAchievement(user):
             maxBallSpeed =u.maxBallSpeed
         if u.maxBallBounce > maxBallBounce :
             maxBallBounce = u.maxBallBounce
-            
+
     return [win, nbPerfectShoot, nbGoalCC, maxBallBounce,
             maxBallSpeed, nbMaxBallOnGame, nbwinWithoutTakeGoal,
             nbMatchInTeam, nbBoscoBeDestroy]
@@ -132,13 +132,13 @@ def listAchievement(user, isself):
     },
     {
         "title" : "Dig your own grave" if achievement.digGrave > 0 else errorName,
-        "description" :"Scored an own goal." if achievement.boscoFriend  > 0 else errorDescription,
+        "description" :"Scored an own goal." if achievement.digGrave  > 0 else errorDescription,
         "grade" : achievement.digGrave,
         "img" : imgPath + ("GraveDig.webp" if achievement.digGrave > 0  else "Error.webp")
     },
     {
         "title" : "To the fallen" if achievement.fallen > 0 else errorName,
-        "description" :  "Pray for the fallen." if achievement.boscoFriend > 0 else errorDescription,
+        "description" :  "Pray for the fallen." if achievement.fallen > 0 else errorDescription,
         "grade" : achievement.fallen,
         "img" : imgPath + ( "Fallen.webp" if achievement.fallen > 0 else "Error.webp")
     },

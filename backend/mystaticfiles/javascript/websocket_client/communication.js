@@ -46,11 +46,12 @@ function onRecieveData(event)
 		if (current_page != 5)
 			changePage('5');
 
+		const mapId = data["mapId"];
 		const mapName = data["mapName"];
 		const power_up = data["powerUpActivate"];
 		const team_left = data["teamLeft"];
 		const team_right = data["teamRight"];
-		updateGameRoomInfo(mapName, power_up, team_left, team_right);
+		updateGameRoomInfo(mapId, mapName, power_up, team_left, team_right);
 	}
 	else if (type == 'joinRoomInfo')
 	{
@@ -76,11 +77,12 @@ function onRecieveData(event)
 	{
 		console.log("GAME ROOM UPDATE");
 
+		const mapId = data["mapId"];
 		const mapName = data["mapName"];
 		const power_up = data["powerUpActivate"];
 		const team_left = data["teamLeft"];
 		const team_right = data["teamRight"];
-		updateGameRoomInfo(mapName, power_up, team_left, team_right);
+		updateGameRoomInfo(mapId, mapName, power_up, team_left, team_right);
 	}
 	else if (type == 'invite')
 	{

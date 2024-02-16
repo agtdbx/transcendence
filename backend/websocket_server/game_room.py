@@ -20,6 +20,7 @@ MAX_PLAYER_PER_TEAM = 2
 def create_game_room_status_message(type, game_room:dict):
     msg = {'type' : type,
            'powerUpActivate' : str(game_room['power_up']).lower(),
+           'mapId' : game_room['map_id'],
            'mapName' : get_map_name_by_id(game_room['map_id']),
            'teamLeft' : game_room['team_left'],
            'teamRight' :game_room['team_right']}

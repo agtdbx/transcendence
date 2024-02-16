@@ -111,7 +111,6 @@
 	text-align: center;
 	background: rgba(18,16,11, 0.8);
 	overflow-y: auto;
-	overflow: hidden;
 	white-space: nowrap;
 	text-overflow: ellipsis;
 }
@@ -394,7 +393,7 @@
 	width: 10%;
 	height: 35%;
 	background: rgba(40,35,23,0.75);
-	overflow: hidden;
+	overflow-y: auto;
     white-space: nowrap;
     text-overflow: ellipsis;
 }

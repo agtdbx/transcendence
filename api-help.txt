@@ -178,6 +178,7 @@ GAME ROOM
 
     {{update room info}} :
         'mapId' : <map id>
+        'mapName' : <map name>
         'powerUpActivate' : false | true
         'teamLeft' : [<user id>] # if id -1, it's an ia
         'teamRight' : [<user id>]

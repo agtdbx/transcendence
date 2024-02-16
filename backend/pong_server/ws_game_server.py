@@ -4,10 +4,12 @@ import json
 import ssl
 import sys
 import os
+import datetime
 import signal
 from server_code.game_server import GameServer
 from define import *
 
+print("START GAME SCRIPT (GWS) WITH PARAM :", sys.argv, file=sys.stderr)
 
 # ssl context
 ssl_context = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
@@ -31,6 +33,8 @@ power_up = False
 game_type = 0
 
 websocketPaddleLink = {}
+
+GAME_SERVER_PORT = int(sys.argv[1])
 
 async def send_error(websocket, error_explaination):
     error = {"type" : "error", "error" : error_explaination}
@@ -58,9 +62,11 @@ def remove_user_connected(myid, websocket):
 async def timeoutConnection():
     global game, team_left_ready, team_right_ready
 
-    print("\nGWS : Start time out connection", file=sys.stderr)
-    await asyncio.sleep(10)
-    print("\nGWS : End time out connection", file=sys.stderr)
+    print("\nGWS : Start time out connection :", datetime.datetime.now(),
+          file=sys.stderr)
+    await asyncio.sleep(20)
+    print("\nGWS : End time out connection :", datetime.datetime.now(),
+          file=sys.stderr)
     print("GWS : Team left ready :", team_left_ready, file=sys.stderr)
     print("GWS : Team right ready :", team_right_ready, file=sys.stderr)
 
@@ -79,6 +85,8 @@ async def timeoutConnection():
                 asyncio.create_task(game_server_manager())
                 await asyncio.sleep(2)
             game.makeTeamWin(0)
+
+    print("GWS : NO TIMEOUT", file=sys.stderr)
 
 
 async def handle_client(websocket : websockets.WebSocketServerProtocol, path):
@@ -143,6 +151,7 @@ async def handle_client(websocket : websockets.WebSocketServerProtocol, path):
                 continue
 
             elif request_type == "info":
+                print("GWS : RECIVED GAME INFO", file=sys.stderr)
                 mapId = data.get("mapId", None)
                 powerUp = data.get("powerUp", None)
                 teamLeft = data.get("teamLeft", None)
@@ -174,6 +183,7 @@ async def handle_client(websocket : websockets.WebSocketServerProtocol, path):
                             team_right_ready.append(False)
                         team_right.append(id)
                     print("GWS : RTEAM :", team_right_ready, file=sys.stderr)
+                    print("GWS : RECIVED GAME INFO OK", file=sys.stderr)
                     asyncio.create_task(timeoutConnection())
                 continue
 
@@ -385,14 +395,15 @@ async def start_server():
     stop = loop.create_future()
     loop.add_signal_handler(signal.SIGTERM, stop.set_result, None)
 
-    async with websockets.serve(handle_client, "0.0.0.0", int(sys.argv[1]), ssl=ssl_context):
+    async with websockets.serve(handle_client, "0.0.0.0", GAME_SERVER_PORT,
+                                ssl=ssl_context):
         await stop
     print("\nGWS : SERVER PORT CLOSE", file=sys.stderr)
 
     ws = await websockets.connect("wss://localhost:8765", ssl=ssl_context_client)
     msg = {"type":"gws",
             "cmd" : "definitelyNotTheMovie(endGame)",
-            "port" : sys.argv[1],
+            "port" : GAME_SERVER_PORT,
             "teamLeft" : team_left,
             "teamRight" : team_right,
             "gameType" : game_type,

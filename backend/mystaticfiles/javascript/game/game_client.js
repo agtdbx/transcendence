@@ -429,6 +429,11 @@ export class GameClient {
 		if (! updateTime && this.powerUp[0] != d.POWER_UP_SPAWN_COOLDOWN)
 			this.powerUp[0] = d.POWER_UP_SPAWN_COOLDOWN
 
+		if (this.teamLeft == null || this.teamRight == null)
+		{
+			console.error("TEAM NULLL");
+			return
+		}
 		this.teamLeft.tick(delta, this.paddlesKeyState, updateTime)
 		this.teamRight.tick(delta, this.paddlesKeyState, updateTime)
 
