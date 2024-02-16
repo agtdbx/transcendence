@@ -1,12 +1,20 @@
 import asyncio
 import websockets
 import json
+import ssl
 import sys
 import os
 import signal
 from server_code.game_server import GameServer
 from define import *
 
+
+# ssl context
+ssl_context = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
+ssl_context.load_cert_chain("/certs/cert.pem")
+
+ssl_context_client = ssl.SSLContext(ssl.PROTOCOL_TLS_CLIENT)
+ssl_context_client.load_verify_locations("/certs/cert.pem")
 
 # Dict to save the actives connections
 connected_player = dict()
@@ -342,8 +350,6 @@ async def game_server_manager():
     str_msg = str(start_game_msg)
     str_msg = str_msg.replace("'", '"')
 
-    print("\nGWS : MSG SENDDDDDDD", str_msg, file=sys.stderr)
-
     for websockets in connected_player.values():
         for websocket in websockets:
             await websocket.send(str_msg)
@@ -379,11 +385,11 @@ async def start_server():
     stop = loop.create_future()
     loop.add_signal_handler(signal.SIGTERM, stop.set_result, None)
 
-    async with websockets.serve(handle_client, "0.0.0.0", int(sys.argv[1])):
+    async with websockets.serve(handle_client, "0.0.0.0", int(sys.argv[1]), ssl=ssl_context):
         await stop
     print("\nGWS : SERVER PORT CLOSE", file=sys.stderr)
 
-    ws = await websockets.connect("ws://localhost:8765")
+    ws = await websockets.connect("wss://localhost:8765", ssl=ssl_context_client)
     msg = {"type":"gws",
             "cmd" : "definitelyNotTheMovie(endGame)",
             "port" : sys.argv[1],

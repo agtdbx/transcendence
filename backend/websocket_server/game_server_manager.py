@@ -1,12 +1,16 @@
 import os
 import sys
+import ssl
 import asyncio
 import datetime
 import websockets
 from websocket_server.utils import set_user_status, get_user_by_id
 from db_test.models import Match, MatchUser, Goal, Map, Achivement, User
 from backend.views_achievement import createAchievementIfNot, getListeMatchDataForAchievement
-# from pong_server.ws_game_server import start_game_thread
+
+# ssl context
+ssl_context = ssl.SSLContext(ssl.PROTOCOL_TLS_CLIENT)
+ssl_context.load_verify_locations("/certs/cert.pem")
 
 # List of game server
 # List : [server running, port] ; if thread is False, the server is unused
@@ -37,9 +41,9 @@ async def start_game_websocket(port:int,
                          type:int):
     os.system("python3 pong_server/ws_game_server.py " + str(port) + "&")
     await asyncio.sleep(1)
-    os.system("echo; echo WS : websocket now running on ws://localhost:" +
+    os.system("echo; echo WS : websocket now running on wss://localhost:" +
               str(port))
-    ws = await websockets.connect("ws://localhost:" + str(port))
+    ws = await websockets.connect("wss://localhost:" + str(port), ssl=ssl_context)
     msg = {"type":"info",
            "mapId" : map_id,
            "powerUp" : str(power_up_enable).lower(),
@@ -273,7 +277,7 @@ async def end_game(data:dict,
                                               idTeam=paddle_stats[6])
         match_user.save()
         modifyAchievement(user)
-        
+
 
     # PUT GOAL STATS IN DB
     for goal_stats in balls_stats:

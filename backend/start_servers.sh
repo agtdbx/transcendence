@@ -11,4 +11,4 @@ python3 manage.py shell < db_create_default.py && echo "Karl is back from Hoxes 
 python3 manage.py shell < websocket_server/websocket_server.py &
 
 # Start django server
-python3 manage.py runsslserver 0.0.0.0:8000
+python3 manage.py runsslserver 0.0.0.0:8000 --certificate /certs/certificate.crt --key /certs/private.key
