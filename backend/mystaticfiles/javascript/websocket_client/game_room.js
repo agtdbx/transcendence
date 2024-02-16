@@ -199,7 +199,7 @@ function addBotToElement(element, team)
 }
 
 
-function updateGameRoomInfo(map_id, power_up, team_left, team_right)
+function updateGameRoomInfo(map_name, power_up, team_left, team_right)
 {
 	let map_name_element = document.getElementById("gameCreateMapName");
 	let power_up_element = document.getElementById("gameCreatePowerStatus");
@@ -210,7 +210,7 @@ function updateGameRoomInfo(map_id, power_up, team_left, team_right)
 	console.log("PAGE", current_page);
 
 	if (map_name_element)
-		map_name_element.textContent = "Map " + map_id;
+		map_name_element.textContent = map_name;
 
 	if (power_up == "true")
 	{

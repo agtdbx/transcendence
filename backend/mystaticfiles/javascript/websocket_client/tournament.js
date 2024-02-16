@@ -17,7 +17,7 @@ function getTournamentStatus()
 }
 
 
-function manageMainpageButton(status, mapId, powerUp, listPlayers, youInTournament)
+function manageMainpageButton(status, mapName, powerUp, listPlayers, youInTournament)
 {
 	let inter = setInterval(function () {
 		if (pageInLoad == false)
@@ -36,7 +36,7 @@ function manageMainpageButton(status, mapId, powerUp, listPlayers, youInTourname
 					butJoinTournament.textContent = "View";
 					butJoinTournament.onclick = function () {
 						changePage("71");
-						waitTournamentState(status, mapId, powerUp, listPlayers, youInTournament);
+						waitTournamentState(status, mapName, powerUp, listPlayers, youInTournament);
 					}
 				}
 				else if (listPlayers.length == 8)
@@ -44,7 +44,7 @@ function manageMainpageButton(status, mapId, powerUp, listPlayers, youInTourname
 					butJoinTournament.textContent = "Spectate";
 					butJoinTournament.onclick = function () {
 						changePage("72");
-						waitTournamentState(status, mapId, powerUp, listPlayers, youInTournament);
+						waitTournamentState(status, mapName, powerUp, listPlayers, youInTournament);
 					}
 				}
 				else
@@ -61,7 +61,7 @@ function manageMainpageButton(status, mapId, powerUp, listPlayers, youInTourname
 					butJoinTournament.textContent = "View";
 					butJoinTournament.onclick = function () {
 						changePage("71");
-						waitTournamentState(status, mapId, powerUp, listPlayers, youInTournament);
+						waitTournamentState(status, mapName, powerUp, listPlayers, youInTournament);
 					}
 				}
 				else
@@ -69,7 +69,7 @@ function manageMainpageButton(status, mapId, powerUp, listPlayers, youInTourname
 					butJoinTournament.textContent = "Spectate";
 					butJoinTournament.onclick = function () {
 						changePage("72");
-						waitTournamentState(status, mapId, powerUp, listPlayers, youInTournament);
+						waitTournamentState(status, mapName, powerUp, listPlayers, youInTournament);
 					}
 				}
 			else
@@ -120,13 +120,13 @@ function quitTournament()
 }
 
 
-function waitTournamentState(state, mapId, powerUp, listPlayers, youInTournament)
+function waitTournamentState(state, mapName, powerUp, listPlayers, youInTournament)
 {
 	getTournamentTree();
 	let inter = setInterval(function () {
 		if (pageInLoad == false)
 		{
-			applyTournamentState(state, mapId, powerUp, listPlayers, youInTournament);
+			applyTournamentState(state, mapName, powerUp, listPlayers, youInTournament);
 			clearInterval(inter);
 		}
 		else
@@ -135,7 +135,7 @@ function waitTournamentState(state, mapId, powerUp, listPlayers, youInTournament
 }
 
 
-function applyTournamentState(state, mapId, powerUp, listPlayers, youInTournament)
+function applyTournamentState(state, mapName, powerUp, listPlayers, youInTournament)
 {
 	let quitBut = document.getElementById("btnTournamentQuit");
 
@@ -173,7 +173,7 @@ function applyTournamentState(state, mapId, powerUp, listPlayers, youInTournamen
 		powerUpP.textContent = "Power up : off";
 
 	let mapP = document.getElementById("powerUpTournamentMap");
-	mapP.textContent = "Map : map " + mapId;
+	mapP.textContent = "Map : " + mapName;
 
 	if (state != 2)
 		return ;

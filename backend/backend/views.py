@@ -6,7 +6,7 @@
 #    By: aderouba <aderouba@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/08 14:00:09 by lflandri          #+#    #+#              #
-#    Updated: 2024/02/15 19:50:56 by aderouba         ###   ########.fr        #
+#    Updated: 2024/02/16 17:17:30 by aderouba         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -227,7 +227,7 @@ def section(request, num):
         ListUser = list(User.objects.all().filter(idUser__gt=0).order_by("-money"))
         ListUser = ListUser[:18]
 
-        Void = User(idUser=0, type=0, username="", profilPicture="images/default/void.png", tokenJWT="", money=0, status=0)
+        Void = User(idUser=0, type=0, username="", profilPicture="images/default/void.png", money=0, status=0)
 
         j = len(ListUser)
         while j < 18:
