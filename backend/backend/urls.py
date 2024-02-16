@@ -62,6 +62,7 @@ urlpatterns = [
     #User stats
     path('getuserstat', views_stats.getuserstat, name='getuserstat'),
     path('getwinrate', views_stats.getwinrate, name='getwinrate'),
+    path('getusermatchhistory', views_stats.getusermatchhistory, name='getusermatchhistory'),
     
     #User message
     path("getMessages", views_message.getMessages, name="getMessages"),
