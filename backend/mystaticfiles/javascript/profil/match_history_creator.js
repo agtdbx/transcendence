@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   match_history_creator.js                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lflandri <lflandri@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lflandri <liam.flandrinck.58@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/23 15:10:25 by lflandri          #+#    #+#             */
-/*   Updated: 2024/01/19 18:43:59 by lflandri         ###   ########.fr       */
+/*   Updated: 2024/02/16 04:48:01 by lflandri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 const Match_list =
 [
 	{
-		"player1" :
+		"playerR1" :
 		{
 			"name" : "Enginer",
 			"pp" : "https://static.wikia.nocookie.net/deeprockgalactic_gamepedia_en/images/4/46/Engineer_portrait.png/revision/latest/scale-to-width-down/35?cb=20180519150041",
@@ -34,7 +34,7 @@ const Match_list =
 				{"time" : 18.95, "bounce" : 3, "speed": 0.15}
 			]
 		},
-		"player2" :
+		"playerL1" :
 		{
 			"name" : "Gunner",
 			"pp" : "https://static.wikia.nocookie.net/deeprockgalactic_gamepedia_en/images/c/c2/Gunner_portrait.png/revision/latest/scale-to-width-down/35?cb=20180519150058",
@@ -56,7 +56,7 @@ const Match_list =
 		"power_up" : true
 	},
 	{
-		"player1" :
+		"playerR1" :
 		{
 			"name" : "Enginer",
 			"pp" : "https://static.wikia.nocookie.net/deeprockgalactic_gamepedia_en/images/4/46/Engineer_portrait.png/revision/latest/scale-to-width-down/35?cb=20180519150041",
@@ -66,7 +66,7 @@ const Match_list =
 				{"time" : 1.5, "bounce" : 1, "speed": 0.15},
 			]
 		},
-		"player2" :
+		"playerL1" :
 		{
 			"name" : "Gunner",
 			"pp" : "https://static.wikia.nocookie.net/deeprockgalactic_gamepedia_en/images/c/c2/Gunner_portrait.png/revision/latest/scale-to-width-down/35?cb=20180519150058",
@@ -81,7 +81,7 @@ const Match_list =
 		"power_up" : false
 	},
 	{
-		"player1" :
+		"playerR1" :
 		{
 			"name" : "Enginer",
 			"pp" : "https://static.wikia.nocookie.net/deeprockgalactic_gamepedia_en/images/4/46/Engineer_portrait.png/revision/latest/scale-to-width-down/35?cb=20180519150041",
@@ -93,7 +93,7 @@ const Match_list =
 				{"time" : 7.5, "bounce" : 1, "speed": 0.15}
 			]
 		},
-		"player2" :
+		"playerL1" :
 		{
 			"name" : "Gunner",
 			"pp" : "https://static.wikia.nocookie.net/deeprockgalactic_gamepedia_en/images/c/c2/Gunner_portrait.png/revision/latest/scale-to-width-down/35?cb=20180519150058",
@@ -136,67 +136,67 @@ function showGraphic(id)
 
 function createPoints(svgBlock,content, color, list, maxx, maxy)
 {
-let newPath = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-let d = "M 0 300 ";
-if (1 < list.length)
-{
-d +=  " L " + (list[0]["time"] * 800 / maxx) + " " + (300 - (300 / maxy)) +" ";
-}
-else
-{
-d +=  " L " + 800 + " " + (300 - (300 / maxy)) +" ";
-}
-newPath.style.stroke = color;
-newPath.setAttribute('d', d);
-content.insertBefore(newPath, null);
-for (let index = 0; index < list.length ; index++)
-{
-let newPoint = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
-let newPath = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-let newInfo = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-let	newDiv = document.createElementNS('http://www.w3.org/2000/svg', 'g');
-let newText1 = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-let newText2 = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-//newPath.setAttribute('fill', color);
-let di = "M" + (list[index ]["time"] * 800 / maxx) + " " + ( 300 - ((index + 1) * 300 / maxy)) + " l -5 -7 h -20 v -30 h 50 v 30 h -20 l -5 7 Z";
-//let di = "M" + 0 + " " + 0 + " L 0 50 L 50 50 Z";
-newInfo.setAttribute('d', di);
-newInfo.setAttribute('fill', color);
-let d = "M" + (list[index ]["time"] * 800 / maxx) + " " + ( 300 - ((index + 1) * 300 / maxy));
-newPoint.setAttribute('cx', "" + (list[index ]["time"] * 800 / maxx));
-newPoint.setAttribute('cy', "" + ( 300 - ((index + 1) * 300 / maxy)));
-newPoint.setAttribute('r', "5");
-newPoint.setAttribute('fill', color);
-newDiv.classList.add("goal_point")
+	let newPath = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+	newPath.style.stroke = color;
 
-if (index + 1 < list.length)
-{
-d +=  " L " + (list[index + 1]["time"] * 800 / maxx) + " " + (300 - ((index + 2) * 300 / maxy)) +" ";
-}
-else
-{
-d +=  " L " + 800 + " " + (300 - ((index + 1) * 300 / maxy)) +" ";
-}
-newInfo.style.stroke = "#000000";
-newPath.style.stroke = color;
-newText1.setAttribute('x', "" + (list[index ]["time"] * 800 / maxx) - 24);
-newText1.setAttribute('y', "" + ( 300 - ((index + 1) * 300 / maxy)) - 27);
-newText1.setAttribute('fill', "black");
-newText1.textContent = "bounce : " + list[index ]["bounce"];
-newText1.style.fontSize = "0.50em";
-newText2.setAttribute('x', "" + (list[index ]["time"] * 800 / maxx) - 24);
-newText2.setAttribute('y', "" + ( 300 - ((index + 1) * 300 / maxy)) - 17);
-newText2.setAttribute('fill', "black");
-newText2.textContent = "speed : " + list[index ]["speed"];
-newText2.style.fontSize = "0.50em";
-newPath.setAttribute('d', d);
-content.insertBefore(newPath, null);
-svgBlock.insertBefore(newDiv, null)
-newDiv.insertBefore(newPoint, null);
-newDiv.insertBefore(newInfo, null);
-newDiv.insertBefore(newText1, null);
-newDiv.insertBefore(newText2, null);
-}
+	content.insertBefore(newPath, null);
+	let d = "M 0 300 ";
+	if (0 < list.length)
+	{
+		d +=  " L " + (list[0]["time"] * 800 / maxx) + " " + (300 - (300 / maxy)) +" ";
+		newPath.setAttribute('d', d);
+	}
+	else
+		return ;
+
+	for (let index = 0; index < list.length ; index++)
+	{
+		let newPoint = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+		let newPath = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+		let newInfo = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+		let	newDiv = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+		let newText1 = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+		let newText2 = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+		//newPath.setAttribute('fill', color);
+		let di = "M" + (list[index ]["time"] * 800 / maxx) + " " + ( 300 - ((index + 1) * 300 / maxy)) + " l -5 -7 h -20 v -30 h 50 v 30 h -20 l -5 7 Z";
+		//let di = "M" + 0 + " " + 0 + " L 0 50 L 50 50 Z";
+		newInfo.setAttribute('d', di);
+		newInfo.setAttribute('fill', color);
+		let d = "M" + (list[index ]["time"] * 800 / maxx) + " " + ( 300 - ((index + 1) * 300 / maxy));
+		newPoint.setAttribute('cx', "" + (list[index ]["time"] * 800 / maxx));
+		newPoint.setAttribute('cy', "" + ( 300 - ((index + 1) * 300 / maxy)));
+		newPoint.setAttribute('r', "5");
+		newPoint.setAttribute('fill', color);
+		newDiv.classList.add("goal_point")
+
+		if (index + 1 < list.length)
+		{
+			d +=  " L " + (list[index + 1]["time"] * 800 / maxx) + " " + (300 - ((index + 2) * 300 / maxy)) +" ";
+		}
+		else
+		{
+			d +=  " L " + 800 + " " + (300 - ((index + 1) * 300 / maxy)) +" ";
+		}
+			newInfo.style.stroke = "#000000";
+		newPath.style.stroke = color;
+		newText1.setAttribute('x', "" + (list[index ]["time"] * 800 / maxx) - 24);
+		newText1.setAttribute('y', "" + ( 300 - ((index + 1) * 300 / maxy)) - 27);
+		newText1.setAttribute('fill', "black");
+		newText1.textContent = "bounce : " + list[index ]["bounce"];
+		newText1.style.fontSize = "0.50em";
+		newText2.setAttribute('x', "" + (list[index ]["time"] * 800 / maxx) - 24);
+		newText2.setAttribute('y', "" + ( 300 - ((index + 1) * 300 / maxy)) - 17);
+		newText2.setAttribute('fill', "black");
+		newText2.textContent = "speed : " + list[index ]["speed"];
+		newText2.style.fontSize = "0.50em";
+		newPath.setAttribute('d', d);
+		content.insertBefore(newPath, null);
+		svgBlock.insertBefore(newDiv, null)
+		newDiv.insertBefore(newPoint, null);
+		newDiv.insertBefore(newInfo, null);
+		newDiv.insertBefore(newText1, null);
+		newDiv.insertBefore(newText2, null);
+	}
 }
 
 function createNumberGrahic(content, maxx, maxy)
@@ -239,34 +239,48 @@ content.insertBefore(newPoint, null);
 }
 }
 
-function createGraphic(svgBlock, content, colorj1, colorj2, list_j1, list_j2)
+function createGraphic(svgBlock, content, match, duration)
 {
-let indJ1 = 0;
-let indJ2 = 0;
+// let indJ1 = 0;
+// let indJ2 = 0;
 //list_j1.sort()
 //list_j2.sort()
-let maxx = list_j1[list_j1.length - 1]["time"] > list_j2[list_j2.length - 1]["time"] ? list_j1[list_j1.length - 1]["time"] : list_j2[list_j2.length - 1]["time"];
-let maxy = list_j1.length > list_j2.length ? list_j1.length : list_j2.length
-console.log(list_j1);
-console.log(maxx);
-console.log(maxy);
+// let maxx = list_j1[list_j1.length - 1]["time"] > list_j2[list_j2.length - 1]["time"] ? list_j1[list_j1.length - 1]["time"] : list_j2[list_j2.length - 1]["time"];
+// let maxy = list_j1.length > list_j2.length ? list_j1.length : list_j2.length
+let maxx = duration
+let maxy = 11
+// console.log(list_j1);
+// console.log(maxx);
+// console.log(maxy);
 maxx += 0.75;
 maxy += 2;
+ 
 createNumberGrahic(content, maxx, maxy);
-createPoints(svgBlock, content, colorj1, list_j1, maxx, maxy);
-createPoints(svgBlock, content, colorj2, list_j2, maxx, maxy);
+createPoints(svgBlock, content, "#FF0000", match["playerR1"]["goalList"], maxx, maxy);
+createPoints(svgBlock, content, "#0000FF", match["playerL1"]["goalList"], maxx, maxy);
+if (match["playerL2"] != undefined)
+{
+	createPoints(svgBlock, content, "#AA0000", match["playerL2"]["goalList"], maxx, maxy);
+}
+if (match["playerR2"] != undefined)
+{
+	createPoints(svgBlock, content, "#0000AA", match["playerR2"]["goalList"], maxx, maxy);
+}
 
 }
 
-//createGraphic(graphe, "#FF00FF", "#00FF00", goal_j1_list, goal_j2_list);
 
 function  createHistory(listMatch)
 {
 	let matchHistory = document.getElementById("match_history");
 	for (let index = 0; index < listMatch.length; index++) {
 		const match = listMatch[index];
-		const scoreP1 = match["player1"]["goalList"].length;
-		const scoreP2 = match["player2"]["goalList"].length;
+		let scoreP1 = match["playerR1"]["goalList"].length;
+		let scoreP2 = match["playerL1"]["goalList"].length;
+		if (match["playerR2"] != undefined && match["playerR2"]["name"] != match["playerR1"]["name"] )
+			scoreP1+=match["playerR2"]["goalList"].length
+		if (match["playerL2"] != undefined && match["playerL2"]["name"] != match["playerL1"]["name"])
+			scoreP2+=match["playerL2"]["goalList"].length
 		let matchDiv = document.createElement('tr');
 		let playerDiv = document.createElement('td');
 		let infoDiv = document.createElement('td');
@@ -275,9 +289,13 @@ function  createHistory(listMatch)
 		let score = document.createElement('h5');
 		let result = document.createElement('h4');
 		let P1name = document.createElement('h5');
+		let P3name = document.createElement('h5');
 		let P2name = document.createElement('h5');
+		let P4name = document.createElement('h5');
 		let P1img = document.createElement('img');
+		let P3img = document.createElement('img');
 		let P2img = document.createElement('img');
+		let P4img = document.createElement('img');
 		let mapType = document.createElement('h5');
 		let PowerUpTxt = document.createElement('h5');
 		let PowerUpBool = document.createElement('span');
@@ -316,39 +334,71 @@ function  createHistory(listMatch)
 			result.textContent = "LOSE";
 			result.style.color = "red";
 		}
-		P1name.textContent = match["player1"]["name"];
-		P2name.textContent = match["player2"]["name"];
+		P1name.textContent = match["playerR1"]["name"];
+		if (match["playerR2"] != undefined)
+		{
+			P3name.textContent = match["playerR2"]["name"];
+			P3img.src = match["playerR2"]["pp"];
+		}
+		P2name.textContent = match["playerL1"]["name"];
+		if (match["playerL2"] != undefined)
+		{
+			P4name.textContent = match["playerL2"]["name"];
+			P4img.src = match["playerL2"]["pp"];
+		}
 		P1name.style.color = "white";
+		P3name.style.color = "white";
 		P1name.style.width = "75%";
+		P3name.style.width = "75%";
 		P1name.style.display = "inline-block";
+		P3name.style.display = "inline-block";
 		P2name.style.display = "inline-block";
+		P4name.style.display = "inline-block";
 		P2name.style.width = "75%";
+		P4name.style.width = "75%";
 		P2name.style.color = "white";
+		P4name.style.color = "white";
 		P1name.style.fontSize = "200%";
+		P3name.style.fontSize = "200%";
 		P1name.style.marginTop = "0%";
+		P3name.style.marginTop = "0%";
 		P1name.style.marginBottom = "0%";
+		P3name.style.marginBottom = "0%";
 		P1name.style.textAlign = "left"
+		P3name.style.textAlign = "left"
 		P2name.style.fontSize = "200%";
+		P4name.style.fontSize = "200%";
 		P2name.style.marginTop = "0%";
+		P4name.style.marginTop = "0%";
 		P2name.style.marginBottom = "0%";
+		P4name.style.marginBottom = "0%";
 		P2name.style.textAlign = "right";
+		P4name.style.textAlign = "right";
 		P1name.style.verticalAlign = "middle";
+		P3name.style.verticalAlign = "middle";
 		P2name.style.verticalAlign = "middle";
+		P4name.style.verticalAlign = "middle";
 		P1img.style.verticalAlign = "middle";
+		P3img.style.verticalAlign = "middle";
 		P2img.style.verticalAlign = "middle";
-		P1img.src = match["player1"]["pp"];
-		P2img.src = match["player2"]["pp"];
+		P4img.style.verticalAlign = "middle";
+		P1img.src = match["playerR1"]["pp"];	
+		P2img.src = match["playerL1"]["pp"];
 		P1img.style.width = "25%";
+		P3img.style.width = "25%";
 		P2img.style.width = "25%";
+		P4img.style.width = "25%";
 		P1img.style.display = "inline-block";
+		P3img.style.display = "inline-block";
 		P2img.style.display = "inline-block";
+		P4img.style.display = "inline-block";
 		mapType.textContent = "Map : " + match["map"];
 		mapType.style.color = "white";
 		mapType.style.padding = "3%";
 		PowerUpTxt.style.padding = "3%";
 		PowerUpTxt.style.color = "white";
 		PowerUpTxt.textContent = "Power Up : ";
-		if (match["power_up"])
+		if (match["powerUp"])
 		{
 			PowerUpBool.textContent = "ON";
 			PowerUpBool.style.color = "green";
@@ -367,8 +417,18 @@ function  createHistory(listMatch)
 		playerDiv.insertBefore(P2content, null);
 		P1content.insertBefore(P1img, null);
 		P1content.insertBefore(P1name, null);
+		if (match["playerR2"] != undefined)
+		{
+			P1content.insertBefore(P3img, null);
+			P1content.insertBefore(P3name, null);
+		}
 		P2content.insertBefore(P2name, null);
 		P2content.insertBefore(P2img, null);
+		if (match["playerL2"] != undefined)
+		{
+			P2content.insertBefore(P4name, null);
+			P2content.insertBefore(P4img, null);
+		}
 		infoDiv.insertBefore(mapType, null);
 		infoDiv.insertBefore(PowerUpTxt, null);
 		PowerUpTxt.insertBefore(PowerUpBool, null);
@@ -392,8 +452,36 @@ function  createHistory(listMatch)
 		// graphe.style.filter = "blur(0px)";
 		// graphe.style.webkitFilter = "blur(0px)";
 		matchDiv.onclick = function(){ showGraphic(graphe.id) } ;
-		createGraphic(graphe, ingraphe, "#FF00FF", "#00FF00", match["player1"]["goalList"], match["player2"]["goalList"]);
+		createGraphic(graphe, ingraphe,  match, match["duration"]);
 	}
 
 }
-createHistory(Match_list);
+// createHistory(Match_list);
+
+function getMatchHistory() {
+	const formmatchHistory = document.getElementById('data-request-relation');
+	const data = new FormData(formmatchHistory);
+	
+	fetch("https://" + window.location.hostname + ":4200/getusermatchhistory",
+	{
+		method: 'POST',
+		body: data,
+		cache: "default"
+	})
+			.then(response => response.json())
+			.then (jsonData => {
+				console.log("received from getusermatchhistory : ")
+				console.log(jsonData)
+				if (! jsonData["success"])
+				{
+					console.error(jsonData["content"])
+					return ;
+				}
+				createHistory(jsonData["content"])
+			})
+			.catch(error => {
+				console.log("erreur from getusermatchhistory : ")
+				console.error(error)
+			})
+}
+getMatchHistory()

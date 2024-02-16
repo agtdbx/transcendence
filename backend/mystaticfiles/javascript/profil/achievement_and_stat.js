@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   achievement_and_stat.js                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hde-min <hde-min@student.42.fr>            +#+  +:+       +#+        */
+/*   By: lflandri <liam.flandrinck.58@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/23 15:24:40 by lflandri          #+#    #+#             */
-/*   Updated: 2024/02/14 14:51:28 by hde-min          ###   ########.fr       */
+/*   Updated: 2024/02/16 04:58:12 by lflandri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,6 @@ function casePup(content, before, title, img, description, grade)
 	const image = document.createElement("img");
 	const box = document.createElement("div");
 	const divText = document.createElement("div");
-	const titleText = document.createElement("h5");
 	const text = document.createElement("p");
 	image.style.width = "30%";
 	image.style.display = "inline-block";
@@ -59,12 +58,7 @@ function casePup(content, before, title, img, description, grade)
 	divText.style.height = "30px";
 	divText.style.marginBottom = "-30px";
 	divText.style.fontSize = "10px";
-	titleText.style.color = "white";
-	titleText.textContent = title;
-	titleText.style.textAlign = "center";
-	titleText.style.marginTop = "1px";
-	titleText.style.marginBottom = "0px";
-	titleText.style.fontSize = "15px";
+
 	text.style.color = "white";
 	text.textContent = description;
 	text.style.marginTop = "5px";
@@ -72,7 +66,17 @@ function casePup(content, before, title, img, description, grade)
 	container.insertBefore(box, before);
 	box.insertBefore(divText, null);
 	box.insertBefore(image, null);
-	divText.insertBefore(titleText, null);
+	if (title != null)
+	{
+		const titleText = document.createElement("h5");
+		titleText.style.color = "white";
+		titleText.textContent = title;
+		titleText.style.textAlign = "center";
+		titleText.style.marginTop = "1px";
+		titleText.style.marginBottom = "0px";
+		titleText.style.fontSize = "15px";
+		divText.insertBefore(titleText, null);	
+	}
 	divText.insertBefore(text, null);
 
 	if (grade > 0 && grade < 4 )
@@ -203,7 +207,7 @@ function titlePup(content, before, title)
 }
 
 
-function createStats()
+function createStats(listStat)
 {
 	console.log("create stats panel");
 	const body = document.getElementById("body");
@@ -234,13 +238,13 @@ function createStats()
 	succesBlock.style.width = "70%";
 	containerContentSuccesBlock.style.zIndex = "1000";
 	titlePup(succesBlock, null, "Stats");
-	for (let index = 0; index < 9; index++)
+	for (let index = 0; index < listStat.length; index++)
 	{
 			casePup(succesBlock,
 				null,
-				"Stats Name",
+				null,
 				"https://static.wikia.nocookie.net/deeprockgalactic_gamepedia_en/images/1/14/Unknown_artifact_icon.png/revision/latest/scale-to-width-down/250?cb=20180519140040",
-				"Stats description",
+				listStat[index]["description"],
 				-1);
 	}
 }
@@ -424,7 +428,30 @@ function createpup(type)
 	}
 	if (type === "stats")
 	{
-		createStats()
+		const form = document.getElementById('data-request-relation');
+		const data = new FormData(form);
+	
+		fetch("https://" + window.location.hostname + ":4200/getuserstat",
+		{
+			method: 'POST',
+			body: data,
+			cache: "default"
+		})
+				.then(response => response.json())
+				.then (jsonData => {
+					console.log("received from getuserstat : ")
+					console.log(jsonData)
+					if (! jsonData["success"])
+					{
+						console.error(jsonData["content"])
+						return ;
+					}
+					createStats(jsonData['content'])
+				})
+				.catch(error => {
+					console.log("erreur from getuserstat : ")
+					console.error(error)
+				})
 	}
 	if (type === "pass")
 	{

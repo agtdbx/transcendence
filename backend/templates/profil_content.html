@@ -22,7 +22,7 @@
 					<button data-section="12" class ="btn-drg" style="clear:both; margin-left:1%; width:30%; font-size:75%;" onclick="createpup('pass')">Change password</button>
 					<form id="data-request-relation">
 						{% csrf_token %}
-						<input type="hidden" name="friend" value="" id="data-request-relation-input">
+						<input type="hidden" name="friend" value="{{ user.username }}" id="data-request-relation-input">
 					</form>
 					<script src="{% static 'javascript/profil/profil.js' %}" ></script>
 					<script src="{% static 'javascript/user_relation/friend_request.js' %}" ></script>

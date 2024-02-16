@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    views_achievement.py                               :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: aderouba <aderouba@student.42.fr>          +#+  +:+       +#+         #
+#    By: lflandri <lflandri@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/17 15:33:50 by lflandri          #+#    #+#              #
-#    Updated: 2024/02/10 17:07:05 by aderouba         ###   ########.fr        #
+#    Updated: 2024/02/14 16:48:33 by lflandri         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
