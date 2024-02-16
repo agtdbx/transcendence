@@ -557,7 +557,8 @@ export class GameClient {
 			console.log("GWS CLOSE");
 
 			setTimeout(function () {
-				changePage('3');
+				if (current_page == 6)
+					changePage('3');
 			}, 3000);
 		}
 		else if (type === "startInfo")

@@ -47,6 +47,32 @@ def remove_user_connected(myid, websocket):
           connected_player, file=sys.stderr)
 
 
+async def timeoutConnection():
+    global game, team_left_ready, team_right_ready
+
+    print("\nGWS : Start time out connection", file=sys.stderr)
+    await asyncio.sleep(10)
+    print("\nGWS : End time out connection", file=sys.stderr)
+    print("GWS : Team left ready :", team_left_ready, file=sys.stderr)
+    print("GWS : Team right ready :", team_right_ready, file=sys.stderr)
+
+    for readyState in team_left_ready:
+        if readyState == False:
+            print("GWS : Team left timeout !", file=sys.stderr)
+            if game == None:
+                asyncio.create_task(game_server_manager())
+                await asyncio.sleep(2)
+            game.makeTeamWin(1)
+
+    for readyState in team_right_ready:
+        if readyState == False:
+            print("GWS : Team right timeout !", file=sys.stderr)
+            if game == None:
+                asyncio.create_task(game_server_manager())
+                await asyncio.sleep(2)
+            game.makeTeamWin(0)
+
+
 async def handle_client(websocket : websockets.WebSocketServerProtocol, path):
     global map_id, power_up, team_left_ready, team_right_ready, connected_player, game_type
     # None | (id paddle, id team)
@@ -139,6 +165,7 @@ async def handle_client(websocket : websockets.WebSocketServerProtocol, path):
                             team_right_ready.append(False)
                         team_right.append(id)
                     print("GWS : RTEAM :", team_right_ready, file=sys.stderr)
+                    asyncio.create_task(timeoutConnection())
                 continue
 
             # Check if client is connected
