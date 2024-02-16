@@ -34,6 +34,30 @@ function addPlayerViewsTournament(player, div)
 	div.appendChild(playerDiv);
 }
 
+function addPlayerNextmatch(player, div, divtxt)
+{
+	let pp = document.createElement("img");
+	pp.src = player[1];
+	pp.style.width = "100%";
+	pp.style.height = "100%";
+	pp.style.position = "absolute";
+	pp.style.objectFit= "contain";
+
+	let nickname = document.createElement("p");
+	nickname.textContent = player[2]
+	nickname.style.color = "white";
+
+	let playerDiv = document.createElement("div");
+	let playerName = document.createElement("divtxt");
+	playerDiv.style.display = "flex";
+	playerDiv.style.flexDirection = "row";
+	playerDiv.appendChild(pp);
+	playerName.appendChild(nickname);
+
+	div.appendChild(playerDiv);
+	divtxt.appendChild(playerName);
+}
+
 
 function assignTournamentStatusOnCreatePage(status, mapId, powerUp, listPlayers)
 {

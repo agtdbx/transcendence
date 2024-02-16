@@ -646,7 +646,7 @@ async def join_tournament(my_id:int,
 
     # Check if nickname haven't bad caracters
     nickname = nickname.lower()
-    good_chars = "abcdefghijklmnoprstuvwxyz0123456789_"
+    good_chars = "abcdefghijklmnopqrstuvwxyz0123456789_"
     for c in nickname:
         if c not in good_chars:
             print("WS : User", my_id, "Bad nickname. Only alphanum and "
