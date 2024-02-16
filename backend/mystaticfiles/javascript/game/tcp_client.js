@@ -20,7 +20,7 @@ function parseMessageFromServerWS(event)
 	// {
 	// 	console.log(console.error(error));
 	// }
-	
+
 }
 
 export async function runGameClient(
@@ -42,16 +42,20 @@ export async function runGameClient(
     let gameClient = new GameClient()
 	actuelGame = gameClient;
 
-	document.addEventListener("keydown", function(event)
-			{
-				console.log("event detected : " + event.code)
-				gameClient.input(event, "down")
-			});
-	document.addEventListener("keyup", function(event)
-			{
-				console.log("event detected : " + event.code)
-				gameClient.input(event, "up")
-			});
+	keydownListennerGame = function(event)
+	{
+		console.log("event detected : " + event.code)
+		gameClient.input(event, "down")
+	}
+
+	keyupListennerGame = function(event)
+	{
+		console.log("event detected : " + event.code)
+		gameClient.input(event, "up")
+	}
+
+	document.addEventListener("keydown", keydownListennerGame);
+	document.addEventListener("keyup", keyupListennerGame);
 
     // Clients loop
 

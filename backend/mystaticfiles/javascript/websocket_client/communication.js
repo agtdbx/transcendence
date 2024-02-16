@@ -44,11 +44,11 @@ function onRecieveData(event)
 		if (current_page != 5)
 			changePage('5');
 
-		const map_id = data["mapId"];
+		const mapName = data["mapName"];
 		const power_up = data["powerUpActivate"];
 		const team_left = data["teamLeft"];
 		const team_right = data["teamRight"];
-		updateGameRoomInfo(map_id, power_up, team_left, team_right);
+		updateGameRoomInfo(mapName, power_up, team_left, team_right);
 	}
 	else if (type == 'joinRoomInfo')
 	{
@@ -59,11 +59,11 @@ function onRecieveData(event)
 		let inter = setInterval(function () {
 			if (pageInLoad == false)
 			{
-				const map_id = data["mapId"];
+				const mapName = data["mapName"];
 				const power_up = data["powerUpActivate"];
 				const team_left = data["teamLeft"];
 				const team_right = data["teamRight"];
-				updateGameRoomInfo(map_id, power_up, team_left, team_right);
+				updateGameRoomInfo(mapName, power_up, team_left, team_right);
 				clearInterval(inter);
 			}
 			else
@@ -74,11 +74,11 @@ function onRecieveData(event)
 	{
 		console.log("GAME ROOM UPDATE");
 
-		const map_id = data["mapId"];
+		const mapName = data["mapName"];
 		const power_up = data["powerUpActivate"];
 		const team_left = data["teamLeft"];
 		const team_right = data["teamRight"];
-		updateGameRoomInfo(map_id, power_up, team_left, team_right);
+		updateGameRoomInfo(mapName, power_up, team_left, team_right);
 	}
 	else if (type == 'invite')
 	{
@@ -118,16 +118,17 @@ function onRecieveData(event)
 		console.log("tournament state", current_page);
 		let status = data["status"];
 		let mapId = data["mapId"];
+		let mapName = data["mapName"];
 		let powerUp = data["powerUp"];
 		let listPlayers = data["players"];
 		let youInTournament = data["youAreInTournament"];
 		console.log("MSG RECIVIED ON PAGE", current_page);
 		if (pageForTournamentStatus == "mainpage" || current_page == 3)
-			manageMainpageButton(status, mapId, powerUp, listPlayers, youInTournament);
+			manageMainpageButton(status, mapName, powerUp, listPlayers, youInTournament);
 		else if (pageForTournamentStatus == "create" || current_page == 8)
 			assignTournamentStatusOnCreatePage(status, mapId, powerUp, listPlayers);
 		else if (current_page == 71 || current_page == 72)
-			applyTournamentState(status, mapId, powerUp, listPlayers, youInTournament);
+			applyTournamentState(status, mapName, powerUp, listPlayers, youInTournament);
 		pageForTournamentStatus = null;
 	}
 	else if (type == 'joinReply')
@@ -135,11 +136,11 @@ function onRecieveData(event)
 		console.log("Tournament join succeed");
 
 		let powerUp = data["powerUp"];
-		let mapId = data["mapId"];
+		let mapName = data["mapName"];
 		let players = data["players"];
 
 		changePage('71');
-		waitTournamentState(1, mapId, powerUp, players, 'true');
+		waitTournamentState(1, mapName, powerUp, players, 'true');
 	}
 	else if (type == 'quitReply')
 	{
@@ -165,14 +166,15 @@ function onRecieveData(event)
 	{
 		let powerUp = data["powerUp"];
 		let mapId = data["mapId"];
+		let mapName = data["mapName"];
 		let listPlayers = data["players"];
 		let youInTournament = data["inTournament"];
 		if (current_page == 3)
-			manageMainpageButton(2, mapId, powerUp, listPlayers, youInTournament);
+			manageMainpageButton(2, mapName, powerUp, listPlayers, youInTournament);
 		else if (current_page == 8)
 			assignTournamentStatusOnCreatePage(2, mapId, powerUp, listPlayers);
 		else if (current_page == 71 || current_page == 72)
-			applyTournamentState(2, mapId, powerUp, listPlayers, youInTournament);
+			applyTournamentState(2, mapName, powerUp, listPlayers, youInTournament);
 	}
 	else if (type == 'winners')
 	{

@@ -211,7 +211,8 @@ TOURNAMENT
         'cmd' : 'start'
         -> 'type' : 'tournamentStart'
            'powerUp' : true | false
-           'mapId' : <map id>
+           'mapId' : <map id>,
+           'mapName' : <map name>
            'players' : [<user view>]
            'inTournament' : true | false
 
@@ -221,7 +222,7 @@ TOURNAMENT
         'nickname' : <nickname>
         -> 'type' : 'joinReply'
            'powerUp' : true | false
-           'mapId' : <map id>
+           'mapName' : <map name>
            'players' : [<user view>]
 
     quit tournament # if the tournament has begun, it will not work
@@ -312,6 +313,7 @@ TOURNAMENT
         # 0 = nothing, 1 = create, 2 = start, 3 = finish
         'powerUp' : true | false
         'mapId' : <map id>
+        'mapName' : <map name>
         'players' : [<user view>]
         'youAreInTournament' : true | false
 

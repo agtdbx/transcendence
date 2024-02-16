@@ -97,7 +97,8 @@ async def handle_client(websocket : websockets.WebSocketServerProtocol, path):
                     winner = await end_game(data, in_game_list)
                     if winner != None:
                         await tournament_end_match(winner, connected_users)
-                    await tournament_next_start_match(connected_users, in_game_list)
+                    asyncio.create_task(tournament_next_start_match(connected_users, in_game_list))
+                    await asyncio.sleep(1)
                     await check_if_can_start_new_game(waitlist, in_game_list,
                                                       connected_users)
                 else:

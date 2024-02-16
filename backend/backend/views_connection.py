@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    views_connection.py                                :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: hde-min <hde-min@student.42.fr>            +#+  +:+       +#+         #
+#    By: aderouba <aderouba@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/23 19:48:51 by aderouba          #+#    #+#              #
-#    Updated: 2024/02/16 15:02:49 by hde-min          ###   ########.fr        #
+#    Updated: 2024/02/16 17:41:02 by aderouba         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,12 +16,56 @@
 import hashlib, jwt, random, os
 import backend.settings as settings
 import requests
+import datetime
 
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
 from db_test.models import User, connectionPassword, connection42
 from django.shortcuts import render
 from django.contrib import messages
+
+
+def generateToken(id:int) -> str:
+    jwtCreation = datetime.datetime.now()
+    jwtTimeout = jwtCreation + datetime.timedelta(days=5)
+
+    token = jwt.encode({"userId": id,
+                        "creation" : jwtCreation.strftime("%d/%m/%Y %H:%M:%S"),
+                        "timeout" : jwtTimeout.strftime("%d/%m/%Y %H:%M:%S")}
+                       , settings.SECRET_KEY, algorithm="HS256")
+    return token
+
+
+def checkToken(request):
+    token = request.COOKIES.get('token', None)
+
+    if token == None or token == "undefined":
+        return {"success" : False, "error" : "No token send"}
+
+    data = None
+    try:
+        data = jwt.decode(token, settings.SECRET_KEY, algorithms="HS256")
+    except Exception as error:
+        return {"success" : False, "error" : "Token undecodable - " + str(error)}
+
+    now = datetime.datetime.now()
+    creation = datetime.datetime.strptime(data["creation"], '%d/%m/%Y %H:%M:%S')
+    timeout = datetime.datetime.strptime(data["timeout"], '%d/%m/%Y %H:%M:%S')
+
+    if creation > now:
+        return {"success" : False, "error" : "Creation token invalid"}
+
+    if timeout <= now:
+        return {"success" : False, "error" : "Token timeout"}
+
+    userId = data["userId"]
+    users = User.objects.all().filter(idUser=userId)
+    if len(users) == 0:
+        return {"success" : False, "error" : "User id invalid"}
+    if len(users) > 1:
+        return {"success" : False, "error" : "User id duplicate"}
+
+    return {"success" : True, "userId" : userId}
 
 
 @csrf_exempt
@@ -70,8 +114,7 @@ def checkLogin(request):
     hash = hashlib.sha512(password.encode(), usedforsecurity=True)
     if hash.hexdigest() != password_check[0].password:
         return JsonResponse({"success" : False, "error" : "Password incorrect"})
-    token = jwt.encode({"userId": username_check[0].idUser},
-                       settings.SECRET_KEY, algorithm="HS256")
+    token = generateToken(username_check[0].idUser)
 
     return JsonResponse({"success" : True, "token" : token})
 
@@ -109,12 +152,12 @@ def checkSignin(request):
     id = User.objects.all().count() - 1
     idType = 1
 
-    token = jwt.encode({"userId": id}, settings.SECRET_KEY, algorithm="HS256")
+    token = generateToken(id)
     try:
         str = ["images/default/Scout.png", "images/default/Driller.png",
                "images/default/Engineer.png", "images/default/Soldier.png"]
         user = User(idUser=id, type=idType, username=username,
-                    profilPicture=str[random.randint(0,3)], tokenJWT=token,
+                    profilPicture=str[random.randint(0,3)],
                     money=10, status=0)
         user.save()
     except:
@@ -203,32 +246,6 @@ def changeUsername(request):
         return JsonResponse({"success" : True})
 
 
-@csrf_exempt
-def checkToken(request):
-    token = request.COOKIES.get('token', None)
-
-    if token == None or token == "undefined":
-        return {"success" : False, "error" : "No token send"}
-
-    data = None
-    try:
-        data = jwt.decode(token, settings.SECRET_KEY, algorithms="HS256")
-    except Exception as error:
-        return {"success" : False, "error" : "Token undecodable - " + str(error)}
-
-    userId = data["userId"]
-    users = User.objects.all().filter(idUser=userId)
-    if len(users) == 0:
-        return {"success" : False, "error" : "User id invalid"}
-    if len(users) > 1:
-        return {"success" : False, "error" : "User id duplicate"}
-
-    if users[0].tokenJWT != token:
-        return {"success" : False, "error" : "Invalid token"}
-
-    return {"success" : True, "userId" : userId}
-
-
 def checkApi42Request(request, islogin, user:User):
     code = request.GET.get('code')
     # First request : get an users tocken
@@ -289,7 +306,7 @@ def checkApi42Request(request, islogin, user:User):
         id = User.objects.all().count() - 1
         idType = 1
 
-        token = jwt.encode({"userId": id}, settings.SECRET_KEY, algorithm="HS256")
+        # token = generateToken(id)
         username = response["login"]
         number = 0
         while User.objects.all().filter(username=username):
@@ -301,7 +318,7 @@ def checkApi42Request(request, islogin, user:User):
             imgpath = ["images/default/Scout.png", "images/default/Driller.png",
                        "images/default/Engineer.png", "images/default/Soldier.png"]
             user = User(idUser=id, type=idType, username=username,
-                        profilPicture=imgpath[random.randint(0,3)], tokenJWT=token,
+                        profilPicture=imgpath[random.randint(0,3)],
                         money=10, status=0)
             user.save()
             password42 = connection42(login=response["id"], idUser=user)

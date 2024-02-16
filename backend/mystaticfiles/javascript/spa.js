@@ -107,6 +107,25 @@ function manageAPI(num)
 	{
 		quitGameRoom();
 	}
+	else if (current_page == 6)
+	{
+		if (ws_game != null)
+		{
+			ws_game.onclose = {};
+			ws_game.close();
+			ws_game = null;
+		}
+		if (keydownListennerGame != null)
+		{
+			document.removeEventListener("keydown", keydownListennerGame);
+			keydownListennerGame = null;
+		}
+		if (keyupListennerGame != null)
+		{
+			document.removeEventListener("keyup", keyupListennerGame);
+			keyupListennerGame = null;
+		}
+	}
 
 	if (num == 3)
 	{
@@ -168,21 +187,22 @@ function changePage(num, byArrow=false)
 {
 	if (num == current_page)
 		return ;
-		try
-		{
-			remove_pop();
-			let id = 0;
-			while (document.getElementById("grapheMatch" + id))
-			{
-				document.getElementById("grapheMatch" + id).remove();
-				id++;
-			}
 
-		}
-		catch (error)
+	try
+	{
+		remove_pop();
+		let id = 0;
+		while (document.getElementById("grapheMatch" + id))
 		{
-			console.error(error)
+			document.getElementById("grapheMatch" + id).remove();
+			id++;
 		}
+
+	}
+	catch (error)
+	{
+		console.error(error)
+	}
 
 	pageInLoad = true;
 	fetch("/" + `${num}`,

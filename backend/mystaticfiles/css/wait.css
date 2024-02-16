@@ -1,6 +1,6 @@
 .wait-page{
-	cursor: url("./image/cursor/cursor1.png"), auto;
-	background-image:url(./image/background/waitpage.png);
+	cursor: url("/static/image/cursor/cursor1.png"), auto;
+	background-image:url("/static/image/background/waitpage.png");
 	background-attachment: auto;
 	background-repeat:	no-repeat;
 }
@@ -33,7 +33,7 @@
 	left: 38.5%;
 	width: 96px;
 	height: 99px;
-	background-image:url(./image/background/bosco_move.gif);
+	background-image:url("/static/image/background/bosco_move.gif");
 	text-align: center;
 }
 
@@ -45,7 +45,7 @@
 	left: 61%;
 	width: 96px;
 	height: 99px;
-	background-image:url(./image/background/bosco_move.gif);
+	background-image:url("/static/image/background/bosco_move.gif");
 	text-align: center;
 }
 

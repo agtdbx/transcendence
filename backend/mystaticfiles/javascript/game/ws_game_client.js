@@ -6,6 +6,10 @@ let id_paddle = null;
 let id_team = null;
 let game_type = null
 
+let keydownListennerGame = null;
+let keyupListennerGame = null;
+
+
 function startGameClient(server_port, idPaddle, idTeam, get_game_type)
 {
 	if (ws_game != null)
@@ -38,44 +42,3 @@ function startGameClient(server_port, idPaddle, idTeam, get_game_type)
 	ws_game.onerror = function(e) {console.error("GWS ERROR :", e)};
 	websockGame = ws_game;
 }
-
-
-// function parseServerMessage(event)
-// {
-// 	let data = null;
-// 	try
-// 	{
-// 		data = JSON.parse(event.data);
-// 		console.log("DATA FROM GWS :", data);
-// 	}
-// 	catch (error)
-// 	{
-// 		console.error("GWS : Json parsing error :", event.data, error);
-// 		return ;
-// 	}
-
-// 	const type = data['type'];
-
-// 	if (type === "error")
-// 	{
-// 		console.error("GWS :Error :", data['error']);
-// 	}
-// 	else if (type === "endGame") // Not the movie !
-// 	{
-// 		let but = document.createElement("button");
-// 		but.classList = "btn-drg";
-// 		but.textContent = "Return to main page";
-// 		but.onclick = function(){
-// 			changePage('3');
-// 		};
-// 		document.getElementById("content").appendChild(but);
-// 		ws_game.onclose = {};
-// 		ws_game.close();
-// 		ws_game = null;
-// 		id_paddle = null;
-// 		id_team = null;
-// 		console.log("GWS CLOSE");
-// 	}
-// 	else
-// 		console.error("GWS :Unkown data recieved :", data);
-// }

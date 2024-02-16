@@ -62,7 +62,7 @@ class Ia:
 		# Simulate the game until one ball is in goal
 		self.emulateBallsToGoal()
 
-		# # Choose where ia should be placed, and it action to do
+		# Choose where ia should be placed, and it action to do
 		self.chooseNextActionToDo()
 
 		self.iaPaddle = tmpPaddle

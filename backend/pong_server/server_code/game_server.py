@@ -409,6 +409,9 @@ class GameServer:
 
 
     def ballInLeftGoal(self, ball:ball.Ball, i:int, ballToDelete:list):
+        if self.teamRight.score >= TEAM_WIN_SCORE:
+            return
+
         self.teamRight.score += 1
         # for stats
         contreCamp = False
@@ -449,6 +452,9 @@ class GameServer:
 
 
     def ballInRightGoal(self, ball:ball.Ball, i:int, ballToDelete:list):
+        if self.teamRight.score >= TEAM_WIN_SCORE:
+            return
+
         self.teamLeft.score += 1
         # for stats
         contreCamp = False
@@ -484,6 +490,25 @@ class GameServer:
         ball.modifierSkipCollision = False
         ball.lastPaddleHitId = random.choice(self.teamRight.paddles).id
         ball.lastPaddleTeam = TEAM_RIGHT
+
+
+    def makeTeamWin(self, teamId:int):
+        ball = self.balls[0]
+        # Make team left win by make many goal at once
+        if teamId == 0:
+            while self.teamLeft.score < TEAM_WIN_SCORE:
+                ball.lastPaddleHitId = 0
+                ball.lastPaddleTeam = teamId
+                self.ballInRightGoal(ball, 0, [])
+            self.runMainLoop = False
+
+        # Make team right win by make many goal at once
+        else:
+            while self.teamRight.score < TEAM_WIN_SCORE:
+                ball.lastPaddleHitId = 0
+                ball.lastPaddleTeam = teamId
+                self.ballInLeftGoal(ball, 0, [])
+            self.runMainLoop = False
 
 
     def printFinalStat(self):

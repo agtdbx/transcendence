@@ -1,5 +1,5 @@
 import sys
-from db_test.models import User
+from db_test.models import User, Map, Link
 
 def set_user_status(myid, status):
     user = User.objects.all().filter(idUser=myid)[0]
@@ -101,3 +101,10 @@ def create_game_start_message(port:int,
     str_message = str_message.replace("'", '"')
 
     return str_message
+
+
+def get_map_name_by_id(map_id):
+    maps = Map.objects.all().filter(idMap=map_id)
+    if len(maps) != 1:
+        return "Invalid map"
+    return maps[0].name
