@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    views_connection.py                                :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: aderouba <aderouba@student.42.fr>          +#+  +:+       +#+         #
+#    By: hde-min <hde-min@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/23 19:48:51 by aderouba          #+#    #+#              #
-#    Updated: 2024/02/16 17:41:02 by aderouba         ###   ########.fr        #
+#    Updated: 2024/02/16 18:15:45 by hde-min          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -48,9 +48,16 @@ def checkToken(request):
     except Exception as error:
         return {"success" : False, "error" : "Token undecodable - " + str(error)}
 
+    userId = data.get("userId", None)
+    creationStr = data.get("creation", None)
+    timeoutStr = data.get("timeout", None)
+    
+    if userId == None or creationStr == None or timeoutStr == None:
+        return {"success" : False, "error" : "Token invalid"}
+
     now = datetime.datetime.now()
-    creation = datetime.datetime.strptime(data["creation"], '%d/%m/%Y %H:%M:%S')
-    timeout = datetime.datetime.strptime(data["timeout"], '%d/%m/%Y %H:%M:%S')
+    creation = datetime.datetime.strptime(creationStr, '%d/%m/%Y %H:%M:%S')
+    timeout = datetime.datetime.strptime(timeoutStr, '%d/%m/%Y %H:%M:%S')
 
     if creation > now:
         return {"success" : False, "error" : "Creation token invalid"}
@@ -58,7 +65,6 @@ def checkToken(request):
     if timeout <= now:
         return {"success" : False, "error" : "Token timeout"}
 
-    userId = data["userId"]
     users = User.objects.all().filter(idUser=userId)
     if len(users) == 0:
         return {"success" : False, "error" : "User id invalid"}
