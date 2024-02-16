@@ -3,7 +3,7 @@ let pageForTournamentStatus = null;
 function getTournamentStatus()
 {
 	let inter = setInterval(function () {
-		if (webSocket.readyState != WebSocket.CONNECTING)
+		if (webSocket != null && webSocket.readyState != WebSocket.CONNECTING)
 		{
 			webSocket.send(JSON.stringify({
 				'type' : 'tournament',
@@ -186,7 +186,7 @@ function getTournamentTree()
 	console.log('Get tree tournament');
 
 	let inter = setInterval(function () {
-		if (webSocket.readyState != WebSocket.CONNECTING)
+		if (webSocket != null && webSocket.readyState != WebSocket.CONNECTING)
 		{
 			webSocket.send(JSON.stringify({
 				'type' : 'tournament',
@@ -248,7 +248,7 @@ function getTournamentNextMatch()
 	console.log('Get next match tournament');
 
 	let inter = setInterval(function () {
-		if (webSocket.readyState != WebSocket.CONNECTING)
+		if (webSocket != null && webSocket.readyState != WebSocket.CONNECTING)
 		{
 			webSocket.send(JSON.stringify({
 				'type' : 'tournament',
@@ -310,7 +310,7 @@ function getTournamentMyNextMatch()
 	console.log('Get my next match tournament');
 
 	let inter = setInterval(function () {
-		if (webSocket.readyState != WebSocket.CONNECTING)
+		if (webSocket != null && webSocket.readyState != WebSocket.CONNECTING)
 		{
 			webSocket.send(JSON.stringify({
 				'type' : 'tournament',
@@ -380,7 +380,7 @@ function getTournamentResult()
 	console.log('Get result of tournament');
 
 	let inter = setInterval(function () {
-		if (webSocket.readyState != WebSocket.CONNECTING)
+		if (webSocket != null && webSocket.readyState != WebSocket.CONNECTING)
 		{
 			webSocket.send(JSON.stringify({
 				'type' : 'tournament',

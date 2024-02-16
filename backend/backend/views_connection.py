@@ -6,7 +6,7 @@
 #    By: aderouba <aderouba@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/23 19:48:51 by aderouba          #+#    #+#              #
-#    Updated: 2024/02/16 18:55:41 by aderouba         ###   ########.fr        #
+#    Updated: 2024/02/16 19:04:06 by aderouba         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -138,6 +138,9 @@ def checkSignin(request):
         return JsonResponse({"success" : False,
                              "error" : "Empty field aren't accept"})
 
+    if len(username) == 0:
+        return JsonResponse({"success" : False, "error" : "new name can't be empty"})
+
     # Check if username haven't bad caracters
     username = username.lower()
     good_chars = "abcdefghijklmnopqrstuvwxyz0123456789_"
@@ -225,7 +228,22 @@ def changeUsername(request):
     if request.method != 'POST':
         return JsonResponse({"success" : False, "error" : "Only post request"})
 
-    newName = request.POST.get('newName')
+    newName = request.POST.get('newName', None)
+
+    if newName == None:
+        return JsonResponse({"success" : False, "error" : "Missing new name"})
+
+    if len(newName) == 0:
+        return JsonResponse({"success" : False, "error" : "new name can't be empty"})
+
+    # Check if newName haven't bad caracters
+    newName = newName.lower()
+    good_chars = "abcdefghijklmnopqrstuvwxyz0123456789_"
+    for c in newName:
+        if c not in good_chars:
+            return JsonResponse({"success" : False, "error" : "Only alphanum and underscore autorised"})
+
+
     check = checkToken(request)
     userId = check["userId"]
     user = User.objects.all().filter(idUser=userId)[0]
