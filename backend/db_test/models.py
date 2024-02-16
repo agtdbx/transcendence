@@ -11,7 +11,6 @@ class User(models.Model):
     type            = models.IntegerField()
     username        = models.CharField(max_length=15, unique=True)                                              #[unique]
     profilPicture   = models.ImageField(upload_to='images/', verbose_name="", validators=[validate_file_size])
-    tokenJWT        = models.TextField()
     money           = models.IntegerField()
     status          = models.IntegerField()
     nbTournamentWin = models.IntegerField(default=0)
