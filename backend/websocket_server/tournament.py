@@ -360,8 +360,10 @@ async def start_tournament(my_id:int,
     for player_id in tournament["players"]:
         tournament["quarter"].append(player_id)
 
+    id = -1
     while len(tournament["quarter"]) < 8:
-        tournament["quarter"].append(-len(tournament["quarter"]))
+        tournament["quarter"].append(id)
+        id -= 1
 
     # shuffle this step
     random.shuffle(tournament["quarter"])

@@ -1,6 +1,7 @@
 import asyncio
 import websockets
 import json
+import ssl
 import sys
 from websocket_server.utils import send_error, set_user_status
 from websocket_server.connection import connection_by_token, connection_by_username
@@ -27,7 +28,9 @@ from websocket_server.tournament import create_tournament, \
                                         next_match_tournament, next_match_user, \
                                         getTournamentWinners
 
-
+# ssl context
+ssl_context = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
+ssl_context.load_cert_chain("/certs/cert.pem")
 
 # Dict to save the actives connections
 connected_users = dict()
@@ -226,7 +229,7 @@ async def handle_client(websocket : websockets.WebSocketServerProtocol, path):
 
 
 # Start the websocket server
-start_server = websockets.serve(handle_client, "0.0.0.0", 8765)
+start_server = websockets.serve(handle_client, "0.0.0.0", 8765, ssl=ssl_context)
 
 asyncio.get_event_loop().run_until_complete(start_server)
 asyncio.get_event_loop().run_forever()

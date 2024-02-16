@@ -14,9 +14,9 @@ function startGameClient(server_port, idPaddle, idTeam, get_game_type)
 {
 	if (ws_game != null)
 		return ;
-	console.log("Try create game webSocket at ws://" + window.location.hostname + ":" + server_port + "/");
+	console.log("Try create game webSocket at wss://" + window.location.hostname + ":" + server_port + "/");
 	try {
-		ws_game = new WebSocket("ws://" + window.location.hostname + ":" + server_port + "/")
+		ws_game = new WebSocket("wss://" + window.location.hostname + ":" + server_port + "/")
 	}
 	catch (error)
 	{
