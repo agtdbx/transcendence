@@ -168,21 +168,22 @@ function changePage(num, byArrow=false)
 {
 	if (num == current_page)
 		return ;
-		try
-		{
-			remove_pop();
-			let id = 0;
-			while (document.getElementById("grapheMatch" + id))
-			{
-				document.getElementById("grapheMatch" + id).remove();
-				id++;
-			}
 
-		}
-		catch (error)
+	try
+	{
+		remove_pop();
+		let id = 0;
+		while (document.getElementById("grapheMatch" + id))
 		{
-			console.error(error)
+			document.getElementById("grapheMatch" + id).remove();
+			id++;
 		}
+
+	}
+	catch (error)
+	{
+		console.error(error)
+	}
 
 	pageInLoad = true;
 	fetch("/" + `${num}`,

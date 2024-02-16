@@ -53,6 +53,7 @@ IA_COOLDOWN_GET_GAME_STATE = 1 # In seconds
 ############################################################################################
 TEAM_MAX_PLAYER = 2
 TEAM_WIN_SCORE = 11
+TEAM_WIN_SCORE = 1
 TEAM_LEFT = 0
 TEAM_RIGHT = 1
 

@@ -60,7 +60,7 @@ class Ia:
 		tmpPaddle = self.iaPaddle.copy()
 
 		# Simulate the game until one ball is in goal
-		self.emulateBallsToGoal()
+		# self.emulateBallsToGoal()
 
 		# Choose where ia should be placed, and it action to do
 		self.chooseNextActionToDo()

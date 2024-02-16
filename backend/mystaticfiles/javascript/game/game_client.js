@@ -77,11 +77,11 @@ function changePolygon(path, pointList)
 export class GameClient {
 	constructor()
 	{
-		console.log("area rect")
-		console.log(dc.AREA_RECT[0])
-		console.log(dc.AREA_RECT[1])
-		console.log(dc.AREA_RECT[2])
-		console.log(dc.AREA_RECT[3])
+		// console.log("area rect")
+		// console.log(dc.AREA_RECT[0])
+		// console.log(dc.AREA_RECT[1])
+		// console.log(dc.AREA_RECT[2])
+		// console.log(dc.AREA_RECT[3])
 		/*
 		This method define all variables needed by the program
 		*/
@@ -112,7 +112,7 @@ export class GameClient {
 		// Team creation
 		this.teamLeft = null
 		this.teamRight = null
-		
+
 
 		this.balls = []
 		// Ball creation
@@ -149,7 +149,7 @@ export class GameClient {
 
 		// Walls creation
 		//addPolygon(game, [[50,50], [90,50], [90,90], [50, 90]], "#FF00FF");
-		
+
 		this.walls = []
 		this.wallsHtmlObjects = []
 
@@ -179,7 +179,7 @@ export class GameClient {
 
 
 		// let wallPointListe = [[0,0], [90,0], [90,900], [0, 900]]
-		
+
 
 		// this.walls.push(createObstacle(400, 0, wallPointListe))
 		// this.wallsHtmlObjects.push(addPolygon(this.win, 400, 0, wallPointListe, "#FF00FF"))
@@ -201,7 +201,7 @@ export class GameClient {
 
 		for (let index = 0; index < this.walls.length; index++) {
 			const element = this.walls[index];
-			console.log(element)
+			// console.log(element)
 		}
 
 		// For communications
@@ -266,7 +266,7 @@ export class GameClient {
 
 	input(event, type)
 	{
-		console.log("event : " + event.code + " : type : " + type)
+		// console.log("event : " + event.code + " : type : " + type)
 
 
 		// let templateContent = {"paddleId" : i, "keyId" : 0, "keyAction" : true}
@@ -486,18 +486,6 @@ export class GameClient {
 		// pg.display.update()
 	}
 
-
-	quit()
-	{
-		/*
-		This is the quit method
-		*/
-		// Pygame quit
-		this.runMainLoop = false
-		pg.quit()
-	}
-
-
 	parseMessageFromServer(event)
 	{
 		// console.log("DATA FROM GWS RECEIVED");
@@ -505,8 +493,8 @@ export class GameClient {
 		try
 		{
 			data = JSON.parse(event.data);
-			console.log("DATA FROM GWS :", data);
-			console.log("paddleInfoUser  : " + paddleInfoUser);
+			// console.log("DATA FROM GWS :", data);
+			// console.log("paddleInfoUser  : " + paddleInfoUser);
 
 		}
 		catch (error)
@@ -514,9 +502,9 @@ export class GameClient {
 			console.error("GWS : Json parsing error :", event.data, error);
 			return ;
 		}
-	
+
 		const type = data['type'];
-	
+
 		if (type === "error")
 		{
 			console.error("GWS :Error :", data['error']);
@@ -545,7 +533,7 @@ export class GameClient {
 				else
 				{
 					document.getElementById("EndStatusGame").textContent = "You Lose"
-					document.getElementById("EndStatusGame").setAttributeNS(null,"fill", "#FF0000")	
+					document.getElementById("EndStatusGame").setAttributeNS(null,"fill", "#FF0000")
 				}
 			}
 			else
@@ -558,7 +546,7 @@ export class GameClient {
 				else
 				{
 					document.getElementById("EndStatusGame").textContent = "You Lose"
-					document.getElementById("EndStatusGame").setAttributeNS(null,"fill", "#FF0000")	
+					document.getElementById("EndStatusGame").setAttributeNS(null,"fill", "#FF0000")
 				}
 			}
 			ws_game.onclose = {};
@@ -567,6 +555,10 @@ export class GameClient {
 			id_paddle = null;
 			id_team = null;
 			console.log("GWS CLOSE");
+
+			setTimeout(function () {
+				changePage('3');
+			}, 3000);
 		}
 		else if (type === "startInfo")
 		{
@@ -585,10 +577,10 @@ export class GameClient {
 		}
 		else if (type === "startCount")
 		{
-			console.log("Starting in " + data['number']);
+			// console.log("Starting in " + data['number']);
 			document.getElementById("startCounter").textContent = "" + data['number'];
 			if (data['number'] == 0)
-			{	
+			{
 				this.runMainLoop = true;
 				document.getElementById("divStartCounter").remove();
 				document.getElementById("startStartingIn").remove();
@@ -597,7 +589,7 @@ export class GameClient {
 		}
 		else if (type === "serverInfo") // Not the movie !
 		{
-			console.log("match info received");
+			// console.log("match info received");
 			this.parseMessageForObstacle(data["updateObstacles"])
 			this.parseMessageForPaddles(data["updatePaddles"])
 			this.parseMessageForBalls(data["updateBalls"])
@@ -651,7 +643,7 @@ export class GameClient {
 			this.walls[content[0]].clearPoints()
 			this.walls[content[0]].addPoints(content[2])
 			this.wallsHtmlObjects[content[0]].setAttribute('d', createDirectivePath(content[1][0], content[1][1], content[2]));
-			
+
 		}
 	}
 
@@ -696,7 +688,7 @@ export class GameClient {
 				this.teamRight.paddles[content[3]].powerUpInCharge = content[4]
 				this.teamRight.paddles[content[3]].draw();
 			}
-			
+
 		}
 	}
 

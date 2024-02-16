@@ -382,7 +382,7 @@ async def start_tournament(my_id:int,
     # Server message to inform users that the tournament begin
     await message_in_general("The Tournament start !", MISSION_CONTROL,
                              connected_users)
-    await tournament_next_start_match(connected_users, in_game_list)
+    asyncio.create_task(tournament_next_start_match(connected_users, in_game_list))
 
 
 async def tournament_next_start_match(connected_users:dict,
@@ -546,7 +546,7 @@ async def tournament_next_start_match(connected_users:dict,
 
     tournament["matchRunning"] = True
 
-    await asyncio.sleep(5)
+    await asyncio.sleep(10)
 
     # Send start game message to first player in waitlist
     first_player_msg = create_game_start_message(ret[1], 0, 0, GAME_TYPE_TOURNAMENT)
