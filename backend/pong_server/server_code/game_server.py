@@ -727,6 +727,18 @@ class GameServer:
 
         self.messageForClients.append(message)
 
+    def createDuck(self, mult, reverseX=1, reverseY=1):
+        duckPoint = [[-5.58,-2.89], [-4.26,-2.93], [-3.88,-3.93], [-3.12,-4.57],
+                                 [-1.48,-4.69],[-0.64,-4.25],[-0.32,-3.29],[-0.38,-1.85],
+                                 [0.26,-1.01], [1.46,-0.87],[3.46,-0.83], [4.48,-1.15],
+                                 [5.56,-1.97], [5.14,0.35], [4.66,1.87], [3.32,2.63],
+                                 [2.06,3.21], [-1.04,3.21], [-3.12,2.41], [-4.42,1.53],
+                                 [-4.64,0.31], [-4.06,-0.89], [-3.9,-1.81], [-4.16,-2.45],
+                                 [-5.54,-2.15], [-4.7,-2.57]]
+        for point in duckPoint :
+            point[0] *= mult * reverseX
+            point[1] *= mult * reverseY
+        return duckPoint
 
     def createMap(self):
         self.walls = [
@@ -748,26 +760,187 @@ class GameServer:
             )
         ]
 
-        if self.idMap == 1: # Sun quest
+        if self.idMap == 1: # Duck World
             self.walls.append(createPolygonObstacle(
-                                AREA_SIZE[0] / 2,
-                                0,
-                                [(-300, 0), (300, 0), (275, 50), (75, 75), (0, 125), (-75, 75), (-275, 50)],
-                                (200, 200, 0)
-                            ))
-            self.walls.append(createPolygonObstacle(
-                                AREA_SIZE[0] / 2,
-                                AREA_SIZE[1],
-                                [(-300, 0), (300, 0), (275, -50), (0, -25), (-275, -50)],
-                                (200, 200, 0)
-                            ))
-            self.walls.append(createCircleObstacle(
-                                AREA_SIZE[0] / 2,
+                                600,
                                 AREA_SIZE[1] / 2,
-                                100,
-                                32,
-                                (200, 0, 200)
+                                self.createDuck(30),
+                                (200, 200, 0)
                             ))
+            self.walls.append(createPolygonObstacle(
+                                1200 ,
+                                AREA_SIZE[1] / 2,
+                                self.createDuck(30, reverseX=-1),
+                                (200, 200, 0)
+                            ))
+            self.walls.append(createPolygonObstacle(
+                                1000 ,
+                                300,
+                                self.createDuck(10, reverseX=-1),
+                                (200, 200, 0),
+                                [
+                                    {"type" : OBSTACLE_ROUTINE_TYPE_ROTATION,
+                                        "time" : OBSTACLE_ROUTINE_TIME_INFINITE,
+                                        "effect" : -360}
+                                ]
+                            ))
+            self.walls.append(createPolygonObstacle(
+                                800 ,
+                                300,
+                                self.createDuck(10,),
+                                (200, 200, 0),
+                                [
+                                    {"type" : OBSTACLE_ROUTINE_TYPE_ROTATION,
+                                        "time" : OBSTACLE_ROUTINE_TIME_INFINITE,
+                                        "effect" : 360}
+                                ]
+                            ))
+            #bottom duck
+            self.walls.append(createPolygonObstacle(
+                                975 ,
+                                AREA_SIZE[1] - 30,
+                                self.createDuck(10, reverseX=-1),
+                                (200, 200, 0),
+                            ))
+            self.walls.append(createPolygonObstacle(
+                                825 ,
+                                AREA_SIZE[1] - 30,
+                                self.createDuck(10,),
+                                (200, 200, 0),
+                            ))
+            self.walls.append(createPolygonObstacle(
+                                1125 ,
+                                AREA_SIZE[1] - 30,
+                                self.createDuck(10, reverseX=-1),
+                                (200, 200, 0),
+                            ))
+            self.walls.append(createPolygonObstacle(
+                                675 ,
+                                AREA_SIZE[1] - 30,
+                                self.createDuck(10,),
+                                (200, 200, 0),
+                            ))
+            self.walls.append(createPolygonObstacle(
+                                1275 ,
+                                AREA_SIZE[1] - 30,
+                                self.createDuck(10, reverseX=-1),
+                                (200, 200, 0),
+                            ))
+            self.walls.append(createPolygonObstacle(
+                                525 ,
+                                AREA_SIZE[1] - 30,
+                                self.createDuck(10,),
+                                (200, 200, 0),
+                            ))
+            self.walls.append(createPolygonObstacle(
+                                1425 ,
+                                AREA_SIZE[1] - 30,
+                                self.createDuck(10, reverseX=-1),
+                                (200, 200, 0),
+                            ))
+            self.walls.append(createPolygonObstacle(
+                                375 ,
+                                AREA_SIZE[1] - 30,
+                                self.createDuck(10,),
+                                (200, 200, 0),
+                            ))
+            self.walls.append(createPolygonObstacle(
+                                1575 ,
+                                AREA_SIZE[1] - 30,
+                                self.createDuck(10, reverseX=-1),
+                                (200, 200, 0),
+                            ))
+            self.walls.append(createPolygonObstacle(
+                                225 ,
+                                AREA_SIZE[1] - 30,
+                                self.createDuck(10,),
+                                (200, 200, 0),
+                            ))
+            self.walls.append(createPolygonObstacle(
+                                1725 ,
+                                AREA_SIZE[1] - 30,
+                                self.createDuck(10, reverseX=-1),
+                                (200, 200, 0),
+                            ))
+            self.walls.append(createPolygonObstacle(
+                                75 ,
+                                AREA_SIZE[1] - 30,
+                                self.createDuck(10,),
+                                (200, 200, 0),
+                            )) 
+            #top duck
+            self.walls.append(createPolygonObstacle(
+                                975 ,
+                                0 + 30,
+                                self.createDuck(10, reverseX=-1, reverseY=-1),
+                                (200, 200, 0),
+                            ))
+            self.walls.append(createPolygonObstacle(
+                                825 ,
+                                0 + 30,
+                                self.createDuck(10, reverseY=-1),
+                                (200, 200, 0),
+                            ))
+            self.walls.append(createPolygonObstacle(
+                                1125 ,
+                                0 + 30,
+                                self.createDuck(10, reverseX=-1,  reverseY=-1),
+                                (200, 200, 0),
+                            ))
+            self.walls.append(createPolygonObstacle(
+                                675 ,
+                                0 + 30,
+                                self.createDuck(10, reverseY=-1),
+                                (200, 200, 0),
+                            ))
+            self.walls.append(createPolygonObstacle(
+                                1275 ,
+                                0 + 30,
+                                self.createDuck(10, reverseX=-1, reverseY=-1),
+                                (200, 200, 0),
+                            ))
+            self.walls.append(createPolygonObstacle(
+                                525 ,
+                                0 + 30,
+                                self.createDuck(10, reverseY=-1),
+                                (200, 200, 0),
+                            ))
+            self.walls.append(createPolygonObstacle(
+                                1425 ,
+                                0 + 30,
+                                self.createDuck(10, reverseX=-1, reverseY=-1),
+                                (200, 200, 0),
+                            ))
+            self.walls.append(createPolygonObstacle(
+                                375 ,
+                                0 + 30,
+                                self.createDuck(10, reverseY=-1),
+                                (200, 200, 0),
+                            ))
+            self.walls.append(createPolygonObstacle(
+                                1575 ,
+                                0 + 30,
+                                self.createDuck(10, reverseX=-1, reverseY=-1),
+                                (200, 200, 0),
+                            ))
+            self.walls.append(createPolygonObstacle(
+                                225 ,
+                                0 + 30,
+                                self.createDuck(10, reverseY=-1),
+                                (200, 200, 0),
+                            ))
+            self.walls.append(createPolygonObstacle(
+                                1725 ,
+                                0 + 30,
+                                self.createDuck(10, reverseX=-1, reverseY=-1),
+                                (200, 200, 0),
+                            ))
+            self.walls.append(createPolygonObstacle(
+                                75 ,
+                                0 + 30,
+                                self.createDuck(10, reverseY=-1),
+                                (200, 200, 0),
+                            )) 
 
         elif self.idMap == 2: # Flipper, arrete de flipper
             #colone middle pair

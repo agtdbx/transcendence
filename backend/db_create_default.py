@@ -47,7 +47,7 @@ test = Map.objects.all().count()
 if test == 0:
     map = Map.objects.create(idMap=0, name="Default Map")
     map.save()
-    map = Map.objects.create(idMap=1, name="Sun quest")
+    map = Map.objects.create(idMap=1, name="Duck Heaven")
     map.save()
     map = Map.objects.create(idMap=2, name="Flipper")
     map.save()

@@ -52,12 +52,13 @@ function addPolygon(content,x , y, pointList, color)
 {
 	let d = createDirectivePath(x, y, pointList);
     let newPath = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+	let before = document.getElementById('divStartCounter');
     //newPath.style.stroke = color;
 	newPath.setAttribute('x', x)
 	newPath.setAttribute('y', y)
     newPath.setAttribute('d', d);
     newPath.setAttribute('fill', color);
-    content.insertBefore(newPath, null);
+    content.insertBefore(newPath, before);
 	return newPath
 }
 
