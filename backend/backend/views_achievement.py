@@ -6,7 +6,7 @@
 #    By: lflandri <lflandri@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/17 15:33:50 by lflandri          #+#    #+#              #
-#    Updated: 2024/02/16 15:40:31 by lflandri         ###   ########.fr        #
+#    Updated: 2024/02/16 16:10:23 by lflandri         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,10 +21,18 @@ from db_test.models import User, Achivement, Match, MatchUser
 import datetime
 
 from .forms import UserForm
-from .views_user_relation import getTarget
 
 from . import views
 from .views import *
+
+def getTarget(targetName):
+    """
+    return the user object in db who have targetName as username, if there is not user with this username, return None
+    """
+    targetListe = User.objects.all().filter(username=targetName)
+    if len(targetListe) > 0:
+        return targetListe[0]
+    return None
 
 def getListeMatchDataForAchievement(user):
     #declare variable
@@ -160,7 +168,7 @@ def listAchievement(user, isself):
     },
     {
         "title" : "You finaly find a friend !" if achievement.friend > 0 else errorName,
-        "description" : "Have one friends." if achievement.boscoFriend > 0 else errorDescription,
+        "description" : "Have one friends." if achievement.friend > 0 else errorDescription,
         "grade" : achievement.friend,
         "img" : imgPath + ("Friend.webp" if achievement.friend > 0  else "Error.webp")
     },

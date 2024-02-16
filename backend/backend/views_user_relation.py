@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    views_user_relation.py                             :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: aderouba <aderouba@student.42.fr>          +#+  +:+       +#+         #
+#    By: lflandri <lflandri@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/23 19:48:59 by aderouba          #+#    #+#              #
-#    Updated: 2024/02/10 17:22:21 by aderouba         ###   ########.fr        #
+#    Updated: 2024/02/16 16:09:22 by lflandri         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,8 @@
 from .views_connection import checkToken
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
-from db_test.models import User, Link
+from db_test.models import User, Link, Achivement
+from .views_achievement import createAchievementIfNot
 
 
 def haveRelation(user, target):
@@ -129,6 +130,17 @@ def acceptfriends(request):
         link2.save()
     except :
          return JsonResponse({"success": False, "content" : "Error : modification of user relation." })
+    # try :
+    if (createAchievementIfNot(user)):
+        achievement = Achivement.objects.all().filter(idUser=user.idUser)[0]
+        achievement.friend = 4
+        achievement.save()
+    if (createAchievementIfNot(target)):
+        achievement = Achivement.objects.all().filter(idUser=target.idUser)[0]
+        achievement.friend = 4
+        achievement.save()
+    # except :
+    #     userId = userId
 
     return JsonResponse({"success": True, "content" : "request of " + request.POST.get('friend') +" accepted." })
 
