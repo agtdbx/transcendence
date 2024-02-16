@@ -142,6 +142,10 @@ p {
 	border: 3px solid #00FF00;
 }
 
+.status-ingame {
+	border: 3px solid #FFAA00;
+}
+
 .channel p {
 	text-align: center;
 	margin-top: 0.8em;

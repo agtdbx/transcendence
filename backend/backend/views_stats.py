@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    views_stats.py                                     :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: lflandri <liam.flandrinck.58@gmail.com>    +#+  +:+       +#+         #
+#    By: aderouba <aderouba@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/14 16:40:22 by lflandri          #+#    #+#              #
-#    Updated: 2024/02/16 04:01:52 by lflandri         ###   ########.fr        #
+#    Updated: 2024/02/16 15:04:14 by aderouba         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -42,8 +42,8 @@ def getWinRate(user):
             if match.scoreRight < match.scoreLeft :
                 win+=1
     return win / len(matchList)
-                
-        
+
+
 
 
 def listStat(user):
@@ -57,7 +57,7 @@ def listStat(user):
     nbMaxBallOnGame = 0
     for m in matchList:
         if m.nbMaxBallOnGame > nbMaxBallOnGame :
-            nbMaxBallOnGame = m.nbMaxBallOnGame    
+            nbMaxBallOnGame = m.nbMaxBallOnGame
     goalList = Goal.objects.all().filter(idUser=user.idUser)
     for g in goalList :
         if g.nbBounce == 0:
@@ -72,7 +72,7 @@ def listStat(user):
         if u.maxBallSpeed > maxBallSpeed :
             maxBallSpeed =u.maxBallSpeed
         if u.maxBallBounce > maxBallBounce :
-            maxBallBounce = u.maxBallBounce  
+            maxBallBounce = u.maxBallBounce
     return [
         {
 		  "description":"number of match played :" + str(len(matchUserList)),
@@ -130,17 +130,26 @@ def getuserstat(request):
         return JsonResponse({"success": False, "content" : "Inexistant user." })
     return JsonResponse({"success": True, "content" : listStat(target)})
 
-def createListGoal(player, match):
-    goalListe = Goal.objects.all().filter(idMatch=match, idUser=player.idUser).order_by("goalTime")
+def createListGoal(player : MatchUser, match):
+    goalListe = Goal.objects.all().filter(idMatch=match, idUser=player.idUser, idTeam=player.idTeam).order_by("goalTime")
     listGoal = []
+    username = player.idUser.username
+    if username == "bosco":
+        if player.idTeam == 0:
+            username += " left"
+        else:
+            username += " right"
+
     for goal in goalListe :
         listGoal.append({
+            "username" : username,
             "time" : goal.goalTime / 60,
             "bounce" : goal.nbBounce,
-            "speed": goal.ballSpeed
+            "speed": goal.ballSpeed,
+            "ownGoal" : goal.ownGoal
             })
     return listGoal
-        
+
 
 def getusermatchhistory(request):
     check = views.checkToken(request)
@@ -161,6 +170,8 @@ def getusermatchhistory(request):
         toAdd["duration"] = match.matchDuration / 60
         toAdd["powerUp"] = match.powerUp
         toAdd["map"] = match.idMap.name
+        toAdd["scoreLeft"] = match.scoreLeft
+        toAdd["scoreRight"] = match.scoreRight
         playerList = MatchUser.objects.all().filter(idMatch=match.idMatch)
         for player in playerList :
             if player.idTeam == 1 :
@@ -168,7 +179,7 @@ def getusermatchhistory(request):
                 countUserRight+=1
             else :
                 playerNomination = "playerL" + str(countUserLeft)
-                countUserLeft+=1 
+                countUserLeft+=1
             toAdd[playerNomination] = {
                 "name": player.idUser.username,
                 "pp": "/static/" + player.idUser.profilPicture.name,
@@ -176,26 +187,3 @@ def getusermatchhistory(request):
             }
         matchListReturn.append(toAdd)
     return JsonResponse({"success": True, "content" : matchListReturn})
-            
-    
-    
-    
-		# "player1" :
-		# {
-		# 	"name" : "Enginer",
-		# 	"pp" : "https://static.wikia.nocookie.net/deeprockgalactic_gamepedia_en/images/4/46/Engineer_portrait.png/revision/latest/scale-to-width-down/35?cb=20180519150041",
-		# 	"goalList":
-		# 	[
-		# 		{"time" : 0.50, "bounce" : 0, "speed": 0.15},
-		# 		{"time" : 1.5, "bounce" : 1, "speed": 0.15},
-		# 		{"time" : 2.35689, "bounce" : 15, "speed": 0.15},
-		# 		{"time" : 4.50, "bounce" : 6, "speed": 0.15},
-		# 		{"time" : 4.70, "bounce" : 999, "speed": 10},  
-		# 		{"time" : 6.56, "bounce" : 2, "speed": 0.15},
-		# 		{"time" : 7, "bounce" : 3, "speed": 0.15},
-		# 		{"time" : 9, "bounce" : 6, "speed": 1},
-		# 		{"time" : 12, "bounce" : 8, "speed": 0.15},
-		# 		{"time" : 13, "bounce" : 5, "speed": 0.15},
-		# 		{"time" : 18.95, "bounce" : 3, "speed": 0.15}
-		# 	]
-		# },

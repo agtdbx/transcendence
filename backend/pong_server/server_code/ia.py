@@ -59,12 +59,11 @@ class Ia:
 
 		tmpPaddle = self.iaPaddle.copy()
 
-		# TODO : REMETTRE ÇA
 		# Simulate the game until one ball is in goal
-		# self.emulateBallsToGoal()
+		self.emulateBallsToGoal()
 
-		# # Choose where ia should be placed, and it action to do
-		# self.chooseNextActionToDo()
+		# Choose where ia should be placed, and it action to do
+		self.chooseNextActionToDo()
 
 		self.iaPaddle = tmpPaddle
 

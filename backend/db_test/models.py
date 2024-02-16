@@ -14,7 +14,7 @@ class User(models.Model):
     tokenJWT        = models.TextField()
     money           = models.IntegerField()
     status          = models.IntegerField()
-    nbTournamentWin          = models.IntegerField(default=0)
+    nbTournamentWin = models.IntegerField(default=0)
 
 
 class connectionPassword(models.Model):
@@ -80,7 +80,7 @@ class Match(models.Model):
     powerUp         = models.BooleanField()
     scoreLeft       = models.IntegerField(default=0)
     scoreRight      = models.IntegerField(default=0)
-    nbMaxBallOnGame   = models.IntegerField(default=0)
+    nbMaxBallOnGame = models.IntegerField(default=0)
 
 
 class MatchUser(models.Model):
@@ -92,7 +92,7 @@ class MatchUser(models.Model):
     maxBallBounce   = models.IntegerField(default=0)
     nbCC            = models.IntegerField(default=0)
     nbPerfectShot   = models.IntegerField(default=0)
-    idTeam          = models.IntegerField(default=0)  
+    idTeam          = models.IntegerField(default=0)
 
 
 class Goal(models.Model):
@@ -100,7 +100,7 @@ class Goal(models.Model):
     idUser          = models.ForeignKey(User, on_delete=models.PROTECT)                                         #[primary key]
     goalTime        = models.IntegerField(default=0)                                                            #[primary key]
     idMatch         = models.ForeignKey(Match, on_delete=models.PROTECT)                                        #[primary key]
-    idTeam         = models.IntegerField(default=0)                                        #[primary key]
+    idTeam          = models.IntegerField(default=0)                                                            #[primary key]
     nbBounce        = models.IntegerField(default=0)
     perfectedShot   = models.BooleanField(default=0)
     ballSpeed       = models.IntegerField(default=0)

@@ -88,28 +88,23 @@ async def handle_client(websocket : websockets.WebSocketServerProtocol, path):
                     myid = (id_paddle, id_team)
                     add_user_connected(myid, websocket)
                     id_paddle_with_team = id_paddle + (id_team * TEAM_MAX_PLAYER)
-                    print("GWS : TEST 1", file=sys.stderr)
                     websocketPaddleLink[websocket] = id_paddle_with_team
-                    print("GWS : TEST 2", file=sys.stderr)
                     if id_team == 0:
-                        print("GWS : TEST 31", file=sys.stderr)
                         print("GWS : TEAM LEFT READY", team_left_ready, file=sys.stderr)
                         print("GWS : ID PADDLE", id_paddle, file=sys.stderr)
                         team_left_ready[id_paddle] = True
                     elif id_team == 1:
-                        print("GWS : TEST 32", file=sys.stderr)
                         print("GWS : TEAM RIGHT READY", team_right_ready, file=sys.stderr)
                         print("GWS : ID PADDLE", id_paddle, file=sys.stderr)
                         team_right_ready[id_paddle] = True
-                    print("GWS : TEST 4", file=sys.stderr)
                     print("\nGWS : TEST IF EVERYONE READY", file=sys.stderr)
                     print("GWS : LTEAM :", team_left_ready, file=sys.stderr)
                     print("GWS : RTEAM :", team_right_ready, file=sys.stderr)
                     if can_start_game():
-                        print("GWS : OK", file=sys.stderr)
+                        print("GWS : READY TO START : OK", file=sys.stderr)
                         asyncio.create_task(game_server_manager())
                     else:
-                        print("GWS : KO", file=sys.stderr)
+                        print("GWS : READY TO START : KO", file=sys.stderr)
                 continue
 
             elif request_type == "info":
@@ -157,11 +152,11 @@ async def handle_client(websocket : websockets.WebSocketServerProtocol, path):
             else :
                 await send_error(websocket, "Request type unkown")
 
+    except websockets.exceptions.ConnectionClosedOK:
+        print("\nGWS : DECONNECTION :", file=sys.stderr)
+
     except Exception as error:
-        if type(error) != websockets.exceptions.ConnectionClosedOK:
-            print("\nGWS : CRITICAL ERROR :", error, type(error), file=sys.stderr)
-        else:
-            print("\nGWS : DECONNECTION :", file=sys.stderr)
+        print("\nGWS : CRITICAL ERROR :", error, type(error), file=sys.stderr)
 
     finally:
         # Delete the connection when the client disconnect
@@ -175,6 +170,24 @@ async def handle_client(websocket : websockets.WebSocketServerProtocol, path):
             if can_server_shutdown():
                 print("\nGWS : SERVER TRY TO SHUTDOWN", file=sys.stderr)
                 os.kill(os.getpid(), signal.SIGTERM)
+        # If there is a team, it mean that it's a user
+        elif id_team != None:
+            # there is no new websocket left for this player, so make if other theam to win
+            print("\nGWS : DECONNEXION ?", file=sys.stderr)
+            if len(connected_player[myid]) == 0:
+                print("GWS : YES", file=sys.stderr)
+
+                # if it's in team left, make team right win
+                if id_team == 0:
+                    print("GWS : MAKE TEAM RIGHT WIN", file=sys.stderr)
+                    game.makeTeamWin(1)
+                # if it's in team right, make team left win
+                else:
+                    print("GWS : MAKE TEAM LEFT WIN", file=sys.stderr)
+                    game.makeTeamWin(0)
+            else:
+                print("GWS : NO", file=sys.stderr)
+
 
 
 def can_start_game():
@@ -193,6 +206,7 @@ def can_server_shutdown():
         if len(lst) > 0:
             return False
     return True
+
 
 async def sendGlobalMessage(updateObstacles='null', updatePaddles='null',updateBalls='null',deleteBall='null',changeUserPowerUp={},updatePowerUpInGame='null',updateScore='null'):
     global connected_player
@@ -215,6 +229,7 @@ async def sendGlobalMessage(updateObstacles='null', updatePaddles='null',updateB
             str_msg = str_msg.replace("False", 'false')
             str_msg = str_msg.replace("True", 'true')
             await websocket.send(str_msg)
+
 
 def parsingGlobalMessage():
     updateObstacles='null'
@@ -321,6 +336,11 @@ async def game_server_manager():
 
     can_shutdown = True
 
+    print("\nGWS : CHECKIF SERVER CAN SHUTDOWN", file=sys.stderr)
+    if can_server_shutdown():
+        print("\nGWS : SERVER TRY TO SHUTDOWN", file=sys.stderr)
+        os.kill(os.getpid(), signal.SIGTERM)
+
 
 async def start_server():
     loop = asyncio.get_running_loop()
@@ -332,7 +352,6 @@ async def start_server():
     print("\nGWS : SERVER PORT CLOSE", file=sys.stderr)
 
     ws = await websockets.connect("ws://localhost:8765")
-    # TODO : Need to return all statistique of the game !
     msg = {"type":"gws",
             "cmd" : "definitelyNotTheMovie(endGame)",
             "port" : sys.argv[1],
