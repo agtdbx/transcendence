@@ -1,5 +1,5 @@
 import sys
-from db_test.models import User, Map
+from db_test.models import User, Map, Link
 
 def set_user_status(myid, status):
     user = User.objects.all().filter(idUser=myid)[0]
