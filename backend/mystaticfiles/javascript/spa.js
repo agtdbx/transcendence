@@ -10,7 +10,7 @@ function changeBackground(num)
 		body.style.backgroundImage = 'url(/static/image/background/mainpage.png)';
 	else if (num == "4")
 		body.style.backgroundImage = 'url(/static/image/background/waitpage.png)';
-	else if (num == "5" || num == "51")
+	else if (num == "5" || num == "51" || num == "52")
 		body.style.backgroundImage = 'url(/static/image/background/waitpage.png)';
 	else if (num == "6")
 		body.style.backgroundImage = 'url(/static/image/background/game.png)';
@@ -87,7 +87,7 @@ function manageHeader(num)
 
 function manageChat(num)
 {
-	if (num == 3 || num == 4 || num == 5 || num == 51 || num == 71 || num == 72 || num == 73 || num == 74 || num == 75 || num == 8)
+	if (num == 3 || num == 4 || num == 5 || num == 51 || num == 52 || num == 71 || num == 72 || num == 73 || num == 74 || num == 75 || num == 8)
 	{
 		setChannelTarget("general");
 		displayFiends();
@@ -233,7 +233,7 @@ function changePage(num, byArrow=false)
 		// Run the script tag if they is one in the html load
 		runScript();
 		// Set the new page in the browser history if the page isn't load by arrow, or not the wait and game page.
-		if (!byArrow && num != 4 && num != 5 && num != 51 && num != 6)
+		if (!byArrow && num != 4 && num != 5 && num != 51 && num != 52 && num != 6)
 			history.pushState({section: num}, "", "/" + num);
 		pageInLoad = false;
 	})
