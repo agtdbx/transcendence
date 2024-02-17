@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    views.py                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: aderouba <aderouba@student.42.fr>          +#+  +:+       +#+         #
+#    By: lflandri <lflandri@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/08 14:00:09 by lflandri          #+#    #+#              #
-#    Updated: 2024/02/16 17:40:53 by aderouba         ###   ########.fr        #
+#    Updated: 2024/02/17 04:34:37 by lflandri         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -165,6 +165,12 @@ def section(request, num):
             return render(request, "mainpage_full.html", {'idType': user.type})
         else:
             return render(request,"joinGameRoom.html")
+        
+    elif num == 52: #local game room
+        if fullPage:
+            return render(request, "createGameRoomLocal_full.html", {'idType': user.type})
+        else:
+            return render(request,"createGameRoomLocal.html")
 
     elif num == 6:
         if fullPage:
