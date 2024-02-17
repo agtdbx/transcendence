@@ -107,6 +107,10 @@ function manageAPI(num)
 	{
 		quitGameRoom();
 	}
+	else if (current_page == 52)
+	{
+		quitGameRoomLocal();
+	}
 	else if (current_page == 6)
 	{
 		if (ws_game != null)
@@ -139,6 +143,10 @@ function manageAPI(num)
 	else if (num == 5)
 	{
 		createGameRoom();
+	}
+	else if (num == 52)
+	{
+		createGameRoomLocal();
 	}
 	else if (num == 71 || num == 72)
 	{

@@ -40,6 +40,9 @@ function onRecieveData(event)
 		if (current_page != 3)
 			changePage('3');
 	}
+
+
+	// remote game room
 	else if (type == 'createRoomInfo')
 	{
 		console.log("GAME ROOM CREATED");
@@ -118,6 +121,49 @@ function onRecieveData(event)
 		let get_game_type = data["gameType"];
 		startGameClient(port, id_paddle, id_team, get_game_type);
 	}
+
+	// local game room
+	else if (type == 'createLocalRoomInfo')
+	{
+		console.log("GAME ROOM LOCAL CREATED");
+		if (current_page != 5)
+			changePage('5');
+
+		const mapId = data["mapId"];
+		const mapName = data["mapName"];
+		const power_up = data["powerUpActivate"];
+		const team_left = data["teamLeft"];
+		const team_right = data["teamRight"];
+		updateGameRoomLocalInfo(mapId, mapName, power_up, team_left, team_right);
+	}
+	else if (type == 'updateLocalRoomInfo')
+	{
+		console.log("GAME ROOM LOCAL UPDATE");
+
+		const mapId = data["mapId"];
+		const mapName = data["mapName"];
+		const power_up = data["powerUpActivate"];
+		const team_left = data["teamLeft"];
+		const team_right = data["teamRight"];
+		updateGameRoomLocalInfo(mapId, mapName, power_up, team_left, team_right);
+	}
+	else if (type == 'quitLocalGameRoom')
+	{
+		console.log("QUIT GAME ROOM LOCAL");
+		if (current_page == 52)
+			changePage('3');
+	}
+	else if (type == 'LocalGameStart')
+	{
+		console.log("GAME LOCAL START !");
+		let port = data["gamePort"];
+		let id_paddle = data["paddleId"];
+		let id_team = data["teamId"];
+		let get_game_type = data["gameType"];
+		startGameLocalClient(port, id_paddle, id_team, get_game_type);
+	}
+
+
 	else if (type == 'tournamentState')
 	{
 		console.log("tournament state", current_page);
