@@ -5,12 +5,6 @@
 	<button type="button" class ="btn-drg" id = "btn-create-game-start" onclick="gameRoomStartGame()">start</button>
 	<button data-section="3" type="button" class ="changePage btn-drg" id = "btn-create-game-quit" onclick="changePage(this.dataset.section)">quit</button>
 
-	<div class="invite_list_bg">
-		<button class="btn-drg" onclick="createListInvite()">Refresh</button>
-		<div id="invite_list_container">
-		</div>
-	</div>
-
 	<form class ="createGameBotLeft" id = "createGameBotLeft">
 		<div class ="createGameChat" id = "createGameChat">
 		</div>
@@ -45,10 +39,11 @@
 	</div>
 
 	<div class ="createGameBotRight" id = "createGameBotRight">
-		<p class="animation" id="create-game-team1" onclick="gameRoomChangeTeam('left')">join team 1</p>
+		<p class="animation" id="create-game-team1" >Team 1</p>
 		<div id = "team1Player">
 		</div>
-		<button type="button" class ="btn-drg btn-bot" id="btnbot1" onclick="gameRoomAddBot('left')">Add bot</button>
+		<button type="button" class ="btn-drg btn-bot" id="btnbot1" onclick="gameRoomLocalAddPlayer('left')">Add bot</button>
+		<button type="button" class ="btn-drg btn-bot" id="btnbot1" onclick="gameRoomLocalAddBot('left')">Add bot</button>
 	</div>
 
 	<div id="vs">
@@ -56,25 +51,26 @@
 	</div>
 
 	<div class ="createGameTopRight" id = "createGameTopRight">
-		<p class="animation" id="create-game-team2" onclick="gameRoomChangeTeam('right')">join team 2</p>
+		<p class="animation" id="create-game-team2">Team 2</p>
 		<div id = "team2Player">
 		</div>
-		<button type="button" class ="btn-drg btn-bot" id="btnbot2" onclick="gameRoomAddBot('right')">Add bot</button>
+		<button type="button" class ="btn-drg btn-bot" id="btnbot1" onclick="gameRoomLocalAddPlayer('right')">Add bot</button>
+		<button type="button" class ="btn-drg btn-bot" id="btnbot2" onclick="gameRoomLocalAddBot('right')">Add bot</button>
 	</div>
 
 	<div class="changeCustomGame">
 		<div class="CustomPowerUp">
 			<p id="customPTxt">Power Up</p>
-			<button type="button" class ="btn-drg" id="btnStatusPowerUp" onclick="gameRoomSwitchPowerUp()">OFF</button>
+			<button type="button" class ="btn-drg" id="btnStatusPowerUp" onclick="gameRoomLocalSwitchPowerUp()">OFF</button>
 		</div>
 
 		<div class="CustomMap">
 			<p id="customMTxt">Map</p>
-			<button type="button" class ="btn-drg btn-map" id="btnMap0" onclick="gameRoomChangeMap(0)">Default Map</button><br><br>
-			<button type="button" class ="btn-drg-dark btn-map" id="btnMap1" onclick="gameRoomChangeMap(1)">Duck Heaven</button><br><br>
-			<button type="button" class ="btn-drg-dark btn-map" id="btnMap2" onclick="gameRoomChangeMap(2)">Flipper</button><br><br>
-			<button type="button" class ="btn-drg-dark btn-map" id="btnMap3" onclick="gameRoomChangeMap(3)">Pickaxe dance</button><br><br>
-			<button type="button" class ="btn-drg-dark btn-map" id="btnMap4" onclick="gameRoomChangeMap(4)">Difficulty 5, verminagedon, no shield</button>
+			<button type="button" class ="btn-drg btn-map" id="btnMap0" onclick="gameRoomLocalChangeMap(0)">Default Map</button><br><br>
+			<button type="button" class ="btn-drg-dark btn-map" id="btnMap1" onclick="gameRoomLocalChangeMap(1)">Duck Heaven</button><br><br>
+			<button type="button" class ="btn-drg-dark btn-map" id="btnMap2" onclick="gameRoomLocalChangeMap(2)">Flipper</button><br><br>
+			<button type="button" class ="btn-drg-dark btn-map" id="btnMap3" onclick="gameRoomLocalChangeMap(3)">Pickaxe dance</button><br><br>
+			<button type="button" class ="btn-drg-dark btn-map" id="btnMap4" onclick="gameRoomLocalChangeMap(4)">Difficulty 5, verminagedon, no shield</button>
 		</div>
 	</div>
 

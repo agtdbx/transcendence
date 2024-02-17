@@ -12,6 +12,15 @@ function createGameRoom()
 	createListInvite();
 }
 
+function createGamelRoomLocal()
+{
+	console.log("CREATE GAME ROOM LOCAL REQUEST");
+	webSocket.send(JSON.stringify({
+		'type' : 'localGameRoom',
+		'cmd' : 'createRoom'
+	}));
+}
+
 
 function joinGameRoom(game_room_id)
 {
@@ -29,6 +38,15 @@ function quitGameRoom()
 	console.log("QUIT GAME ROOM REQUEST");
 	webSocket.send(JSON.stringify({
 		'type' : 'gameRoom',
+		'cmd' : 'quitGameRoom'
+	}));
+}
+
+function quitGameRoomLocal()
+{
+	console.log("QUIT GAME ROOM LOCAL REQUEST");
+	webSocket.send(JSON.stringify({
+		'type' : 'localGameRoom',
 		'cmd' : 'quitGameRoom'
 	}));
 }
@@ -55,6 +73,16 @@ function gameRoomQuickUser(user_id)
 	}));
 }
 
+function gameRoomLocalQuickUser(user_id)
+{
+	console.log("QUICK USER", user_id, "FROM GAME ROOM LOCAL REQUEST");
+	webSocket.send(JSON.stringify({
+		'type' : 'localGameRoom',
+		'cmd' : 'quickUser',
+		'targetId' : user_id
+	}));
+}
+
 
 function gameRoomAddBot(team)
 {
@@ -62,6 +90,37 @@ function gameRoomAddBot(team)
 	webSocket.send(JSON.stringify({
 		'type' : 'gameRoom',
 		'cmd' : 'addBot',
+		'team' : team
+	}));
+}
+
+function gameRoomLocalAddBot(team)
+{
+	console.log("ADD BOT TO TEAM ", team, " REQUEST");
+	webSocket.send(JSON.stringify({
+		'type' : 'localGameRoom',
+		'cmd' : 'addBot',
+		'team' : team
+	}));
+}
+
+function gameRoomLocalAddPlayer(team)
+{
+	console.log("ADD PLAYER TO TEAM ", team, " REQUEST");
+	webSocket.send(JSON.stringify({
+		'type' : 'localGameRoom',
+		'cmd' : 'addPlayer',
+		'nickname' : 'this is a nickname',
+		'team' : team
+	}));
+}
+
+function gameRoomLocalRemoveBot(team)
+{
+	console.log("REMOVE BOT TO TEAM ", team, " REQUEST");
+	webSocket.send(JSON.stringify({
+		'type' : 'localGameRoom',
+		'cmd' : 'removeBot',
 		'team' : team
 	}));
 }
@@ -99,6 +158,14 @@ function gameRoomSwitchPowerUp()
 	}));
 }
 
+function gameRoomLocalSwitchPowerUp()
+{
+	console.log("SWITCH POWER UP REQUEST");
+	webSocket.send(JSON.stringify({
+		'type' : 'localGameRoom',
+		'cmd' : 'changePowerUp'
+	}));
+}
 
 function gameRoomChangeMap(map_id)
 {
@@ -110,12 +177,31 @@ function gameRoomChangeMap(map_id)
 	}));
 }
 
+function gameRoomLocalChangeMap(map_id)
+{
+	console.log("CHANGE MAP REQUEST");
+	webSocket.send(JSON.stringify({
+		'type' : 'localGameRoom',
+		'cmd' : 'changeMap',
+		'mapId' : map_id
+	}));
+}
+
 
 function gameRoomStartGame()
 {
 	console.log("START GAME REQUEST");
 	webSocket.send(JSON.stringify({
 		'type' : 'gameRoom',
+		'cmd' : 'startGame',
+	}));
+}
+
+function gameRoomLocalStartGame()
+{
+	console.log("START GAME REQUEST");
+	webSocket.send(JSON.stringify({
+		'type' : 'localGameRoom',
 		'cmd' : 'startGame',
 	}));
 }

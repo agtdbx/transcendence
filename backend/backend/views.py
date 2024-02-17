@@ -168,7 +168,7 @@ def section(request, num):
         
     elif num == 52: #local game room
         if fullPage:
-            return render(request, "createGameRoomLocal_full.html", {'idType': user.type})
+            return render(request, "mainpage_full.html", {'idType': user.type})
         else:
             return render(request,"createGameRoomLocal.html")
 
