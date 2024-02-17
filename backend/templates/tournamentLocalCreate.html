@@ -1,0 +1,52 @@
+{% load static %}
+<link rel="stylesheet" href="{% static '/css/tournament.css' %}">
+<div id = "Page">
+
+	<form class ="tournamentChat" id = "tournamentChat">
+		<div class ="tournamentrect1" id = "tournamentrect1">
+		</div>
+		<input type="text" id="tournament-chat" name="tournament-chat"><br><br>
+
+		<script>
+			const form = document.getElementById('tournamentChat');
+			messageInput = document.getElementById('tournament-chat');
+			form.addEventListener('submit', async event => {
+				event.preventDefault();
+				sendMessage(messageInput);
+			});
+		</script>
+
+		<div class ="channel-container" id = "tournamentChangeChat">
+			<div class ="channel channel-active" id ="channel-general" onclick="selectChannel('general');">
+				<p>GLOBAL</p>
+			</div>
+		</div>
+	</form>
+	<p id="erorCreate"></p>
+
+	<div class ="tournamentProgress" id = "tournamentProgress">
+		<div class ="tournamentrectUserList" id = "tournamentrect3">
+            <button type="button" class ="btn-drg " id="btnAddLocalPlayer" >add Player</button><br><br>
+		</div>
+	</div>
+
+	<div class="changeTournament" id="allModifierTournament">
+		<div class="CustomPowerUp">
+			<p id="customPTxt" style="color: white;">Power Up</p>
+			<button type="button" class ="btn-drg" id="btnStatusPowerUp" onclick="switchTournamentPowerUp()">OFF</button>
+		</div>
+
+		<div class="CustomMap">
+				<p id="customMTxt">Map</p>
+				<button type="button" class ="btn-drg btn-map" id="btnMap0" onclick="changeTournamentMapId(0)">Default Map</button><br><br>
+				<button type="button" class ="btn-drg-dark btn-map" id="btnMap1" onclick="changeTournamentMapId(1)">Duck Heaven</button><br><br>
+				<button type="button" class ="btn-drg-dark btn-map" id="btnMap2" onclick="changeTournamentMapId(2)">Flipper</button><br><br>
+				<button type="button" class ="btn-drg-dark btn-map" id="btnMap3" onclick="changeTournamentMapId(3)">Pickaxe dance</button><br><br>
+				<button type="button" class ="btn-drg-dark btn-map" id="btnMap4" onclick="changeTournamentMapId(4)">Difficulty 5, verminagedon, no shield</button>
+		</div>
+	</div>
+
+	<button type="button" class ="btn-drg" id="btnTournamentCreate" onclick="changePage('75')">Start Tournament</button>
+	<button type="button" class ="btn-drg" id="btnTournamentLaunch" onclick="changePage('3')">Quit</button>
+
+</div>

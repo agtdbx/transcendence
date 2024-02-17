@@ -1,0 +1,26 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en-US">
+
+{% include "head.html" %}
+
+<body id="body">
+	<div id="Header"></div>
+
+	<div id="content">
+
+		{% include "tournamentLocalCreate.html" %}
+
+	</div>
+
+</body>
+
+<script>
+	changeBackground("73");
+	manageHeader("73");
+	enableChatConnection();
+	manageChat("73");
+	manageAPI("73");
+</script>
+
+</html>

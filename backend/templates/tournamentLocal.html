@@ -1,0 +1,89 @@
+{% load static %}
+<link rel="stylesheet" href="{% static '/css/tournament.css' %}">
+<div id = "Page">
+
+	<form class ="tournamentChat" id = "tournamentChat">
+		<div class ="tournamentrect1" id = "tournamentrect1">
+		</div>
+		<input type="text" id="tournament-chat" name="tournament-chat"><br><br>
+
+		<script>
+			const form = document.getElementById('tournamentChat');
+			let messageInput = document.getElementById('tournament-chat');
+			form.addEventListener('submit', async event => {
+				event.preventDefault();
+				sendMessage(messageInput);
+			});
+		</script>
+
+
+		<div class ="channel-container" id = "tournamentChangeChat">
+			<div class ="channel channel-active" id ="channel-general" onclick="selectChannel('general');">
+				<p>GLOBAL</p>
+			</div>
+		</div>
+	</form>
+
+
+	<div class ="tournamentProgress" id = "tournamentProgress">
+		<div class ="tournamentrect3" id = "tournamentrect3">
+			<svg  viewBox="60, 20, 650, 300" style="width:100%; height:100%;" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+				<g id="graphe" style="fill:none;stroke-width:4px;">
+
+
+				</g>
+			</svg>
+		</div>
+	</div>
+
+	<div id="joinTournamentOption">
+		<div id="joinTournamentOption1">
+		<p id="powerUpTournamentJoin">Power up : on</p>
+		<p id="powerUpTournamentMap">Map : map 4 cave is wierd i guess</p>
+		</div>
+	</div>
+
+
+	<button type="button" class ="btn-drg" id="btnTournamentReturn" onclick="changePage('3')">return</button>
+	<button type="button" class ="btn-drg" id="btnTournamentQuit">quit</button>
+
+	<div id="joinTournamentVSrect">
+		<div id="joinTournamentVSrect1">
+			<div id ="tournamentNamePlayer1">
+			</div>
+			<div id ="tournamentPlayer1">
+			</div>
+			<div id ="tournamentNamePlayer2">
+			</div>
+			<div id ="tournamentPlayer2">
+			</div>
+			<div id="textVsTournament">
+				<p id="nextmatch">Next match</p>
+				<p id="vsTournament">VS</p>
+			</div>
+		</div>
+	</div>
+
+	<div id="joinTournamentVSrectLeft">
+		<div id="joinTournamentVSrectLeft1">
+			<div id ="tournamentNamePlayer3">
+			</div>
+			<div id ="tournamentPlayer3">
+			</div>
+			<div id ="tournamentNamePlayer4">
+			</div>
+			<div id ="tournamentPlayer4">
+			</div>
+			<div id="textVsTournament">
+				<p id="nextmatch">Your Next match is</p>
+				<p id="vsTournament">VS</p>
+			</div>
+		</div>
+	</div>
+
+	<div id="RectUserList">
+		<div id="UserList" class="greyRect">
+		</div>
+	</div>
+
+</div>

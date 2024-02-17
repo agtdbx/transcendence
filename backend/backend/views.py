@@ -200,6 +200,18 @@ def section(request, num):
         else:
             return render(request,"tournamentEnd.html")
 
+    elif num == 74:
+        if fullPage:
+            return render(request, "tournamentLocalCreate_full.html")
+        else:
+            return render(request,"tournamentLocalCreate.html")
+    
+    elif num == 75:
+        if fullPage:
+            return render(request, "tournamentLocal_full.html")
+        else:
+            return render(request,"tournamentLocal.html")
+
     elif num == 8: #admin page where you can create tournament if you are admin and start them
         if(user.type != 2):
             return render(request, "mainpage_full.html", {'idType': user.type})

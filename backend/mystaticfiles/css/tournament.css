@@ -444,3 +444,11 @@
 	white-space: nowrap;
 	text-overflow: ellipsis;
 }
+
+#btnAddLocalPlayer{
+	position: absolute;
+	top: 83%;
+	left: 74%;
+	width: 25%;
+	height: 15%;
+}
