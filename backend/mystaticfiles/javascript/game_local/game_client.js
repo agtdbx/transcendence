@@ -11,6 +11,19 @@ import * as ball from "./ball.js"
 // import time
 // import sys
 
+function configurePowerUpInterface(data)
+{
+	nbPlayer = data['nbPlayerTeamLeft'] + data['nbPlayerTeamRight']
+	document.getElementById('imgPowerUp3').style.display = 'block';
+	if (data['nbPlayerTeamLeft'] > 1)
+		document.getElementById('imgPowerUp1').style.display = 'block';
+	if (data['nbPlayerTeamRight'] > 1)
+		document.getElementById('imgPowerUp2').style.display = 'block';
+	document.getElementById('teamLeftInfo').style.width = 49 - (3 * nbPlayer) + "%";
+	document.getElementById('teamRightInfo').style.width = 49 - (3 * nbPlayer) + "%";
+	document.getElementById('teamPowerUpInfo').style.width = (5 * nbPlayer) + "%";
+	
+}
 
 function createWall(x, y, w, h, color)
 {
@@ -598,6 +611,7 @@ export class GameClient {
 			{
 				this.win.insertBefore(this.teamRight.paddles[nbplayer].htmlObject, null);
 			}
+			configurePowerUpInterface(data);
 		}
 		else if (type === "startCount")
 		{
@@ -619,7 +633,7 @@ export class GameClient {
 			this.parseMessageForBalls(data["updateBalls"])
 			this.parseMessageForDeleteBalls(data["deleteBall"])
 			this.parseMessageForPowerUp(data["updatePowerUpInGame"])
-			this.parseMessageForUserPowerUp(data["changeUserPowerUp"])
+			// this.parseMessageForUserPowerUp(data["changeUserPowerUp"])
 			this.parseMessageForScore(data["updateScore"])
 		}
 		else
@@ -696,6 +710,16 @@ export class GameClient {
 				//this.teamLeft.paddles[content[3]].powerUp = content["powerUp"]
 				this.teamLeft.paddles[content[3]].powerUpInCharge = content[4]
 				this.teamLeft.paddles[content[3]].draw();
+				if (content[3] == 0)
+				{
+					let img = document.getElementById('imgPowerUp')
+					img.src = "/static/image/game/powerUp/sprite_" + messageContent + ".png"
+				}
+				else
+				{
+					let img = document.getElementById('imgPowerUp1')
+					img.src = "/static/image/game/powerUp/sprite_" + messageContent + ".png"				
+				}
 			}
 			else
 			{
@@ -711,6 +735,16 @@ export class GameClient {
 				//this.teamRight.paddles[content[3]].powerUp = content["powerUp"]
 				this.teamRight.paddles[content[3]].powerUpInCharge = content[4]
 				this.teamRight.paddles[content[3]].draw();
+				if (content[3] == 0)
+				{
+					let img = document.getElementById('imgPowerUp3')
+					img.src = "/static/image/game/powerUp/sprite_" + messageContent + ".png"
+				}
+				else
+				{
+					let img = document.getElementById('imgPowerUp2')
+					img.src = "/static/image/game/powerUp/sprite_" + messageContent + ".png"				
+				}
 			}
 
 		}

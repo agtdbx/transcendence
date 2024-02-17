@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   match_history_creator.js                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lflandri <lflandri@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lflandri <liam.flandrinck.58@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/23 15:10:25 by lflandri          #+#    #+#             */
-/*   Updated: 2024/02/17 03:12:33 by lflandri         ###   ########.fr       */
+/*   Updated: 2024/02/17 19:58:43 by lflandri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -172,12 +172,12 @@ function createGraphic(svgBlock, content, match, duration)
 	// let maxx = list_j1[list_j1.length - 1]["time"] > list_j2[list_j2.length - 1]["time"] ? list_j1[list_j1.length - 1]["time"] : list_j2[list_j2.length - 1]["time"];
 	// let maxy = list_j1.length > list_j2.length ? list_j1.length : list_j2.length
 	let maxx = duration
-	let maxy = 11
+	let maxy = match["maxGoal"]
 	// console.log(list_j1);
 	// console.log(maxx);
 	// console.log(maxy);
 	maxx += 0.75;
-	maxy += 2;
+	maxy += 2.5;
 
 	createNumberGrahic(content, maxx, maxy);
 	createPoints(svgBlock, content, "#FF0000", match["playerR1"]["goalList"], maxx, maxy);
