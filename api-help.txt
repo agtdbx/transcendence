@@ -92,6 +92,7 @@ GAME ROOM LOCAL
         'type' : 'gameRoom'
         'cmd' : 'createRoomLocal'
         -> 'type' : 'createRoomInfo'
+           'gameRoomId' : <game room id>
            {{update room info}}
 
     add user to a team by password
@@ -187,6 +188,7 @@ GAME ROOM REMOTE
         'type' : 'gameRoom'
         'cmd' : 'createRoom'
         -> 'type' : 'createRoomInfo'
+       	   'gameRoomId' : <game room id>
            {{update room info}}
 
     join game room
@@ -293,6 +295,7 @@ TOURNAMENT LOCAL
         'type' : 'tournament'
         'cmd' : 'createLocal'
         -> 'type' : 'tournamentCreateLocal'
+           'tournamentId' : <tournament id>
            {{tournament state}}
 
     /!\ Only the host of tournament can modify it /!\
@@ -426,6 +429,7 @@ TOURNAMENT REMOTE
         'type' : 'tournament'
         'cmd' : 'create'
         -> 'type' : 'tournamentCreate'
+           'tournamentId' : <tournament id>
            {{tournament state}}
 
     /!\ Only the creator of tournament can modify it /!\
