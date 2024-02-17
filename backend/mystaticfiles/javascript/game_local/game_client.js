@@ -13,7 +13,7 @@ import * as ball from "./ball.js"
 
 function configurePowerUpInterface(data)
 {
-	nbPlayer = data['nbPlayerTeamLeft'] + data['nbPlayerTeamRight']
+	let nbPlayer = data['nbPlayerTeamLeft'] + data['nbPlayerTeamRight']
 	document.getElementById('imgPowerUp3').style.display = 'block';
 	if (data['nbPlayerTeamLeft'] > 1)
 		document.getElementById('imgPowerUp1').style.display = 'block';
@@ -22,7 +22,11 @@ function configurePowerUpInterface(data)
 	document.getElementById('teamLeftInfo').style.width = 49 - (3 * nbPlayer) + "%";
 	document.getElementById('teamRightInfo').style.width = 49 - (3 * nbPlayer) + "%";
 	document.getElementById('teamPowerUpInfo').style.width = (5 * nbPlayer) + "%";
-	
+
+	document.getElementById('imgPowerUp').style.width= 100 / nbPlayer + "%";
+	document.getElementById('imgPowerUp1').style.width= 100 / nbPlayer + "%";
+	document.getElementById('imgPowerUp2').style.width= 100 / nbPlayer + "%";
+	document.getElementById('imgPowerUp3').style.width= 100 / nbPlayer + "%";
 }
 
 function createWall(x, y, w, h, color)
@@ -296,8 +300,8 @@ export class GameClient {
 					'type' : 'userInput',
 					'key' : 'up',
 					'value': "press",
-					'id_paddle' : i % 2,
-					'id_team' : Math.floor(i / 2)
+					'idPaddle' : i % 2,
+					'idTeam' : Math.floor(i / 2)
 				}));
 			}
 			else if (type == "up" && ( (event.code == dc.PLAYER_KEYS[i][d.KEY_UP])) && this.paddlesKeyState[i * 4 + d.KEY_UP])
@@ -311,8 +315,8 @@ export class GameClient {
 					'type' : 'userInput',
 					'key' : 'up',
 					'value': "release",
-					'id_paddle' : i % 2,
-					'id_team' : Math.floor(i / 2)
+					'idPaddle' : i % 2,
+					'idTeam' : Math.floor(i / 2)
 				}));
 			}
 
@@ -330,8 +334,8 @@ export class GameClient {
 					'type' : 'userInput',
 					'key' : 'down',
 					'value': "press",
-					'id_paddle' : i % 2,
-					'id_team' : Math.floor(i / 2)
+					'idPaddle' : i % 2,
+					'idTeam' : Math.floor(i / 2)
 				}));
 			}
 			else if (type == "up" && ( (event.code == dc.PLAYER_KEYS[i][d.KEY_DOWN])) && this.paddlesKeyState[i * 4 + d.KEY_DOWN])
@@ -345,8 +349,8 @@ export class GameClient {
 					'type' : 'userInput',
 					'key' : 'down',
 					'value': "release",
-					'id_paddle' : i % 2,
-					'id_team' : Math.floor(i / 2)
+					'idPaddle' : i % 2,
+					'idTeam' : Math.floor(i / 2)
 				}));
 			}
 
@@ -363,8 +367,8 @@ export class GameClient {
 					'type' : 'userInput',
 					'key' : 'powerUp',
 					'value': "press",
-					'id_paddle' : i % 2,
-					'id_team' : Math.floor(i / 2)
+					'idPaddle' : i % 2,
+					'idTeam' : Math.floor(i / 2)
 				}));
 			}
 			else if (type == "up" && ( (event.code == dc.PLAYER_KEYS[i][d.KEY_POWER_UP])) && this.paddlesKeyState[i * 4 + d.KEY_POWER_UP])
@@ -378,8 +382,8 @@ export class GameClient {
 					'type' : 'userInput',
 					'key' : 'powerUp',
 					'value': "release",
-					'id_paddle' : i % 2,
-					'id_team' : Math.floor(i / 2)
+					'idPaddle' : i % 2,
+					'idTeam' : Math.floor(i / 2)
 				}));
 			}
 
@@ -396,8 +400,8 @@ export class GameClient {
 					'type' : 'userInput',
 					'key' : 'launchBall',
 					'value': "press",
-					'id_paddle' : i % 2,
-					'id_team' : Math.floor(i / 2)
+					'idPaddle' : i % 2,
+					'idTeam' : Math.floor(i / 2)
 				}));
 			}
 			else if (type == "up" && ( (event.code == dc.PLAYER_KEYS[i][d.KEY_LAUNCH_BALL])) && this.paddlesKeyState[i * 4 + d.KEY_LAUNCH_BALL])
@@ -411,8 +415,8 @@ export class GameClient {
 					'type' : 'userInput',
 					'key' : 'launchBall',
 					'value': "release",
-					'id_paddle' : i % 2,
-					'id_team' : Math.floor(i / 2)
+					'idPaddle' : i % 2,
+					'idTeam' : Math.floor(i / 2)
 				}));
 			}
 
@@ -713,12 +717,12 @@ export class GameClient {
 				if (content[3] == 0)
 				{
 					let img = document.getElementById('imgPowerUp')
-					img.src = "/static/image/game/powerUp/sprite_" + messageContent + ".png"
+					img.src = "/static/image/game/powerUp/sprite_" + content[5] + ".png"
 				}
 				else
 				{
 					let img = document.getElementById('imgPowerUp1')
-					img.src = "/static/image/game/powerUp/sprite_" + messageContent + ".png"				
+					img.src = "/static/image/game/powerUp/sprite_" + content[5] + ".png"				
 				}
 			}
 			else
@@ -738,12 +742,12 @@ export class GameClient {
 				if (content[3] == 0)
 				{
 					let img = document.getElementById('imgPowerUp3')
-					img.src = "/static/image/game/powerUp/sprite_" + messageContent + ".png"
+					img.src = "/static/image/game/powerUp/sprite_" + content[5] + ".png"
 				}
 				else
 				{
 					let img = document.getElementById('imgPowerUp2')
-					img.src = "/static/image/game/powerUp/sprite_" + messageContent + ".png"				
+					img.src = "/static/image/game/powerUp/sprite_" + content[5] + ".png"				
 				}
 			}
 

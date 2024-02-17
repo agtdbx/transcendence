@@ -63,7 +63,7 @@ export const POWER_UP_BALL_INVISIBLE_COLOR = "#FFFF00" // in seconds
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // PLAYERS KEYS QWERTY
 export const PLAYER_KEYS = [
-	["KeyW", "KeyS", "KeyF", "Space"], // L1 player
+	["KeyW", "KeyS", "KeyD", "Space"], // L1 player
 	["KeyR", "KeyF", "KeyG", "Space"], // L2 player
 	["KeyY", "KeyH", "KeyJ", "Space"], // R1 player
 	["KeyI", "KeyK", "KeyL", "Space"], // R2 player

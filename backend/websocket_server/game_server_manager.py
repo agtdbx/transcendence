@@ -379,7 +379,8 @@ async def end_game(data:dict,
                                    idMatch=match, nbBounce=goal_stats[3],
                                    perfectedShot=perfect_shot,
                                    ballSpeed=goal_stats[2], ownGoal=own_goal,
-                                   idTeam=goal_stats[1])
+                                   idTeam=goal_stats[1],
+                                   idPaddle=goal_stats[0])
         goal.save()
         print("WS : DONE", file=sys.stderr)
 

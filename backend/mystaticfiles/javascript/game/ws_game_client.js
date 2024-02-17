@@ -60,7 +60,7 @@ function startGameLocalClient(server_port, idPaddle, idTeam, get_game_type)
 
 	ws_game.onopen = function(e)
 	{
-		console.log("Client gws connection ok !");
+		console.log("Client gws local connection ok !");
 		// Go to game page
 		changePage('6');
 		gameStartLocal = true;

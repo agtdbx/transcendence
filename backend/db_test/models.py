@@ -105,3 +105,4 @@ class Goal(models.Model):
     perfectedShot   = models.BooleanField(default=0)
     ballSpeed       = models.IntegerField(default=0)
     ownGoal         = models.BooleanField(default=False)
+    idPaddle        = models.IntegerField(default=0)

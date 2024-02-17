@@ -14,21 +14,22 @@ export class Paddle {
 		this.halfH = d.PADDLE_HEIGHT / 2
 		this.htmlObject = document.createElementNS('http://www.w3.org/2000/svg', 'rect')
 		console.log("create paddle at : " + x + "," + y)
+
 		this.htmlObject.setAttribute('x',  x - this.halfW);
 		this.htmlObject.setAttribute('y',  y - this.halfH);
 		this.htmlObject.setAttribute('width', this.w);
 		this.htmlObject.setAttribute('height',  this.h);
-		if (team === paddleInfoUser[1])
-		{
-			this.htmlObject.setAttributeNS(null, 'fill',  "#0000FF");
+		if (team === 0 && id === 0)
 			this.color = "#0000FF";
-		}
-		else
-		{
+		else if (team === 1 && id === 0)
 			this.color = "#FF0000";
-			this.htmlObject.setAttributeNS(null, 'fill',  "#FF0000");
-		}
+		else if (team === 0 && id === 1)
+			this.color = "#00FF00";
+		else
+			this.color = "#FFFFFF";
+		this.htmlObject.setAttributeNS(null, 'fill',  this.color);
 		// this.htmlObject.setAttribute('transform-origin', "center");
+		console.log("paddle info :  id " + id + "; team " + team+ "; color " + this.color)
 
 
 		this.hitbox = new hitbox.Hitbox(x, y, dc.HITBOX_PADDLE_COLOR, dc.PADDLE_COLOR)

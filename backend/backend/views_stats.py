@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    views_stats.py                                     :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: auguste <auguste@student.42.fr>            +#+  +:+       +#+         #
+#    By: lflandri <liam.flandrinck.58@gmail.com>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/14 16:40:22 by lflandri          #+#    #+#              #
-#    Updated: 2024/02/17 21:11:28 by auguste          ###   ########.fr        #
+#    Updated: 2024/02/17 22:18:16 by lflandri         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -131,7 +131,7 @@ def getuserstat(request):
     return JsonResponse({"success": True, "content" : listStat(target)})
 
 def createListGoal(player : MatchUser, match):
-    goalListe = Goal.objects.all().filter(idMatch=match, idUser=player.idUser, idTeam=player.idTeam).order_by("goalTime")
+    goalListe = Goal.objects.all().filter(idMatch=match, idUser=player.idUser, idTeam=player.idTeam, idPaddle=player.idPaddle).order_by("goalTime")
     listGoal = []
     username = player.idUser.username
     if username == "bosco":
@@ -160,8 +160,13 @@ def getusermatchhistory(request):
         return JsonResponse({"success": False, "content" : "Inexistant user." })
     matchUserList = MatchUser.objects.all().filter(idUser=user.idUser)
     matchList = []
+    matchListStock = []
     for usermatch in matchUserList :
-        matchList += Match.objects.all().filter(matchuser=usermatch)
+        m = Match.objects.all().filter(matchuser=usermatch)
+        if m[0].idMatch in matchListStock:
+            continue
+        matchList += m
+        matchListStock.append(m[0].idMatch)
     matchListReturn = []
     for match in matchList :
         maxGoal = 0
