@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    views_stats.py                                     :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: lflandri <lflandri@student.42.fr>          +#+  +:+       +#+         #
+#    By: lflandri <liam.flandrinck.58@gmail.com>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/14 16:40:22 by lflandri          #+#    #+#              #
-#    Updated: 2024/02/17 03:33:48 by lflandri         ###   ########.fr        #
+#    Updated: 2024/02/17 19:57:09 by lflandri         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -164,6 +164,7 @@ def getusermatchhistory(request):
         matchList += Match.objects.all().filter(matchuser=usermatch)
     matchListReturn = []
     for match in matchList :
+        maxGoal = 0
         countUserLeft = 1
         countUserRight = 1
         toAdd = {}
@@ -172,9 +173,7 @@ def getusermatchhistory(request):
         toAdd["map"] = match.idMap.name
         toAdd["scoreLeft"] = match.scoreLeft
         toAdd["scoreRight"] = match.scoreRight
-        toAdd["date"] = match.matchDate #.strftime('%Y-%m-%d %H:%M') 
-        # toAdd["date"] = match.matchDate.strftime('%Y-%m-%d %H:%M')
-        # toAdd["date"] = datetime.datetime.now().strftime('%Y-%m-%d %H:%M')
+        toAdd["date"] = match.matchDate
         playerList = MatchUser.objects.all().filter(idMatch=match.idMatch)
         for player in playerList :
             if player.idTeam == 1 :
@@ -198,5 +197,8 @@ def getusermatchhistory(request):
                 "pp": "/static/" + player.idUser.profilPicture.name,
                 "goalList":createListGoal(player, match)
             }
+            if maxGoal < len(toAdd[playerNomination]["goalList"]):
+                maxGoal = len(toAdd[playerNomination]["goalList"])
+        toAdd["maxGoal"] = maxGoal
         matchListReturn.append(toAdd)
     return JsonResponse({"success": True, "content" : matchListReturn})
