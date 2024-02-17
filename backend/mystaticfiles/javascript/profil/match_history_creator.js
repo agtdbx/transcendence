@@ -6,7 +6,7 @@
 /*   By: aderouba <aderouba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/23 15:10:25 by lflandri          #+#    #+#             */
-/*   Updated: 2024/02/16 15:11:54 by aderouba         ###   ########.fr       */
+/*   Updated: 2024/02/17 02:29:18 by aderouba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -197,6 +197,7 @@ function createGraphic(svgBlock, content, match, duration)
 function  createHistory(listMatch)
 {
 	let matchHistory = document.getElementById("match_history");
+	matchHistory.style.fontFamily = "KhazadDum";
 	for (let index = 0; index < listMatch.length; index++)
 	{
 		const match = listMatch[index];
@@ -245,16 +246,11 @@ function  createHistory(listMatch)
 		score.style.marginLeft = "2%";
 		score.style.textAlign = "center";
 		result.style.textAlign = "center";
-		if (scoreP1 > scoreP2)
-		{
-			result.textContent = "WIN";
+		result.textContent = match["result"];
+		if (match["result"] == "win")
 			result.style.color = "green";
-		}
 		else
-		{
-			result.textContent = "LOSE";
 			result.style.color = "red";
-		}
 		P1name.textContent = match["playerR1"]["name"];
 		if (match["playerR2"] != undefined)
 		{

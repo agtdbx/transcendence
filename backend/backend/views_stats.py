@@ -6,7 +6,7 @@
 #    By: aderouba <aderouba@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/14 16:40:22 by lflandri          #+#    #+#              #
-#    Updated: 2024/02/16 15:04:14 by aderouba         ###   ########.fr        #
+#    Updated: 2024/02/17 02:27:56 by aderouba         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -177,9 +177,19 @@ def getusermatchhistory(request):
             if player.idTeam == 1 :
                 playerNomination = "playerR" + str(countUserRight)
                 countUserRight+=1
+                if player.idUser == user:
+                    if match.scoreRight > match.scoreLeft:
+                        toAdd["result"] = "win"
+                    else:
+                        toAdd["result"] = "lose"
             else :
                 playerNomination = "playerL" + str(countUserLeft)
                 countUserLeft+=1
+                if player.idUser == user:
+                    if match.scoreRight < match.scoreLeft:
+                        toAdd["result"] = "win"
+                    else:
+                        toAdd["result"] = "lose"
             toAdd[playerNomination] = {
                 "name": player.idUser.username,
                 "pp": "/static/" + player.idUser.profilPicture.name,

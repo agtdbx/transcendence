@@ -7,7 +7,7 @@ html{
 body {
 	font-family: KhazadDum;
 	cursor: url("./image/cursor/cursor1.png"), auto;
-	background-image:url(./image/background/index.png);
+	background-image:url("./image/background/index.png");
 	background-attachment: fixed;
 	background-repeat:	no-repeat;
 	background-size: cover;
