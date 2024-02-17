@@ -536,8 +536,8 @@ GAME LOCAL
         'type' : 'userInput'
         'key' : 'up' | 'down' | 'powerUp' | 'launchBall'
         'value' : 'press' | 'release'
-        'id_paddle' : <id paddle>
-        'id_team' : <id team>
+        'idPaddle' : <id paddle>
+        'idTeam' : <id team>
         -> No more field
 
     => start info
@@ -558,7 +558,6 @@ GAME LOCAL
         'updatePaddles' : [<paddles>, ...]  | null
         'updateBalls' : [<ball>, ...] | null
         'deleteBall' : [<ball index>, ...]  | null
-        'changeUserPowerUp' :  <power up id> | null
         'updatePowerUpInGame' : <powerUp> | null
         'updateScore' : [<score left, score right>]  | null
 
@@ -571,7 +570,7 @@ GAME LOCAL
         [<point>, true | false] {=} ['coordonne', 'visible']
 
     <paddles> :
-        [<point>, float, <team id>, <paddle id> , int] {=} ['position', 'modifiersize', 'teamId','paddleId', 'powerUpInCharge']
+        [<point>, float, <team id>, <paddle id> , int, int] {=} ['position', 'modifiersize', 'teamId','paddleId', 'powerUpInCharge', 'powerUp']
 
     <team id> :
         0 | 1 {=} left | right
@@ -589,8 +588,8 @@ GAME REMOTE
 ###############################################################################
     player identification
         'type' : 'userIdentification'
-        'id_paddle' : <id paddle>
-        'id_team' : <id team>
+        'idPaddle' : <id paddle>
+        'idTeam' : <id team>
         -> No more field
 
     player input

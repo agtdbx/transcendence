@@ -92,6 +92,7 @@ class MatchUser(models.Model):
     nbCC            = models.IntegerField(default=0)
     nbPerfectShot   = models.IntegerField(default=0)
     idTeam          = models.IntegerField(default=0)
+    idPaddle        = models.IntegerField(default=0)
 
 
 class Goal(models.Model):
