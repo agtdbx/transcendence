@@ -89,6 +89,17 @@ async def create_new_game(in_game_list : list,
 
     return None
 
+
+# TODO : FAIRE EN SORTE QUE ÇA MARCHE ^^
+async def create_new_local_game(in_game_list : list,
+                                map_id : int,
+                                power_up_enable : bool,
+                                team_left:list[int],
+                                team_right:list[int],
+                                type:int):
+    return None
+
+
 def modifyAchievement(user):
     listData = getListeMatchDataForAchievement(user)
     if (createAchievementIfNot(user)):

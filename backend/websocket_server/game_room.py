@@ -17,13 +17,24 @@ from websocket_server.game_server_manager import create_new_game, \
 MAX_PLAYER_PER_TEAM = 2
 
 
+def get_list_user_view(list_user_id):
+    list_user_view = []
+    for user_id in list_user_id:
+        user = get_user_by_id(user_id)
+        if user == None:
+            continue
+        list_user_view.append(["/static/" + user.profilPicture.name, user.username, user.idUser])
+
+    return list_user_view
+
+
 def create_game_room_status_message(type, game_room:dict):
     msg = {'type' : type,
            'powerUpActivate' : str(game_room['power_up']).lower(),
            'mapId' : game_room['map_id'],
            'mapName' : get_map_name_by_id(game_room['map_id']),
-           'teamLeft' : game_room['team_left'],
-           'teamRight' :game_room['team_right']}
+           'teamLeft' : get_list_user_view(game_room['team_left']),
+           'teamRight' : get_list_user_view(game_room['team_right'])}
 
     str_msg = str(msg).replace("'", '"')
     return str_msg
