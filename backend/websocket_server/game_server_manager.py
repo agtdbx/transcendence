@@ -229,7 +229,7 @@ async def end_game(data:dict,
 
     # PUT MATCH IN DB
     match_id = Match.objects.all().count()
-    match_date = datetime.datetime.now()
+    match_date = (datetime.datetime.now() + datetime.timedelta(hours=1)).strftime('%Y-%m-%d %H:%M')
     match_time = int(game_stats[3]) + 1
     test_map = Map.objects.all().filter(idMap=game_stats[4])
     if len(test_map) != 1:
