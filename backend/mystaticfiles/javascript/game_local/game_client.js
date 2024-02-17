@@ -270,124 +270,141 @@ export class GameClient {
 		// console.log("event : " + event.code + " : type : " + type)
 
 
-		// let templateContent = {"paddleId" : i, "keyId" : 0, "keyAction" : true}
-		let i = paddleInfoUser[0];
-		if (type == "down" && event.code == dc.PLAYER_KEYS[i][d.KEY_UP] && ! this.paddlesKeyState[i * 4 + d.KEY_UP])
+		for (let i = 0; i < 4; i++)
 		{
-			this.paddlesKeyState[i * 4 + d.KEY_UP] = true
-			// let content = templateContent.copy()
-			// content["keyId"] = KEY_UP
-			// content["keyAction"] = true
-			// this.messageForServer.append((CLIENT_MSG_TYPE_USER_EVENT, content))
-			websockGame.send(JSON.stringify({
-				'type' : 'userInput',
-				'key' : 'up',
-				'value': "press"
-			}));
-		}
-		else if (type == "up" && ( (event.code == dc.PLAYER_KEYS[i][d.KEY_UP])) && this.paddlesKeyState[i * 4 + d.KEY_UP])
-		{
-			this.paddlesKeyState[i * 4 + d.KEY_UP] = false
-			// let content = templateContent.copy()
-			// content["keyId"] = KEY_UP
-			// content["keyAction"] = false
-			// this.messageForServer.append((CLIENT_MSG_TYPE_USER_EVENT, content))
-			websockGame.send(JSON.stringify({
-				'type' : 'userInput',
-				'key' : 'up',
-				'value': "release"
-			}));
-		}
+			if (type == "down" && event.code == dc.PLAYER_KEYS[i][d.KEY_UP] && ! this.paddlesKeyState[i * 4 + d.KEY_UP])
+			{
+				this.paddlesKeyState[i * 4 + d.KEY_UP] = true
+				// let content = templateContent.copy()
+				// content["keyId"] = KEY_UP
+				// content["keyAction"] = true
+				// this.messageForServer.append((CLIENT_MSG_TYPE_USER_EVENT, content))
+				websockGame.send(JSON.stringify({
+					'type' : 'userInput',
+					'key' : 'up',
+					'value': "press",
+					'id_paddle' : i % 2,
+					'id_team' : Math.floor(i / 2)
+				}));
+			}
+			else if (type == "up" && ( (event.code == dc.PLAYER_KEYS[i][d.KEY_UP])) && this.paddlesKeyState[i * 4 + d.KEY_UP])
+			{
+				this.paddlesKeyState[i * 4 + d.KEY_UP] = false
+				// let content = templateContent.copy()
+				// content["keyId"] = KEY_UP
+				// content["keyAction"] = false
+				// this.messageForServer.append((CLIENT_MSG_TYPE_USER_EVENT, content))
+				websockGame.send(JSON.stringify({
+					'type' : 'userInput',
+					'key' : 'up',
+					'value': "release",
+					'id_paddle' : i % 2,
+					'id_team' : Math.floor(i / 2)
+				}));
+			}
 
-		// console.log("test for : " + dc.PLAYER_KEYS[i][d.KEY_DOWN])
-
-
-		if (type == "down" && event.code == dc.PLAYER_KEYS[i][d.KEY_DOWN] && ! this.paddlesKeyState[i * 4 + d.KEY_DOWN])
-		{
-			this.paddlesKeyState[i * 4 + d.KEY_DOWN] = true
-			// let content = templateContent.copy()
-			// content["keyId"] = KEY_DOWN
-			// content["keyAction"] = true
-			// this.messageForServer.append((CLIENT_MSG_TYPE_USER_EVENT, content))
-			websockGame.send(JSON.stringify({
-				'type' : 'userInput',
-				'key' : 'down',
-				'value': "press"
-			}));
-		}
-		else if (type == "up" && ( (event.code == dc.PLAYER_KEYS[i][d.KEY_DOWN])) && this.paddlesKeyState[i * 4 + d.KEY_DOWN])
-		{
-			this.paddlesKeyState[i * 4 + d.KEY_DOWN] = false
-			// let content = templateContent.copy()
-			// content["keyId"] = KEY_DOWN
-			// content["keyAction"] = false
-			// this.messageForServer.append((CLIENT_MSG_TYPE_USER_EVENT, content))
-			websockGame.send(JSON.stringify({
-				'type' : 'userInput',
-				'key' : 'down',
-				'value': "release"
-			}));
-		}
+			// console.log("test for : " + dc.PLAYER_KEYS[i][d.KEY_DOWN])
 
 
-
-		if (type == "down" && event.code == dc.PLAYER_KEYS[i][d.KEY_POWER_UP] && ! this.paddlesKeyState[i * 4 + d.KEY_POWER_UP])
-		{
-			this.paddlesKeyState[i * 4 + d.KEY_POWER_UP] = true
-			// let content = templateContent.copy()
-			// content["keyId"] = KEY_POWER_UP
-			// content["keyAction"] = true
-			// this.messageForServer.append((CLIENT_MSG_TYPE_USER_EVENT, content))
-			websockGame.send(JSON.stringify({
-				'type' : 'userInput',
-				'key' : 'powerUp',
-				'value': "press"
-			}));
-		}
-		else if (type == "up" && ( (event.code == dc.PLAYER_KEYS[i][d.KEY_POWER_UP])) && this.paddlesKeyState[i * 4 + d.KEY_POWER_UP])
-		{
-			this.paddlesKeyState[i * 4 + d.KEY_POWER_UP] = false
-			// let content = templateContent.copy()
-			// content["keyId"] = KEY_POWER_UP
-			// content["keyAction"] = false
-			// this.messageForServer.append((CLIENT_MSG_TYPE_USER_EVENT, content))
-			websockGame.send(JSON.stringify({
-				'type' : 'userInput',
-				'key' : 'powerUp',
-				'value': "release"
-			}));
-		}
+			if (type == "down" && event.code == dc.PLAYER_KEYS[i][d.KEY_DOWN] && ! this.paddlesKeyState[i * 4 + d.KEY_DOWN])
+			{
+				this.paddlesKeyState[i * 4 + d.KEY_DOWN] = true
+				// let content = templateContent.copy()
+				// content["keyId"] = KEY_DOWN
+				// content["keyAction"] = true
+				// this.messageForServer.append((CLIENT_MSG_TYPE_USER_EVENT, content))
+				websockGame.send(JSON.stringify({
+					'type' : 'userInput',
+					'key' : 'down',
+					'value': "press",
+					'id_paddle' : i % 2,
+					'id_team' : Math.floor(i / 2)
+				}));
+			}
+			else if (type == "up" && ( (event.code == dc.PLAYER_KEYS[i][d.KEY_DOWN])) && this.paddlesKeyState[i * 4 + d.KEY_DOWN])
+			{
+				this.paddlesKeyState[i * 4 + d.KEY_DOWN] = false
+				// let content = templateContent.copy()
+				// content["keyId"] = KEY_DOWN
+				// content["keyAction"] = false
+				// this.messageForServer.append((CLIENT_MSG_TYPE_USER_EVENT, content))
+				websockGame.send(JSON.stringify({
+					'type' : 'userInput',
+					'key' : 'down',
+					'value': "release",
+					'id_paddle' : i % 2,
+					'id_team' : Math.floor(i / 2)
+				}));
+			}
 
 
 
-		if (type == "down" && event.code == dc.PLAYER_KEYS[i][d.KEY_LAUNCH_BALL] && ! this.paddlesKeyState[i * 4 + d.KEY_LAUNCH_BALL])
-		{
-			this.paddlesKeyState[i * 4 + d.KEY_LAUNCH_BALL] = true
-			// let content = templateContent.copy()
-			// content["keyId"] = KEY_LAUNCH_BALL
-			// content["keyAction"] = true
-			// this.messageForServer.append((CLIENT_MSG_TYPE_USER_EVENT, content))
-			websockGame.send(JSON.stringify({
-				'type' : 'userInput',
-				'key' : 'launchBall',
-				'value': "press"
-			}));
-		}
-		else if (type == "up" && ( (event.code == dc.PLAYER_KEYS[i][d.KEY_LAUNCH_BALL])) && this.paddlesKeyState[i * 4 + d.KEY_LAUNCH_BALL])
-		{
-			this.paddlesKeyState[i * 4 + d.KEY_LAUNCH_BALL] = false
-			// let content = templateContent.copy()
-			// content["keyId"] = KEY_LAUNCH_BALL
-			// content["keyAction"] = false
-			// this.messageForServer.append((CLIENT_MSG_TYPE_USER_EVENT, content))
-			websockGame.send(JSON.stringify({
-				'type' : 'userInput',
-				'key' : 'launchBall',
-				'value': "release"
-			}));
-		}
+			if (type == "down" && event.code == dc.PLAYER_KEYS[i][d.KEY_POWER_UP] && ! this.paddlesKeyState[i * 4 + d.KEY_POWER_UP])
+			{
+				this.paddlesKeyState[i * 4 + d.KEY_POWER_UP] = true
+				// let content = templateContent.copy()
+				// content["keyId"] = KEY_POWER_UP
+				// content["keyAction"] = true
+				// this.messageForServer.append((CLIENT_MSG_TYPE_USER_EVENT, content))
+				websockGame.send(JSON.stringify({
+					'type' : 'userInput',
+					'key' : 'powerUp',
+					'value': "press",
+					'id_paddle' : i % 2,
+					'id_team' : Math.floor(i / 2)
+				}));
+			}
+			else if (type == "up" && ( (event.code == dc.PLAYER_KEYS[i][d.KEY_POWER_UP])) && this.paddlesKeyState[i * 4 + d.KEY_POWER_UP])
+			{
+				this.paddlesKeyState[i * 4 + d.KEY_POWER_UP] = false
+				// let content = templateContent.copy()
+				// content["keyId"] = KEY_POWER_UP
+				// content["keyAction"] = false
+				// this.messageForServer.append((CLIENT_MSG_TYPE_USER_EVENT, content))
+				websockGame.send(JSON.stringify({
+					'type' : 'userInput',
+					'key' : 'powerUp',
+					'value': "release",
+					'id_paddle' : i % 2,
+					'id_team' : Math.floor(i / 2)
+				}));
+			}
 
-		this.inputCooldown = 2
+
+
+			if (type == "down" && event.code == dc.PLAYER_KEYS[i][d.KEY_LAUNCH_BALL] && ! this.paddlesKeyState[i * 4 + d.KEY_LAUNCH_BALL])
+			{
+				this.paddlesKeyState[i * 4 + d.KEY_LAUNCH_BALL] = true
+				// let content = templateContent.copy()
+				// content["keyId"] = KEY_LAUNCH_BALL
+				// content["keyAction"] = true
+				// this.messageForServer.append((CLIENT_MSG_TYPE_USER_EVENT, content))
+				websockGame.send(JSON.stringify({
+					'type' : 'userInput',
+					'key' : 'launchBall',
+					'value': "press",
+					'id_paddle' : i % 2,
+					'id_team' : Math.floor(i / 2)
+				}));
+			}
+			else if (type == "up" && ( (event.code == dc.PLAYER_KEYS[i][d.KEY_LAUNCH_BALL])) && this.paddlesKeyState[i * 4 + d.KEY_LAUNCH_BALL])
+			{
+				this.paddlesKeyState[i * 4 + d.KEY_LAUNCH_BALL] = false
+				// let content = templateContent.copy()
+				// content["keyId"] = KEY_LAUNCH_BALL
+				// content["keyAction"] = false
+				// this.messageForServer.append((CLIENT_MSG_TYPE_USER_EVENT, content))
+				websockGame.send(JSON.stringify({
+					'type' : 'userInput',
+					'key' : 'launchBall',
+					'value': "release",
+					'id_paddle' : i % 2,
+					'id_team' : Math.floor(i / 2)
+				}));
+			}
+
+			this.inputCooldown = 2
+	}
 	}
 
 

@@ -73,7 +73,7 @@ class Map(models.Model):
 class Match(models.Model):
     idMatch         = models.IntegerField(primary_key=True)                                                     #[primary key]
     type            = models.IntegerField()
-    matchDate       = models.TimeField()
+    matchDate       = models.TextField()
     matchDuration   = models.IntegerField()
     idMap           = models.ForeignKey(Map, on_delete=models.PROTECT)
     powerUp         = models.BooleanField()

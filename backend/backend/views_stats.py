@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    views_stats.py                                     :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: aderouba <aderouba@student.42.fr>          +#+  +:+       +#+         #
+#    By: lflandri <lflandri@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/14 16:40:22 by lflandri          #+#    #+#              #
-#    Updated: 2024/02/17 02:27:56 by aderouba         ###   ########.fr        #
+#    Updated: 2024/02/17 03:33:48 by lflandri         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -172,6 +172,9 @@ def getusermatchhistory(request):
         toAdd["map"] = match.idMap.name
         toAdd["scoreLeft"] = match.scoreLeft
         toAdd["scoreRight"] = match.scoreRight
+        toAdd["date"] = match.matchDate #.strftime('%Y-%m-%d %H:%M') 
+        # toAdd["date"] = match.matchDate.strftime('%Y-%m-%d %H:%M')
+        # toAdd["date"] = datetime.datetime.now().strftime('%Y-%m-%d %H:%M')
         playerList = MatchUser.objects.all().filter(idMatch=match.idMatch)
         for player in playerList :
             if player.idTeam == 1 :

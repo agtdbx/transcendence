@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   match_history_creator.js                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aderouba <aderouba@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lflandri <lflandri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/23 15:10:25 by lflandri          #+#    #+#             */
-/*   Updated: 2024/02/17 02:29:18 by aderouba         ###   ########.fr       */
+/*   Updated: 2024/02/17 03:12:33 by lflandri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -219,6 +219,7 @@ function  createHistory(listMatch)
 		let P2img = document.createElement('img');
 		let P4img = document.createElement('img');
 		let mapType = document.createElement('h5');
+		let datetxt = document.createElement('h5');
 		let PowerUpTxt = document.createElement('h5');
 		let PowerUpBool = document.createElement('span');
 		let graphe = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
@@ -312,6 +313,9 @@ function  createHistory(listMatch)
 		mapType.textContent = "Map : " + match["map"];
 		mapType.style.color = "white";
 		mapType.style.padding = "3%";
+		datetxt.textContent = "Date : " + match["date"];
+		datetxt.style.color = "white";
+		datetxt.style.padding = "3%";
 		PowerUpTxt.style.padding = "3%";
 		PowerUpTxt.style.color = "white";
 		PowerUpTxt.textContent = "Power Up : ";
@@ -345,7 +349,8 @@ function  createHistory(listMatch)
 		{
 			P2content.insertBefore(P4name, null);
 			P2content.insertBefore(P4img, null);
-		}
+		}datetxt
+		infoDiv.insertBefore(datetxt, null);
 		infoDiv.insertBefore(mapType, null);
 		infoDiv.insertBefore(PowerUpTxt, null);
 		PowerUpTxt.insertBefore(PowerUpBool, null);
