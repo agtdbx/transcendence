@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    views_achievement.py                               :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: aderouba <aderouba@student.42.fr>          +#+  +:+       +#+         #
+#    By: lflandri <liam.flandrinck.58@gmail.com>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/17 15:33:50 by lflandri          #+#    #+#              #
-#    Updated: 2024/02/16 21:30:26 by aderouba         ###   ########.fr        #
+#    Updated: 2024/02/17 18:50:38 by lflandri         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -48,12 +48,12 @@ def getListeMatchDataForAchievement(user):
 
     matchUserList = MatchUser.objects.all().filter(idUser=user.idUser)
     matchList = []
-    matchListWithPowerUp = []
     for usermatch in matchUserList :
         matchList += Match.objects.all().filter(matchuser=usermatch)
-        matchListWithPowerUp += Match.objects.all().filter(matchuser=usermatch, powerUp=True)
 
     for m in matchList: #get info from match
+        if m.type > 2 :
+            continue
         if m.nbMaxBallOnGame > nbMaxBallOnGame :
             nbMaxBallOnGame = m.nbMaxBallOnGame
         if MatchUser.objects.all().filter(idUser=user.idUser,idMatch=m.idMatch)[0].idTeam == 1:
@@ -76,6 +76,8 @@ def getListeMatchDataForAchievement(user):
                     nbBoscoBeDestroy+=1
 
     for u in matchUserList : #get info from matchuser
+        if u.idMatch.type > 2 :
+            continue
         nbPerfectShoot += u.nbPerfectShot
         nbGoalCC += u.nbCC
         if u.maxBallSpeed > maxBallSpeed :
