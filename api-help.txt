@@ -1,19 +1,25 @@
 API HELP :
 
-REQUEST FORM - TO TEST
+###############################################################################
+REQUEST FORM
+###############################################################################
     {'type' : <type>, 'cmd' : <cmd>, ...}
     -> Reply to request
     => Message recieved without request
 
 
-ERROR - TO TEST
+###############################################################################
+ERROR
+###############################################################################
     => Error recieved
         'type' : 'error'
         'error' : <error>
 
 
+###############################################################################
 CONNECTION
-    with token - TO TEST
+###############################################################################
+    with token
         'type' : 'connect'
         'cmd' : 'by_token'
         'token' : <token>
@@ -21,7 +27,7 @@ CONNECTION
            'success' : true | false
            'error' : <error> #Empty in case of success = true
 
-    with username - TO TEST
+    with username
         'type' : 'connect'
         'cmd' : 'by_username'
         'username' : <username>
@@ -31,7 +37,9 @@ CONNECTION
            'error' : <error> #Empty in case of success = true
 
 
+###############################################################################
 MESSAGE
+###############################################################################
     send message - TO TEST
         'type' : 'message'
         'cmd' : 'sendMessage'
@@ -57,7 +65,9 @@ MESSAGE
         'channel' : 'general' | <user id>
 
 
+###############################################################################
 QUICK GAME ROOM
+###############################################################################
     ask for new game
         'type' : 'quickRoom'
         'cmd' : 'askForRoom'
@@ -75,7 +85,104 @@ QUICK GAME ROOM
         'teamId' : <team id> # 0 left, 1 right
 
 
-GAME ROOM
+###############################################################################
+GAME ROOM LOCAL
+###############################################################################
+    create game room
+        'type' : 'gameRoom'
+        'cmd' : 'createRoomLocal'
+        -> 'type' : 'createRoomInfo'
+           {{update room info}}
+
+    add user to a team by password
+        'type' : 'gameRoom'
+        'cmd' : 'addUserPassword'
+        'targetUsername' : <target username>
+        'targetPassword' : <targer passord>
+        'team' : 'left' | 'right'
+        -> 'type' : 'joinRoomInfo'
+           'success' : true | false
+           'error' : <error> # if success == false
+           {{join room info}} # if success == true
+
+    add user to a team by login 42
+        'type' : 'gameRoom'
+        'cmd' : 'addUser42'
+        'targetLogin42' : <target login 42>
+        'team' : 'left' | 'right'
+        -> 'type' : 'joinRoomInfo'
+           'success' : true | false
+           'error' : <error> # if success == false
+           {{join room info}} # if success == true
+
+    quit game room
+        'type' : 'gameRoom'
+        'cmd' : 'quitGameRoom'
+        -> 'type' : 'quitGameRoom'
+
+    /!\ Only the host of the room can use it /!\
+    quick user from room
+        'type' : 'gameRoom'
+        'cmd' : 'quickUser'
+        'targetId' : <user id>
+        -> 'type' : 'updateRoomInfo'
+           {{update room info}}
+
+    /!\ Only the host of the room can use it /!\
+    add bot to a team
+        'type' : 'gameRoom'
+        'cmd' : 'addBot'
+        'team' : 'left' | 'right'
+        -> 'type' : 'updateRoomInfo'
+           {{update room info}}
+
+    /!\ Only the host of the room can use it /!\
+    remove bot to a team
+        'type' : 'gameRoom'
+        'cmd' : 'removeBot'
+        'team' : 'left' | 'right'
+        -> 'type' : 'updateRoomInfo'
+           {{update room info}}
+
+    /!\ Only the host of the room can use it /!\
+    change power up option
+        'type' : 'gameRoom'
+        'cmd' : 'changePowerUp'
+        -> 'type' : 'updateRoomInfo'
+           {{update room info}}
+
+    /!\ Only the host of the room can use it /!\
+    change map
+        'type' : 'gameRoom'
+        'cmd' : 'changeMap'
+        'mapId' : <map id>
+        -> 'type' : 'updateRoomInfo'
+           {{update room info}}
+
+    /!\ Only the host of the room can use it /!\
+    start game
+        'type' : 'gameRoom'
+        'cmd' : 'startGame'
+        -> 'type' : 'startGame'
+           'success' : true | false
+
+    => Game start
+        'type' : 'gameStart'
+        'gamePort' : <port> # port of the websocket for game
+        'paddleId' : <paddle id>
+        'teamId' : <team id> # 0 left, 1 right
+
+    {{update room info}} :
+        'mapId' : <map id>
+        'mapName' : <map name>
+        'powerUpActivate' : false | true
+        'teamLeft' : [<user id>] # if id -1, it's an ia
+        'teamRight' : [<user id>]
+
+
+###############################################################################
+GAME ROOM REMOTE
+###############################################################################
     create game room
         'type' : 'gameRoom'
         'cmd' : 'createRoom'
@@ -154,11 +261,6 @@ GAME ROOM
         -> 'type' : 'startGame'
            'success' : true | false
 
-    => invite reply
-        'type' : 'ReplyGameRoom'
-        'targetId' : <user id> | 'ia'
-        'success' : true | false
-
     => someone quit game room
         'type' : 'quitGameRoom'
         {{update room info}}
@@ -184,47 +286,56 @@ GAME ROOM
         'teamRight' : [<user id>]
 
 
-TOURNAMENT
-    /!\ Only the administrator can create tournament /!\
+###############################################################################
+TOURNAMENT LOCAL
+###############################################################################
     create tournament
         'type' : 'tournament'
-        'cmd' : 'create'
-        'powerUp' : true | false
-        'mapId' : <map id>
-        -> {{tournament state}}
+        'cmd' : 'createLocal'
+        -> 'type' : 'tournamentCreateLocal'
+           {{tournament state}}
 
-    /!\ Only the administrator can modify tournament /!\
+    /!\ Only the host of tournament can modify it /!\
     switch tournament power up
         'type' : 'tournament'
         'cmd' : 'modifyPowerUp'
-        -> {{tournament state}}
+        -> 'type' : 'tournamentState'
+           {{tournament state}}
 
-    /!\ Only the administrator can modify tournament /!\
+    /!\ Only the host of tournament can modify it /!\
     modify tournament map id
         'type' : 'tournament'
         'cmd' : 'modifyMapId'
         'mapId' : <map id>
-        -> {{tournament state}}
+        -> 'type' : 'tournamentState'
+           {{tournament state}}
 
-    /!\ Only the administrator can start tournament /!\
+    /!\ Only the host of tournament can start it /!\
     start tournament
         'type' : 'tournament'
         'cmd' : 'start'
         -> 'type' : 'tournamentStart'
-           'powerUp' : true | false
-           'mapId' : <map id>,
-           'mapName' : <map name>
-           'players' : [<user view>]
-           'inTournament' : true | false
 
-    join tournament
-        'type' : 'tournament'
-        'cmd' : 'join'
-        'nickname' : <nickname>
-        -> 'type' : 'joinReply'
-           'powerUp' : true | false
-           'mapName' : <map name>
-           'players' : [<user view>]
+	/!\ Only the host of tournament can invite people /!\
+	add user to a team by password
+        'type' : 'gameRoom'
+        'cmd' : 'addUserPassword'
+        'targetUsername' : <target username>
+        'targetPassword' : <target password>
+        -> 'type' : 'joinRoomInfo'
+           'success' : true | false
+           'error' : <error> # if success == false
+           {{join room info}} # if success == true
+
+	/!\ Only the host of tournament can invite people /!\
+    add user to a team by login 42
+        'type' : 'gameRoom'
+        'cmd' : 'addUser42'
+        'targetLogin42' : <target login 42>
+        -> 'type' : 'joinRoomInfo'
+           'success' : true | false
+           'error' : <error> # if success == false
+           {{join room info}} # if success == true
 
     quit tournament # if the tournament has begun, it will not work
         'cmd' : 'quit'
@@ -233,19 +344,8 @@ TOURNAMENT
     get tournament info
         'type' : 'tournament'
         'cmd' : 'getInfo'
-        -> '{{tournament state}}
-
-    get user of tournament
-        'type' : 'tournament'
-        'cmd' : 'getUserTournament'
-        -> 'type' : 'tournamentPlayersList'
-           'players' : [<user view>]
-
-    get if the user is in tournament
-        'type' : 'tournament'
-        'cmd' : 'IsUserInTournament'
-        -> 'type' : 'InTournament'
-           'inTournament' : true | false
+        -> 'type' : 'tournamentState'
+           {{tournament state}}
 
     get tournament tree
         'type' : 'tournament'
@@ -309,21 +409,205 @@ TOURNAMENT
         'third' : <user view>
 
     {{tournament state}}
-        'type' : 'tournamentState'
-        'status' : 0 | 1 | 2 | 3
-        # 0 = nothing, 1 = create, 2 = start, 3 = finish
+        'status' : 0 | 1 | 2 | 3 # 0 = nothing, 1 = create, 2 = start, 3 = finish
         'powerUp' : true | false
         'mapId' : <map id>
         'mapName' : <map name>
         'players' : [<user view>]
-        'youAreInTournament' : true | false
+
+    <user view>
+        [<user id>, <user pp>, <tournament user nickmane>] # -1 id for bot
+
+
+###############################################################################
+TOURNAMENT REMOTE
+###############################################################################
+    create tournament
+        'type' : 'tournament'
+        'cmd' : 'create'
+        -> 'type' : 'tournamentCreate'
+           {{tournament state}}
+
+    /!\ Only the creator of tournament can modify it /!\
+    switch tournament power up
+        'type' : 'tournament'
+        'cmd' : 'modifyPowerUp'
+        -> 'type' : 'tournamentState'
+           {{tournament state}}
+
+    /!\ Only the creator of tournament can modify it /!\
+    modify tournament map id
+        'type' : 'tournament'
+        'cmd' : 'modifyMapId'
+        'mapId' : <map id>
+        -> 'type' : 'tournamentState'
+           {{tournament state}}
+
+    /!\ Only the creator of tournament can start it /!\
+    start tournament
+        'type' : 'tournament'
+        'cmd' : 'start'
+        -> 'type' : 'tournamentStart'
+
+	/!\ Only the creator of tournament can invite people /!\
+	invite user at tournament
+        'type' : 'tournament'
+        'cmd' : 'invite'
+        'targetId' : <target id>
+        -> No more field
+
+    join tournament
+        'type' : 'tournament'
+        'cmd' : 'join'
+        'nickname' : <nickname>
+        -> 'type' : 'joinReply'
+           {{tournament state}}
+
+    quit tournament # if the tournament has begun, it will not work
+        'cmd' : 'quit'
+        -> 'type' : 'quitReply'
+
+    get tournament info
+        'type' : 'tournament'
+        'cmd' : 'getInfo'
+        -> 'type' : 'tournamentState'
+           {{tournament state}}
+
+    get tournament tree
+        'type' : 'tournament'
+        'cmd' : 'getTournamentTree'
+        -> type' : 'tournamentTreeUpdate'
+           'playersGrade' : [[<user nickname>, <user grade>]]
+           # Grade if for placement in tournament.
+           # 0 for quarters, 1 for half final, 2 final and 3 winner
+
+    /!\ Only work if the tournament has begin /!\
+    get next match of tournament
+        'type' : 'tournament'
+        'cmd' : 'nextMatch'
+        -> 'type' : 'nextMatch'
+           'match' : [<user view> | null, <user view> | null] | null
+           # null in user = user not know
+           # all null = no future match (end of tournament)
+
+    /!\ Only work if the tournament has begin /!\
+    get next match of user
+        'type' : 'tournament'
+        'cmd' : 'myNextMatch'
+        -> 'type' : 'myNextMatch'
+           'match' : [<user view> | null, <user view> | null] | null
+           # null in user = user not know
+           # all null = no future match (loser)
+           
+    /!\ Only work if the tournament is finish /!\
+	get winners
+        'type' : 'tournament'
+        'cmd' : 'winners'
+        -> 'type' : 'winnersTournament'
+           'onePongMan' : <user view>
+           'second' : <user view>
+           'third' : <user view>
+
+    => {{tournament state}}
+
+    => Game start
+        'type' : 'gameStart'
+        'gamePort' : <port> # port of the websocket for game
+        'paddleId' : <paddle id>
+        'teamId' : <team id>
+
+    => update tournament tree
+        'type' : 'tournamentTreeUpdate'
+        'winner' : <user view> | null            # null for empty
+        'final' : (<user view> | null) * 2
+        'half' : (<user view> | null) * 4
+        'quarter' : (<user view> | null) * 8
+
+    => nextMatch
+        'type' : 'nextMatch'
+        'playerLeft' : <user view>
+        'playerRight' : <user view>
+
+    => end tournament
+        'type' : 'endTournament'
+        'onePongMan' : <user view>
+        'second' : <user view>
+        'third' : <user view>
+
+    {{tournament state}}
+        'status' : 0 | 1 | 2 | 3 # 0 = nothing, 1 = create, 2 = start, 3 = finish
+        'powerUp' : true | false
+        'mapId' : <map id>
+        'mapName' : <map name>
+        'players' : [<user view>]
 
     <user view>
         [<user id>, <user pp>, <tournament user nickmane>] # -1 id for bot
 
 
 /!\ All messages for and from game are in it's websocket /!\
-GAME
+###############################################################################
+GAME LOCAL
+###############################################################################
+    player identification
+        'type' : 'userIdentification'
+        -> No more field
+
+    player input
+        'type' : 'userInput'
+        'key' : 'up' | 'down' | 'powerUp' | 'launchBall'
+        'value' : 'press' | 'release'
+        'id_paddle' : <id paddle>
+        'id_team' : <id team>
+        -> No more field
+
+    => start info
+        'type' : 'startInfo'
+        'obstacles' : [<obstacles>, ...]
+        'powerUp' : true | false
+        'nbPlayerTeamLeft' : int
+        'nbPlayerTeamRight' : int
+
+    => start info
+        'type' : 'startCount'
+        'number' : int (5 to 0)
+
+
+    => server info
+        'type' : 'serverInfo'
+        'updateObstacles' : [[<obstacles index>, <point>, [<point>, ...]], ...] | null
+        'updatePaddles' : [<paddles>, ...]  | null
+        'updateBalls' : [<ball>, ...] | null
+        'deleteBall' : [<ball index>, ...]  | null
+        'changeUserPowerUp' :  <power up id> | null
+        'updatePowerUpInGame' : <powerUp> | null
+        'updateScore' : [<score left, score right>]  | null
+
+    => end game
+        'type' : 'endGame' # Not the movie
+        'leftTeamScore' : <left team score>
+        'rightTeamScore' : <right team score>
+
+    <powerUp> :
+        [<point>, true | false] {=} ['coordonne', 'visible']
+
+    <paddles> :
+        [<point>, float, <team id>, <paddle id> , int] {=} ['position', 'modifiersize', 'teamId','paddleId', 'powerUpInCharge']
+
+    <team id> :
+        0 | 1 {=} left | right
+
+    <ball> :
+        [<point>, <point>, int, int, int, int] {=} ['position', 'direction', 'radius', 'speed', 'status', 'modifier_state']
+
+    <point> :
+        [float, float] {=} ['x', 'y']
+
+
+/!\ All messages for and from game are in it's websocket /!\
+###############################################################################
+GAME REMOTE
+###############################################################################
     player identification
         'type' : 'userIdentification'
         'id_paddle' : <id paddle>
