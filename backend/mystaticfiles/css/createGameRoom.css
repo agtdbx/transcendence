@@ -199,6 +199,28 @@ font-size: 1rem;
 	text-overflow: ellipsis;
 }
 
+.btn-bot-local{
+	position: relative;
+	top:90%;
+	left: 40%;
+	width: 30%;
+	height: 10%;
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+}
+
+.btn-playeradd{
+	position: relative;
+	top:90%;
+	left: 40%;
+	width: 30%;
+	height: 10%;
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+}
+
 #vs{
 	position: absolute;
 	-ms-transform: translate(-50%, -50%);
