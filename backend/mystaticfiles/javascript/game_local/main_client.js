@@ -8,7 +8,7 @@ let intervalGameStart = setInterval
 	{
 		if (gameStartLocal && document.getElementById("GameBox") != null && websockGame != null)
 		{
-			gameStart = false;
+			gameStartLocal = false;
 			runGameClient();
 		}
 	}

@@ -16,7 +16,7 @@ function onRecieveData(event)
 	if (type === "error")
 	{
 		console.error("Error :", data['error']);
-		if (current_page == 5 || current_page == 8)
+		if (current_page == 5 || current_page == 52 || current_page == 8)
 			alert(data['error']);
 	}
 	else if (type == 'connectionReply')
@@ -126,8 +126,6 @@ function onRecieveData(event)
 	else if (type == 'createLocalRoomInfo')
 	{
 		console.log("GAME ROOM LOCAL CREATED");
-		if (current_page != 5)
-			changePage('5');
 
 		const mapId = data["mapId"];
 		const mapName = data["mapName"];

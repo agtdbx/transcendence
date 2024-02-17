@@ -9,6 +9,13 @@ from websocket_server.message import recieved_message
 from websocket_server.quick_room import join_quick_room, leave_quick_room, \
                                         check_if_can_start_new_game
 from websocket_server.game_server_manager import end_game
+from websocket_server.local_game_room import create_local_game_room, \
+                                             quit_local_game_room, \
+                                             local_game_room_add_something, \
+                                             local_game_room_remove_something, \
+                                             local_game_room_switch_power_up, \
+                                             local_game_room_change_map, \
+                                             local_game_room_start_game
 from websocket_server.game_room import create_game_room, join_game_room, \
                                        quit_game_room, send_game_room_invite, \
                                        game_room_quick_user, game_room_add_bot, \
@@ -64,6 +71,8 @@ async def remove_user_connected(my_id, websocket, my_game_room_id):
 async def handle_client(websocket : websockets.WebSocketServerProtocol, path):
     my_id = None
     my_game_room_id = None
+    local_game_room = None
+    local_tournament = None
     print("\nWS : Hello anonymous client", file=sys.stderr)
 
     try:
@@ -71,6 +80,7 @@ async def handle_client(websocket : websockets.WebSocketServerProtocol, path):
             print("\nWS : DATA RECIEVED :", data, file=sys.stderr)
             data : dict = json.loads(data)
             print("WS : Json ok", file=sys.stderr)
+
 
             request_type = data.get("type", None)
             request_cmd = data.get("cmd", None)
@@ -100,7 +110,8 @@ async def handle_client(websocket : websockets.WebSocketServerProtocol, path):
                     winner = await end_game(data, in_game_list)
                     if winner != None:
                         await tournament_end_match(winner, connected_users)
-                    asyncio.create_task(tournament_next_start_match(connected_users, in_game_list))
+                    asyncio.create_task(tournament_next_start_match(connected_users,
+                                                                    in_game_list))
                     await asyncio.sleep(1)
                     await check_if_can_start_new_game(waitlist, in_game_list,
                                                       connected_users)
@@ -131,6 +142,49 @@ async def handle_client(websocket : websockets.WebSocketServerProtocol, path):
                     await leave_quick_room(my_id, waitlist, connected_users)
                 else:
                     await send_error(websocket, "Request cmd unkown")
+                continue
+
+            # Local game room gestion
+            if request_type == "localGameRoom":
+                print("WS : Local gameroom :", local_game_room, file=sys.stderr)
+                if request_cmd == "createRoom":
+                    local_game_room = await create_local_game_room(my_id,
+                                                                   local_game_room,
+                                                                   in_game_list,
+                                                                   connected_users)
+                elif request_cmd == "quitGameRoom":
+                    local_game_room = await quit_local_game_room(my_id,
+                                                                 connected_users,
+                                                                 local_game_room)
+                elif request_cmd == "addPlayer":
+                    await local_game_room_add_something(my_id, connected_users,
+                                                        data, local_game_room, my_id)
+                elif request_cmd == "removePlayer":
+                    await local_game_room_remove_something(my_id, connected_users,
+                                                           data, local_game_room,
+                                                           my_id)
+                elif request_cmd == "addBot":
+                    await local_game_room_add_something(my_id, connected_users,
+                                                        data, local_game_room, -1)
+                elif request_cmd == "removeBot":
+                    await local_game_room_remove_something(my_id, connected_users,
+                                                           data, local_game_room,
+                                                           -1)
+                elif request_cmd == "changePowerUp":
+                    await local_game_room_switch_power_up(my_id, connected_users,
+                                                          local_game_room)
+                elif request_cmd == "changeMap":
+                    await local_game_room_change_map(my_id, connected_users, data,
+                                                     local_game_room)
+                elif request_cmd == "startGame":
+                    game_room = await local_game_room_start_game(my_id,
+                                                                 connected_users,
+                                                                 local_game_room,
+                                                                 in_game_list)
+                else:
+                    await send_error(websocket, "Request cmd unkown")
+                print("WS : Local gameroom after :", local_game_room,
+                      file=sys.stderr)
                 continue
 
             # Game room gestion

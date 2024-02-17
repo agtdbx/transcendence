@@ -12,7 +12,7 @@ function createGameRoom()
 	createListInvite();
 }
 
-function createGamelRoomLocal()
+function createGameRoomLocal()
 {
 	console.log("CREATE GAME ROOM LOCAL REQUEST");
 	webSocket.send(JSON.stringify({
@@ -73,16 +73,6 @@ function gameRoomQuickUser(user_id)
 	}));
 }
 
-function gameRoomLocalQuickUser(user_id)
-{
-	console.log("QUICK USER", user_id, "FROM GAME ROOM LOCAL REQUEST");
-	webSocket.send(JSON.stringify({
-		'type' : 'localGameRoom',
-		'cmd' : 'quickUser',
-		'targetId' : user_id
-	}));
-}
-
 
 function gameRoomAddBot(team)
 {
@@ -121,6 +111,17 @@ function gameRoomLocalRemoveBot(team)
 	webSocket.send(JSON.stringify({
 		'type' : 'localGameRoom',
 		'cmd' : 'removeBot',
+		'team' : team
+	}));
+}
+
+
+function gameRoomLocalRemovePlayer(team)
+{
+	console.log("REMOVE PLAYER TO TEAM ", team, " REQUEST");
+	webSocket.send(JSON.stringify({
+		'type' : 'localGameRoom',
+		'cmd' : 'removePlayer',
 		'team' : team
 	}));
 }
@@ -207,112 +208,78 @@ function gameRoomLocalStartGame()
 }
 
 
-function addUserToElement(user_id, element)
-{
-	let data = new FormData();
-	data.append("userId", user_id);
-
-	fetch("/getUserViewById",
-		{
-			method: 'POST',
-			body: data,
-			cache: "default"
-		})
-		.then(response => response.json())
-		.then(jsonData => {
-
-			if (jsonData["success"] != true)
-			{
-				console.log("ERROR :", jsonData["error"]);
-				console.log("user id", user_id);
-				return ;
-			}
-			let pp = document.createElement("img");
-			pp.src = jsonData["pp"];
-			pp.style.width = "2em";
-			pp.style.height = "2em";
-
-			let username = document.createElement("p");
-			username.textContent = jsonData["username"];
-			username.style.color = "white";
-
-			let div = document.createElement("div");
-			div.style.display = "flex";
-			div.style.flexDirection = "row";
-			div.style.backgroundColor = "rgba(18, 16, 11, 0.8)";
-			div.appendChild(pp);
-			div.appendChild(username);
-			if (current_page == 5)
-			{
-				div.style.animation = "animate 0.40s infinite";
-				div.onclick = function (){
-					gameRoomQuickUser(user_id);
-				}
-			}
-
-			element.appendChild(div);
-		})
-		.catch(error => console.log("get user view error :", error))
-}
-
-function addUserLocalToElement(user_id, element)
-{
-	let data = new FormData();
-	data.append("userId", user_id);
-
-	fetch("/getUserViewById",
-		{
-			method: 'POST',
-			body: data,
-			cache: "default"
-		})
-		.then(response => response.json())
-		.then(jsonData => {
-
-			if (jsonData["success"] != true)
-			{
-				console.log("ERROR :", jsonData["error"]);
-				console.log("user id", user_id);
-				return ;
-			}
-			let pp = document.createElement("img");
-			pp.src = jsonData["pp"];
-			pp.style.width = "2em";
-			pp.style.height = "2em";
-
-			let username = document.createElement("p");
-			username.textContent = jsonData["username"];
-			username.style.color = "white";
-
-			let div = document.createElement("div");
-			div.style.display = "flex";
-			div.style.flexDirection = "row";
-			div.style.backgroundColor = "rgba(18, 16, 11, 0.8)";
-			div.appendChild(pp);
-			div.appendChild(username);
-			if (current_page == 5)
-			{
-				div.style.animation = "animate 0.40s infinite";
-				div.onclick = function (){
-					gameRoomLocalQuickUser(user_id);
-				}
-			}
-
-			element.appendChild(div);
-		})
-		.catch(error => console.log("get user view error :", error))
-}
-
-
-function addBotToElement(element, team)
+function addUserToElement(user_view, element)
 {
 	let pp = document.createElement("img");
-	pp.src = "/static/images/default/Bosco.png";
+	pp.src = user_view[0];
 	pp.style.width = "2em";
 	pp.style.height = "2em";
 
 	let username = document.createElement("p");
-	username.textContent = "bosco";
+	username.textContent = user_view[1];
+	username.style.color = "white";
+
+	let div = document.createElement("div");
+	div.style.display = "flex";
+	div.style.flexDirection = "row";
+	div.style.backgroundColor = "rgba(18, 16, 11, 0.8)";
+	div.appendChild(pp);
+	div.appendChild(username);
+	if (current_page == 5)
+	{
+		div.style.animation = "animate 0.40s infinite";
+		div.onclick = function (){
+			gameRoomQuickUser(user_view[2]);
+		}
+	}
+
+	element.appendChild(div);
+}
+
+function addSomethingLocalToElement(user_view, element, team)
+{
+	let pp = document.createElement("img");
+	pp.src = user_view[0];
+	pp.style.width = "2em";
+	pp.style.height = "2em";
+
+	let username = document.createElement("p");
+	username.textContent = user_view[1];
+	username.style.color = "white";
+
+	let div = document.createElement("div");
+	div.style.display = "flex";
+	div.style.flexDirection = "row";
+	div.style.backgroundColor = "rgba(18, 16, 11, 0.8)";
+	div.appendChild(pp);
+	div.appendChild(username);
+	div.style.animation = "animate 0.40s infinite";
+	if (user_view[2] == -1)
+	{
+		div.onclick = function (){
+			gameRoomLocalRemoveBot(team);
+		}
+	}
+	else
+	{
+		div.onclick = function (){
+			gameRoomLocalRemovePlayer(team);
+		}
+	}
+
+	element.appendChild(div);
+}
+
+
+function addBotToElement(user_view, element, team)
+{
+	let pp = document.createElement("img");
+	pp.src = user_view[0];
+	pp.style.width = "2em";
+	pp.style.height = "2em";
+
+	let username = document.createElement("p");
+	username.textContent = user_view[1];
 	username.style.color = "white";
 
 	let div = document.createElement("div");
@@ -326,34 +293,6 @@ function addBotToElement(element, team)
 		div.style.animation = "animate 0.40s infinite";
 		div.onclick = function (){
 			gameRoomRemoveBot(team);
-		}
-	}
-
-	element.appendChild(div);
-}
-
-function addBotLocalToElement(element, team)
-{
-	let pp = document.createElement("img");
-	pp.src = "/static/images/default/Bosco.png";
-	pp.style.width = "2em";
-	pp.style.height = "2em";
-
-	let username = document.createElement("p");
-	username.textContent = "bosco";
-	username.style.color = "white";
-
-	let div = document.createElement("div");
-	div.style.display = "flex";
-	div.style.flexDirection = "row";
-	div.style.backgroundColor = "rgba(18, 16, 11, 0.8)";
-	div.appendChild(pp);
-	div.appendChild(username);
-	if (current_page == 5)
-	{
-		div.style.animation = "animate 0.40s infinite";
-		div.onclick = function (){
-			gameRoomLocalRemoveBot(team);
 		}
 	}
 
@@ -413,12 +352,12 @@ function updateGameRoomInfo(map_id, map_name, power_up, team_left, team_right)
 		team_left_element.innerHTML = "";
 		for (let i = 0; i < team_left.length; i++)
 		{
-			let user_id = team_left[i];
+			let user_view = team_left[i];
 
-			if (user_id == -1)
-				addBotToElement(team_left_element, "left");
+			if (user_view[2] == -1)
+				addBotToElement(user_view, team_left_element, "left");
 			else
-				addUserToElement(user_id, team_left_element);
+				addUserToElement(user_view, team_left_element);
 		}
 	}
 
@@ -428,12 +367,12 @@ function updateGameRoomInfo(map_id, map_name, power_up, team_left, team_right)
 		team_right_element.innerHTML = "";
 		for (let i = 0; i < team_right.length; i++)
 		{
-			let user_id = team_right[i];
+			let user_view = team_right[i];
 
-			if (user_id == -1)
-				addBotToElement(team_right_element, "right");
+			if (user_view[2] == -1)
+				addBotToElement(user_view, team_right_element, "right");
 			else
-				addUserToElement(user_id, team_right_element);
+				addUserToElement(user_view, team_right_element);
 		}
 	}
 }
@@ -490,12 +429,8 @@ function updateGameRoomLocalInfo(map_id, map_name, power_up, team_left, team_rig
 		team_left_element.innerHTML = "";
 		for (let i = 0; i < team_left.length; i++)
 		{
-			let user_id = team_left[i];
-
-			if (user_id == -1)
-				addBotLocalToElement(team_left_element, "left");
-			else
-				addUserLocalToElement(user_id, team_left_element);
+			let user_view = team_left[i];
+			addSomethingLocalToElement(user_view, team_left_element, "left");
 		}
 	}
 
@@ -505,12 +440,8 @@ function updateGameRoomLocalInfo(map_id, map_name, power_up, team_left, team_rig
 		team_right_element.innerHTML = "";
 		for (let i = 0; i < team_right.length; i++)
 		{
-			let user_id = team_right[i];
-
-			if (user_id == -1)
-				addBotToElement(team_right_element, "right");
-			else
-				addUserToElement(user_id, team_right_element);
+			let user_view = team_right[i];
+			addSomethingLocalToElement(user_view, team_right_element, "right");
 		}
 	}
 }
