@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    views_stats.py                                     :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: lflandri <liam.flandrinck.58@gmail.com>    +#+  +:+       +#+         #
+#    By: auguste <auguste@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/14 16:40:22 by lflandri          #+#    #+#              #
-#    Updated: 2024/02/17 19:57:09 by lflandri         ###   ########.fr        #
+#    Updated: 2024/02/17 21:11:28 by auguste          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -200,5 +200,7 @@ def getusermatchhistory(request):
             if maxGoal < len(toAdd[playerNomination]["goalList"]):
                 maxGoal = len(toAdd[playerNomination]["goalList"])
         toAdd["maxGoal"] = maxGoal
+        if match.type > 2:
+            toAdd["result"] = "local"
         matchListReturn.append(toAdd)
     return JsonResponse({"success": True, "content" : matchListReturn})

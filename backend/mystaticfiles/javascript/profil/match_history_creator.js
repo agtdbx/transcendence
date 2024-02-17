@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   match_history_creator.js                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lflandri <liam.flandrinck.58@gmail.com>    +#+  +:+       +#+        */
+/*   By: auguste <auguste@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/23 15:10:25 by lflandri          #+#    #+#             */
-/*   Updated: 2024/02/17 19:58:43 by lflandri         ###   ########.fr       */
+/*   Updated: 2024/02/17 21:13:41 by auguste          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -250,8 +250,10 @@ function  createHistory(listMatch)
 		result.textContent = match["result"];
 		if (match["result"] == "win")
 			result.style.color = "green";
-		else
+		else if (match["result"] == "lose")
 			result.style.color = "red";
+		else
+			result.style.color = "grey";
 		P1name.textContent = match["playerR1"]["name"];
 		if (match["playerR2"] != undefined)
 		{

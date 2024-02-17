@@ -345,7 +345,7 @@ async def countBeforeStart():
 async def game_server_manager():
     global game, can_shutdown
     print("\nGWS : START GAME", file=sys.stderr)
-    game = GameServer(power_up, team_left, team_right, map_id);
+    game = GameServer(power_up, team_left, team_right, map_id)
     lstObstacle = []
     for wall in game.walls :
         lstObstacle.append(wall.hitbox.getPoints())

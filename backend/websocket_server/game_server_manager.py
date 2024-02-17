@@ -5,8 +5,9 @@ import asyncio
 import datetime
 import websockets
 from websocket_server.utils import set_user_status, get_user_by_id
-from db_test.models import Match, MatchUser, Goal, Map, Achivement, User
-from backend.views_achievement import createAchievementIfNot, getListeMatchDataForAchievement
+from db_test.models import Match, MatchUser, Goal, Map, Achivement
+from backend.views_achievement import createAchievementIfNot, \
+                                      getListeMatchDataForAchievement
 
 # ssl context
 ssl_context = ssl.SSLContext(ssl.PROTOCOL_TLS_CLIENT)
@@ -34,11 +35,11 @@ def is_game_server_free():
 
 
 async def start_game_websocket(port:int,
-                         map_id : int,
-                         power_up_enable : bool,
-                         team_left:list[int],
-                         team_right:list[int],
-                         type:int):
+                               map_id : int,
+                               power_up_enable : bool,
+                               team_left:list[int],
+                               team_right:list[int],
+                               type:int):
     os.system("python3 pong_server/ws_game_server.py " + str(port) + "&")
     await asyncio.sleep(1)
     os.system("echo; echo WS : websocket now running on wss://localhost:" +
@@ -54,6 +55,29 @@ async def start_game_websocket(port:int,
     await ws.send(str_msg)
     await ws.close()
     print("\nWS : all info go to game server", file=sys.stderr)
+
+
+async def start_local_game_websocket(port:int,
+                                     map_id : int,
+                                     power_up_enable : bool,
+                                     team_left:list[int],
+                                     team_right:list[int],
+                                     type:int):
+    os.system("python3 pong_server/ws_local_game_server.py " + str(port) + "&")
+    await asyncio.sleep(1)
+    os.system("echo; echo WS : websocket now running on wss://localhost:" +
+              str(port))
+    ws = await websockets.connect("wss://localhost:" + str(port), ssl=ssl_context)
+    msg = {"type":"info",
+           "mapId" : map_id,
+           "powerUp" : str(power_up_enable).lower(),
+           "teamLeft" : team_left,
+           "teamRight" : team_right,
+           "gameType" : type}
+    str_msg = str(msg).replace("'", '"')
+    await ws.send(str_msg)
+    await ws.close()
+    print("\nWS : all info go to local game server", file=sys.stderr)
 
 
 async def create_new_game(in_game_list : list,
@@ -97,6 +121,31 @@ async def create_new_local_game(in_game_list : list,
                                 team_left:list[int],
                                 team_right:list[int],
                                 type:int):
+    print("\nWS : ALL SERVER :", game_servers, file=sys.stderr)
+
+    for i in range(len(game_servers)):
+        if game_servers[i][0] == False:
+            game_servers[i][0] = True
+
+            print("\nWS : START LOCAL GAME ON SERVER :", i, file=sys.stderr)
+            await start_local_game_websocket(game_servers[i][1],
+                                             map_id, power_up_enable,
+                                             team_left, team_right, type)
+
+            print("\nWS : SERVER CREATED", file=sys.stderr)
+            for id in team_left:
+                if id >= 0:
+                    in_game_list.append(id)
+                    set_user_status(id, 2)
+            print("\nWS : SET MID STATUS OK", file=sys.stderr)
+            for id in team_right:
+                if id >= 0:
+                    in_game_list.append(id)
+                    set_user_status(id, 2)
+            print("\nWS : SET STATUS OK", file=sys.stderr)
+
+            return i, game_servers[i][1]
+
     return None
 
 
@@ -123,6 +172,8 @@ def modifyAchievement(user):
 async def end_game(data:dict,
                    in_game_list: list) -> bool:
     global game_servers
+
+    print("\nWS : END GAME DETECTED", file=sys.stderr)
 
     # Get port info
     port = data.get("port", None)
@@ -193,8 +244,11 @@ async def end_game(data:dict,
         print("\nWS : MISSING TYPE :", data, file=sys.stderr)
         return None
 
+    print("\nWS : ALL FIELDS GOOD", file=sys.stderr)
+
     # If the type is quick game, modify money of users
     if game_type == 0:
+        print("\nWS : UPDATE MONEY", file=sys.stderr)
         # Get winner and loser
         if game_stats[0] > game_stats[1]:
             user_winner = get_user_by_id(team_left[left_team_stats[0][0]])
@@ -228,17 +282,21 @@ async def end_game(data:dict,
 
         user_winner.save()
         user_loser.save()
+        print("WS : DONE", file=sys.stderr)
 
     winner = None
 
     # If the type is tournament
-    if game_type == 2:
+    if game_type == 2 or game_type == 4:
         if game_stats[0] > game_stats[1]:
+            print("\nWS : WINNER IS LEFT", file=sys.stderr)
             winner = team_left[left_team_stats[0][0]]
         else:
             winner = team_right[right_team_stats[0][0]]
+            print("\nWS : WINNER IS RIGHT", file=sys.stderr)
 
     # PUT MATCH IN DB
+    print("\nWS : PUT MATCH IN DB", file=sys.stderr)
     match_id = Match.objects.all().count()
     match_date = (datetime.datetime.now() + datetime.timedelta(hours=1)).strftime('%Y-%m-%d %H:%M')
     match_time = int(game_stats[3]) + 1
@@ -252,16 +310,18 @@ async def end_game(data:dict,
     if game_stats[5] == "true":
         power_up = True
 
-    match = Match.objects.create(idMatch=match_id, type=game_type, matchDate=match_date,
-                                 matchDuration=match_time, idMap=map,
-                                 powerUp=power_up, scoreLeft=game_stats[0],
-                                 scoreRight=game_stats[1],
+    match = Match.objects.create(idMatch=match_id, type=game_type,
+                                 matchDate=match_date, matchDuration=match_time,
+                                 idMap=map, powerUp=power_up,
+                                 scoreLeft=game_stats[0], scoreRight=game_stats[1],
                                  nbMaxBallOnGame=game_stats[2])
 
     match.save()
+    print("WS : DONE", file=sys.stderr)
 
     # PUT USERS MATCH IN DB
     for paddle_stats in left_team_stats:
+        print("\nWS : PUT LEFT USER MATCH IN DB", file=sys.stderr)
         user_match_id = MatchUser.objects.all().count()
         user = get_user_by_id(team_left[paddle_stats[0]])
 
@@ -271,11 +331,16 @@ async def end_game(data:dict,
                                               maxBallBounce=paddle_stats[3],
                                               nbCC=paddle_stats[4],
                                               nbPerfectShot=paddle_stats[5],
-                                              idTeam=paddle_stats[6])
+                                              idTeam=paddle_stats[6],
+                                              idPaddle=paddle_stats[0])
         match_user.save()
-        modifyAchievement(user)
+        print("WS : DONE", file=sys.stderr)
+        if game_type < 3:
+            print("WS : MODIFY ACHIVEMENT", file=sys.stderr)
+            modifyAchievement(user)
 
     for paddle_stats in right_team_stats:
+        print("\nWS : PUT RIGHT USER MATCH IN DB", file=sys.stderr)
         user_match_id = MatchUser.objects.all().count()
         user = get_user_by_id(team_right[paddle_stats[0]])
 
@@ -285,13 +350,17 @@ async def end_game(data:dict,
                                               maxBallBounce=paddle_stats[3],
                                               nbCC=paddle_stats[4],
                                               nbPerfectShot=paddle_stats[5],
-                                              idTeam=paddle_stats[6])
+                                              idTeam=paddle_stats[6],
+                                              idPaddle=paddle_stats[0])
         match_user.save()
-        modifyAchievement(user)
-
+        print("WS : DONE", file=sys.stderr)
+        if game_type < 3:
+            print("WS : MODIFY ACHIVEMENT", file=sys.stderr)
+            modifyAchievement(user)
 
     # PUT GOAL STATS IN DB
     for goal_stats in balls_stats:
+        print("\nWS : PUT GOAL IN DB", file=sys.stderr)
         id_goal = Goal.objects.all().count()
         if goal_stats[1] == 0:
             user = get_user_by_id(team_left[goal_stats[0]])
@@ -309,7 +378,10 @@ async def end_game(data:dict,
         goal = Goal.objects.create(id=id_goal, idUser=user, goalTime=goal_stats[6],
                                    idMatch=match, nbBounce=goal_stats[3],
                                    perfectedShot=perfect_shot,
-                                   ballSpeed=goal_stats[2], ownGoal=own_goal, idTeam=goal_stats[1])
+                                   ballSpeed=goal_stats[2], ownGoal=own_goal,
+                                   idTeam=goal_stats[1])
         goal.save()
+        print("WS : DONE", file=sys.stderr)
 
+    print("WS : ALL END GAME PUT IN DB", file=sys.stderr)
     return winner
