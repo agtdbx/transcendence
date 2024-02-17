@@ -6,7 +6,7 @@
 #    By: lflandri <liam.flandrinck.58@gmail.com>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/14 16:40:22 by lflandri          #+#    #+#              #
-#    Updated: 2024/02/17 22:18:16 by lflandri         ###   ########.fr        #
+#    Updated: 2024/02/17 22:39:50 by lflandri         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,7 +30,7 @@ def getWinRate(user):
     matchUserList = MatchUser.objects.all().filter(idUser=user.idUser)
     matchList = []
     for usermatch in matchUserList :
-        matchList += Match.objects.all().filter(matchuser=usermatch)
+        matchList += Match.objects.all().filter(matchuser=usermatch, type__lt=3)
     if len(matchList) == 0:
         return None
     win = 0
@@ -51,8 +51,8 @@ def listStat(user):
     matchList = []
     matchListWithPowerUp = []
     for usermatch in matchUserList :
-        matchList += Match.objects.all().filter(matchuser=usermatch)
-        matchListWithPowerUp += Match.objects.all().filter(matchuser=usermatch, powerUp=True)
+        matchList += Match.objects.all().filter(matchuser=usermatch, type__lt=3)
+        matchListWithPowerUp += Match.objects.all().filter(matchuser=usermatch, powerUp=True, type__lt=3)
     nbGoalWithoutBounce = 0
     nbMaxBallOnGame = 0
     for m in matchList:
@@ -60,6 +60,8 @@ def listStat(user):
             nbMaxBallOnGame = m.nbMaxBallOnGame
     goalList = Goal.objects.all().filter(idUser=user.idUser)
     for g in goalList :
+        if g.idMatch.type > 2:
+            continue
         if g.nbBounce == 0:
             nbGoalWithoutBounce+=1
     maxBallSpeed = 0
@@ -67,6 +69,8 @@ def listStat(user):
     nbGoal = 0
     nbGoalCC = 0
     for u in matchUserList :
+        if u.idMatch.type > 2:
+            continue
         nbGoal += u.nbGoal
         nbGoalCC += u.nbCC
         if u.maxBallSpeed > maxBallSpeed :
@@ -75,7 +79,7 @@ def listStat(user):
             maxBallBounce = u.maxBallBounce
     return [
         {
-		  "description":"number of match played :" + str(len(matchUserList)),
+		  "description":"number of match played :" + str(len(matchList)),
 		  "img": ""
 	    },
         {
