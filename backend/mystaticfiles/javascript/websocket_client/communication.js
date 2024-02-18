@@ -226,13 +226,6 @@ function onRecieveData(event)
 		else if (current_page == 71 || current_page == 72)
 			applyTournamentState(2, mapName, powerUp, listPlayers, youInTournament);
 	}
-	else if (type == 'winners' || type == 'localEndTournament' || type == 'winnersLocalTournament')
-	{
-		let winner = data['onePongMan'];
-		let second = data['second'];
-		let third = data['third'];
-		waitTournamentResult(winner, second, third);
-	}
 	else if (type == 'endTournament')
 	{
 		if (current_page == 70 || current_page == 71 || current_page == 72)
@@ -284,6 +277,16 @@ function onRecieveData(event)
 		{
 			changePage('76');
 		}
+	}
+	else if (type == 'localEndTournament' || type == 'winnersLocalTournament')
+	{
+		if (current_page != 76)
+			changePage('76');
+
+		let winner = data['onePongMan'];
+		let second = data['second'];
+		let third = data['third'];
+		waitTournamentResult(winner, second, third);
 	}
 	else
 		console.error("Unkown data recieved :", data);

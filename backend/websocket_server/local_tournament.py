@@ -607,8 +607,7 @@ async def local_tournament_end_match(winner:tuple[int, int, int, int, int],
         print("WS : Local tournament end ! Winner is", winner_id, file=sys.stderr)
         str_msg = create_tournament_winners_msg(winner[4], "localEndTournament",
                                                 tournament)
-        for user_id in connected_users.keys():
-            await send_msg_to_id(user_id, connected_users, str_msg)
+        await send_msg_to_id(winner[4], connected_users, str_msg)
         return
 
     if winner_id in tournament["half"]:

@@ -72,7 +72,8 @@ function createMessage(message, username, pp, date)
 function addOldMessage(message, username, pp, date)
 {
 	let msg = createMessage(message, username, pp, date);
-	chatElement.insertBefore(msg, chatElement.firstChild);
+	if (chatElement != null)
+		chatElement.insertBefore(msg, chatElement.firstChild);
 	return msg.offsetHeight;
 }
 

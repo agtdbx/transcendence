@@ -252,11 +252,15 @@ function applyLocalTournamentState(mapName, powerUp, listPlayers)
 	}
 
 	let powerUpP = document.getElementById("powerUpTournamentJoin");
-	if (powerUp == 'true')
-		powerUpP.textContent = "Power up : on";
-	else
-		powerUpP.textContent = "Power up : off";
+	if (powerUpP != null)
+	{
+		if (powerUp == 'true')
+			powerUpP.textContent = "Power up : on";
+		else
+			powerUpP.textContent = "Power up : off";
+	}
 
 	let mapP = document.getElementById("powerUpTournamentMap");
-	mapP.textContent = "Map : " + mapName;
+	if (mapP != null)
+		mapP.textContent = "Map : " + mapName;
 }
