@@ -466,3 +466,16 @@
 	width: 25%;
 	height: 15%;
 }
+
+#nicknameLocalPlayer{
+	left: 1%;
+	width: 80%;
+	font-family: "KhazadDum", sans-serif;
+}
+
+#addLocalTournament{
+	position: relative;
+	margin-right: 1%;
+	width: 20%;
+	margin-left: 2%;
+}
