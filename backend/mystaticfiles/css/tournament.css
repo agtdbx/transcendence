@@ -53,6 +53,20 @@
 	text-align: center;
 	background: rgba(40,35,23,0.75);
 }
+
+#addLocalPlayerForm{
+	display: flex;
+	flex-direction: row;
+	position: absolute;
+	padding: 1em;
+	top: 100%;
+	left: 0%;
+	width:100%;
+	height:20%;
+	text-align: center;
+	background: rgba(40,35,23,0.75);
+}
+
 #tournamentrect1{
 	position: absolute;
 	top: 1%;
@@ -96,7 +110,7 @@
 	-ms-transform: translate(-50%, -50%);
 	transform: translate(-50%, -50%);
 	position: absolute;
-	top: 70%;
+	top: 80%;
 	left: 50%;
 	width: 8%;
 	height: 5%;

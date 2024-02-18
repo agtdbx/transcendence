@@ -57,7 +57,8 @@ async def start_game_websocket(port:int,
     print("\nWS : all info go to game server", file=sys.stderr)
 
 
-async def start_local_game_websocket(port:int,
+async def start_local_game_websocket(my_id:int,
+                                     port:int,
                                      map_id : int,
                                      power_up_enable : bool,
                                      team_left:list[int],
@@ -68,12 +69,21 @@ async def start_local_game_websocket(port:int,
     os.system("echo; echo WS : websocket now running on wss://localhost:" +
               str(port))
     ws = await websockets.connect("wss://localhost:" + str(port), ssl=ssl_context)
-    msg = {"type":"info",
-           "mapId" : map_id,
-           "powerUp" : str(power_up_enable).lower(),
-           "teamLeft" : team_left,
-           "teamRight" : team_right,
-           "gameType" : type}
+    if type == 4:
+        msg = {"type":"info",
+               "my_id" : my_id,
+               "mapId" : map_id,
+               "powerUp" : str(power_up_enable).lower(),
+               "teamLeft" : team_left,
+               "teamRight" : team_right,
+               "gameType" : type}
+    else:
+        msg = {"type":"info",
+               "mapId" : map_id,
+               "powerUp" : str(power_up_enable).lower(),
+               "teamLeft" : team_left,
+               "teamRight" : team_right,
+               "gameType" : type}
     str_msg = str(msg).replace("'", '"')
     await ws.send(str_msg)
     await ws.close()
@@ -114,8 +124,8 @@ async def create_new_game(in_game_list : list,
     return None
 
 
-# TODO : FAIRE EN SORTE QUE ÇA MARCHE ^^
-async def create_new_local_game(in_game_list : list,
+async def create_new_local_game(my_id:int,
+                                in_game_list : list,
                                 map_id : int,
                                 power_up_enable : bool,
                                 team_left:list[int],
@@ -128,20 +138,13 @@ async def create_new_local_game(in_game_list : list,
             game_servers[i][0] = True
 
             print("\nWS : START LOCAL GAME ON SERVER :", i, file=sys.stderr)
-            await start_local_game_websocket(game_servers[i][1],
+            await start_local_game_websocket(my_id, game_servers[i][1],
                                              map_id, power_up_enable,
                                              team_left, team_right, type)
 
             print("\nWS : SERVER CREATED", file=sys.stderr)
-            for id in team_left:
-                if id >= 0:
-                    in_game_list.append(id)
-                    set_user_status(id, 2)
-            print("\nWS : SET MID STATUS OK", file=sys.stderr)
-            for id in team_right:
-                if id >= 0:
-                    in_game_list.append(id)
-                    set_user_status(id, 2)
+            in_game_list.append(my_id)
+            set_user_status(my_id, 2)
             print("\nWS : SET STATUS OK", file=sys.stderr)
 
             return i, game_servers[i][1]
@@ -208,17 +211,24 @@ async def end_game(data:dict,
               file=sys.stderr)
 
     # Set status of users and remove them from in game list
-    for id in team_left:
-        if id >= 0:
-            set_user_status(id, 1)
-            if id in in_game_list:
-                in_game_list.remove(id)
+    my_id = data.get("my_id", None)
+    if my_id == None:
+        for id in team_left:
+            if id >= 0:
+                set_user_status(id, 1)
+                if id in in_game_list:
+                    in_game_list.remove(id)
 
-    for id in team_right:
-        if id >= 0:
-            set_user_status(id, 1)
-            if id in in_game_list:
-                in_game_list.remove(id)
+        for id in team_right:
+            if id >= 0:
+                set_user_status(id, 1)
+                if id in in_game_list:
+                    in_game_list.remove(id)
+    else:
+        print("\nWS : My id :", my_id, file=sys.stderr)
+        my_id = int(my_id)
+        set_user_status(my_id, 1)
+        in_game_list.remove(my_id)
 
     # Get stats info
     stats = data.get("stats", None)
@@ -287,18 +297,29 @@ async def end_game(data:dict,
     winner = None
 
     # If the type is tournament
-    if game_type == 2 or game_type == 4:
+    if game_type == 2:
         if game_stats[0] > game_stats[1]:
             print("\nWS : WINNER IS LEFT", file=sys.stderr)
-            winner = team_left[left_team_stats[0][0]]
+            winner = (game_type, team_left[left_team_stats[0][0]])
         else:
-            winner = team_right[right_team_stats[0][0]]
             print("\nWS : WINNER IS RIGHT", file=sys.stderr)
+            winner = (game_type, team_right[right_team_stats[0][0]])
+
+    if game_type == 4:
+        if game_stats[0] > game_stats[1]:
+            print("\nWS : WINNER IS LEFT", file=sys.stderr)
+            winner = (game_type, team_left[left_team_stats[0][0]],
+                      game_stats[0], game_stats[1], my_id)
+        else:
+            print("\nWS : WINNER IS RIGHT", file=sys.stderr)
+            winner = (game_type, team_right[right_team_stats[0][0]],
+                      game_stats[0], game_stats[1], my_id)
 
     # PUT MATCH IN DB
     print("\nWS : PUT MATCH IN DB", file=sys.stderr)
     match_id = Match.objects.all().count()
-    match_date = (datetime.datetime.now() + datetime.timedelta(hours=1)).strftime('%Y-%m-%d %H:%M')
+    match_date = (datetime.datetime.now() +
+                  datetime.timedelta(hours=1)).strftime('%Y-%m-%d %H:%M')
     match_time = int(game_stats[3]) + 1
     test_map = Map.objects.all().filter(idMap=game_stats[4])
     if len(test_map) != 1:
@@ -323,7 +344,10 @@ async def end_game(data:dict,
     for paddle_stats in left_team_stats:
         print("\nWS : PUT LEFT USER MATCH IN DB", file=sys.stderr)
         user_match_id = MatchUser.objects.all().count()
-        user = get_user_by_id(team_left[paddle_stats[0]])
+        if game_type == 4:
+            user = get_user_by_id(my_id)
+        else:
+            user = get_user_by_id(team_left[paddle_stats[0]])
 
         match_user = MatchUser.objects.create(id=user_match_id, idMatch=match,
                                               idUser=user, nbGoal=paddle_stats[1],
@@ -342,7 +366,10 @@ async def end_game(data:dict,
     for paddle_stats in right_team_stats:
         print("\nWS : PUT RIGHT USER MATCH IN DB", file=sys.stderr)
         user_match_id = MatchUser.objects.all().count()
-        user = get_user_by_id(team_right[paddle_stats[0]])
+        if game_type == 4:
+            user = get_user_by_id(my_id)
+        else:
+            user = get_user_by_id(team_right[paddle_stats[0]])
 
         match_user = MatchUser.objects.create(id=user_match_id, idMatch=match,
                                               idUser=user, nbGoal=paddle_stats[1],
@@ -362,10 +389,13 @@ async def end_game(data:dict,
     for goal_stats in balls_stats:
         print("\nWS : PUT GOAL IN DB", file=sys.stderr)
         id_goal = Goal.objects.all().count()
-        if goal_stats[1] == 0:
-            user = get_user_by_id(team_left[goal_stats[0]])
+        if game_type == 4:
+            user = get_user_by_id(my_id)
         else:
-            user = get_user_by_id(team_right[goal_stats[0]])
+            if goal_stats[1] == 0:
+                user = get_user_by_id(team_left[goal_stats[0]])
+            else:
+                user = get_user_by_id(team_right[goal_stats[0]])
 
         perfect_shot = False
         if goal_stats[5] == "true":

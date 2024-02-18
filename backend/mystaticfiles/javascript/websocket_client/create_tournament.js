@@ -34,6 +34,7 @@ function addPlayerViewsTournament(player, div)
 	div.appendChild(playerDiv);
 }
 
+
 function addPlayerNextmatch(player, div, divtxt)
 {
 	let pp = document.createElement("img");

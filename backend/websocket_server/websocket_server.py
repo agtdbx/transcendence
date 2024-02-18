@@ -23,6 +23,18 @@ from websocket_server.game_room import create_game_room, join_game_room, \
                                        game_room_change_team, \
                                        game_room_change_power_up, \
                                        game_room_change_map, game_room_start_game
+from websocket_server.local_tournament import create_local_tournament, \
+                                              local_tournament_add_player, \
+                                              local_tournament_remove_player, \
+                                              switch_local_tournament_power_up, \
+                                              modify_local_tournament_map_id, \
+                                              start_local_tournament, \
+                                              local_tournament_next_start_match, \
+                                              local_tournament_end_match, \
+                                              get_local_tournament_info, \
+                                              get_local_tournament_tree, \
+                                              next_match_local_tournament, \
+                                              get_local_tournament_winners
 from websocket_server.tournament import create_tournament, \
                                         switch_tournament_power_up, \
                                         modify_tournament_map_id, \
@@ -31,9 +43,9 @@ from websocket_server.tournament import create_tournament, \
                                         tournament_next_start_match, \
                                         tournament_end_match, \
                                         get_users_tournament, \
-                                        is_user_in_tournament, getTournamentTree,\
+                                        is_user_in_tournament, get_tournament_tree,\
                                         next_match_tournament, next_match_user, \
-                                        getTournamentWinners
+                                        get_tournament_winners
 
 # ssl context
 ssl_context = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
@@ -45,6 +57,7 @@ connected_users = dict()
 waitlist = []
 game_rooms = dict()
 in_game_list = []
+local_tournaments = dict()
 
 def add_user_connected(my_id, websocket):
     lst : list = connected_users.get(my_id, [])
@@ -102,6 +115,7 @@ async def handle_client(websocket : websockets.WebSocketServerProtocol, path):
 
                 if ret != None:
                     my_id = ret
+                    local_tournament = local_tournaments.get(my_id, None)
                     add_user_connected(my_id, websocket)
                 continue
 
@@ -109,10 +123,23 @@ async def handle_client(websocket : websockets.WebSocketServerProtocol, path):
                 if request_cmd == 'definitelyNotTheMovie(endGame)':
                     winner = await end_game(data, in_game_list)
                     if winner != None:
-                        await tournament_end_match(winner, connected_users)
+                        if winner[0] == 2:
+                            await tournament_end_match(winner[1], connected_users)
+                        else:
+                            user_tournament = local_tournaments.get(winner[4], None)
+                            await local_tournament_end_match(winner,
+                                                             connected_users,
+                                                             user_tournament)
                     asyncio.create_task(tournament_next_start_match(connected_users,
                                                                     in_game_list))
-                    await asyncio.sleep(1)
+                    await asyncio.sleep(0.5)
+                    for user_id, user_tournament in local_tournaments.items():
+                        asyncio.create_task(local_tournament_next_start_match(
+                                                                user_id,
+                                                                connected_users,
+                                                                in_game_list,
+                                                                user_tournament))
+                    await asyncio.sleep(0.5)
                     await check_if_can_start_new_game(waitlist, in_game_list,
                                                       connected_users)
                 else:
@@ -146,7 +173,6 @@ async def handle_client(websocket : websockets.WebSocketServerProtocol, path):
 
             # Local game room gestion
             if request_type == "localGameRoom":
-                print("WS : Local gameroom :", local_game_room, file=sys.stderr)
                 if request_cmd == "createRoom":
                     local_game_room = await create_local_game_room(my_id,
                                                                    local_game_room,
@@ -177,14 +203,12 @@ async def handle_client(websocket : websockets.WebSocketServerProtocol, path):
                     await local_game_room_change_map(my_id, connected_users, data,
                                                      local_game_room)
                 elif request_cmd == "startGame":
-                    game_room = await local_game_room_start_game(my_id,
-                                                                 connected_users,
-                                                                 local_game_room,
-                                                                 in_game_list)
+                    local_game_room = await local_game_room_start_game(my_id,
+                                                                    connected_users,
+                                                                    local_game_room,
+                                                                    in_game_list)
                 else:
                     await send_error(websocket, "Request cmd unkown")
-                print("WS : Local gameroom after :", local_game_room,
-                      file=sys.stderr)
                 continue
 
             # Game room gestion
@@ -234,6 +258,44 @@ async def handle_client(websocket : websockets.WebSocketServerProtocol, path):
                     await send_error(websocket, "Request cmd unkown")
                 continue
 
+            # Local tournament gestion
+            if request_type == "localTournament":
+                if request_cmd == "create":
+                    local_tournament = await create_local_tournament(my_id,
+                                                                    connected_users,
+                                                                    local_tournament)
+                    local_tournaments[my_id] = local_tournament
+                elif request_cmd == "modifyPowerUp":
+                    await switch_local_tournament_power_up(my_id, connected_users,
+                                                           local_tournament)
+                elif request_cmd == "modifyMapId":
+                    await modify_local_tournament_map_id(my_id, connected_users,
+                                                         local_tournament, data)
+                elif request_cmd == "addPlayer":
+                    await local_tournament_add_player(my_id, connected_users,
+                                                      local_tournament, data)
+                elif request_cmd == "removePlayer":
+                    await local_tournament_remove_player(my_id, connected_users,
+                                                         local_tournament, data)
+                elif request_cmd == "start":
+                    await start_local_tournament(my_id, connected_users,
+                                                 in_game_list, local_tournament)
+                elif request_cmd == "getInfo":
+                    await get_local_tournament_info(my_id, connected_users,
+                                                    local_tournament)
+                elif request_cmd == "getTournamentTree":
+                    await get_local_tournament_tree(my_id, connected_users,
+                                                    local_tournament)
+                elif request_cmd == "nextMatch":
+                    await next_match_local_tournament(my_id, connected_users,
+                                                      local_tournament)
+                elif request_cmd == "winners":
+                    await get_local_tournament_winners(my_id, connected_users,
+                                                       local_tournament)
+                else:
+                    await send_error(websocket, "Request cmd unkown")
+                continue
+
             # Tournament gestion
             if request_type == "tournament":
                 if request_cmd == "create":
@@ -255,13 +317,13 @@ async def handle_client(websocket : websockets.WebSocketServerProtocol, path):
                 elif request_cmd == "IsUserInTournament":
                     await is_user_in_tournament(my_id, connected_users)
                 elif request_cmd == "getTournamentTree":
-                    await getTournamentTree(my_id, connected_users)
+                    await get_tournament_tree(my_id, connected_users)
                 elif request_cmd == "nextMatch":
                     await next_match_tournament(my_id, connected_users)
                 elif request_cmd == "myNextMatch":
                     await next_match_user(my_id, connected_users)
                 elif request_cmd == "winners":
-                    await getTournamentWinners(my_id, connected_users)
+                    await get_tournament_winners(my_id, connected_users)
                 else:
                     await send_error(websocket, "Request cmd unkown")
                 continue

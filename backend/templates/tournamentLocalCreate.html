@@ -26,23 +26,36 @@
 
 	<div class ="tournamentProgress" id = "tournamentProgress">
 		<div class ="tournamentrectUserList" id = "tournamentrect3">
-            <button type="button" class ="btn-drg " id="btnAddLocalPlayer" >add Player</button><br><br>
 		</div>
+		<form id="addLocalPlayerForm">
+			<input id="nicknameLocalPlayer"></input>
+			<button type="submit" class ="btn-drg">add Player</button>
+			<script>
+				const formAddPlayer = document.getElementById('addLocalPlayerForm');
+				const inputAddPlayer = document.getElementById('nicknameLocalPlayer');
+				formAddPlayer.addEventListener('submit', async event => {
+					event.preventDefault();
+
+					LocalTournamentAddPlayer(inputAddPlayer.value);
+					inputAddPlayer.value = "";
+				});
+			</script>
+		</form>
 	</div>
 
 	<div class="changeTournament" id="allModifierTournament">
 		<div class="CustomPowerUp">
 			<p id="customPTxt" style="color: white;">Power Up</p>
-			<button type="button" class ="btn-drg" id="btnStatusPowerUp" onclick="switchTournamentPowerUp()">OFF</button>
+			<button type="button" class ="btn-drg" id="btnStatusPowerUp" onclick="switchLocalTournamentPowerUp()">OFF</button>
 		</div>
 
 		<div class="CustomMap">
 				<p id="customMTxt">Map</p>
-				<button type="button" class ="btn-drg btn-map" id="btnMap0" onclick="changeTournamentMapId(0)">Default Map</button><br><br>
-				<button type="button" class ="btn-drg-dark btn-map" id="btnMap1" onclick="changeTournamentMapId(1)">Duck Heaven</button><br><br>
-				<button type="button" class ="btn-drg-dark btn-map" id="btnMap2" onclick="changeTournamentMapId(2)">Flipper</button><br><br>
-				<button type="button" class ="btn-drg-dark btn-map" id="btnMap3" onclick="changeTournamentMapId(3)">Pickaxe dance</button><br><br>
-				<button type="button" class ="btn-drg-dark btn-map" id="btnMap4" onclick="changeTournamentMapId(4)">Difficulty 5, verminagedon, no shield</button>
+				<button type="button" class ="btn-drg btn-map" id="btnMap0" onclick="changeLocalTournamentMapId(0)">Default Map</button><br><br>
+				<button type="button" class ="btn-drg-dark btn-map" id="btnMap1" onclick="changeLocalTournamentMapId(1)">Duck Heaven</button><br><br>
+				<button type="button" class ="btn-drg-dark btn-map" id="btnMap2" onclick="changeLocalTournamentMapId(2)">Flipper</button><br><br>
+				<button type="button" class ="btn-drg-dark btn-map" id="btnMap3" onclick="changeLocalTournamentMapId(3)">Pickaxe dance</button><br><br>
+				<button type="button" class ="btn-drg-dark btn-map" id="btnMap4" onclick="changeLocalTournamentMapId(4)">Difficulty 5, verminagedon, no shield</button>
 		</div>
 	</div>
 
