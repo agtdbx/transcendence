@@ -275,55 +275,40 @@ TOURNAMENT LOCAL
     create tournament
         'type' : localTournament'
         'cmd' : 'create'
-        'powerUp' : true | false
-        'mapId' : <map id>
         -> {{local tournament state}}
 
-    /!\ Only the host can modify tournament /!\
-    add player
+    add player # if the tournament has begun, it will not work
         'type' : localTournament'
         'cmd' : 'addPlayer'
         'nickname' : <player nickname>
         -> {{local tournament state}}
 
-    /!\ Only the host can modify tournament /!\
+    remove player # if the tournament has begun, it will not work
+        'type' : localTournament'
+        'cmd' : 'removePlayer'
+        'nickname' : <player nickname>
+        -> {{local tournament state}}
+
     switch tournament power up
         'type' : localTournament'
         'cmd' : 'modifyPowerUp'
         -> {{local tournament state}}
 
-    /!\ Only the host can modify tournament /!\
     modify tournament map id
         'type' : localTournament'
         'cmd' : 'modifyMapId'
         'mapId' : <map id>
         -> {{local tournament state}}
 
-    /!\ Only the host can start tournament /!\
     start tournament
         'type' : 'localTournament'
         'cmd' : 'start'
-        -> 'type' : 'localTournamentStart'
-           'powerUp' : true | false
-           'mapId' : <map id>,
-           'mapName' : <map name>
-           'players' : [<player nickname>]
-
-    remove player # if the tournament has begun, it will not work
-        'cmd' : 'removePlayer'
-        'nickname' : <player nickname>
-        -> 'type' : 'localTournamentRemovePlayer'
+        -> {{tournament state}}
 
     get tournament info
         'type' : 'localTournament'
         'cmd' : 'getInfo'
-        -> '{{local tournament state}}
-
-    get player of tournament
-        'type' : 'localTournament'
-        'cmd' : 'getUserTournament'
-        -> 'type' : 'localTournamentPlayersList'
-           'players' : [<player nickname>]
+        -> {{local tournament state}}
 
     get tournament tree
         'type' : 'localTournament'
@@ -346,7 +331,7 @@ TOURNAMENT LOCAL
 	get winners
         'type' : 'localTournament'
         'cmd' : 'winners'
-        -> 'type' : 'winnersTournament'
+        -> 'type' : 'winnersLocalTournament'
            'onePongMan' : <player nickname>
            'second' : <player nickname>
            'third' : <player nickname>

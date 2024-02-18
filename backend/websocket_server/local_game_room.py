@@ -280,7 +280,7 @@ async def local_game_room_start_game(my_id:int,
 
     # team [int, int]
     # int per paddle, 0 for player, 1 for ia
-    ret = await create_new_local_game(in_game_list, game_room["map_id"],
+    ret = await create_new_local_game(my_id, in_game_list, game_room["map_id"],
                                 game_room["power_up"], game_room["team_left"],
                                 game_room["team_right"], GAME_TYPE_LOCAL_CUSTOM)
 

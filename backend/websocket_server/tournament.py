@@ -644,7 +644,7 @@ async def join_tournament(my_id:int,
 
     if len(nickname) < 1 or len(nickname) > 15:
         print("WS : User", my_id,
-              "Nickname need to be between 2 and 15 characters", file=sys.stderr)
+              "Nickname need to be between 1 and 15 characters", file=sys.stderr)
         await send_error_to_id(my_id, connected_users,
                                "Nickname need to be between 2 and 15 characters")
         return
@@ -736,7 +736,7 @@ async def is_user_in_tournament(my_id:int,
     await send_msg_to_id(my_id, connected_users, str_msg)
 
 
-async def getTournamentTree(my_id:int,
+async def get_tournament_tree(my_id:int,
                             connected_users:dict):
     global tournament
 
@@ -821,7 +821,7 @@ async def next_match_user(my_id:int,
     await send_msg_to_id(my_id, connected_users, str_msg)
 
 
-async def getTournamentWinners(my_id:int,
+async def get_tournament_winners(my_id:int,
                                connected_users:dict):
     global tournament
 

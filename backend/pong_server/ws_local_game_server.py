@@ -29,6 +29,7 @@ team_right = []
 map_id = 0
 power_up = False
 game_type = 0
+my_id = None
 
 GAME_SERVER_PORT = int(sys.argv[1])
 
@@ -72,7 +73,7 @@ async def timeoutConnection():
 
 
 async def handle_client(websocket : websockets.WebSocketServerProtocol, path):
-    global map_id, power_up, connected_player, game_type
+    global map_id, power_up, connected_player, game_type, my_id
     # None | (id paddle, id team)
     connected = False
     controleDictConvertion = {'up': KEY_UP, 'down': KEY_DOWN,
@@ -109,6 +110,7 @@ async def handle_client(websocket : websockets.WebSocketServerProtocol, path):
                 teamLeft = data.get("teamLeft", None)
                 teamRight = data.get("teamRight", None)
                 gameType = data.get("gameType", None)
+                my_id = data.get("my_id", None)
                 if mapId == None or powerUp == None or teamLeft == None or\
                     teamRight == None or gameType == None:
                     print("LGWS : MISSING INFO", file=sys.stderr)
@@ -335,13 +337,23 @@ async def start_server():
     print("\nLGWS : SERVER PORT CLOSE", file=sys.stderr)
 
     ws = await websockets.connect("wss://localhost:8765", ssl=ssl_context_client)
-    msg = {"type":"gws",
-            "cmd" : "definitelyNotTheMovie(endGame)",
-            "port" : GAME_SERVER_PORT,
-            "teamLeft" : team_left,
-            "teamRight" : team_right,
-            "gameType" : game_type,
-            "stats" : game.getFinalStat()}
+    if my_id == None:
+        msg = {"type":"gws",
+                "cmd" : "definitelyNotTheMovie(endGame)",
+                "port" : GAME_SERVER_PORT,
+                "teamLeft" : team_left,
+                "teamRight" : team_right,
+                "gameType" : game_type,
+                "stats" : game.getFinalStat()}
+    else:
+        msg = {"type":"gws",
+                "cmd" : "definitelyNotTheMovie(endGame)",
+                "port" : GAME_SERVER_PORT,
+                "teamLeft" : team_left,
+                "teamRight" : team_right,
+                "gameType" : game_type,
+                "my_id" : my_id,
+                "stats" : game.getFinalStat()}
     str_msg = str(msg).replace("'", '"')
     await ws.send(str_msg)
     await ws.close()

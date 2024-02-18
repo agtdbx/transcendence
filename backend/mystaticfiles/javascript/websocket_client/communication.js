@@ -16,7 +16,8 @@ function onRecieveData(event)
 	if (type === "error")
 	{
 		console.error("Error :", data['error']);
-		if (current_page == 5 || current_page == 52 || current_page == 8)
+		if (current_page == 5 || current_page == 52 ||
+			current_page == 74 || current_page == 8)
 			alert(data['error']);
 	}
 	else if (type == 'connectionReply')
@@ -161,7 +162,7 @@ function onRecieveData(event)
 		startGameLocalClient(port, id_paddle, id_team, get_game_type);
 	}
 
-
+	// Tournament remote
 	else if (type == 'tournamentState')
 	{
 		console.log("tournament state", current_page);
@@ -225,7 +226,7 @@ function onRecieveData(event)
 		else if (current_page == 71 || current_page == 72)
 			applyTournamentState(2, mapName, powerUp, listPlayers, youInTournament);
 	}
-	else if (type == 'winners')
+	else if (type == 'winners' || type == 'localEndTournament' || type == 'winnersLocalTournament')
 	{
 		let winner = data['onePongMan'];
 		let second = data['second'];
@@ -258,6 +259,31 @@ function onRecieveData(event)
 		let second = data['second'];
 		let third = data['third'];
 		waitTournamentResult(winner, second, third);
+	}
+
+	// Tournament local
+	else if (type == 'localTournamentState')
+	{
+		let status = data["status"];
+		let mapId = data["mapId"];
+		let mapName = data["mapName"];
+		let powerUp = data["powerUp"];
+		let listPlayers = data["players"];
+
+		if (status == 0 || status == 1)
+		{
+			changePage('74');
+			waitCreationLocalTournament(status, mapId, powerUp, listPlayers);
+		}
+		else if (status == 2)
+		{
+			changePage('75');
+			applyLocalTournamentState(mapName, powerUp, listPlayers);
+		}
+		else
+		{
+			changePage('76');
+		}
 	}
 	else
 		console.error("Unkown data recieved :", data);

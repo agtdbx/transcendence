@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    views.py                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: lflandri <lflandri@student.42.fr>          +#+  +:+       +#+         #
+#    By: auguste <auguste@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/08 14:00:09 by lflandri          #+#    #+#              #
-#    Updated: 2024/02/17 04:34:37 by lflandri         ###   ########.fr        #
+#    Updated: 2024/02/18 07:20:49 by auguste          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -165,7 +165,7 @@ def section(request, num):
             return render(request, "mainpage_full.html", {'idType': user.type})
         else:
             return render(request,"joinGameRoom.html")
-        
+
     elif num == 52: #local game room
         if fullPage:
             return render(request, "mainpage_full.html", {'idType': user.type})
@@ -211,12 +211,18 @@ def section(request, num):
             return render(request, "tournamentLocalCreate_full.html")
         else:
             return render(request,"tournamentLocalCreate.html")
-    
+
     elif num == 75:
         if fullPage:
             return render(request, "tournamentLocal_full.html")
         else:
             return render(request,"tournamentLocal.html")
+
+    elif num == 76:
+        if fullPage:
+            return render(request, "localTournamentEnd_full.html")
+        else:
+            return render(request,"localTournamentEnd.html")
 
     elif num == 8: #admin page where you can create tournament if you are admin and start them
         if(user.type != 2):

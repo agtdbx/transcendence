@@ -87,7 +87,7 @@ function manageHeader(num)
 
 function manageChat(num)
 {
-	if (num == 3 || num == 4 || num == 5 || num == 51 || num == 52 || num == 71 || num == 72 || num == 73 || num == 74 || num == 75 || num == 8)
+	if (num == 3 || num == 4 || num == 5 || num == 51 || num == 52 || num == 71 || num == 72 || num == 74 || num == 75 || num == 8)
 	{
 		setChannelTarget("general");
 		displayFiends();
@@ -159,6 +159,22 @@ function manageAPI(num)
 	{
 		getTournamentTree();
 		getTournamentResult();
+	}
+	else if (num == 74)
+	{
+		getLocalTournamentStatus();
+	}
+	else if (num == 75)
+	{
+		getLocalTournamentTree();
+		getLocalTournamentStatus();
+		getLocalTournamentNextMatch();
+	}
+	else if (num == 76)
+	{
+		getLocalTournamentTree();
+		getLocalTournamentStatus();
+		getLocalTournamentResult();
 	}
 }
 

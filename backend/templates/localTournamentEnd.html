@@ -1,0 +1,51 @@
+{% load static %}
+<link rel="stylesheet" href="{% static '/css/tournamentEnd.css' %}">
+<div id = "Page">
+
+    <h1 id="title">Tournament Result</h1>
+    <div class ="tournamentProgress" id = "tournamentProgress">
+        <div class ="greyRect">
+            <svg  viewBox="60, 20, 650, 300"style="width:100%; height:100%;" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                <g id="graphe" style="fill:none;stroke-width:4px;">
+
+
+                </g>
+            </svg>
+        </div>
+    </div>
+
+    <div class ="tournamentPodium" id = "tournamentPodium">
+        <div class ="greyRect">
+            <div id="podium1" >
+                <p class="podiumText">1</p>
+                <p class="podiumText" id="usernamePodium1"></p>
+                <p class="podiumText" id="akaPodium1"></p>
+            </div>
+
+            <div id="podium2" >
+                <p class="podiumText">2</p>
+                <p class="podiumText" id="usernamePodium2"></p>
+                <p class="podiumText" id="akaPodium2"></p>
+            </div>
+
+            <div id="podium3" >
+                <p class="podiumText">3</p>
+                <p class="podiumText" id="usernamePodium3"></p>
+                <p class="podiumText" id="akaPodium3"></p>
+            </div>
+
+            <div id="podiumPlacement1">
+                <img id="podiumPp1"/>
+            </div>
+            <div id="podiumPlacement2">
+                <img id="podiumPp2"/>
+            </div>
+            <div id="podiumPlacement3">
+                <img id="podiumPp3"/>
+            </div>
+        </div>
+    </div>
+
+    <button class="btn-drg" onclick="createLocalTournament()">Create new tournament</button>
+
+</div>
