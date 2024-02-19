@@ -155,3 +155,14 @@ p {
 #channel-general p {
 	width: 100%;
 }
+
+.playerInfo {
+	margin-left: 2em;
+	margin-right: 2em;
+	width: 10%;
+}
+
+.playerInfo p{
+	color: white;
+	margin: 0em;
+}

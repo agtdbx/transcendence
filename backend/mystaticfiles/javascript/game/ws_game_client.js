@@ -63,11 +63,26 @@ function startGameLocalClient(server_port, idPaddle, idTeam, get_game_type)
 		console.log("Client gws local connection ok !");
 		// Go to game page
 		changePage('6');
+
 		gameStartLocal = true;
 		ws_game.send(JSON.stringify({
 			'type' : 'userIdentification'
 		}));
 		game_type = get_game_type;
+
+		let inter = setInterval(function () {
+			if (pageInLoad)
+			{
+				document.getElementById("player1-info").hidden = false;
+				document.getElementById("player2-info").hidden = false;
+				document.getElementById("player3-info").hidden = false;
+				document.getElementById("player4-info").hidden = false;
+
+				clearInterval(inter);
+			}
+			else
+				console.log("wait connection");
+		}, 10);
 	}
 
 	ws_game.onerror = function(e) {console.error("GWS ERROR :", e)};

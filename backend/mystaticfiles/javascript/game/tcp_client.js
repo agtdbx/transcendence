@@ -81,52 +81,5 @@ export async function runGameClient(
 			},
 			16); //value : 16
 
-
-    // while(runTcpClient && gameClient.runMainLoop)
-	// {
-
-        // Check if we recived message
-        //fdVsEvent = pollerObject.poll(10)
-
-        // Parse the messages recieved
-        // for (const pair of fdVsEvent)
-		// {
-		// 	const descriptor = pair[0];
-		// 	const Event = pair[1];
-        //     if (descriptor == clientSocket.fileno())
-		// 	{
-        //         msg = clientSocket.recv(65536).decode('utf-8')
-        //         if (! msg)
-		// 		{
-        //             print("Server close")
-        //             runTcpClient = False
-        //             break
-		// 		}
-        //         messages = msg.split("|")
-        //         for (const message of messages)
-		// 		{
-        //             try
-		// 			{
-        //                 srv_msg = eval(message)
-        //                 gameClient.messageFromServer.append(srv_msg)
-		// 			}
-        //             catch
-		// 			{
-        //                 console.log(message)
-        //                 pass
-		// 			}
-		// 		}
-		// 	}
-		// }
-
-        // Run game client step
-
-        // Send the server state to client
-        // for (const msg of gameClient.messageForServer)
-        //     clientSocket.sendall(bytes(str(msg) + "|", encoding='utf-8'))
-	// }
-    // if (gameClient.runMainLoop == false)
-    //     clientSocket.sendall(bytes(str("STOP"), encoding='utf-8'))
-
 }
 
