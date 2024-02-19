@@ -16,9 +16,26 @@ function onRecieveData(event)
 	if (type === "error")
 	{
 		console.error("Error :", data['error']);
-		if (current_page == 5 || current_page == 52 ||
-			current_page == 74 || current_page == 8)
-			alert(data['error']);
+		if (current_page == 74)
+		{
+			error = document.getElementById("tournamentLocalEror")
+			error.innerHTML=data["error"]
+		}
+		else if (current_page == 52)
+		{
+			error = document.getElementById("customLocalEror")
+			error.innerHTML=data["error"]
+		}
+		else if (current_page == 5)
+		{
+			error = document.getElementById("customEror")
+			error.innerHTML=data["error"]
+		}
+		else if (current_page == 8)
+		{
+			error = document.getElementById("tournamentOnlineEror")
+			error.innerHTML=data["error"]
+		}
 	}
 	else if (type == 'connectionReply')
 	{

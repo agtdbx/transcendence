@@ -361,3 +361,24 @@ font-size: 1rem;
 	white-space: nowrap;
 	text-overflow: ellipsis;
 }
+
+#rectEror{
+	position: absolute;
+	-ms-transform: translate(-50%, -50%);
+	transform: translate(-50%, -50%);
+	background-color: transparent;
+	left: 50%;
+	width: 20%;
+	height: 5%;
+	top: 32%;
+	text-align: center;
+}
+
+
+#customLocalEror{
+	color: red;
+}
+
+#customEror{
+	color: red;
+}
