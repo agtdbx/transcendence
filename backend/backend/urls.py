@@ -70,10 +70,6 @@ urlpatterns = [
     #User 42 connection
     path('checkislinked', views_42link.checkislinked, name='checkislinked'),
     path('removelink', views_42link.removelink, name='removelink'),
-
-    # API
-    path('api', views.apiDoc, name="api"),
-    # path('getUserViewById', views_connection.getUserViewById, name="getUserViewById")
 ]
 
 if settings.DEBUG:

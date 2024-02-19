@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    views.py                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: auguste <auguste@student.42.fr>            +#+  +:+       +#+         #
+#    By: aderouba <aderouba@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/08 14:00:09 by lflandri          #+#    #+#              #
-#    Updated: 2024/02/18 07:20:49 by auguste          ###   ########.fr        #
+#    Updated: 2024/02/19 18:20:41 by aderouba         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,11 +29,6 @@ from .views_connection import checkApi42Request
 # **************************************************************************** #
 def index(request):
     return render(request, 'index.html')
-
-
-def apiDoc(request):
-    return render(request, 'api_doc.html')
-
 
 @csrf_exempt
 def getHeader(request):
