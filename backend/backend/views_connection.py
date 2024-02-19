@@ -6,7 +6,7 @@
 #    By: aderouba <aderouba@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/23 19:48:51 by aderouba          #+#    #+#              #
-#    Updated: 2024/02/16 21:28:14 by aderouba         ###   ########.fr        #
+#    Updated: 2024/02/19 15:39:39 by aderouba         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,7 @@ import datetime
 
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
-from db_test.models import User, connectionPassword, connection42
+from db_test.models import User, connectionPassword, connection42, Link
 from django.shortcuts import render
 from django.contrib import messages
 
@@ -74,21 +74,21 @@ def checkToken(request):
     return {"success" : True, "userId" : userId}
 
 
-@csrf_exempt
-def getUserViewById(request):
-    if request.method != 'POST':
-        return JsonResponse({"success" : False, "error" : "Only post request"})
+# @csrf_exempt
+# def getUserViewById(request):
+#     if request.method != 'POST':
+#         return JsonResponse({"success" : False, "error" : "Only post request"})
 
-    user_id = request.POST.get('userId')
-    test_users = User.objects.all().filter(idUser=user_id)
+#     user_id = request.POST.get('userId')
+#     test_users = User.objects.all().filter(idUser=user_id)
 
-    if len(test_users) != 1:
-        return JsonResponse({"success" : False, "error" : "User not exist"})
+#     if len(test_users) != 1:
+#         return JsonResponse({"success" : False, "error" : "User not exist"})
 
-    user = test_users[0]
-    return JsonResponse({"success" : True,
-                         "username" : user.username,
-                         "pp" : "/static/" + user.profilPicture.name})
+#     user = test_users[0]
+#     return JsonResponse({"success" : True,
+#                          "username" : user.username,
+#                          "pp" : "/static/" + user.profilPicture.name})
 
 
 @csrf_exempt
@@ -181,6 +181,15 @@ def checkSignin(request):
         return JsonResponse({"success" : False,
                              "error" : "Error on password creation"})
 
+    try:
+        idLink = Link.objects.all().count()
+
+        link = Link.objects.create(id=idLink, idUser=user, idTarget=0, link=2)
+        link.save()
+
+    except:
+        return JsonResponse({"success" : False,
+                             "error" : "Error on link creation"})
     return JsonResponse({"success" : True, "token" : token})
 
 

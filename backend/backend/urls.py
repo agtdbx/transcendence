@@ -58,12 +58,12 @@ urlpatterns = [
     path('getselfachievement', views_achievement.getselfachievement, name='getselfachievement'),
     path('getotherachievement', views_achievement.getotherachievement, name='getotherachievement'),
     path('setachievement', views_achievement.setachievement, name='setachievement'),
-    
+
     #User stats
     path('getuserstat', views_stats.getuserstat, name='getuserstat'),
     path('getwinrate', views_stats.getwinrate, name='getwinrate'),
     path('getusermatchhistory', views_stats.getusermatchhistory, name='getusermatchhistory'),
-    
+
     #User message
     path("getMessages", views_message.getMessages, name="getMessages"),
 
@@ -73,7 +73,7 @@ urlpatterns = [
 
     # API
     path('api', views.apiDoc, name="api"),
-    path('getUserViewById', views_connection.getUserViewById, name="getUserViewById")
+    # path('getUserViewById', views_connection.getUserViewById, name="getUserViewById")
 ]
 
 if settings.DEBUG:

@@ -19,21 +19,13 @@ def create_str_message(message, username, pp, date, channel):
 
     return str_message
 
+
 def isBlocked(user_id:int, user:User):
     linkFriendRequestList = Link.objects.all().filter(idUser=user_id, idTarget=user.idUser)
     if (len(linkFriendRequestList) < 1):
         return False
     return (linkFriendRequestList[0].link == 3)
-    # blockedUsers = []
-    # for link in linkFriendRequestList :
-    #     try:
-    #         friend = User.objects.all().filter(idUser=link.idTarget)[0]
-    #         blockedUsers.append(friend.idUser)
-    #     except:
-    #         continue
-    # for user.idUser in blockedUsers:
-    #     return True
-    # return False
+
 
 async def message_in_general(message:str, user:User, connected_users:dict):
     id_msg = Message.objects.count()

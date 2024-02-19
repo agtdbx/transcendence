@@ -6,12 +6,44 @@ from websocket_server.utils import get_user_by_id, send_error_to_id, \
                                    GAME_TYPE_LOCAL_TOURNAMENT, NUMBER_OF_MAP, IA_ID
 from websocket_server.game_server_manager import create_new_local_game, \
                                                  is_game_server_free
+from websocket_server.message import message_in_private
 
+MISSION_CONTROL = get_user_by_id(0)
 
 STATE_NO_TOURNAMENT = 0
 STATE_CREATE_TOURNAMENT = 1
 STATE_START_TOURNAMENT = 2
 STATE_FINISH_TOURNAMENT = 3
+
+
+async def annonce_tournament(my_id:int,
+                             connected_users:dict,
+                             message:str):
+    global MISSION_CONTROL
+
+    await message_in_private(message, my_id, MISSION_CONTROL, my_id,
+                             connected_users)
+
+    # date = datetime.datetime.now()
+    # message = message.replace("'", " ")
+    # message = message.replace('"', '')
+
+    # str_message = str({"type" : "message",
+    #                    "message" : message,
+    #                    "username" : MISSION_CONTROL.username,
+    #                    "pp" : "/static/" + MISSION_CONTROL.profilPicture.name,
+    #                    "date" : str(date),
+    #                    "channel" : MISSION_CONTROL.idUser})
+    # str_message = str_message.replace("'", '"')
+
+    # await send_msg_to_id(my_id, connected_users, str_message)
+
+
+def get_nickname_by_tournament_id(user_id:int,
+                                  tournament:dict):
+    if user_id <= IA_ID:
+        return "bosco " + str(-user_id)
+    return tournament["nicknames"].get(user_id, None)
 
 
 def get_user_view(my_id:int,
@@ -90,10 +122,8 @@ def create_local_tournament_state_msg(my_id:int,
 def create_tournament_tree_msg(tournament:dict):
     players_grade = []
     for user_id in tournament["quarter"]:
-        if user_id <= IA_ID:
-            nickname = "bosco " + str(-user_id)
-        else:
-            nickname = tournament["nicknames"][user_id]
+        nickname = get_nickname_by_tournament_id(user_id,
+                                                 tournament)
 
         if user_id == tournament["winner"]:
             players_grade.append([nickname, 3])
@@ -305,7 +335,7 @@ async def switch_local_tournament_power_up(my_id:int,
         print("WS : User", my_id,
               "Local tournament must be in creation to be modified")
         await send_error_to_id(my_id, connected_users,
-                               "Local tournament must be in creation to be modified")
+                            "Local tournament must be in creation to be modified")
         return
 
     # Switch power up
@@ -396,6 +426,9 @@ async def start_local_tournament(my_id:int,
     # shuffle this step
     random.shuffle(tournament["quarter"])
 
+    # Message to user
+    await annonce_tournament(my_id, connected_users, "Local tournament start")
+
     # Update message
     str_msg = create_local_tournament_state_msg(my_id, tournament)
     await send_msg_to_id(my_id, connected_users, str_msg)
@@ -442,6 +475,16 @@ async def local_tournament_next_start_match(my_id:int,
     if next_match[0] == None or next_match[1] == None:
         print("WS : At least one user is unkown", file=sys.stderr)
         return
+
+    # Get nicknames of users
+    nickname_p1 = get_nickname_by_tournament_id(next_match[0],
+                                                 tournament)
+    nickname_p2 = get_nickname_by_tournament_id(next_match[1],
+                                                 tournament)
+
+    # Message to user
+    await annonce_tournament(my_id, connected_users, "New match between "
+                       + nickname_p1 + " and " + nickname_p2)
 
     # If all participant are ia, end instantly the match
     if next_match[0] <= IA_ID and next_match[1] <= IA_ID:
@@ -595,6 +638,14 @@ async def local_tournament_end_match(winner:tuple[int, int, int, int, int],
 
     winner_id = winner[1]
 
+    # Get nickname of winner
+    nickname = get_nickname_by_tournament_id(winner_id,
+                                             tournament)
+    if nickname != None:
+        # Message to user
+        await annonce_tournament(winner[4], connected_users, nickname +
+                                 "win the match")
+
     if winner_id in tournament["final"]:
         id_p1 = tournament["final"][0]
         id_p2 = tournament["final"][1]
@@ -608,6 +659,12 @@ async def local_tournament_end_match(winner:tuple[int, int, int, int, int],
         str_msg = create_tournament_winners_msg(winner[4], "localEndTournament",
                                                 tournament)
         await send_msg_to_id(winner[4], connected_users, str_msg)
+        # Get nickname of winner
+        nickname = get_nickname_by_tournament_id(winner_id,
+                                                    tournament)
+        # Message to user
+        await annonce_tournament(winner[4], connected_users, "The winner of local "
+                                 + "tournament is " + nickname)
         return
 
     if winner_id in tournament["half"]:

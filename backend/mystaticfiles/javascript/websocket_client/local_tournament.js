@@ -90,6 +90,7 @@ function addLocalPlayerViewsTournament(player, div)
 	playerDiv.style.display = "flex";
 	playerDiv.style.flexDirection = "row";
 	playerDiv.style.width = "100%";
+	playerDiv.style.animation = "animate 0.40s infinite";
 	playerDiv.appendChild(pp);
 	playerDiv.appendChild(nickname);
 	playerDiv.onclick = function () {
