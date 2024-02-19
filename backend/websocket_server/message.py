@@ -1,8 +1,12 @@
 import sys
+import random
 import datetime
 from websocket_server.utils import send_error, get_user_by_id, get_user_by_username
 from websocket_server.game_room import send_game_room_invite
 from db_test.models import User, Message, PrivMessage, Link
+
+
+MISSION_CONTROL = get_user_by_id(0)
 
 
 def create_str_message(message, username, pp, date, channel):
@@ -119,6 +123,31 @@ async def recieved_message(data : dict,
 
     if channel == "general":
         await message_in_general(message, user, connected_users)
+
+        if "gold" in message.lower():
+            rand = random.randint(0, 3)
+            if rand == 0:
+                msg = "Yes, yes, you're rich... time to get a move on! I got Management breathing down my neck here!"
+            elif rand == 1:
+                msg = "Uh my aching head...! Would you lugs please bloody focus!"
+            elif rand == 2:
+                msg = "I told them letting you keep the gold for yourselves was a mistake..."
+            else:
+                msg = "Tick tock, team...! We're not getting any younger here!"
+            await message_in_general(msg, MISSION_CONTROL, connected_users)
+
+        if "mushroom" in message.lower():
+            rand = random.randint(0, 3)
+            if rand == 0:
+                msg = "Tick tock, team...! We're not getting any younger here!"
+            elif rand == 1:
+                msg = "ENOUGH about the mushrooms! We all know it's a mushroom! We get it!"
+            elif rand == 2:
+                msg = "'MUSHROOM! MUSHROOM!', SHUT IT! Get back to work!"
+            else:
+                msg = "FOCUS, team! Leave the damn mushrooms alone!"
+            await message_in_general(msg, MISSION_CONTROL, connected_users)
+
         return
 
     try:

@@ -1,22 +1,5 @@
 import os, hashlib
-from db_test.models import User, connectionPassword, Map
-
-test = User.objects.all().filter(username="Karl")
-# If Karl doesn't exist, create Karl
-if len(test) == 0:
-    username = "karl"
-    password = os.getenv('ADMIN_PWD')
-    hashPwd = hashlib.sha512(password.encode(), usedforsecurity=True)
-    id = 1
-    idType = 2
-    user = User(idUser=id, type=idType, username=username,
-             profilPicture="images/default/Karl.png",
-             money=100000, status=0)
-    user.save()
-    password = connectionPassword(idPassword=id, password=hashPwd.hexdigest(),
-                               idUser=user)
-    password.save()
-
+from db_test.models import User, connectionPassword, Map, Link
 
 test = User.objects.all().filter(username="Bosco")
 # If Bosco doesn't exist, create it
@@ -40,6 +23,24 @@ if len(test) == 0:
              profilPicture="images/default/MissionControl.png",
              money=0, status=0)
     user.save()
+
+
+test = User.objects.all().filter(username="Karl")
+# If Karl doesn't exist, create Karl
+if len(test) == 0:
+    username = "karl"
+    password = os.getenv('ADMIN_PWD')
+    hashPwd = hashlib.sha512(password.encode(), usedforsecurity=True)
+    id = 1
+    idType = 2
+    user = User(idUser=id, type=idType, username=username,
+             profilPicture="images/default/Karl.png",
+             money=100000, status=0)
+    user.save()
+    password = connectionPassword(idPassword=id, password=hashPwd.hexdigest(),
+                               idUser=user)
+    password.save()
+    link = Link.objects.create(id=0, idUser=user, idTarget=0, link=2)
 
 
 # Create maps

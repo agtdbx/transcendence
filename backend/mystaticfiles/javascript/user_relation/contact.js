@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   contact.js                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hde-min <hde-min@student.42.fr>            +#+  +:+       +#+        */
+/*   By: aderouba <aderouba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/23 15:27:08 by lflandri          #+#    #+#             */
-/*   Updated: 2024/02/14 14:22:05 by hde-min          ###   ########.fr       */
+/*   Updated: 2024/02/19 15:58:01 by aderouba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,8 @@ function contactCreate(content, before, name, img,status)
 	container.onclick = function (){
 		changePage("profil/" + name);
 	}
+	// container.style.textOverflow = "nowrap";
+
 	content.insertBefore(container, before);
 	container.insertBefore(box, before);
 	box.insertBefore(divText, null);
@@ -105,7 +107,7 @@ function contactPop(type, listContact)
 	succesBlock.style.textAlign = "center";
 	succesBlock.style.padding = "0%"
 	succesBlock.style.width = "50%";
-	succesBlock.style.maxWidth = "400px";
+	succesBlock.style.maxWidth = "500px";
 	succesBlock.style.height = "500px";
 	succesBlock.style.overflowY = "auto";
 	containerContentSuccesBlock.style.zIndex = "1000";
