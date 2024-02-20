@@ -71,7 +71,7 @@ function startGameLocalClient(server_port, idPaddle, idTeam, get_game_type)
 		game_type = get_game_type;
 
 		let inter = setInterval(function () {
-			if (pageInLoad)
+			if (pageInLoad == false)
 			{
 				document.getElementById("player1-info").hidden = false;
 				document.getElementById("player2-info").hidden = false;

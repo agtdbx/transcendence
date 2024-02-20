@@ -300,6 +300,20 @@ function addBotToElement(user_view, element, team)
 }
 
 
+function waitGameRoomInfo(map_id, map_name, power_up, team_left, team_right)
+{
+	let inter = setInterval(function () {
+		if (pageInLoad == false)
+		{
+			updateGameRoomInfo(map_id, map_name, power_up, team_left, team_right);
+			clearInterval(inter);
+		}
+		else
+			console.log("wait");
+	}, 10);
+}
+
+
 function updateGameRoomInfo(map_id, map_name, power_up, team_left, team_right)
 {
 	let map_name_element = document.getElementById("gameCreateMapName");

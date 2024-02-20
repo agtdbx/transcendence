@@ -20,6 +20,8 @@ function addPlayerViewsTournament(player, div)
 	pp.src = player[1];
 	pp.style.width = "3em";
 	pp.style.height = "3em";
+	pp.style.height = "3em";
+	pp.style.borderRadius = "50%";
 
 	let nickname = document.createElement("p");
 	nickname.textContent = player[2]

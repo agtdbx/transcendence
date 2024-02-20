@@ -6,7 +6,7 @@
 #    By: aderouba <aderouba@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/08 14:00:09 by lflandri          #+#    #+#              #
-#    Updated: 2024/02/19 18:20:41 by aderouba         ###   ########.fr        #
+#    Updated: 2024/02/20 10:15:01 by aderouba         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -123,7 +123,6 @@ def section(request, num):
     #conecting with 42 api
     elif num == 3 and fullPage and request.GET.get('code', None) != None:
         return checkApi42Request(request, True, None)
-
 
     # Check token
     check = checkToken(request)

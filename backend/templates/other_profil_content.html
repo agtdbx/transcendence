@@ -24,21 +24,20 @@
 					<script src="{% static 'javascript/profil/profil.js' %}" ></script>
 				</div>
 
+				<div class="black_grey_div" id="achivement_container" style="margin-bottom: 10px; height:20%;">
+					<p id="achivement_profil_page" style="margin:auto; color:white; text-align:center; font-size:300%;">Achievement<span id="achivement_counter_profil_page"></span></p>
+					<button class ="btn-drg" style=" display:block; margin:auto; margin-top:5px; width:50%; font-size:200%;" id="successbutton" onclick="createpup('sucess')">Achievement</button>
 
-				{% if user.idUser != 0 %}
-					<div class="black_grey_div" id="achivement_container" style="margin-bottom: 10px; height:20%;">
-						<p id="achivement_profil_page" style="margin:auto; color:white; text-align:center; font-size:300%;">Achievement<span id="achivement_counter_profil_page"></span></p>
-						<button class ="btn-drg" style=" display:block; margin:auto; margin-top:5px; width:50%; font-size:200%;" id="successbutton" onclick="createpup('sucess')">Achievement</button>
+				</div>
 
-					</div>
-
-					<div class="black_grey_div" id="contact_container" style="margin-bottom: 10px; height:30%;">
-						<p style="margin:auto; color:white; text-align:center; font-size:300%;">Contact</p>
-						<div style="margin:auto; margin-top:5px; text-align:center; width:76%; font-size:200%;">
-							<form id="data-request-relation">
-								{% csrf_token %}
-								<input type="hidden" name="friend" value="{{ user.username }}">
-							</form>
+				<div class="black_grey_div" id="contact_container" style="margin-bottom: 10px; height:30%;">
+					<p style="margin:auto; color:white; text-align:center; font-size:300%;">Contact</p>
+					<div style="margin:auto; margin-top:5px; text-align:center; width:76%; font-size:200%;">
+						<form id="data-request-relation">
+							{% csrf_token %}
+							<input type="hidden" name="friend" value="{{ user.username }}">
+						</form>
+						{% if user.idUser != 0 %}
 							<button class ="btn-drg" style=" display:none; width:80%; font-size:63%; text-align:center;" id="btn-send-friend-request" onclick=addFriend()>Send Friend Request</button>
 							<p style="display:none; width:80%; font-size:63%; text-align:center; color:white; margin-bottom:0%; margin-top:0%;" id="p-friend-request">Friend request send.</p>
 							<button class ="btn-drg" style=" display:none; width:80%; font-size:63%; text-align:center;" id="btn-remove-friend" onclick=removedFriend()>Remove Friend</button>
@@ -46,9 +45,10 @@
 							<button class ="btn-drg" style=" display:none; width:80%; font-size:63%; text-align:center;" id="btn-block-user" onclick=blockUser()>Block</button>
 							<button class ="btn-drg" style=" display:none; width:80%; font-size:63%; text-align:center;" id="btn-unblock-user" onclick=unBlockUser()>Unblock</button>
 							<script src="{% static 'javascript/user_relation/adapte_button.js' %}" ></script>
-						</div>
+						{% endif %}
+
 					</div>
-				{% endif %}
+				</div>
 
 			</div>
 

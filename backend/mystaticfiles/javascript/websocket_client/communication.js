@@ -72,7 +72,7 @@ function onRecieveData(event)
 		const power_up = data["powerUpActivate"];
 		const team_left = data["teamLeft"];
 		const team_right = data["teamRight"];
-		updateGameRoomInfo(mapId, mapName, power_up, team_left, team_right);
+		waitGameRoomInfo(mapId, mapName, power_up, team_left, team_right);
 	}
 	else if (type == 'joinRoomInfo')
 	{

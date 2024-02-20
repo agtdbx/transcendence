@@ -91,15 +91,13 @@ IA_ID = -1
 def create_game_start_message(port:int,
                               paddle_id:int,
                               team_id:int,
-                              type:int,
-                              names:list):
+                              type:int):
     message : dict = {
         "type" : "gameStart",
         "gamePort" : port,
         "paddleId" : paddle_id,
         "teamId" : team_id,
         "gameType" : type,
-        "names" : names
     }
     str_message = str(message)
     str_message = str_message.replace("'", '"')
