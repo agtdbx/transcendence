@@ -6,7 +6,7 @@
 #    By: aderouba <aderouba@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/23 19:48:51 by aderouba          #+#    #+#              #
-#    Updated: 2024/02/19 18:00:45 by aderouba         ###   ########.fr        #
+#    Updated: 2024/02/20 17:37:14 by aderouba         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -346,6 +346,9 @@ def checkApi42Request(request, islogin, user:User):
             user.save()
             password42 = connection42(login=response["id"], idUser=user)
             password42.save()
+            idLink = Link.objects.all().count()
+            link = Link.objects.create(id=idLink, idUser=user, idTarget=0, link=2)
+            link.save()
         except:
             return render(request, "login_full.html",
                           {'42urllink' : os.getenv('WEBSITE_URL')})

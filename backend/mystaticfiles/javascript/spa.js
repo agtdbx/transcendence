@@ -251,7 +251,7 @@ function changePage(num, byArrow=false)
 		// Set the new page in the browser history if the page isn't load by arrow, or not the wait and game page.
 		if (!byArrow && num != 4 && num != 5 && num != 51 && num != 52 && num != 6)
 			history.pushState({section: num}, "", "/" + num);
-		else
+		else if (!byArrow)
 			history.pushState({section: '3'}, "", "/3");
 		pageInLoad = false;
 	})
