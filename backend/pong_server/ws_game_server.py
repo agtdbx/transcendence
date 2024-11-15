@@ -89,7 +89,7 @@ async def timeoutConnection():
     print("GWS : NO TIMEOUT", file=sys.stderr)
 
 
-async def handle_client(websocket : websockets.WebSocketServerProtocol, path):
+async def handle_client(websocket : websockets.WebSocketServerProtocol):
     global map_id, power_up, team_left_ready, team_right_ready, connected_player, game_type
     # None | (id paddle, id team)
     myid = None
@@ -97,7 +97,7 @@ async def handle_client(websocket : websockets.WebSocketServerProtocol, path):
     id_team = None
     id_paddle_with_team = None
     controleDictConvertion = {'up': KEY_UP, 'down': KEY_DOWN, 'powerUp': KEY_POWER_UP, 'launchBall': KEY_LAUNCH_BALL}
-    print("\nGWS : Hello anonymous player", path, file=sys.stderr)
+    print("\nGWS : Hello anonymous player", file=sys.stderr)
 
     try:
         async for data in websocket:
@@ -209,7 +209,7 @@ async def handle_client(websocket : websockets.WebSocketServerProtocol, path):
         if myid != None:
             remove_user_connected(myid, websocket)
         else:
-            print("\nGWS : Bye bye anonymous player", path, file=sys.stderr)
+            print("\nGWS : Bye bye anonymous player", file=sys.stderr)
 
         if can_shutdown:
             print("\nGWS : CHECKIF SERVER CAN SHUTDOWN", file=sys.stderr)

@@ -81,7 +81,7 @@ async def remove_user_connected(my_id, websocket, my_game_room_id):
                                  game_rooms)
 
 
-async def handle_client(websocket : websockets.WebSocketServerProtocol, path):
+async def handle_client(websocket : websockets.WebSocketServerProtocol):
     my_id = None
     my_game_room_id = None
     local_game_room = None
@@ -345,7 +345,8 @@ async def handle_client(websocket : websockets.WebSocketServerProtocol, path):
 
 
 # Start the websocket server
-start_server = websockets.serve(handle_client, "0.0.0.0", 8765, ssl=ssl_context)
+async def main():
+    async with websockets.serve(handle_client, "0.0.0.0", 8765, ssl=ssl_context):
+        await asyncio.Future()
 
-asyncio.get_event_loop().run_until_complete(start_server)
-asyncio.get_event_loop().run_forever()
+asyncio.run(main())

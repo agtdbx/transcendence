@@ -1,4 +1,4 @@
-FROM alpine:3.18
+FROM alpine:3.16
 
 RUN apk update && apk upgrade && \
 	apk add python3 py3-pip libpq-dev postgresql-dev gcc python3-dev musl-dev\

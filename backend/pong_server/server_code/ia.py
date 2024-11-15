@@ -1,5 +1,6 @@
 from define import *
 from server_code.vec2 import *
+import random
 import server_code.obstacle as obstacle
 import server_code.paddle as paddle
 import server_code.team as team
@@ -174,11 +175,11 @@ class Ia:
 
 				if b.state == STATE_IN_GOAL_LEFT:
 					if self.teamId == TEAM_LEFT:
-						self.stateInfo = b.pos.y
+						self.stateInfo = b.pos.y + random.randint(-25, 25)
 					break
 				if b.state == STATE_IN_GOAL_RIGHT:
 					if self.teamId == TEAM_RIGHT:
-						self.stateInfo = b.pos.y
+						self.stateInfo = b.pos.y + random.randint(-25, 25)
 					break
 
 			simulateTimeLimit -= delta
